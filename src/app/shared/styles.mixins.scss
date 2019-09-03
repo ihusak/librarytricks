@@ -1,0 +1,17 @@
+// default color scheme
+$white: #fff;
+$black: #000;
+$gold: #d4af37;
+
+// mixins
+@mixin box-shadow($top, $left, $blur, $radius, $color, $inset: false) {
+    @if $inset {
+      -webkit-box-shadow:inset $top $left $blur $radius $color;
+      -moz-box-shadow:inset $top $left $blur $radius $color;
+      box-shadow:inset $top $left $blur $radius $color;
+    } @else {
+      -webkit-box-shadow: $top $left $blur $radius $color;
+      -moz-box-shadow: $top $left $blur $radius $color;
+      box-shadow: $top $left $blur $radius $color;
+    }
+  }

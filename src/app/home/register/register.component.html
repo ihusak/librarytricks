@@ -1,0 +1,34 @@
+<div class="wrapper">
+    <div class="centering">
+      <div class="content">
+        <div class="line-block item-auth">
+  <h2 class="title-login">Library[tricks]</h2>
+  <p class="name-page">Регистрация</p>
+            <div class="form">
+                <div class="form-group">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input required type="email" matInput [(ngModel)]="email">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input required matInput [(ngModel)]="pass">
+                    </mat-form-field>
+                </div>
+                <div class="message">
+                    <p>{{registerMessage}}</p>
+                </div>
+                <div class="line-block">
+                    <button [disabled]="!pass || !email" mat-flat-button color="primary"(click)="registerUser(email, pass)">Регистраия</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  

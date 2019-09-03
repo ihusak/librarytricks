@@ -1,0 +1,43 @@
+<div class="wrapper">
+    <div class="centering">
+      <div class="content">
+        <div class="line-block item-auth">
+  <h2 class="title-login">Library[tricks]</h2>
+  <p class="name-page">Вход в систему</p>
+            <div class="form">
+                <div class="form-group">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input required type="email" matInput [(ngModel)]="email">
+                    </mat-form-field>
+                </div>
+                <div class="form-group">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input required matInput [(ngModel)]="pass">
+                    </mat-form-field>
+                </div>
+                <div class="message">
+                    <p>{{loginMessage}}</p>
+                </div>
+                <div class="line-block">
+                    <button [disabled]="!pass || !email" mat-flat-button color="primary"(click)="loginUser(email, pass)">Вход</button>
+                </div>
+            </div>
+            <!-- <div class="login-social line-block item-auth">
+                <fa name="facebook-square" class="social-icon"></fa>
+                <button mat-raised-button color="primary" (click)="loginFacebook()">Login with facebook</button>
+            </div>
+            <div class="login-social line-block item-auth">
+                <fa name="google" class="social-icon"></fa>
+                <button mat-raised-button color="primary" (click)="loginGoogle()">Login with Google</button>
+            </div> -->
+        </div>
+        <div class="line-block"><a class="sign-up" routerLink="/register">Нет аккаунта, зарегестрируйся</a></div>
+      </div>
+    </div>
+  </div>
+  
+  
+  
+  
