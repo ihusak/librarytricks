@@ -1,5 +1,6 @@
-@import '../../shared/styles.mixins.scss'; 
+@import '../../../shared/styles.mixins.scss'; 
 .logo {
+    margin-left: 15px;
     max-width: 40px;
     max-height: 45px;
     img {
@@ -7,11 +8,6 @@
     }
 }
 .mat-toolbar {
-    position: absolute;
-    top: 0;
-    &.mat-toolbar-single-row {
-        background-color: $white !important;
-    }
     .nav {
         li {
             display: inline-block;
@@ -25,4 +21,4 @@
 }
 .spacer {
     flex: 1 1 auto;
-    }
+}

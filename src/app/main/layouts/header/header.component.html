@@ -1,0 +1,14 @@
+<mat-toolbar class="toolbar">
+<button mat-button class="hamburger" (click)="toogleCollapsed.emit()" *ngIf="true">
+    <mat-icon>menu</mat-icon>
+</button>
+<div class="logo">
+        <img src="assets/img/logo-single.png" alt="">
+    </div>
+    <span class="spacer"></span>
+    <span class="nav">
+        <ul>
+            <li><app-user (userLogout)="logout()"></app-user></li>
+        </ul>
+    </span>
+</mat-toolbar>

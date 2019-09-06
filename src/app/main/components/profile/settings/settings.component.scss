@@ -1,0 +1,14 @@
+.edit-profile {
+  form {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  .item {
+    width: 50%;
+    padding: 20px;
+    .mat-form-field {
+      display: block;
+    }
+  }
+  }
+}

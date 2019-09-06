@@ -1,0 +1,49 @@
+<div class="edit-profile">
+  <form action="">
+    <div class="item">
+      <h2>Main info</h2>
+      <mat-form-field>
+        <input matInput placeholder="FIO">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Phone">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="email">
+      </mat-form-field>
+      <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Start date training">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <textarea matInput placeholder="About me"></textarea>
+          </mat-form-field>
+    </div>
+    <div class="item">
+      <h2>Additional info</h2>
+      <mat-form-field>
+        <input matInput placeholder="instagram">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="facebook">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="best trick name">
+      </mat-form-field>
+    </div>
+    <div class="item">
+        <h2>Parent info</h2>
+        <mat-form-field>
+          <input matInput placeholder="FIO">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Phone">
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="email">
+        </mat-form-field>
+      </div>
+  </form>
+</div>    
+<button mat-raised-button color="primary" [routerLink]="['../overview']">Save</button>

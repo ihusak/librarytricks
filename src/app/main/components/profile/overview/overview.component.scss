@@ -1,0 +1,19 @@
+.overview {
+    ul {
+        li {
+            margin: 10px;
+            span {
+                &.item {
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+    .card {
+        background-color: red;
+        width: 70%;
+    }
+    .mat-grid-tile {
+        overflow: visible;
+    }
+}

@@ -1,4 +1,17 @@
-<app-nav></app-nav>
-<div class="main-page">
-    <router-outlet></router-outlet>
+<div
+     class="main-container-wrap"
+     dir="ltr"
+     [ngClass]="{'sidenav-collapsed': sidenavCollapsed}">
+
+  <mat-sidenav-container class="sidenav-container" autosize autoFocus>
+    <mat-sidenav #sidenav class="sidenav" mode="side">
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <mat-sidenav-content class="content-wrap" #content>
+      <app-header #header class="main-header" (toogleCollapsed)="sidenav.toggle()"></app-header>
+      <div class="main">
+            <router-outlet></router-outlet>
+        </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
