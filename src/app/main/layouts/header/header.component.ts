@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
@@ -7,12 +7,14 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnChanges {
   @Output() toogleCollapsed = new EventEmitter();
+  @Input() userInfo;
 
   constructor(private fireBaseAuth: AngularFireAuth, private router: Router) { }
 
   ngOnInit() {
+  
   }
   logout() {
     console.log('logout');
@@ -20,5 +22,9 @@ export class HeaderComponent implements OnInit {
     localStorage.removeItem('userId');
     this.router.navigate(['']);
   }
+  ngOnChanges() {
+    console.log('serifahf', this.userInfo);
+  }
+  
 
 }

@@ -1,3 +1,5 @@
+import { IndexComponent } from './components/index/index.component';
+import { MainGuardService } from './guards/main.guard';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes} from '@angular/router';
 import { MainComponent } from './main.component';
@@ -9,6 +11,7 @@ import { RatingsComponent } from './components/ratings/ratings.component';
 
 const routes: Routes = [
     {path: '', component: MainComponent, children: [
+      {path: 'index', component: IndexComponent},
       {path: 'profile', loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)},
       {path: 'progress', component: ProgressComponent},
       {path: 'videos', component: VideosComponent},

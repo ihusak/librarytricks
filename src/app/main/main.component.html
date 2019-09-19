@@ -1,17 +1,13 @@
-<div
-     class="main-container-wrap"
-     dir="ltr"
-     [ngClass]="{'sidenav-collapsed': sidenavCollapsed}">
-
+<div class="main-container-wrap" dir="ltr" [ngClass]="{'sidenav-collapsed': sidenavCollapsed}">
   <mat-sidenav-container class="sidenav-container" autosize autoFocus>
     <mat-sidenav #sidenav class="sidenav" mode="side">
-      <app-sidenav></app-sidenav>
+      <app-sidenav *ngIf='userInfo' [userInfo]='userInfo'></app-sidenav>
     </mat-sidenav>
     <mat-sidenav-content class="content-wrap" #content>
-      <app-header #header class="main-header" (toogleCollapsed)="sidenav.toggle()"></app-header>
+      <app-header [userInfo]='userInfo' #header class="main-header" (toogleCollapsed)="sidenav.toggle()"></app-header>
       <div class="main">
-            <router-outlet></router-outlet>
-        </div>
+        <router-outlet></router-outlet>
+      </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

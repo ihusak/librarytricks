@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
   loginUser(email: string, pass: string) {
     this.loginService.loginUser(email, pass).subscribe((result) => {
       console.log('result of login in component', result);
-      this.router.navigate(['main']);
+      this.router.navigate(['main/index']);
       localStorage.setItem('userId', result.id);
       this.snackBar.open('Success', '', {
         duration: 2000,

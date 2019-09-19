@@ -1,3 +1,5 @@
+import { SettingService } from './settings/settings.service';
+import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileRoutingModule } from './profile-routing.module';
@@ -13,8 +15,10 @@ import { AppMaterialModule } from 'src/app/shared/material.module';
         CommonModule,
         ProfileRoutingModule,
         MatCardModule,
-        AppMaterialModule
-    ]
+        AppMaterialModule,
+        FormsModule
+    ],
+    providers: [SettingService]
 })
 export class ProfileModule {
 

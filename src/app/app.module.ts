@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MainModule } from './main/main.module';
 import { HomeModule } from './home/home.module';
 import { StartPageComponent } from './start-page/start-page.component';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { StartPageComponent } from './start-page/start-page.component';
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFireStorageModule,
+    AngularFirestoreModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatSnackBarModule,

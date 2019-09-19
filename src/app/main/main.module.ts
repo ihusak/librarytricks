@@ -14,6 +14,8 @@ import { VideosComponent } from './components/videos/videos.component';
 import { ProgressComponent } from './components/progress/progress.component';
 import { TasksComponent } from './components/tasks/tasks.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
+import { MainService } from './main.service';
+import { IndexComponent } from './components/index/index.component';
 
 @NgModule({
     declarations: [
@@ -26,7 +28,8 @@ import { RatingsComponent } from './components/ratings/ratings.component';
         VideosComponent,
         ProgressComponent,
         TasksComponent,
-        RatingsComponent
+        RatingsComponent,
+        IndexComponent
     ],
     imports: [
         CommonModule,
@@ -36,7 +39,8 @@ import { RatingsComponent } from './components/ratings/ratings.component';
         MatIconModule,
         MatMenuModule
     ],
-    exports: [MainComponent]
+    exports: [MainComponent],
+    providers: [MainService]
 })
 export class MainModule {
 

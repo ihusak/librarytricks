@@ -3,7 +3,8 @@
     <div class="item">
       <h2>Main info</h2>
       <mat-form-field>
-        <input matInput placeholder="FIO">
+        {{model}}
+        <input [(ngModel)]='model' matInput placeholder="FIO" name="fio">
       </mat-form-field>
       <mat-form-field>
         <input matInput placeholder="Phone">
@@ -46,4 +47,4 @@
       </div>
   </form>
 </div>    
-<button mat-raised-button color="primary" [routerLink]="['../overview']">Save</button>
+<button mat-raised-button color="primary" [routerLink]="['../overview']" (click)="addInfo(model)">Save</button>
