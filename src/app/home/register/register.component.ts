@@ -8,8 +8,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  email: string;
-  pass: string;
+  userEmail: string;
+  userPass: string;
+  userStatus: string;
+  userName: string;
   registerMessage: string;
 
   constructor(
@@ -19,15 +21,20 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
   }
-  registerUser(email: string, pass: string) {
+  registerUser(email: string, pass: string, userName: string) {
     this.registerService.registerUser(email, pass).subscribe((result) => {
       console.log('result of register in component', result);
-      this.snackBar.open('Success', '', {
-        duration: 2000,
-        panelClass: ['success']
-      });
-      this.email = '';
-      this.pass = '';
+      if (result.user) {
+        this.snackBar.open('Success', '', {
+          duration: 2000,
+          panelClass: ['success']
+        });
+        this.registerService.addInfo(email, result.user.uid, userName, this.userStatus);
+        this.userEmail = '';
+        this.userPass = '';
+        this.userStatus = null;
+        this.userName = '';
+      }
     },
     (error) => {
       // Handle Errors here.
@@ -36,5 +43,9 @@ export class RegisterComponent implements OnInit {
       this.registerMessage = errorMessage;
       console.log(error);
     });
+  }
+  selectStatusUser(value: string) {
+    this.userStatus = value;
+    console.log(value);
   }
 }

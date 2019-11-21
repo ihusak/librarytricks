@@ -1,5 +1,5 @@
 <mat-toolbar class="toolbar">
-<button *ngIf='userInfo' mat-button class="hamburger" (click)="toogleCollapsed.emit()">
+<button [disabled]='!userInfo' mat-button class="hamburger" (click)="toogleCollapsed.emit()">
     <mat-icon>menu</mat-icon>
 </button>
 <div class="logo">
@@ -8,7 +8,7 @@
     <span class="spacer"></span>
     <span class="nav">
         <ul>
-            <li><app-user (userLogout)="logout()"></app-user></li>
+            <li><app-user [userInfo]="userInfo" (userLogout)="logout()"></app-user></li>
         </ul>
     </span>
 </mat-toolbar>

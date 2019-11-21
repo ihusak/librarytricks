@@ -18,29 +18,29 @@ import { MainService } from './main.service';
 import { IndexComponent } from './components/index/index.component';
 
 @NgModule({
-    declarations: [
-        MainComponent,
-        HeaderComponent,
-        NotFoundComponent,
-        UserComponent,
-        SidenavComponent,
-        UserPanelComponent,
-        VideosComponent,
-        ProgressComponent,
-        TasksComponent,
-        RatingsComponent,
-        IndexComponent
-    ],
-    imports: [
-        CommonModule,
-        MainRoutingModule,
-        AppMaterialModule,
-        MatSidenavModule,
-        MatIconModule,
-        MatMenuModule
-    ],
-    exports: [MainComponent],
-    providers: [MainService]
+  declarations: [
+    MainComponent,
+    HeaderComponent,
+    NotFoundComponent,
+    UserComponent,
+    SidenavComponent,
+    UserPanelComponent,
+    VideosComponent,
+    ProgressComponent,
+    TasksComponent,
+    RatingsComponent,
+    IndexComponent
+  ],
+  imports: [
+    CommonModule,
+    MainRoutingModule,
+    AppMaterialModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatMenuModule
+  ],
+  exports: [MainComponent],
+  providers: [MainService]
 })
 export class MainModule {
 

@@ -10,25 +10,26 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MainModule } from './main/main.module';
 import { HomeModule } from './home/home.module';
-import { StartPageComponent } from './start-page/start-page.component';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { MatProgressSpinnerModule } from '@angular/material';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    StartPageComponent
+  AppComponent
   ],
   imports: [
-    BrowserModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
-    AngularFireAuthModule,
-    AngularFireStorageModule,
-    AngularFirestoreModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatSnackBarModule,
-    HomeModule,
-    MainModule
+  BrowserModule,
+  MatProgressSpinnerModule,
+  AngularFireModule.initializeApp(environment.firebaseConfig),
+  AngularFireAuthModule,
+  AngularFireStorageModule,
+  AngularFirestoreModule,
+  AppRoutingModule,
+  BrowserAnimationsModule,
+  SharedModule,
+  HomeModule,
+  MainModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,6 +8,7 @@ import { RegisterService } from './register/register.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './login/login.service';
 import { AuthGuardService } from '../main/guards/login.guard';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AuthGuardService } from '../main/guards/login.guard';
   imports: [
     HomeRoutingModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   exports: [
     HomeRoutingModule

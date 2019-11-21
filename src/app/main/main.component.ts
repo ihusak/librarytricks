@@ -31,7 +31,6 @@ export class MainComponent implements OnInit, OnDestroy, OnChanges {
         this.router.navigate(['main/profile/settings']);
         this.userInfo = data;
       } else {
-        this.router.navigate(['main/index']);
         this.userInfo = data;
       }
     });

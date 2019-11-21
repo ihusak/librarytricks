@@ -1,11 +1,11 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'app-user',
   template: `
     <a mat-button href="javascript:void(0)" [matMenuTriggerFor]="menu">
       <img class="r-full align-middle" src="assets/images/avatar.jpg" width="24" alt="" />
-      <span class="m-l-8 align-middle">Zongbin</span>
+      <span class="m-l-8 align-middle">{{userName}}</span>
     </a>
 
     <mat-menu #menu="matMenu">
@@ -13,7 +13,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
         <mat-icon>account_circle</mat-icon>
         <span>Profile</span>
       </a>
-      <a routerLink="/profile/settings" mat-menu-item>
+      <a routerLink="profile/settings" mat-menu-item>
         <mat-icon>settings</mat-icon>
         <span>Settings</span>
       </a>
@@ -25,5 +25,12 @@ import { Component, Output, EventEmitter } from '@angular/core';
   `,
 })
 export class UserComponent {
+  public userName;
   @Output() userLogout = new EventEmitter();
+  @Input() set userInfo(obj){
+    if(obj){
+      this.userName = obj.userName;
+      console.log("ONINIT DYNAMIC FORM COMPONENT: ", obj);
+    }
+  };
 }

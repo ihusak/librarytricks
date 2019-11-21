@@ -14,7 +14,6 @@ export class HeaderComponent implements OnInit, OnChanges {
   constructor(private fireBaseAuth: AngularFireAuth, private router: Router) { }
 
   ngOnInit() {
-  
   }
   logout() {
     console.log('logout');

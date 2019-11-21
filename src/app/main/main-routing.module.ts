@@ -10,23 +10,23 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
 
 const routes: Routes = [
-    {path: '', component: MainComponent, children: [
-      {path: 'index', component: IndexComponent},
-      {path: 'profile', loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)},
-      {path: 'progress', component: ProgressComponent},
-      {path: 'videos', component: VideosComponent},
-      {path: 'tasks', component: TasksComponent},
-      {path: 'ratings', component: RatingsComponent}
-    ]},
-    {path: 'not-found', component: NotFoundComponent},
-    {path: '**', redirectTo: 'not-found'}
+  {path: '', component: MainComponent, children: [
+    {path: 'index', component: IndexComponent},
+    {path: 'profile', loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)},
+    {path: 'progress', component: ProgressComponent},
+    {path: 'videos', component: VideosComponent},
+    {path: 'tasks', component: TasksComponent},
+    {path: 'ratings', component: RatingsComponent}
+  ]},
+  {path: 'not-found', component: NotFoundComponent},
+  {path: '**', redirectTo: 'not-found'}
   ];
 
 @NgModule({
-    imports: [
-        RouterModule.forChild(routes)
-    ],
-    exports: [RouterModule]
+  imports: [
+    RouterModule.forChild(routes)
+  ],
+  exports: [RouterModule]
 })
 export class MainRoutingModule {
 

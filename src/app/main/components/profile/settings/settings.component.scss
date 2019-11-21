@@ -1,14 +1,43 @@
 .edit-profile {
   form {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
+  .form-view {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
   .item {
     width: 50%;
     padding: 20px;
-    .mat-form-field {
-      display: block;
+  .mat-form-field {
+    display: block;
+      }
     }
   }
+    button {
+      display: block;
+
+    }
+  }
+  .avatar {
+    .previewImg {
+      height: 140px;
+      width: 140px;
+      overflow: hidden;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 15px;
+      img {
+        width: auto;
+        height: 100%;
+      }
+    }
+    .avatarAddImage {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
   }
 }
