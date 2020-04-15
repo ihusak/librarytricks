@@ -1,10 +1,11 @@
 <div class="user-panel">
     <img class="user-avatar" src="assets/user-default.png" alt="user-avatar" width="64px">
-    <p class="name">name</p>
-    <span>Status</span>
+    <p class="name">{{userInfo.userName}}</p>
+    <span>{{userInfo.permission.name}}</span>
 </div>
 <div class="sidenav-menu">
     <ul>
+        <li routerLinkActive="active"><mat-icon>home</mat-icon><a routerLink="index">Главная</a></li>
         <li routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li>
         <li routerLinkActive="active"><mat-icon>trending_up</mat-icon><a routerLink="progress">Успеваемость</a></li>
         <li routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a routerLink="videos">Видео</a></li>

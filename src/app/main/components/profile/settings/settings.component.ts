@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SettingService } from './settings.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-settings',
@@ -12,17 +12,17 @@ export class SettingsComponent implements OnInit {
   public previewUrl: any = '../../assets/user-default.png';
   fileData: File = null;
   userInfo: FormGroup = new FormGroup({
-    userName: new FormControl(''),
-    phone: new FormControl(''),
-    email: new FormControl(''),
-    startTraining: new FormControl(''),
+    userName: new FormControl('', [Validators.required]),
+    phone: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    startTraining: new FormControl('', [Validators.required]),
     aboutMe: new FormControl(''),
     instagram: new FormControl(''),
     facebook: new FormControl(''),
-    bestTrick: new FormControl(''),
-    parentName: new FormControl(''),
-    parentPhone: new FormControl(''),
-    parentEmail: new FormControl('')
+    bestTrick: new FormControl('', [Validators.required]),
+    parentName: new FormControl('', [Validators.required]),
+    parentPhone: new FormControl('', [Validators.required]),
+    parentEmail: new FormControl('', [Validators.required, Validators.email])
   });
   initForm: boolean = false;
 

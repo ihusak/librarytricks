@@ -16,6 +16,7 @@ import { TasksComponent } from './components/tasks/tasks.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
 import { MainService } from './main.service';
 import { IndexComponent } from './components/index/index.component';
+import { MainGuardService } from './guards/main.guard';
 
 @NgModule({
   declarations: [

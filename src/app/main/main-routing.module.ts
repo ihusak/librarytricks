@@ -12,7 +12,7 @@ import { RatingsComponent } from './components/ratings/ratings.component';
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
     {path: 'index', component: IndexComponent},
-    {path: 'profile', loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)},
+    {path: 'profile', loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule), data: {some: 'asdasd'}},
     {path: 'progress', component: ProgressComponent},
     {path: 'videos', component: VideosComponent},
     {path: 'tasks', component: TasksComponent},

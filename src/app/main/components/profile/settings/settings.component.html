@@ -3,34 +3,34 @@
   <div class="previewImg" *ngIf="previewUrl">
     <img [src]="previewUrl" alt="avatar">
   </div>
-    <button mat-raised-button color="primary" (click)="fileInput.click()">Upload photo</button>
+    <button mat-raised-button color="primary" (click)="fileInput.click()">Загрузить фото</button>
   <input type="file" #fileInput (change)="fileProgress($event)" class="avatarAddImage">
   </div>
   <form [formGroup]="userInfo" (ngSubmit)="addInfo()" *ngIf="initForm">
   <div class="form-view">
     <div class="item">
-      <h2>Main info</h2>
+      <h2>Профайл</h2>
       <mat-form-field>
       {{model}}
-      <input formControlName="userName" matInput placeholder="FIO" name="fio">
+      <input formControlName="userName" matInput placeholder="ФИО" name="fio" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="phone" matInput placeholder="Phone">
+        <input formControlName="phone" matInput placeholder="Телефон" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="email" matInput placeholder="email">
+        <input formControlName="email" matInput placeholder="Почта" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="startTraining" matInput [matDatepicker]="picker" placeholder="Start date training">
+        <input formControlName="startTraining" matInput [matDatepicker]="picker" placeholder="Дата начала тренировок" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <textarea formControlName="aboutMe" matInput placeholder="About me"></textarea>
+        <textarea formControlName="aboutMe" matInput placeholder="Обо мне"></textarea>
       </mat-form-field>
       </div>
       <div class="item">
-      <h2>Additional info</h2>
+      <h2>Дополнительная информация</h2>
       <mat-form-field>
         <input formControlName="instagram" matInput placeholder="instagram">
       </mat-form-field>
@@ -38,22 +38,22 @@
         <input formControlName="facebook" matInput placeholder="facebook">
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="bestTrick" matInput placeholder="best trick name">
+        <input formControlName="bestTrick" matInput placeholder="Название лучшего трюка" required>
       </mat-form-field>
       </div>
       <div class="item">
-      <h2>Parent info</h2>
+      <h2>Информация о родителях</h2>
       <mat-form-field>
-        <input formControlName="parentName" matInput placeholder="FIO">
+        <input formControlName="parentName" matInput placeholder="ФИО" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="parentPhone" matInput placeholder="Phone">
+        <input formControlName="parentPhone" matInput placeholder="Телефон" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="parentEmail" matInput placeholder="email">
+        <input formControlName="parentEmail" matInput placeholder="Почта" required>
       </mat-form-field>
       </div>
   </div>
-  <button mat-raised-button color="primary">Save</button>
+  <button mat-raised-button color="primary" [disabled]="!userInfo.valid">Save</button>
   </form>
 </div>

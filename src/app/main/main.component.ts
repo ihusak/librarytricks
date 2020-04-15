@@ -13,7 +13,7 @@ const WIDTH_BREAKPOINT = '960px';
   encapsulation: ViewEncapsulation.None
 })
 export class MainComponent implements OnInit, OnDestroy, OnChanges {
-  toggleSideNav: boolean = false;
+  toggleSideNav: boolean;
   userInfo: any;
 
   constructor(
@@ -26,13 +26,7 @@ export class MainComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.mainService.getUserInfo().subscribe((data) => {
-      console.log('userDetails data', data);
-      if(!data) {
-        this.router.navigate(['main/profile/settings']);
-        this.userInfo = data;
-      } else {
-        this.userInfo = data;
-      }
+      this.userInfo = data;
     });
   }
   public toggleCollapsed() {

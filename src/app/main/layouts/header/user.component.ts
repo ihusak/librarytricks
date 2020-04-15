@@ -11,15 +11,15 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
     <mat-menu #menu="matMenu">
       <a routerLink="profile" mat-menu-item>
         <mat-icon>account_circle</mat-icon>
-        <span>Profile</span>
+        <span>Профиль</span>
       </a>
       <a routerLink="profile/settings" mat-menu-item>
         <mat-icon>settings</mat-icon>
-        <span>Settings</span>
+        <span>Настройки</span>
       </a>
       <a (click)="userLogout.emit()" mat-menu-item>
         <mat-icon>exit_to_app</mat-icon>
-        <span>Logout</span>
+        <span>Выход</span>
       </a>
     </mat-menu>
   `,
@@ -30,7 +30,6 @@ export class UserComponent {
   @Input() set userInfo(obj){
     if(obj){
       this.userName = obj.userName;
-      console.log("ONINIT DYNAMIC FORM COMPONENT: ", obj);
     }
   };
 }

@@ -12,8 +12,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     const checkLoggedIn = localStorage.getItem('userId');
-    console.log(checkLoggedIn);
-    if(checkLoggedIn) {
+    if (checkLoggedIn) {
       this.route.navigate(['main']);
     }
   }

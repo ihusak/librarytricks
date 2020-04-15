@@ -21,9 +21,5 @@ export class HeaderComponent implements OnInit, OnChanges {
     localStorage.removeItem('userId');
     this.router.navigate(['']);
   }
-  ngOnChanges() {
-    console.log('serifahf', this.userInfo);
-  }
-  
-
+  ngOnChanges() {}
 }

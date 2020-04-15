@@ -13,6 +13,7 @@ import { HomeModule } from './home/home.module';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { MatProgressSpinnerModule } from '@angular/material';
 import { SharedModule } from './shared/shared.module';
+import { MainGuardService } from './main/guards/main.guard';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { SharedModule } from './shared/shared.module';
   HomeModule,
   MainModule
   ],
-  providers: [],
+  providers: [MainGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

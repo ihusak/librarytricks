@@ -9,8 +9,10 @@ export class UserPanelComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit() {
+    if (this.userInfo.permission.student) {
+      this.userInfo.permission.name = 'Студент';
+    }
   }
   ngOnChanges() {
-    // console.log(this.userInfo, 'onfo');
   }
 }
