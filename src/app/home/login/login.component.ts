@@ -24,13 +24,15 @@ export class LoginComponent implements OnInit {
   }
   loginUser(email: string, pass: string) {
     this.loginService.loginUser(email, pass).subscribe((result) => {
+     if (result.userInfo._id) {
       console.log('result of login in component', result);
       this.router.navigate(['main/index']);
-      localStorage.setItem('userId', result.id);
+      localStorage.setItem('userId', result._id);
       this.snackBar.open('Success', '', {
         duration: 2000,
         panelClass: ['success']
       });
+     }
     },
     (error) => {
       // Handle Errors here.

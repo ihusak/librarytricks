@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RegisterService } from './register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserRole } from '../interface/userRole.interface';
 
 @Component({
   selector: 'app-register',
@@ -10,9 +11,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class RegisterComponent implements OnInit {
   userEmail: string;
   userPass: string;
-  userStatus: string;
+  userStatus: UserRole;
   userName: string;
   registerMessage: string;
+  userRoles: UserRole[];
 
   constructor(
     private registerService: RegisterService,
@@ -20,16 +22,19 @@ export class RegisterComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.registerService.getRoles().subscribe((roles: UserRole[]) => {
+      this.userRoles = roles.filter(role => role.status);
+    });
   }
   registerUser(email: string, pass: string, userName: string) {
-    this.registerService.registerUser(email, pass).subscribe((result) => {
+    console.log(email, pass, userName, this.userStatus);
+    this.registerService.registerUser(email, pass, userName, this.userStatus).subscribe((result) => {
       console.log('result of register in component', result);
-      if (result.user) {
+      if (result._id) {
         this.snackBar.open('Success', '', {
           duration: 2000,
           panelClass: ['success']
         });
-        this.registerService.addInfo(email, result.user.uid, userName, this.userStatus);
         this.userEmail = '';
         this.userPass = '';
         this.userStatus = null;
@@ -44,8 +49,8 @@ export class RegisterComponent implements OnInit {
       console.log(error);
     });
   }
-  selectStatusUser(value: string) {
-    this.userStatus = value;
+  selectUserType(value: UserRole) {
     console.log(value);
+    this.userStatus = value;
   }
 }

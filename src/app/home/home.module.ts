@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './login/login.service';
 import { AuthGuardService } from '../main/guards/login.guard';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     RegisterComponent
   ],
   imports: [
+    CommonModule,
     HomeRoutingModule,
     SharedModule,
     HttpClientModule,

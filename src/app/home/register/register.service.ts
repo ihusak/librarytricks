@@ -1,28 +1,31 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { from } from 'rxjs';
-import { AngularFirestore } from '@angular/fire/firestore';
+import { from, Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
+import { UserRole } from '../interface/userRole.interface';
 
 @Injectable()
 export class RegisterService {
   isLoggedIn: boolean;
 
   constructor(
-    private afs: AngularFirestore,
-    private authUser: AngularFireAuth) {}
+    private http: HttpClient) {}
 
-  registerUser(email: string, pass: string) {
-    console.log(email, pass);
-    return from(this.authUser.auth.createUserWithEmailAndPassword(email, pass));
+  registerUser(email: string, userPassword: string, userName: string, userRole: UserRole): Observable<any> {
+    return this.http.post('api/users', {
+      email,
+      userPassword,
+      userName,
+      userRole
+    });
   }
-  addInfo(email: string, userId: string, name: string, userStatus: string) {
-    const userDetailsObj = {
-      userEmail: email,
-      userName: name,
-      permission: userStatus
-    };
-    console.log('userId register with name', userId);
-    this.afs.collection('userDetails').doc(userId).set(userDetailsObj);
+  public getRoles(): Observable<UserRole[]> {
+    return this.http.get('api/roles').pipe(map((response: any) => {
+      return response.map(role => ({
+          id: role._id,
+          title: role.title,
+          status: role.status
+      }))
+    }));
   }
 }
