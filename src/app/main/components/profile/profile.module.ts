@@ -6,7 +6,7 @@ import { ProfileRoutingModule } from './profile-routing.module';
 import { ProfileLoyoutComponent } from './profile-loyout/profile-loyout.component';
 import { OverviewComponent } from './overview/overview.component';
 import { SettingsComponent } from './settings/settings.component';
-import { MatCardModule } from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
 import { AppMaterialModule } from 'src/app/shared/material.module';
 
 @NgModule({

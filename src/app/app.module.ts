@@ -11,7 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MainModule } from './main/main.module';
 import { HomeModule } from './home/home.module';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
-import { MatProgressSpinnerModule } from '@angular/material';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from './shared/shared.module';
 import { MainGuardService } from './main/guards/main.guard';
 

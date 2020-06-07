@@ -1,6 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, ViewEncapsulation, OnChanges } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { MatSidenav, MatSidenavContent } from '@angular/material';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MainService } from './main.service';
 
