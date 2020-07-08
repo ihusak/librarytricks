@@ -4,10 +4,11 @@
       <div class="col">
         <mat-card class="card">
           <mat-card-header>
-            <div mat-card-avatar class="header-image"></div>
-            <mat-card-title>Имя</mat-card-title>
+            <div mat-card-avatar class="header-image">
+              <img [src]="previewUrl" alt="avatar" *ngIf="previewUrl">
+            </div>
+            <mat-card-title>{{userLogin.userName}}<mat-icon routerLink="settings">edit</mat-icon></mat-card-title>
             <mat-card-subtitle>Уровень</mat-card-subtitle>
-            <mat-icon routerLink="settings">edit</mat-icon>
           </mat-card-header>
         </mat-card>
       <mat-card class="card">

@@ -5,13 +5,12 @@ import { Component, OnInit, Input, OnChanges } from '@angular/core';
   templateUrl: './user-panel.component.html'
 })
 export class UserPanelComponent implements OnInit, OnChanges {
-  @Input() userInfo;
+  @Input() userLogin;
+  public userImage: string;
   constructor() { }
 
   ngOnInit() {
-    if (this.userInfo.permission.student) {
-      this.userInfo.permission.name = 'Студент';
-    }
+    this.userImage = this.userLogin.userImg ? `api/${this.userLogin.userImg}` : 'assets/user-default.png';
   }
   ngOnChanges() {
   }

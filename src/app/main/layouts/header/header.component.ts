@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth.service';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-header',
@@ -9,17 +10,26 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent implements OnInit, OnChanges {
   @Output() toogleCollapsed = new EventEmitter();
-  @Input() userInfo;
+  @Input() userLogin;
 
-  constructor(private fireBaseAuth: AngularFireAuth, private router: Router) { }
+  constructor(private router: Router, private authService: AuthService, private appService: AppService) { }
 
   ngOnInit() {
   }
   logout() {
-    console.log('logout');
-    this.fireBaseAuth.auth.signOut();
-    localStorage.removeItem('userId');
-    this.router.navigate(['']);
+    const refreshToken = this.appService.getTokens().refreshToken;
+    this.authService.logout(refreshToken).subscribe((data) => {
+      this.appService.logout();
+      console.log('logout', data);
+      this.router.navigate(['/']);
+    });
+    // this.appService.userLoginData.subscribe((user: any) => {
+    //   this.authService.logout(user.tokens.refreshToken).subscribe((data) => {
+    //     this.appService.logout();
+    //     console.log('logout', data);
+    //     this.router.navigate(['/']);
+    //   });
+    // })
   }
   ngOnChanges() {}
 }

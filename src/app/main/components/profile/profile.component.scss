@@ -1,0 +1,28 @@
+
+.profile-wrap {
+    .content {
+        .card {
+          margin-bottom: 25px;
+            .header-image {
+              height: 40px;
+              width: 40px;
+              overflow: hidden;
+              border-radius: 50%;
+              display: -webkit-box;
+              display: flex;
+              -webkit-box-pack: center;
+              justify-content: center;
+              margin-bottom: 15px;
+              img {
+                width: auto;
+                height: 100%;
+              }
+            }
+          mat-card-title {
+            mat-icon {
+              margin-left: 5px;
+            }
+          }
+        }
+    }
+}

@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { OverviewComponent } from './overview/overview.component';
 import { SettingsComponent } from './settings/settings.component';
-import { ProfileLoyoutComponent } from './profile-loyout/profile-loyout.component';
+import { ProfileComponent } from './profile.component';
+import { ProfileService } from './profile.service';
 
 const routes: Routes = [
     {
         path: '',
-        component: ProfileLoyoutComponent,
+        component: ProfileComponent,
         children: [
             {path: '', redirectTo: 'overview', pathMatch: 'full'},
             {path: 'overview', component: OverviewComponent},

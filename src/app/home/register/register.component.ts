@@ -43,10 +43,11 @@ export class RegisterComponent implements OnInit {
     },
     (error) => {
       // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      this.registerMessage = errorMessage;
+      const err = error.error;
       console.log(error);
+      const errorCode = err.status;
+      const errorMessage = err.message;
+      this.registerMessage = errorMessage;
     });
   }
   selectUserType(value: UserRole) {

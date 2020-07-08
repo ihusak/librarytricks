@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, OnDestroy, ViewEncapsulation, OnChanges } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
-import { MediaMatcher } from '@angular/cdk/layout';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MainService } from './main.service';
+import { AppService } from '../app.service';
+import { ProfileService } from './components/profile/profile.service';
 
 const WIDTH_BREAKPOINT = '960px';
 
@@ -11,31 +11,31 @@ const WIDTH_BREAKPOINT = '960px';
   styleUrls: ['./main.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MainComponent implements OnInit, OnDestroy, OnChanges {
+export class MainComponent implements OnInit {
   toggleSideNav: boolean;
-  userInfo: any;
+  userLogin: any;
 
   constructor(
-    private router: Router,
-    private cdr: ChangeDetectorRef,
-    private media: MediaMatcher,
-    private mainService: MainService
+    private mainService: MainService,
+    protected appService: AppService,
+    protected pofileService: ProfileService
   ) {
   }
 
   ngOnInit() {
-    this.mainService.getUserInfo().subscribe((data) => {
-      this.userInfo = data;
+    const userId = localStorage.getItem('userId');
+    this.pofileService.getUserInfo(userId).subscribe((userInfoData: any) => {
+      if (userInfoData && userInfoData.userImg) {
+        this.userLogin = userInfoData;
+      } else {
+        this.mainService.getUser(userId).subscribe((data) => {
+          this.userLogin = data;
+          this.appService.setUserLoginData(data);
+        });
+      }
     });
   }
   public toggleCollapsed() {
     this.toggleSideNav = !this.toggleSideNav;
-  }
-  ngOnChanges() {
-      // this.userInfo = this.mainService.getUserInfo();
-      // console.log(this.userInfo);
-  }
-  ngOnDestroy() {
-    // this.mainService.getUserInfo().unsubscribe();
   }
 }

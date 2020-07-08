@@ -1,16 +1,16 @@
-import { SettingService } from './settings/settings.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileRoutingModule } from './profile-routing.module';
-import { ProfileLoyoutComponent } from './profile-loyout/profile-loyout.component';
 import { OverviewComponent } from './overview/overview.component';
 import { SettingsComponent } from './settings/settings.component';
 import { MatCardModule } from '@angular/material/card';
 import { AppMaterialModule } from 'src/app/shared/material.module';
+import { ProfileService } from './profile.service';
+import { ProfileComponent } from './profile.component';
 
 @NgModule({
-  declarations: [ProfileLoyoutComponent, OverviewComponent, SettingsComponent],
+  declarations: [ProfileComponent, OverviewComponent, SettingsComponent],
   imports: [
     CommonModule,
     ProfileRoutingModule,
@@ -19,7 +19,7 @@ import { AppMaterialModule } from 'src/app/shared/material.module';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [SettingService]
+  providers: [ProfileService]
 })
 export class ProfileModule {
 

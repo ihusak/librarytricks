@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from './login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private loginService: LoginService,
+    private appService: AppService,
     private snackBar: MatSnackBar,
     private router: Router
     ) { }
@@ -23,11 +25,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
   loginUser(email: string, pass: string) {
-    this.loginService.loginUser(email, pass).subscribe((result) => {
-     if (result.userInfo._id) {
-      console.log('result of login in component', result);
+    this.loginService.loginUser(email, pass).subscribe((userInfo) => {
+     this.appService.setUserData(userInfo.tokens, userInfo._id);
+     if (userInfo._id) {
+      console.log('result of login in component', userInfo);
       this.router.navigate(['main/index']);
-      localStorage.setItem('userId', result._id);
+      localStorage.setItem('userId', userInfo._id);
       this.snackBar.open('Success', '', {
         duration: 2000,
         panelClass: ['success']

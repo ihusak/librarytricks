@@ -27,8 +27,8 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 export class UserComponent {
   public userName;
   @Output() userLogout = new EventEmitter();
-  @Input() set userInfo(obj){
-    if(obj){
+  @Input() set userLogin(obj){
+    if (obj) {
       this.userName = obj.userName;
     }
   };

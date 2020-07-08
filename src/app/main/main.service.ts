@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 
 @Injectable()
 export class MainService {
-    constructor(private afs: AngularFirestore) {}
-    getUserInfo() {
-        return this.afs.collection('userDetails').doc(localStorage.getItem('userId')).valueChanges();
+  public user;
+    constructor(private http: HttpClient) {}
+    getUser(id: string) {
+        return this.http.get(`api/users/${id}`);
     }
 }

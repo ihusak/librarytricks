@@ -3,9 +3,10 @@
   .form-view {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     width: 100%;
   .item {
-    width: 50%;
+    width: calc(33% - 40px);
     padding: 20px;
   .mat-form-field {
     display: block;

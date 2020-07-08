@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ProfileService } from '../profile.service';
+import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { AppService } from 'src/app/app.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-overview',
@@ -6,10 +10,39 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
+  public userInfo: UserInfoInterface;
+  public userLogin: any;
 
-  constructor() { }
+  constructor(
+    private profileService: ProfileService,
+    private appService: AppService
+    ) { }
 
   ngOnInit() {
+    this.getUserInfo();
+    this.appService.userInfoData.subscribe((user: any) => {
+      this.userInfo = user;
+    });
+    this.appService.userLoginData.subscribe((user: any) => {
+      this.userLogin = user;
+    });
+  }
+  public getUserInfo() {
+    const userId = this.appService.getUserId();
+    this.profileService.getUserInfo(userId).subscribe((userInfo: UserInfoInterface) => {
+      if (!userInfo) {
+        this.profileService.createUserInfo(userId).subscribe((createdUserInfo: UserInfoInterface) => {
+          this.appService.setUserInfoData(createdUserInfo);
+        });
+      } else {
+        userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
+        this.userInfo = userInfo;
+        this.appService.setUserInfoData(userInfo);
+      }
+      console.log('userInfo', this.userInfo);
+    }, err => {
+      console.log('userInfo err', err)
+    });
   }
 
 }
