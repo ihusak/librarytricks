@@ -22,7 +22,7 @@ export class RegisterService {
   public getRoles(): Observable<UserRole[]> {
     return this.http.get('api/roles').pipe(map((response: any) => {
       return response.map(role => ({
-          id: role._id,
+          id: role.id,
           title: role.title,
           status: role.status
       }))

@@ -10,12 +10,15 @@ import { LoginService } from './login/login.service';
 import { AuthGuardService } from '../main/guards/login.guard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ConfirmComponent } from './confirm/confirm.component';
+import { ConfirmService } from './confirm/confirm.service';
 
 @NgModule({
   declarations: [
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ConfirmComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +30,6 @@ import { CommonModule } from '@angular/common';
   exports: [
     HomeRoutingModule
   ],
-  providers: [RegisterService, LoginService, AuthGuardService]
+  providers: [RegisterService, LoginService, AuthGuardService, ConfirmService]
 })
 export class HomeModule { }

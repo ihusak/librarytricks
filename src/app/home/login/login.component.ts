@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginService } from './login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AppService } from 'src/app/app.service';
+import { User } from 'src/app/shared/interface/user.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   email = 'ilyagusak@gmail.com';
   pass = 'gusakilya1993';
   loginMessage: string;
-  loggedIn: boolean = false;
+  private subscription: Subscription;
 
   constructor(
     private loginService: LoginService,
@@ -25,12 +27,12 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
   loginUser(email: string, pass: string) {
-    this.loginService.loginUser(email, pass).subscribe((userInfo) => {
-     this.appService.setUserData(userInfo.tokens, userInfo._id);
-     if (userInfo._id) {
-      console.log('result of login in component', userInfo);
+    this.subscription = this.loginService.loginUser(email, pass).subscribe((user: User) => {
+     this.appService.setUserDataToLocalStorage(user.tokens, user._id);
+     this.appService.setUserLoginData(user);
+     if (user._id && user.confirmed) {
       this.router.navigate(['main/index']);
-      localStorage.setItem('userId', userInfo._id);
+      localStorage.setItem('userId', user._id);
       this.snackBar.open('Success', '', {
         duration: 2000,
         panelClass: ['success']
@@ -38,12 +40,13 @@ export class LoginComponent implements OnInit {
      }
     },
     (error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      this.loginMessage = errorMessage;
+      this.loginMessage = error.error.message;
       console.log(error);
     });
   }
-
+ ngOnDestroy() {
+   if (this.subscription) {
+     this.subscription.unsubscribe();
+   }
+ }
 }

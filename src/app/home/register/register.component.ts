@@ -23,8 +23,10 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerService.getRoles().subscribe((roles: UserRole[]) => {
-      this.userRoles = roles.filter(role => role.status);
+      // this.userRoles = roles.filter(role => role.status);
+      this.userRoles = roles;
     });
+    console.log(this);
   }
   registerUser(email: string, pass: string, userName: string) {
     console.log(email, pass, userName, this.userStatus);

@@ -21,11 +21,14 @@ export class OverviewComponent implements OnInit {
   ngOnInit() {
     this.getUserInfo();
     this.appService.userInfoData.subscribe((user: any) => {
+      console.log('userInfoData', user);
       this.userInfo = user;
     });
     this.appService.userLoginData.subscribe((user: any) => {
+      console.log('userLoginData', user);
       this.userLogin = user;
     });
+    console.log(this);
   }
   public getUserInfo() {
     const userId = this.appService.getUserId();
@@ -39,7 +42,6 @@ export class OverviewComponent implements OnInit {
         this.userInfo = userInfo;
         this.appService.setUserInfoData(userInfo);
       }
-      console.log('userInfo', this.userInfo);
     }, err => {
       console.log('userInfo err', err)
     });

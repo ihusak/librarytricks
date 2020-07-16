@@ -3,9 +3,8 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
 @Component({
   selector: 'app-user',
   template: `
-    <a mat-button href="javascript:void(0)" [matMenuTriggerFor]="menu">
-      <img class="r-full align-middle" src="assets/images/avatar.jpg" width="24" alt="" />
-      <span class="m-l-8 align-middle">{{userName}}</span>
+    <a *ngIf="userInfo" mat-button href="javascript:void(0)" [matMenuTriggerFor]="menu">
+      <span class="m-l-8 align-middle">{{userInfo.userName}}</span>
     </a>
 
     <mat-menu #menu="matMenu">
@@ -25,11 +24,13 @@ import { Component, Output, EventEmitter, Input } from '@angular/core';
   `,
 })
 export class UserComponent {
-  public userName;
+  public userInfo;
+  public previewUrl: string;
   @Output() userLogout = new EventEmitter();
   @Input() set userLogin(obj){
     if (obj) {
-      this.userName = obj.userName;
+      console.log('OBJ', obj);
+      this.userInfo = obj;
     }
   };
 }

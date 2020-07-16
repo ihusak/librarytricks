@@ -13,7 +13,7 @@ export class AppService {
   public userLoginData = this.loginUserSource.asObservable();
   public userInfoData = this.userInfoSource.asObservable();
 
-  public setUserData(tokens: Tokens, userId: string) {
+  public setUserDataToLocalStorage(tokens: Tokens, userId: string) {
     localStorage.setItem('t', JSON.stringify(tokens));
     localStorage.setItem('userId', userId);
   }
