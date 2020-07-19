@@ -19,7 +19,6 @@ export class OverviewComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    this.getUserInfo();
     this.appService.userInfoData.subscribe((user: any) => {
       console.log('userInfoData', user);
       this.userInfo = user;
@@ -33,15 +32,9 @@ export class OverviewComponent implements OnInit {
   public getUserInfo() {
     const userId = this.appService.getUserId();
     this.profileService.getUserInfo(userId).subscribe((userInfo: UserInfoInterface) => {
-      if (!userInfo) {
-        this.profileService.createUserInfo(userId).subscribe((createdUserInfo: UserInfoInterface) => {
-          this.appService.setUserInfoData(createdUserInfo);
-        });
-      } else {
-        userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
-        this.userInfo = userInfo;
-        this.appService.setUserInfoData(userInfo);
-      }
+      userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
+      this.userInfo = userInfo;
+      this.appService.setUserInfoData(userInfo);
     }, err => {
       console.log('userInfo err', err)
     });

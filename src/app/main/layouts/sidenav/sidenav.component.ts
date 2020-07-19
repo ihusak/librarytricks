@@ -7,14 +7,14 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class SidenavComponent implements OnInit {
   @Input() showToggle = true;
-  @Input() userLogin;
+  @Input() userInfo;
 
   @Output() toggleCollapsed = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
-    console.log('SIDENAV', this.userLogin);
+    console.log('SIDENAV', this.userInfo);
   }
 
 }

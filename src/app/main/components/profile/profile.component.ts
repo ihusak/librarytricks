@@ -11,7 +11,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userLogin;
   public previewUrl;
   private observerUserInfoData: Subscription;
-  private observerUserLoginData: Subscription;
 
   constructor(protected appService: AppService) {}
 
@@ -20,20 +19,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
       if (userInfoData) {
         this.previewUrl = userInfoData.userImg ? 'api/' + userInfoData.userImg : 'assets/user-default.png';
         this.userLogin = userInfoData;
-      } else {
-      this.observerUserLoginData = this.appService.userLoginData.subscribe((userLoginData: any) => {
-          this.previewUrl = userInfoData.userImg ? 'api/' + userInfoData.userImg : 'assets/user-default.png';
-          this.userLogin = userLoginData;
-        });
+        console.log(this.userLogin);
       }
     });
-    console.log(this.userLogin);
   }
   ngOnDestroy() {
     console.log('profile destroy');
-    if(this.observerUserLoginData && this.observerUserInfoData) {
+    if(this.observerUserInfoData) {
        this.observerUserInfoData.unsubscribe();
-       this.observerUserLoginData.unsubscribe();
     }
   }
 }

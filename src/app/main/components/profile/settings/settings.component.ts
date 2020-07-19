@@ -59,6 +59,7 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     this.getUserDetails();
+    console.log('userID', this.appService.userID);
   }
   getUserDetails() {
     const userId = this.appService.getUserId();
