@@ -25,20 +25,18 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getUserInfo();
+  }
+
+  private getUserInfo() {
     const userId = localStorage.getItem('userId');
-    this.profileService.getUserInfo(userId).subscribe((userInfoData: UserInfoInterface) => {
+    this.mainService.getUserInfo(userId).subscribe((userInfoData: UserInfoInterface) => {
       userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
       this.userInfo = userInfoData;
-      this.appService.setUserInfoData(userInfoData);
+      // this.appService.setUserInfoData(userInfoData);
+      this.mainService.userInfo = userInfoData;
+      console.log('main component reflect', this.mainService.userInfo);
     });
-    this.mainService.getUser(userId).subscribe((user: User) => {
-      this.user = user;
-      this.appService.setUserLoginData(user);
-    });
-    this.appService.userInfoData.subscribe((userInfoData: UserInfoInterface) => {
-      this.userInfo = userInfoData;
-    })
-    console.log('main component reflect');
   }
   public toggleCollapsed() {
     this.toggleSideNav = !this.toggleSideNav;

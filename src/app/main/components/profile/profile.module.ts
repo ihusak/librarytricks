@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { AppMaterialModule } from 'src/app/shared/material.module';
 import { ProfileService } from './profile.service';
 import { ProfileComponent } from './profile.component';
+import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [ProfileComponent, OverviewComponent, SettingsComponent],
@@ -17,7 +18,8 @@ import { ProfileComponent } from './profile.component';
     MatCardModule,
     AppMaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PipesModule
   ],
   providers: [ProfileService]
 })

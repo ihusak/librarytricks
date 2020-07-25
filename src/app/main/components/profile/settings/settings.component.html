@@ -23,16 +23,16 @@
         <input formControlName="email" matInput placeholder="Почта" required>
         
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT, userRoles.COACH]">
         <input formControlName="startTraining" matInput [matDatepicker]="picker" placeholder="Дата начала тренировок" required>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="!(userInfoData | userRolePipe:[userRoles.ADMIN])">
         <textarea formControlName="aboutMe" matInput placeholder="Обо мне"></textarea>
       </mat-form-field>
       </div>
-      <div class="item">
+      <div class="item" *ngIf="!(userInfoData | userRolePipe:[userRoles.ADMIN])">
       <h2>Дополнительная информация</h2>
       <mat-form-field>
         <input formControlName="instagram" matInput placeholder="instagram">
@@ -40,11 +40,11 @@
       <mat-form-field>
         <input formControlName="facebook" matInput placeholder="facebook">
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT, userRoles.COACH]">
         <input formControlName="bestTrick" matInput placeholder="Название лучшего трюка" required>
       </mat-form-field>
       </div>
-      <div class="item">
+      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
       <h2>Информация о родителях</h2>
       <mat-form-field>
         <input formControlName="parentName" matInput placeholder="ФИО" required>
@@ -56,7 +56,7 @@
         <input formControlName="parentEmail" matInput placeholder="Почта" required>
       </mat-form-field>
       </div>
-      <div class="item">
+      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
         <h2>Группа</h2>
         <div class="form-group">
           <mat-form-field>
@@ -66,7 +66,29 @@
               </mat-select>
             </mat-form-field>
         </div>
+      </div>
+      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.PARENT]">
+        <h2>Мой ребенок</h2>
+        <div class="form-group">
+          <mat-form-field>
+              <mat-label>Выберите своего ребенка</mat-label>
+              <mat-select [compareWith]="compareObjects" formControlName="myKid">
+                <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
         </div>
+      </div>
+      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
+        <h2>Тренер</h2>
+        <div class="form-group">
+          <mat-form-field>
+              <mat-label>Выберите своего тренера</mat-label>
+              <mat-select [compareWith]="compareObjects" formControlName="coach">
+                <mat-option *ngFor="let coach of coachsList" [value]="coach">{{coach.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+      </div>
   </div>
   <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">Сохранить</button>
   <br>

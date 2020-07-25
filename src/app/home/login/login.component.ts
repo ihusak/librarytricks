@@ -28,11 +28,11 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   loginUser(email: string, pass: string) {
     this.subscription = this.loginService.loginUser(email, pass).subscribe((user: User) => {
-     this.appService.setUserDataToLocalStorage(user.tokens, user._id);
-     this.appService.setUserLoginData(user);
-     if (user._id && user.confirmed) {
+     this.appService.setUserDataToLocalStorage(user.tokens, user.id);
+     this.loginService.userId = user.id;
+     if (user.id && user.confirmed) {
       this.router.navigate(['main/index']);
-      localStorage.setItem('userId', user._id);
+      localStorage.setItem('userId', user.id);
       this.snackBar.open('Success', '', {
         duration: 2000,
         panelClass: ['success']

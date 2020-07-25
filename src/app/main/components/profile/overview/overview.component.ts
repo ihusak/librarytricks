@@ -3,6 +3,7 @@ import { ProfileService } from '../profile.service';
 import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { AppService } from 'src/app/app.service';
 import * as moment from 'moment';
+import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 
 @Component({
   selector: 'app-overview',
@@ -12,29 +13,24 @@ import * as moment from 'moment';
 export class OverviewComponent implements OnInit {
   public userInfo: UserInfoInterface;
   public userLogin: any;
+  public userRoles = UserRolesEnum;
 
   constructor(
     private profileService: ProfileService,
     private appService: AppService
-    ) { }
+    ) { 
+      console.log(this);
+     }
 
   ngOnInit() {
-    this.appService.userInfoData.subscribe((user: any) => {
-      console.log('userInfoData', user);
-      this.userInfo = user;
-    });
-    this.appService.userLoginData.subscribe((user: any) => {
-      console.log('userLoginData', user);
-      this.userLogin = user;
-    });
-    console.log(this);
+    this.getUserInfo();
   }
   public getUserInfo() {
     const userId = this.appService.getUserId();
     this.profileService.getUserInfo(userId).subscribe((userInfo: UserInfoInterface) => {
       userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
       this.userInfo = userInfo;
-      this.appService.setUserInfoData(userInfo);
+      // this.appService.setUserInfoData(userInfo);
     }, err => {
       console.log('userInfo err', err)
     });

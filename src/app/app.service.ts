@@ -1,22 +1,24 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import * as moment from 'moment';
 
 interface Tokens {
   accessToken: string;
   refreshToken: string;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppService {
-  private loginUserSource = new BehaviorSubject<object>({});
   private userInfoSource = new BehaviorSubject<object>({});
-  public userLoginData = this.loginUserSource.asObservable();
   public userInfoData = this.userInfoSource.asObservable();
   public userID: string;
 
   public setUserDataToLocalStorage(tokens: Tokens, userId: string) {
     localStorage.setItem('t', JSON.stringify(tokens));
     localStorage.setItem('userId', userId);
+    this.userID = userId;
   }
 
   public getTokens(): Tokens {
@@ -36,13 +38,9 @@ export class AppService {
     tokens.accessToken = newAccesToken;
     localStorage.setItem('t', JSON.stringify(tokens));
   }
-
-  public setUserLoginData(user) {
-    this.userID = user._id;
-    this.loginUserSource.next(user);
-  }
   public setUserInfoData(userInfo) {
     this.userID = userInfo.id;
+    userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
     this.userInfoSource.next(userInfo);
   }
 }

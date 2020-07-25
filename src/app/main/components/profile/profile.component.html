@@ -1,4 +1,4 @@
-<div class="profile-wrap" *ngIf="userLogin">
+<div class="profile-wrap" *ngIf="userInfo">
 <h4>Профиль</h4>
   <div class="content">
       <div class="col">
@@ -7,7 +7,7 @@
             <div mat-card-avatar class="header-image">
               <img [src]="previewUrl" alt="avatar" *ngIf="previewUrl">
             </div>
-            <mat-card-title>{{userLogin.userName}}<mat-icon routerLink="settings">edit</mat-icon></mat-card-title>
+            <mat-card-title>{{userInfo.userName}}<mat-icon *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLink="settings">edit</mat-icon></mat-card-title>
             <mat-card-subtitle>Уровень</mat-card-subtitle>
           </mat-card-header>
         </mat-card>

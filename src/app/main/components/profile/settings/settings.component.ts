@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ProfileService } from '../profile.service';
 import { AppService } from 'src/app/app.service';
 import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
-import { UserInfoModel } from 'src/app/shared/models/userInfo.model';
+import { UserStudentModel } from 'src/app/shared/models/user-student.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { DateAdapter } from '@angular/material';
+import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
+import { UserParentModel } from 'src/app/shared/models/user-parent.model';
+import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 
 const GROPUS = [{
   id: 1,
@@ -32,55 +35,31 @@ export class SettingsComponent implements OnInit {
   public fileData: File = null;
   public initForm: boolean = false;
   public userGroup;
-  public userInfo: FormGroup = new FormGroup({
-    phone: new FormControl('', [Validators.required]),
-    userName: new FormControl('', [Validators.required]),
-    email: new FormControl({value: '', disabled: true}, [Validators.required]),
-    startTraining: new FormControl('', [Validators.required]),
-    group: new FormControl('', [Validators.required]),
-    aboutMe: new FormControl(''),
-    instagram: new FormControl(''),
-    facebook: new FormControl(''),
-    bestTrick: new FormControl('', [Validators.required]),
-    parentName: new FormControl('', [Validators.required]),
-    parentPhone: new FormControl('', [Validators.required]),
-    parentEmail: new FormControl('', [Validators.required, Validators.email])
-  });
+  public coachsList: any;
+  public userInfo: FormGroup;
+  public userRoles = UserRolesEnum;
+  public userInfoData: UserInfoInterface;
+  public kidsList;
 
   constructor(
     private profileService: ProfileService,
     protected appService: AppService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private dateAdapter: DateAdapter<Date>
+    private dateAdapter: DateAdapter<Date>,
+    private formBuilder: FormBuilder
     ) {
       this.dateAdapter.setLocale('ru');
     }
 
   ngOnInit() {
     this.getUserDetails();
-    console.log('userID', this.appService.userID);
   }
   getUserDetails() {
     const userId = this.appService.getUserId();
     this.profileService.getUserInfo(userId).subscribe((data: UserInfoInterface) => {
-      this.initForm = true;
-      this.appService.setUserInfoData(data);
-      this.userGroup = data.group;
-      this.userInfo.setValue({
-        phone: data.phone || '',
-        userName: data.userName || '',
-        email: data.email || '',
-        startTraining: data.startTraining ? new Date(data.startTraining) : new Date(),
-        aboutMe: data.aboutMe || '',
-        group: data.group || '',
-        instagram: data.socialNetworks.instagram || '',
-        facebook: data.socialNetworks.facebook || '',
-        bestTrick: data.bestTrick || '',
-        parentName: data.parent.name || '',
-        parentPhone: data.parent.phone || '',
-        parentEmail: data.parent.email || ''
-      });
+      this.userInfoData = data;
+      this.switchValidatorsOnRole(this.userInfoData.role.id, data);
       if (data.userImg) {
         this.previewUrl = 'api/' + data.userImg;
       }
@@ -90,30 +69,37 @@ export class SettingsComponent implements OnInit {
   }
 
   public addInfo() {
+    console.log(this.userInfo.value);
+    let userInfo;
     const userId = this.appService.getUserId();
-    const userInfo = new UserInfoModel(this.userInfo.value);
+    switch(this.userInfoData.role.id) {
+      case this.userRoles.STUDENT:
+        userInfo = new UserStudentModel(this.userInfo.value);
+        break;
+      case this.userRoles.PARENT:
+        userInfo = new UserParentModel(this.userInfo.value);
+        break;
+      case this.userRoles.COACH:
+      userInfo = new UserCoachModel(this.userInfo.value);
+      break;
+    }
     const formData = new FormData();
     if (this.fileData) {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
     this.profileService.updateUserInfo(userId, formData).subscribe((updateUser: string) => {
-      const data = JSON.parse(updateUser);
-      this.appService.setUserInfoData(data);
+      // this.appService.setUserInfoData(updateUser);
       this.snackBar.open('Сохранено', '', {
         duration: 2000,
         panelClass: ['success']
       });
-      this.router.navigate(['main/profile/overview']);
+      this.router.navigate(['main/profile/overview'])
+      // .then(() => {
+      //   window.location.reload();
+      // });
     });
   }
-
-  // public selectUserType(groupId: number) {
-  //   const group = GROPUS.filter(group => group.id === groupId)[0];
-  //   this.userInfo.get('group').setValue(group);
-  //   this.userGroup = group;
-  //   console.log(this.userInfo, this.userGroup);
-  // }
 
   compareObjects(o1: any, o2: any): boolean {
     return o1.name === o2.name && o1.id === o2.id;
@@ -136,6 +122,62 @@ export class SettingsComponent implements OnInit {
     reader.readAsDataURL(this.fileData);
     reader.onload = (_event) => {
       this.previewUrl = reader.result;
+    }
+  }
+
+  private switchValidatorsOnRole(userRole: number, data) {
+    switch (userRole) {
+      case this.userRoles.STUDENT:
+        this.profileService.getAllCoachs().subscribe(coachs => {
+          this.userGroup = data.group;
+          this.coachsList = coachs;
+          this.userInfo = this.formBuilder.group({
+            phone: [data.phone || '', [Validators.required]],
+            userName: [data.userName || '', [Validators.required]],
+            email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
+            startTraining: [data.startTraining || '', [Validators.required]],
+            aboutMe: [data.aboutMe || ''],
+            group: [data.group || '', [Validators.required]],
+            coach: [data.coach || '', [Validators.required]],
+            instagram: [data.instagram || ''],
+            facebook: [data.facebook || ''],
+            bestTrick: [data.bestTrick || '', [Validators.required]],
+            parentName: [data.parent.name || '', [Validators.required]],
+            parentPhone: [data.parent.phone || '', [Validators.required]],
+            parentEmail: [data.parent.email || '', [Validators.required, Validators.email]],
+          });
+          this.initForm = true;
+        });
+        break;
+      case this.userRoles.COACH:
+        this.userInfo = this.formBuilder.group({
+          phone: [data.phone || '', [Validators.required]],
+          userName: [data.userName || '', [Validators.required]],
+          email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
+          startTraining: [data.startTraining || '', [Validators.required]],
+          aboutMe: [data.aboutMe || ''],
+          instagram: [data.instagram || ''],
+          facebook: [data.facebook || ''],
+          bestTrick: [data.bestTrick || '', [Validators.required]]
+        });
+        this.initForm = true;
+        break;
+      case this.userRoles.PARENT:
+      this.profileService.getAllStudents().subscribe(result => {
+        console.log(result);
+        this.userInfo = this.formBuilder.group({
+          phone: [data.phone || '', [Validators.required]],
+          userName: [data.userName || '', [Validators.required]],
+          email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
+          aboutMe: [data.aboutMe || ''],
+          instagram: [data.instagram || ''],
+          facebook: [data.facebook || ''],
+          myKid: [data.myKid || '', [Validators.required]],
+        });
+        this.kidsList = result;
+        this.initForm = true;
+      });
+      break;
     }
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RegisterService } from './register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRole } from '../interface/userRole.interface';
+import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 
 @Component({
   selector: 'app-register',
@@ -15,23 +16,20 @@ export class RegisterComponent implements OnInit {
   userName: string;
   registerMessage: string;
   userRoles: UserRole[];
+  userRolesEnum = UserRolesEnum;
 
   constructor(
     private registerService: RegisterService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
     ) { }
 
   ngOnInit() {
     this.registerService.getRoles().subscribe((roles: UserRole[]) => {
-      // this.userRoles = roles.filter(role => role.status);
-      this.userRoles = roles;
+      this.userRoles = roles.filter(role => role.id !== this.userRolesEnum.ADMIN);
     });
-    console.log(this);
   }
   registerUser(email: string, pass: string, userName: string) {
-    console.log(email, pass, userName, this.userStatus);
     this.registerService.registerUser(email, pass, userName, this.userStatus).subscribe((result) => {
-      console.log('result of register in component', result);
       if (result._id) {
         this.snackBar.open('Success', '', {
           duration: 2000,

@@ -10,14 +10,14 @@
 </ul>
 <ul *ngIf="userInfo.socialNetworks">
   <h2>Профайл</h2>
-  <h4>Тип пользователя: {{userLogin.userType}}</h4>
+  <h4>Тип пользователя: {{userInfo.role.title}}</h4>
   <li><span class="item">Обо мне: </span><span class="item-value">{{userInfo.aboutMe}}</span></li>
   <li><span class="item">Телефон: </span><span class="item-value">{{userInfo.phone}}</span></li>
   <h2>Соц.сети</h2>
   <li><span class="item">Facebook:</span><span class="item-value">{{userInfo.socialNetworks.facebook}}</span></li>
   <li><span class="item">Instagram:</span><span class="item-value">{{userInfo.socialNetworks.instagram}}</span></li>
 </ul>
-<ul *ngIf="userLogin.userType === 'parent' && userInfo.parent">
+<ul *ngIf="userInfo.role.id === userRoles.STUDENT">
   <h4>Родитель</h4>
   <li><span class="item">Имя: </span><span class="item-value">{{userInfo.parent.name}}</span></li>
   <li><span class="item">Почта: </span><span class="item-value">{{userInfo.parent.email}}</span></li>

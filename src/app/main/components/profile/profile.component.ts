@@ -1,6 +1,9 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { Subscription } from 'rxjs/internal/Subscription';
+import { MainService } from '../../main.service';
+import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 
 @Component({
   selector: 'app-profile',
@@ -8,20 +11,16 @@ import { Subscription } from 'rxjs/internal/Subscription';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  public userLogin;
+  public userInfo: UserInfoInterface;
   public previewUrl;
   private observerUserInfoData: Subscription;
+  public userRoles = UserRolesEnum;
 
-  constructor(protected appService: AppService) {}
+  constructor(protected appService: AppService, private mainService: MainService) {}
 
   ngOnInit() {
-    this.observerUserInfoData = this.appService.userInfoData.subscribe((userInfoData: any) => {
-      if (userInfoData) {
-        this.previewUrl = userInfoData.userImg ? 'api/' + userInfoData.userImg : 'assets/user-default.png';
-        this.userLogin = userInfoData;
-        console.log(this.userLogin);
-      }
-    });
+    this.userInfo = this.mainService.userInfo;
+    this.previewUrl = this.userInfo.userImg ? 'api/' + this.userInfo.userImg : 'assets/user-default.png';
   }
   ngOnDestroy() {
     console.log('profile destroy');

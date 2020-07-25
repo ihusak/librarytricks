@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Привет {{user.userName}}</h2>
+<div mat-dialog-content>
+  <h4>Ти хочешь стать тренером или уже занимаешь тренерской деятельность?</h4>
+  <p>Тогда отправляй запрос на подтвержение статуса "ТРЕНЕР"</p>
+  <p>С тобой свяжется наш человек что бы подтвердить твой статус</p>
+  <mat-form-field class="full-width">
+    <mat-label>Телефон</mat-label>
+    <input matInput value="user.phone" [(ngModel)]="phone">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button class="cancel" (click)="onNoClick()">Отмена</button>
+  <button mat-raised-button color="primary" [disabled]="!phone" (click)="request()" cdkFocusInitial>Запрос</button>
+</div>

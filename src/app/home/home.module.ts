@@ -10,22 +10,26 @@ import { LoginService } from './login/login.service';
 import { AuthGuardService } from '../main/guards/login.guard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ConfirmComponent } from './confirm/confirm.component';
+import { ConfirmComponent } from './confirm/register/confirm.component';
 import { ConfirmService } from './confirm/confirm.service';
+import { LoginServiceModule } from './login/login.service.module';
+import { CoachComponent } from './confirm/coach/coach.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    ConfirmComponent
+    ConfirmComponent,
+    CoachComponent
   ],
   imports: [
     CommonModule,
     HomeRoutingModule,
     SharedModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    LoginServiceModule
   ],
   exports: [
     HomeRoutingModule

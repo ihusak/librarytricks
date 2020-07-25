@@ -1,4 +1,5 @@
 export interface UserInfoInterface {
+  id: string;
   userImg: string | File;
   userName: string;
   email: string;
@@ -23,4 +24,13 @@ export interface UserInfoInterface {
   level: number;
   position: number;
   progress: number;
+  role?: {
+    id: number,
+    title: string,
+    status: boolean
+  };
+  coach: {
+    id: string,
+    name: string
+  }
 };

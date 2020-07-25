@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmService } from './confirm.service';
+import { ConfirmService } from '../confirm.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-confirm',
-  templateUrl: './confirm.component.html',
-  styleUrls: ['./confirm.component.scss']
+  templateUrl: './confirm.component.html'
 })
 export class ConfirmComponent implements OnInit {
 

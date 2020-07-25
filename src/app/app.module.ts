@@ -10,12 +10,11 @@ import { HomeModule } from './home/home.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from './shared/shared.module';
 import { MainGuardService } from './main/guards/main.guard';
-import { AppService } from './app.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './main/interceptors/auth.interceptor';
-import { AuthService } from './auth.service';
 import { LoaderInterceptorService } from './shared/loader/loader.interceptor';
 import { LoaderComponent } from './shared/loader/loader.component';
+import { PipesModule } from './shared/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -29,9 +28,10 @@ import { LoaderComponent } from './shared/loader/loader.component';
   BrowserAnimationsModule,
   SharedModule,
   HomeModule,
-  MainModule
+  MainModule,
+  PipesModule
   ],
-  providers: [MainGuardService, AppService, AuthService,
+  providers: [MainGuardService,
   {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
   {
     provide: HTTP_INTERCEPTORS,

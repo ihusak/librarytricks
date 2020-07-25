@@ -12,4 +12,8 @@ export class ConfirmService {
   confirmRegister(token: string): Observable<any> {
     return this.http.get(`api/users/confirm/${token}`);
   }
+
+  confirmCoach(token: string): Observable<any> {
+    return this.http.get(`api/userInfo/confirm/coach/${token}`);
+  }
 }

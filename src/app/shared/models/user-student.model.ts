@@ -1,6 +1,7 @@
 import { UserInfoInterface } from '../interface/user-info.interface';
 
-export class UserInfoModel implements UserInfoInterface {
+export class UserStudentModel implements UserInfoInterface {
+  id: string;
   userImg: string | File;
   userName: string;
   email: string;
@@ -25,8 +26,18 @@ export class UserInfoModel implements UserInfoInterface {
   level: number;
   position: number;
   progress: number;
+  role?: {
+    id: number,
+    title: string,
+    status: boolean
+  };
+  coach: {
+    id: string,
+    name: string
+  }
 
   constructor(responseObj: any) {
+    this.id = responseObj.id;
     this.userImg = responseObj.userImg;
     this.userName = responseObj.userName;
     this.email = responseObj.email;
@@ -50,5 +61,9 @@ export class UserInfoModel implements UserInfoInterface {
     this.level = responseObj.group.level,
     this.position = responseObj.group.position,
     this.progress = responseObj.group.progress;
+    this.coach = {
+      id: responseObj.coach.id,
+      name: responseObj.coach.name
+    };
   }
 }
