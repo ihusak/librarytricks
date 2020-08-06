@@ -1,0 +1,24 @@
+.pending-tasks {
+  .task-item {
+    padding: 25px;
+    box-shadow: 0px 0px 5px 0px rgb(0 0 0 / 16%);
+    margin-bottom: 15px;
+    border-radius: 15px;
+    h4 {
+      font-size: 20px;
+      margin-top: 0;
+    }
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .description {
+      font-size: 16px;
+    }
+    .actions {
+      button {
+        margin-right: 10px;;
+      }
+    }
+  }
+}

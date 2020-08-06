@@ -1,6 +1,6 @@
 import { UserInfoInterface } from '../interface/user-info.interface';
 
-export class UserStudentModel implements UserInfoInterface {
+export class UserStudentModel {
   id: string;
   userImg: string | File;
   userName: string;
@@ -34,7 +34,7 @@ export class UserStudentModel implements UserInfoInterface {
   coach: {
     id: string,
     name: string
-  }
+  };
 
   constructor(responseObj: any) {
     this.id = responseObj.id;

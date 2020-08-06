@@ -23,7 +23,7 @@ export class RegisterService {
     return this.http.get('api/roles').pipe(map((response: any) => {
       return response.map(role => ({
           id: role.id,
-          title: role.title,
+          name: role.name,
           status: role.status
       }))
     }));

@@ -1,0 +1,23 @@
+.task-list-wrap {
+  padding: 25px 0;
+  mat-panel-title {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .mat-expansion-panel-header-description {
+    justify-content: flex-end;
+  }
+  .empty-tasks {
+    text-align: center;
+  }
+}
+.nav {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  .coach-actions-button {
+    button {
+      margin-right: 15px;
+    }
+  }
+}

@@ -1,0 +1,47 @@
+<h1>Обновление задания</h1>
+<form [formGroup]="taskForm" (ngSubmit)="uptadeTask()" *ngIf='initForm'>
+  <div class="form-view">
+    <div class="item">
+      <h3>Описание задания</h3>
+      <mat-form-field>
+        <input formControlName="title" matInput placeholder="Название задания" required>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea formControlName="description" matInput placeholder="Описание задания" required>
+        </textarea>
+      </mat-form-field>
+    </div>
+    <div class="item">
+      <h3>Видео пример задания</h3>
+      <mat-form-field>
+        <input formControlName="example" matInput placeholder="URL на видео" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="reward" matInput placeholder="Оценка задания" required type='number' min="0" 
+        max="100" >
+      </mat-form-field>
+    </div>
+    <div class="item">
+      <h3>Группа заданий</h3>
+      <mat-form-field>
+        <mat-label>Группа</mat-label>
+        <mat-select [compareWith]="compareObjects" formControlName="group" #selectedvalue (valueChange)="changeGroup(selectedvalue.value)">
+          <mat-option *ngFor="let groupItem of groupsList" [value]="groupItem">{{groupItem.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="item" *ngIf="tasksList && tasksList.length > 0">
+      <h3>Ссылка на задание после которого задание "{{taskForm.value.title}}" будет доступно</h3>
+      <mat-form-field>
+        <mat-label>Задание для доступа текущего задания</mat-label>
+        <mat-select [compareWith]="compareNextTask" [(ngModel)]="nextTask"  formControlName="nextTask">
+          <mat-option *ngFor="let task of tasksList" [value]="task.id">{{task.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="actions">
+    <button mat-raised-button color="primary" [disabled]="!taskForm.dirty">Обновить задание</button>
+    <button mat-raised-button color="primary" routerLink="../../task-list">Назад</button>
+  </div>
+</form>

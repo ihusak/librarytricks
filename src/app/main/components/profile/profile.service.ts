@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppService } from 'src/app/app.service';
 import { map } from 'rxjs/operators';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
+import { TaskModel } from '../tasks/task.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +15,20 @@ export class ProfileService {
 
     constructor(private http: HttpClient, protected appService: AppService) {}
 
+    public acceptUserTask(userId: string, task: any) {
+      return this.http.put(`api/userInfo/accept-task/${userId}`, {task});
+    }
+
+    public changeCurrentTask(task: TaskModel, userId: string) {
+      return this.http.put(`api/userInfo/task-status/${userId}`, {task});
+    }
+
     public getUserInfo(id: string) {
       return this.http.get(`api/userInfo/${id}`);
+    }
+
+    public getUserInfoByCoach(id: string) {
+      return this.http.get(`api/userInfo/coach/${id}`);
     }
 
     public updateUserInfo(id: string, userInfo: any) {
@@ -46,5 +59,9 @@ export class ProfileService {
           }
         })
       }));
+    }
+
+    public getAllGroups() {
+      return this.http.get(`api/groups`);
     }
 }

@@ -32,5 +32,10 @@ export interface UserInfoInterface {
   coach: {
     id: string,
     name: string
+  };
+  currentTask?: {
+    id: string,
+    status: string,
+    reward: number
   }
 };

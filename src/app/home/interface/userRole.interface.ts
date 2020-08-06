@@ -1,5 +1,5 @@
 export interface UserRole {
   id: number;
-  title: string;
+  name: string;
   status: boolean;
 }

@@ -1,0 +1,21 @@
+<div class="pending-tasks">
+  <h1>Задания отправлены на проверку</h1>
+  <div class="task-item" *ngFor="let user of pendingTasksData">
+    <h4>{{user.userName}}</h4>
+    <div class="task-description">
+      <p class="title">{{user.currentTask.title}}</p>
+      <p class="description">{{user.currentTask.description}}</p>
+      <div class="user-example">
+        <p class="title">Пример ученика</p>
+        <a [href]="user.currentTask.reviewExample" target="_blank">Ссылка на видео</a>
+      </div>
+      <div class="more-info">
+        <p>Награда: {{user.currentTask.reward}} балов</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button mat-raised-button color="primary" (click)="acceptTask(user)">Принять</button>
+      <button mat-raised-button color="warn" (click)="reject(user)">Отклонить</button>
+    </div>
+  </div>
+</div>

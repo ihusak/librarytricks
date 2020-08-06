@@ -30,7 +30,6 @@ import { PipesModule } from '../shared/pipes/pipes.module';
     SidenavComponent,
     VideosComponent,
     ProgressComponent,
-    TasksComponent,
     RatingsComponent,
     IndexComponent,
     AdminRequestPermissionPopupComponent

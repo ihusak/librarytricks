@@ -31,7 +31,7 @@ const GROPUS = [{
 })
 export class SettingsComponent implements OnInit {
   public previewUrl: any = '../../assets/user-default.png';
-  public userGroups = GROPUS;
+  public userGroups;
   public fileData: File = null;
   public initForm: boolean = false;
   public userGroup;
@@ -128,26 +128,30 @@ export class SettingsComponent implements OnInit {
   private switchValidatorsOnRole(userRole: number, data) {
     switch (userRole) {
       case this.userRoles.STUDENT:
+        this.userGroup = data.group;
+        this.profileService.getAllGroups().subscribe(allGroups => {
+          console.log('all group', allGroups);
+          this.userGroups = allGroups;
+        })
         this.profileService.getAllCoachs().subscribe(coachs => {
-          this.userGroup = data.group;
           this.coachsList = coachs;
-          this.userInfo = this.formBuilder.group({
-            phone: [data.phone || '', [Validators.required]],
-            userName: [data.userName || '', [Validators.required]],
-            email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
-            startTraining: [data.startTraining || '', [Validators.required]],
-            aboutMe: [data.aboutMe || ''],
-            group: [data.group || '', [Validators.required]],
-            coach: [data.coach || '', [Validators.required]],
-            instagram: [data.instagram || ''],
-            facebook: [data.facebook || ''],
-            bestTrick: [data.bestTrick || '', [Validators.required]],
-            parentName: [data.parent.name || '', [Validators.required]],
-            parentPhone: [data.parent.phone || '', [Validators.required]],
-            parentEmail: [data.parent.email || '', [Validators.required, Validators.email]],
-          });
-          this.initForm = true;
         });
+        this.userInfo = this.formBuilder.group({
+          phone: [data.phone || '', [Validators.required]],
+          userName: [data.userName || '', [Validators.required]],
+          email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
+          startTraining: [data.startTraining || '', [Validators.required]],
+          aboutMe: [data.aboutMe || ''],
+          group: [data.group || '', [Validators.required]],
+          coach: [data.coach || '', [Validators.required]],
+          instagram: [data.instagram || ''],
+          facebook: [data.facebook || ''],
+          bestTrick: [data.bestTrick || '', [Validators.required]],
+          parentName: [data.parent.name || '', [Validators.required]],
+          parentPhone: [data.parent.phone || '', [Validators.required]],
+          parentEmail: [data.parent.email || '', [Validators.required, Validators.email]],
+        });
+        this.initForm = true;
         break;
       case this.userRoles.COACH:
         this.userInfo = this.formBuilder.group({

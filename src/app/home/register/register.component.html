@@ -27,7 +27,7 @@
     <mat-form-field>
         <mat-label>Тип пользователя</mat-label>
         <mat-select (selectionChange)="selectUserType($event.value)">
-          <mat-option *ngFor="let role of userRoles" [value]="role">{{role.title}}</mat-option>
+          <mat-option *ngFor="let role of userRoles" [value]="role">{{role.name}}</mat-option>
         </mat-select>
       </mat-form-field>
   </div>

@@ -1,0 +1,50 @@
+<h1>Задания футбольного фристайла</h1>
+<div class="nav">
+  <div class="coach-actions-button">
+  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status" mat-raised-button color="primary" routerLink="../create-task">Создать задание</button>
+  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && processingTasks" mat-raised-button color="primary" (click)="viewProcessingTasks()"><span [matBadge]="processingTasks" matBadgeOverlap="false" matBadgeColor="accent">В процессе</span></button>
+  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && pendingTasks" mat-raised-button color="primary" routerLink="../check-tasks"><span [matBadge]="pendingTasks" matBadgeOverlap="false" matBadgeColor="accent">Ожидают проверки</span></button>
+  </div>
+<mat-form-field *ngIf="userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]">
+  <mat-label>Группа</mat-label>
+  <mat-select [compareWith]="compareObjects" [(ngModel)]="currentGroup" #selectedvalue (valueChange)="changeGroup(selectedvalue.value)">
+    <mat-option *ngFor="let groupItem of groupsList" [value]="groupItem">{{groupItem.name}}</mat-option>
+  </mat-select>
+</mat-form-field>
+</div>
+<div class="task-list-wrap">
+  <div class="empty-tasks" *ngIf="tasksList && !tasksList.length">
+    <h2>Список заданий пуст</h2>
+  </div>
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let task of tasksList; let i = index"
+    [disabled]="(userInfo | userRolePipe:[userRoles.STUDENT]) ? !task.allow : false"
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+    [expanded]="userInfo.currentTask && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+         {{task.title}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{task.group.name}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p>{{task.description}} <a [href]="task.example" target="_blank">ссылка на пример задания</a></p>
+      <div class="video">
+        <youtube-player 
+          [videoId]="youTubeGetID(task.example)" 
+          suggestedQuality="highres" 
+          [height]="250" 
+          [width]="500">
+        </youtube-player>
+      </div>
+      <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PENDING">На проверке</p>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id !== userInfo.currentTask.id" (click)="assignTask(task)" mat-raised-button color="primary">Начать выполнение</button>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PROCESSING" mat-raised-button color="primary" (click)="passTask(task)">Сдать задание</button>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="primary" [routerLink]="['../update-task/', task.id]">Обновить</button>
+      <button *ngIf="task.nextTask.id !== 'initial' && (userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="warn" (click)="deleteTask(task.id)">Удалить</button>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
