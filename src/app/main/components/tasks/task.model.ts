@@ -9,7 +9,7 @@ export class TaskModel {
     id: string
   };
   group: {
-    id: number,
+    id: string,
     name: string;
   };
   status?: string;

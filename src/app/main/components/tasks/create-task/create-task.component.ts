@@ -67,6 +67,7 @@ export class CreateTaskComponent implements OnInit {
     });
   }
   public changeGroup(group) {
+    console.log(this.taskForm);
     const groupId: number = group.id;
     this.getAllTasks(groupId);
   }

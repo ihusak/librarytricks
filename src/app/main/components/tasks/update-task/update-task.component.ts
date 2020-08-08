@@ -78,7 +78,7 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private getAllTasks(groupId?: number) {
+  private getAllTasks(groupId?: string) {
     this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks.filter((task: any) => task.group.id === groupId && this.currentTask.id !== task.id);
       if (!this.tasksList.length) {
@@ -96,7 +96,7 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
   }
 
   public changeGroup(group) {
-    const groupId: number = group.id;
+    const groupId: string = group.id;
     this.getAllTasks(groupId);
   }
 
