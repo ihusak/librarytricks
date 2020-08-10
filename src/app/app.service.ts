@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 interface Tokens {
   accessToken: string;
@@ -14,6 +16,13 @@ export class AppService {
   private userInfoSource = new BehaviorSubject<object>({});
   public userInfoData = this.userInfoSource.asObservable();
   public userID: string;
+
+  constructor(
+    protected http: HttpClient) {}
+
+  public apiUrl(): string{
+    return environment.api_url;
+  }
 
   public setUserDataToLocalStorage(tokens: Tokens, userId: string) {
     localStorage.setItem('t', JSON.stringify(tokens));
@@ -29,7 +38,7 @@ export class AppService {
     return localStorage.getItem('userId');
   }
 
-  public logout() {
+  public clearStorage() {
     localStorage.clear();
   }
 

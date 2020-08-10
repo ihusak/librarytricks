@@ -2,11 +2,8 @@
   <h1>Информация</h1>
 <ul *ngIf="userInfo.group">
   <h2>Группа</h2>
-  <h4>Уровень: {{userInfo.group.level}}</h4>
-	<li><span class="item">Позиция в группе: </span><span class="item-value">{{userInfo.group.position}}</span></li>
 	<li><span class="item">Лучший трюк: </span><span class="item-value">{{userInfo.bestTrick}}</span></li>
 	<li><span class="item">Общее время занятия фритсайлом: </span><span class="item-value">{{userInfo.startTraining}}</span></li>
-	<li><span class="item">Прогресс уровня: </span><span class="item-value">{{userInfo.group.progress}}</span></li>
 </ul>
 <ul *ngIf="userInfo.socialNetworks">
   <h2>Профайл</h2>

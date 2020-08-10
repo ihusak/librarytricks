@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit, OnChanges {
   public logout() {
     const refreshToken = this.appService.getTokens().refreshToken;
     this.authService.logout(refreshToken).subscribe((data) => {
-      this.appService.logout();
+      this.appService.clearStorage();
       console.log('logout', data);
       this.router.navigate(['/']);
     });

@@ -17,7 +17,7 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
   public initForm: boolean = false;
   public groupsList;
   private taskId: string;
-  private nextTask: string;
+  public nextTask: string;
   private currentTask: TaskModel;
 
   constructor(

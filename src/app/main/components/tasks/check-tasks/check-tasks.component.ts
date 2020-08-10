@@ -48,4 +48,8 @@ export class CheckTasksComponent implements OnInit {
       console.log(res);
     })
   }
+
+  public reject(user) {
+    console.log('reject', user);
+  }
 }

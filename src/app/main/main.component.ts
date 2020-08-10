@@ -16,6 +16,7 @@ export class MainComponent implements OnInit {
   toggleSideNav: boolean;
   userInfo: UserInfoInterface;
   user: User;
+  sidenavCollapsed;
 
   constructor(
     private mainService: MainService,

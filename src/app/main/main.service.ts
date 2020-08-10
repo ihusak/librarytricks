@@ -1,19 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UserInfoInterface } from '../shared/interface/user-info.interface';
+import { AppService } from '../app.service';
 
 @Injectable()
-export class MainService {
+export class MainService extends AppService {
   public userInfo: UserInfoInterface;
-    constructor(private http: HttpClient) {}
     // getUser(id: string) {
     //     return this.http.get(`api/users/${id}`);
     // }
     public getUserInfo(id: string) {
-      return this.http.get(`api/userInfo/${id}`);
+      return this.http.get(`${this.apiUrl()}/userInfo/${id}`);
     }
     public requestCoachPermission(id: string, phone: string) {
-      return this.http.post(`api/userInfo/request/coach/${id}`, {
+      return this.http.post(`${this.apiUrl()}/userInfo/request/coach/${id}`, {
         phone
       });
     }
