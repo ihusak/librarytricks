@@ -30,9 +30,13 @@ export class MainComponent implements OnInit {
   }
 
   private getUserInfo() {
-    const userId = localStorage.getItem('userId');
-    this.mainService.getUserInfo(userId).subscribe((userInfoData: UserInfoInterface) => {
-      userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
+    const userId = this.appService.getUserId();
+    const userRole = this.appService.getUserRole();
+    console.log(userRole);
+    this.mainService.getUserInfo(userId, userRole).subscribe((userInfoData: UserInfoInterface) => {
+      if(userInfoData.startTraining) {
+        userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
+      }
       this.userInfo = userInfoData;
       // this.appService.setUserInfoData(userInfoData);
       this.mainService.userInfo = userInfoData;

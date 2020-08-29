@@ -15,7 +15,6 @@ interface Tokens {
 export class AppService {
   private userInfoSource = new BehaviorSubject<object>({});
   public userInfoData = this.userInfoSource.asObservable();
-  public userID: string;
 
   constructor(
     protected http: HttpClient) {}
@@ -24,10 +23,10 @@ export class AppService {
     return environment.api_url;
   }
 
-  public setUserDataToLocalStorage(tokens: Tokens, userId: string) {
+  public setUserDataToLocalStorage(tokens: Tokens, userId: string, role: any) {
     localStorage.setItem('t', JSON.stringify(tokens));
     localStorage.setItem('userId', userId);
-    this.userID = userId;
+    localStorage.setItem('roleId', role.id);
   }
 
   public getTokens(): Tokens {
@@ -36,6 +35,10 @@ export class AppService {
 
   public getUserId(): string {
     return localStorage.getItem('userId');
+  }
+
+  public getUserRole(): number {
+    return parseInt(localStorage.getItem('roleId'), 10);
   }
 
   public clearStorage() {
@@ -48,7 +51,6 @@ export class AppService {
     localStorage.setItem('t', JSON.stringify(tokens));
   }
   public setUserInfoData(userInfo) {
-    this.userID = userInfo.id;
     userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
     this.userInfoSource.next(userInfo);
   }
