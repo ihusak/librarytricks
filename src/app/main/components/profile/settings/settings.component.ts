@@ -11,19 +11,6 @@ import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { UserParentModel } from 'src/app/shared/models/user-parent.model';
 import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 
-const GROPUS = [{
-  id: 1,
-  name: 'beginner'
-},
-{
-  id: 2,
-  name: 'middle'
-},
-{
-  id: 3,
-  name: 'master'
-}];
-
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -40,6 +27,7 @@ export class SettingsComponent implements OnInit {
   public userRoles = UserRolesEnum;
   public userInfoData: UserInfoInterface;
   public kidsList;
+  private roleId: number;
 
   constructor(
     private profileService: ProfileService,
@@ -50,6 +38,7 @@ export class SettingsComponent implements OnInit {
     private formBuilder: FormBuilder
     ) {
       this.dateAdapter.setLocale('ru');
+      this.roleId = this.appService.getUserRole();
     }
 
   ngOnInit() {
@@ -57,7 +46,7 @@ export class SettingsComponent implements OnInit {
   }
   getUserDetails() {
     const userId = this.appService.getUserId();
-    this.profileService.getUserInfo(userId).subscribe((data: UserInfoInterface) => {
+    this.profileService.getUserInfo(userId, this.roleId).subscribe((data: UserInfoInterface) => {
       this.userInfoData = data;
       this.switchValidatorsOnRole(this.userInfoData.role.id, data);
       if (data.userImg) {
@@ -88,7 +77,7 @@ export class SettingsComponent implements OnInit {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
-    this.profileService.updateUserInfo(userId, formData).subscribe((updateUser: string) => {
+    this.profileService.updateUserInfo(userId, formData, this.roleId).subscribe((updateUser: string) => {
       // this.appService.setUserInfoData(updateUser);
       this.snackBar.open('Сохранено', '', {
         duration: 2000,
@@ -132,9 +121,9 @@ export class SettingsComponent implements OnInit {
         this.profileService.getAllGroups().subscribe(allGroups => {
           console.log('all group', allGroups);
           this.userGroups = allGroups;
-        })
-        this.profileService.getAllCoachs().subscribe(coachs => {
-          this.coachsList = coachs;
+        });
+        this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
+          this.coachsList = coaches;
         });
         this.userInfo = this.formBuilder.group({
           phone: [data.phone || '', [Validators.required]],
@@ -167,7 +156,7 @@ export class SettingsComponent implements OnInit {
         this.initForm = true;
         break;
       case this.userRoles.PARENT:
-      this.profileService.getAllStudents().subscribe(result => {
+      this.profileService.getAllStudents(this.userRoles.STUDENT).subscribe(result => {
         console.log(result);
         this.userInfo = this.formBuilder.group({
           phone: [data.phone || '', [Validators.required]],

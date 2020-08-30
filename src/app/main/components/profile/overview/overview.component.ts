@@ -18,7 +18,7 @@ export class OverviewComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private appService: AppService
-    ) { 
+    ) {
       console.log(this);
      }
 
@@ -27,7 +27,8 @@ export class OverviewComponent implements OnInit {
   }
   public getUserInfo() {
     const userId = this.appService.getUserId();
-    this.profileService.getUserInfo(userId).subscribe((userInfo: UserInfoInterface) => {
+    const userRole = this.appService.getUserRole();
+    this.profileService.getUserInfo(userId, userRole).subscribe((userInfo: UserInfoInterface) => {
       userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
       this.userInfo = userInfo;
       // this.appService.setUserInfoData(userInfo);

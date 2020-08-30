@@ -20,41 +20,41 @@ export class ProfileService extends AppService {
       return this.http.put(`${this.apiUrl()}/userInfo/task-status/${userId}`, {task});
     }
 
-    public getUserInfo(id: string) {
-      return this.http.get(`${this.apiUrl()}/userInfo/${id}`);
+    public getUserInfo(id: string, roleId: number) {
+      return this.http.get(`${this.apiUrl()}/userInfo/${id}/${roleId}`);
     }
 
     public getUserInfoByCoach(id: string) {
       return this.http.get(`${this.apiUrl()}/userInfo/coach/${id}`);
     }
 
-    public updateUserInfo(id: string, userInfo: any) {
-      return this.http.put(`${this.apiUrl()}/userInfo/${id}`, userInfo);
+    public updateUserInfo(id: string, userInfo: any, roleId: number) {
+      return this.http.put(`${this.apiUrl()}/userInfo/${id}/${roleId}`, userInfo);
     }
 
-    public getAllStudents() {
-      return this.http.get(`${this.apiUrl()}/userInfo/all`).pipe(map((userInfo: any) => {
+    public getAllStudents(roleId: number) {
+      return this.http.get(`${this.apiUrl()}/userInfo/all/${roleId}`).pipe(map((userInfo: any) => {
         return userInfo.filter((item) => {
           return item.role.id === this.userRoles.STUDENT;
         }).map(user => {
           return {
             name: user.userName,
             id: user.id
-          }
-        })
+          };
+        });
       }));
     }
 
-    public getAllCoachs() {
-      return this.http.get(`${this.apiUrl()}/userInfo/all`).pipe(map((userInfo: any) => {
+    public getAllCoaches(roleId: number) {
+      return this.http.get(`${this.apiUrl()}/userInfo/all/${roleId}`).pipe(map((userInfo: any) => {
         return userInfo.filter((item) => {
           return item.role.id === this.userRoles.COACH;
         }).map(user => {
           return {
             name: user.userName,
             id: user.id
-          }
-        })
+          };
+        });
       }));
     }
 
