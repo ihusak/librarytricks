@@ -2,7 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MainService } from './main.service';
 import { AppService } from '../app.service';
 import { ProfileService } from './components/profile/profile.service';
-import { UserInfoInterface } from '../shared/interface/user-info.interface';
+import { StudentInfoInterface, CoachInfoInterface, ParentInfoInterface, AdminInfoInterface } from '../shared/interface/user-info.interface';
 import * as moment from 'moment';
 import { User } from '../shared/interface/user.interface';
 
@@ -14,7 +14,7 @@ import { User } from '../shared/interface/user.interface';
 })
 export class MainComponent implements OnInit {
   toggleSideNav: boolean;
-  userInfo: UserInfoInterface;
+  userInfo: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface;
   user: User;
   sidenavCollapsed;
 
@@ -33,7 +33,9 @@ export class MainComponent implements OnInit {
     const userId = this.appService.getUserId();
     const userRole = this.appService.getUserRole();
     console.log(userRole);
-    this.mainService.getUserInfo(userId, userRole).subscribe((userInfoData: UserInfoInterface) => {
+    this.mainService.getUserInfo(userId, userRole).subscribe(
+      (userInfoData: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface) => 
+      {
       if(userInfoData.startTraining) {
         userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
       }

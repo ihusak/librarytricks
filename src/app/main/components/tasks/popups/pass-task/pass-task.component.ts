@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ViewEncapsulation } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskModel } from '../../task.model';
-import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { ProfileService } from '../../../profile/profile.service';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { MatSnackBar } from '@angular/material';
@@ -14,12 +14,12 @@ import { MatSnackBar } from '@angular/material';
 })
 export class PassTaskComponent implements OnInit {
   public task: TaskModel;
-  public userInfo: UserInfoInterface;
+  public userInfo: StudentInfoInterface;
   public reviewExample: string;
 
   constructor(
     public dialogRef: MatDialogRef<PassTaskComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {task: TaskModel, userInfo: UserInfoInterface},
+    @Inject(MAT_DIALOG_DATA) public data: {task: TaskModel, userInfo: StudentInfoInterface},
     private profileService: ProfileService,
     private snackBar: MatSnackBar
     ) {
@@ -36,7 +36,7 @@ export class PassTaskComponent implements OnInit {
   request() {
     this.task.status = TaskStatuses.PENDING;
     this.task.reviewExample = this.reviewExample;
-    this.profileService.changeCurrentTask(this.task, this.userInfo.id).subscribe((updatedUserInfo: UserInfoInterface) => {
+    this.profileService.changeCurrentTask(this.task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
       this.userInfo = updatedUserInfo;
       this.snackBar.open('Ты сдал задание на проверку, ожидай результат', '', {
         duration: 2000,

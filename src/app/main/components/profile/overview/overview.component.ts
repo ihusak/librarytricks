@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ProfileService } from '../profile.service';
-import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { AppService } from 'src/app/app.service';
 import * as moment from 'moment';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
@@ -11,7 +10,7 @@ import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
   styleUrls: ['./overview.component.scss']
 })
 export class OverviewComponent implements OnInit {
-  public userInfo: UserInfoInterface;
+  public userInfo: any;
   public userLogin: any;
   public userRoles = UserRolesEnum;
 
@@ -28,7 +27,7 @@ export class OverviewComponent implements OnInit {
   public getUserInfo() {
     const userId = this.appService.getUserId();
     const userRole = this.appService.getUserRole();
-    this.profileService.getUserInfo(userId, userRole).subscribe((userInfo: UserInfoInterface) => {
+    this.profileService.getUserInfo(userId, userRole).subscribe((userInfo: any) => {
       userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
       this.userInfo = userInfo;
       // this.appService.setUserInfoData(userInfo);

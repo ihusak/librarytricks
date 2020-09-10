@@ -3,8 +3,9 @@ import { ProfileService } from '../../profile/profile.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MainService } from 'src/app/main/main.service';
-import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
+import { RejectTaskComponent } from './reject-task/reject-task.component';
 
 @Component({
   selector: 'app-check-tasks',
@@ -13,7 +14,7 @@ import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 })
 export class CheckTasksComponent implements OnInit {
   public userInfo;
-  public pendingTasksData: UserInfoInterface[];
+  public pendingTasksData: StudentInfoInterface[];
 
   constructor(
     private mainService: MainService,
@@ -27,9 +28,9 @@ export class CheckTasksComponent implements OnInit {
     this.getPendingTasks();
   }
   private getPendingTasks() {
-    this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: UserInfoInterface[]) => {
+    this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
       this.pendingTasksData = [];
-      usersInfo.map((info: UserInfoInterface) => {
+      usersInfo.map((info: StudentInfoInterface) => {
         if (info.currentTask.status === TaskStatuses.PENDING) {
           this.pendingTasksData.push(info);
         }
@@ -37,7 +38,7 @@ export class CheckTasksComponent implements OnInit {
     });
   }
 
-  public acceptTask(userInfo: UserInfoInterface) {
+  public acceptTask(userInfo: StudentInfoInterface) {
     const task = {
       taskId: userInfo.currentTask.id,
       coachId: userInfo.coach.id,
@@ -45,11 +46,21 @@ export class CheckTasksComponent implements OnInit {
       groupId: userInfo.group.id
     }
     this.profileService.acceptUserTask(userInfo.id, task).subscribe(res => {
-      console.log(res);
+      this.ngOnInit();
+      this.snackBar.open(`Вы приняли задания ученика: ${userInfo.userName}`, '', {
+        duration: 2000,
+        panelClass: ['success']
+      });
     })
   }
 
-  public reject(user) {
-    console.log('reject', user);
+  public reject(studentInfo: StudentInfoInterface) {
+    const dialogRef = this.dialog.open(RejectTaskComponent, {
+      width: '650px',
+      data: studentInfo
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.ngOnInit();
+    })
   }
 }

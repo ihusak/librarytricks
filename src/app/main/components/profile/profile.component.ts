@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy} from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { Subscription } from 'rxjs/internal/Subscription';
 import { MainService } from '../../main.service';
-import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 
 @Component({
@@ -11,7 +10,7 @@ import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  public userInfo: UserInfoInterface;
+  public userInfo: any;
   public previewUrl;
   private observerUserInfoData: Subscription;
   public userRoles = UserRolesEnum;

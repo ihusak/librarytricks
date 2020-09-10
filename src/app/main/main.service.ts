@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserInfoInterface } from '../shared/interface/user-info.interface';
+import { StudentInfoInterface, ParentInfoInterface, CoachInfoInterface, AdminInfoInterface } from '../shared/interface/user-info.interface';
 import { AppService } from '../app.service';
 
 @Injectable()
 export class MainService extends AppService {
-  public userInfo: UserInfoInterface;
+  public userInfo: StudentInfoInterface | ParentInfoInterface | CoachInfoInterface | AdminInfoInterface;
     // getUser(id: string) {
     //     return this.http.get(`api/users/${id}`);
     // }

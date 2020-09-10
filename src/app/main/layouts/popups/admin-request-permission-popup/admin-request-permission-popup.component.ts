@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MainService } from 'src/app/main/main.service';
-import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { CoachInfoInterface } from 'src/app/shared/interface/user-info.interface';
 
 @Component({
   selector: 'app-admin-request-permission-popup',
@@ -13,7 +13,7 @@ export class AdminRequestPermissionPopupComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<AdminRequestPermissionPopupComponent>,
-    @Inject(MAT_DIALOG_DATA) public user: UserInfoInterface,
+    @Inject(MAT_DIALOG_DATA) public user: CoachInfoInterface,
     private mainService: MainService) {
       this.phone = this.user.phone;
     }

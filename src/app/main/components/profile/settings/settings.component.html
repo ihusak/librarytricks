@@ -88,6 +88,7 @@
             </mat-form-field>
         </div>
       </div>
+      <h4 *ngIf="(userInfoData | userRolePipe:[userRoles.STUDENT]) && userInfoData.progress < 100">Ты не можешь поменять тренера и группу пока не выполнишь все задания группы</h4>
   </div>
   <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">Сохранить</button>
   <br>

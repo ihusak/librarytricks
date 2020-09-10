@@ -26,7 +26,12 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit() {
     this.registerService.getRoles().subscribe((roles: UserRole[]) => {
-      this.userRoles = roles.filter(role => role.id !== this.userRolesEnum.ADMIN);
+      const adminPermission = localStorage.getItem('admin');
+      if (adminPermission) {
+        this.userRoles = roles;
+      } else {
+        this.userRoles = roles.filter(role => role.id !== this.userRolesEnum.ADMIN);
+      }
     });
     console.log('env', environment.api_url);
   }

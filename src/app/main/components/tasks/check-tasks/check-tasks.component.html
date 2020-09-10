@@ -1,5 +1,6 @@
 <div class="pending-tasks">
   <h1>Задания отправлены на проверку</h1>
+  <button mat-raised-button color="primary" routerLink="../task-list">Назад</button>
   <div class="task-item" *ngFor="let user of pendingTasksData">
     <h4>{{user.userName}}</h4>
     <div class="task-description">

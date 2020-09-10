@@ -13,6 +13,7 @@ import { UpdateTaskComponent } from './update-task/update-task.component';
 import { CheckTasksComponent } from './check-tasks/check-tasks.component';
 import { PassTaskComponent } from './popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from './popups/process-tasks/process-tasks.component';
+import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ProcessTasksComponent } from './popups/process-tasks/process-tasks.comp
     UpdateTaskComponent,
     CheckTasksComponent,
     PassTaskComponent,
-    ProcessTasksComponent
+    ProcessTasksComponent,
+    RejectTaskComponent
   ],
   imports: [
     CommonModule,
@@ -32,7 +34,7 @@ import { ProcessTasksComponent } from './popups/process-tasks/process-tasks.comp
     ReactiveFormsModule,
     YouTubePlayerModule
   ],
-  entryComponents: [PassTaskComponent, ProcessTasksComponent],
+  entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent],
   providers: [TaskService]
 })
 export class TasksModule {

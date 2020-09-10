@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ProfileService } from '../profile.service';
 import { AppService } from 'src/app/app.service';
-import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { UserStudentModel } from 'src/app/shared/models/user-student.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -25,7 +24,7 @@ export class SettingsComponent implements OnInit {
   public coachsList: any;
   public userInfo: FormGroup;
   public userRoles = UserRolesEnum;
-  public userInfoData: UserInfoInterface;
+  public userInfoData: any;
   public kidsList;
   private roleId: number;
 
@@ -46,7 +45,7 @@ export class SettingsComponent implements OnInit {
   }
   getUserDetails() {
     const userId = this.appService.getUserId();
-    this.profileService.getUserInfo(userId, this.roleId).subscribe((data: UserInfoInterface) => {
+    this.profileService.getUserInfo(userId, this.roleId).subscribe((data: any) => {
       this.userInfoData = data;
       this.switchValidatorsOnRole(this.userInfoData.role.id, data);
       if (data.userImg) {
@@ -58,7 +57,6 @@ export class SettingsComponent implements OnInit {
   }
 
   public addInfo() {
-    console.log(this.userInfo.value);
     let userInfo;
     const userId = this.appService.getUserId();
     switch(this.userInfoData.role.id) {
@@ -78,7 +76,6 @@ export class SettingsComponent implements OnInit {
     }
     formData.append('userInfo', JSON.stringify(userInfo));
     this.profileService.updateUserInfo(userId, formData, this.roleId).subscribe((updateUser: string) => {
-      // this.appService.setUserInfoData(updateUser);
       this.snackBar.open('Сохранено', '', {
         duration: 2000,
         panelClass: ['success']
@@ -131,8 +128,8 @@ export class SettingsComponent implements OnInit {
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           startTraining: [data.startTraining || '', [Validators.required]],
           aboutMe: [data.aboutMe || ''],
-          group: [data.group || '', [Validators.required]],
-          coach: [data.coach || '', [Validators.required]],
+          group: [{value: data.group || '', disabled: data.progress < 100}, [Validators.required]],
+          coach: [{value: data.coach || '', disabled: data.progress < 100}, [Validators.required]],
           instagram: [data.instagram || ''],
           facebook: [data.facebook || ''],
           bestTrick: [data.bestTrick || '', [Validators.required]],

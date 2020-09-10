@@ -1,4 +1,6 @@
-export interface UserInfoInterface {
+import { TaskModel } from 'src/app/main/components/tasks/task.model'
+
+export interface StudentInfoInterface {
   id: string;
   userImg: string | File;
   userName: string;
@@ -20,22 +22,69 @@ export interface UserInfoInterface {
     id: number;
     name: string;
   };
-  file?: File;
-  level: number;
-  position: number;
+  rating: number;
   progress: number;
-  role?: {
+  role: {
     id: number,
     title: string,
     status: boolean
   };
+  currentTask?: TaskModel;
   coach: {
     id: string,
     name: string
   };
-  currentTask?: {
-    id: string,
-    status: string,
-    reward: number
-  }
 };
+
+export interface CoachInfoInterface {
+  id: string;
+  userImg: string;
+  userName: string;
+  email: string;
+  aboutMe: string;
+  bestTrick: string;
+  phone: string;
+  role: {
+    id: number;
+    name: string;
+    status: boolean;
+  };
+  startTraining?: Date | string;
+}
+
+export interface ParentInfoInterface {
+  id: string;
+  userImg: string;
+  userName: string;
+  email: string;
+  aboutMe: string;
+  socialNetworks: {
+    facebook: string;
+    instagram: string;
+  };
+  phone: string;
+  myChild: {
+    id: string;
+    name: string;
+  };
+  role: {
+    id: number;
+    name: string;
+    status: boolean;
+  };
+  startTraining?: Date | string;
+};
+
+export interface AdminInfoInterface {
+  id: string;
+  userImg: string;
+  userName: string;
+  email: string;
+  phone: string;
+  role: {
+    id: number;
+    name: string;
+    status: boolean;
+  };
+  startTraining?: Date | string;
+}

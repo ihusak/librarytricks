@@ -1,5 +1,3 @@
-import { UserInfoInterface } from '../interface/user-info.interface';
-
 export class UserCoachModel {
   id: string;
   userImg: string | File;

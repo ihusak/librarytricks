@@ -1,6 +1,6 @@
 <div *ngIf="userInfo" class="main-container-wrap" dir="ltr" [ngClass]="{'sidenav-collapsed': sidenavCollapsed}">
   <mat-sidenav-container class="sidenav-container" autosize autoFocus>
-  <mat-sidenav #sidenav class="sidenav" mode="side">
+  <mat-sidenav #sidenav class="sidenav" mode="side" opened>
     <app-sidenav [userInfo]='userInfo'></app-sidenav>
   </mat-sidenav>
   <mat-sidenav-content class="content-wrap" #content>

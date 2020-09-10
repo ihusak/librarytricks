@@ -18,6 +18,8 @@ export class TaskModel {
     name: string
   };
   reviewExample: string;
+  rejectReason?: string;
+  done?: boolean;
   constructor(responseObj: any) {
     this.id = responseObj._id;
     this.title = responseObj.title;
@@ -25,6 +27,7 @@ export class TaskModel {
     this.example = responseObj.example;
     this.allow = responseObj.allow;
     this.reward = responseObj.reward;
+    this.rejectReason = responseObj.rejectReason;
     if (typeof responseObj.nextTask === 'string') {
       this.nextTask = {
         id: responseObj.nextTask ? responseObj.nextTask : 'initial'

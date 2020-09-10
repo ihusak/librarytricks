@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
 import { MainService } from 'src/app/main/main.service';
-import { UserInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from '../../profile/profile.service';
@@ -22,7 +22,7 @@ export class TaskListComponent implements OnInit {
   public tasksList: TaskModel[];
   public groupsList;
   public currentGroup;
-  public userInfo: UserInfoInterface;
+  public userInfo: any;
   public userRoles = UserRolesEnum;
   public processingTasks: number = 0;
   public pendingTasks: number = 0;
@@ -47,7 +47,7 @@ export class TaskListComponent implements OnInit {
 
   public assignTask(task: TaskModel) {
     task.status = TaskStatuses.PROCESSING;
-    this.profileService.changeCurrentTask(task, this.userInfo.id).subscribe((updatedUserInfo: UserInfoInterface) => {
+    this.profileService.changeCurrentTask(task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
       this.userInfo = updatedUserInfo;
       this.snackBar.open('Вы начали выполнение задания', '', {
         duration: 2000,
@@ -59,16 +59,31 @@ export class TaskListComponent implements OnInit {
   private getAllTasks(groupId?: number) {
     this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks.filter((task: TaskModel) => task.group.id === this.currentGroup.id);
+      if(this.userInfo.role.id === UserRolesEnum.STUDENT) {
+        this.tasksList.map((task: TaskModel, index) => {
+          this.userInfo.doneTasks.find((id: string) => {
+            if (id === task.id) {
+              task.done = true;
+              this.tasksList[index].allow = false;
+              this.tasksList[index + 1].allow = true;
+            } else if(!task.done) {
+              task.done = false;
+            }
+          });
+          return task;
+        })
+      }
+      console.log(this.tasksList);
     });
   }
 
   private getTasksStatuses(groupId: number) {
-    this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: UserInfoInterface[]) => {
+    this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
       this.processingTasks = 0;
       this.pendingTasks = 0;
       this.doneTasks = 0;
       this.processingTasksData = [];
-      usersInfo.map((info: UserInfoInterface) => {
+      usersInfo.map((info: StudentInfoInterface) => {
         if (info.group.id === groupId) {
           switch (info.currentTask.status) {
             case TaskStatuses.PROCESSING:
