@@ -3,6 +3,7 @@
 
 .main-container-wrap {
     height: 100%;
+    // width: 100px;
     .content-wrap {
         height: 100%;
         .main {
@@ -13,7 +14,7 @@
     }
     .sidenav {
         height: 100%;
-        width: 240px;
+        width: 260px;
         .user-panel {
             flex-direction: column;
             box-sizing: border-box;
@@ -72,4 +73,24 @@
     .sidenav-container {
         height: 100%;
     }
+    // mat-sidenav {
+    //   transition: width 1.2s;
+    // }
+    // mat-sidenav:not(.mat-drawer-opened) {
+    //   width: 55px !important;
+    //   transform: translate3d(0,0,0);
+    //   visibility: visible !important;
+    //   &.sidenav {
+    //     .user-panel {
+    //       font-size: 10px;
+    //       .user-avatar {
+    //         width: 35px;
+    //         height: 35px;
+    //       }
+    //     }
+    //   }
+    //   ~ mat-sidenav-content {
+    //     margin-left: 55px !important;
+    //   }
+    // }
 }

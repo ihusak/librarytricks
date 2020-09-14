@@ -2,16 +2,15 @@
   <div class="user-avatar">
     <img [src]="userImage" alt="user-avatar">
   </div>
-    <p class="name">{{userInfo.userName}}</p>
-    <span>{{userInfo.userType}}</span>
+    <p class="name">{{userInfo.userName}}<mat-icon *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLink="profile/settings">edit</mat-icon></p>
+    <span>{{userInfo.role.name}}</span>
 </div>
 <div class="sidenav-menu">
     <ul>
         <li routerLinkActive="active"><mat-icon>home</mat-icon><a routerLink="index">Главная</a></li>
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li>
-        <li routerLinkActive="active"><mat-icon>trending_up</mat-icon><a routerLink="progress">Успеваемость</a></li>
-        <li routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a routerLink="videos">Видео</a></li>
-        <li routerLinkActive="active"><mat-icon>done_all</mat-icon><a routerLink="tasks">Задания</a></li>
         <li routerLinkActive="active"><mat-icon>equalizer</mat-icon><a routerLink="ratings">Рейтинг</a></li>
+        <li routerLinkActive="active"><mat-icon>done_all</mat-icon><a routerLink="tasks">Задания</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li>
+        <li routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a routerLink="videos">Видео</a></li>
     </ul>
 </div>
