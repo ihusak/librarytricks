@@ -1,0 +1,40 @@
+.wrap {
+  display: flex;
+  margin-top: 30px;
+  .item {
+    width: 16.65%;
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    margin: 0 15px;
+    background-color: #fff;
+    .result {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .number {
+        font-weight: bold;
+        margin-right: 15px;
+      }
+    }
+    .content {
+    
+    }
+    &.centering {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .content {
+        text-align: center;
+      }
+      span {
+        font-size: 45px;
+        font-weight: bold;
+      }
+    }
+    &.current-task {
+      width: 66.666%;
+    }
+  }
+}

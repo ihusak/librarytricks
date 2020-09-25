@@ -1,21 +1,97 @@
-<div class="profile-wrap" *ngIf="userInfo">
-<h4>Профиль</h4>
-  <div class="content">
-      <div class="col">
-        <mat-card class="card">
-          <mat-card-header>
-            <div mat-card-avatar class="header-image">
-              <img [src]="previewUrl" alt="avatar" *ngIf="previewUrl">
-            </div>
-            <mat-card-title>{{userInfo.userName}}<mat-icon *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLink="settings">edit</mat-icon></mat-card-title>
-            <mat-card-subtitle>Уровень</mat-card-subtitle>
-          </mat-card-header>
-        </mat-card>
-      <mat-card class="card">
-              <mat-card-content>
-                      <router-outlet></router-outlet>
-              </mat-card-content>
-      </mat-card>
+<div class="edit-profile">
+  <form method="post" action="/" enctype="multipart/form-data">
+    <div class="avatar">
+      <div class="previewImg" *ngIf="previewUrl">
+        <img [src]="previewUrl" alt="avatar">
       </div>
+      <button mat-raised-button color="primary" (click)="fileInput.click()">Загрузить фото</button>
+      <input type="file" name="avatar" #fileInput (change)="fileProgress($event)" class="avatarAddImage">
     </div>
+  </form>
+  <form [formGroup]="userInfo" (ngSubmit)="addInfo()" *ngIf="initForm">
+  <div class="form-view">
+      <div class="item">
+      <h2>Профайл</h2>
+      <mat-form-field>
+      <input formControlName="userName" matInput placeholder="ФИО" name="fio" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="phone" matInput placeholder="Телефон" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="email" matInput placeholder="Почта" required>
+        
+      </mat-form-field>
+      <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT, userRoles.COACH]">
+        <input formControlName="startTraining" matInput [matDatepicker]="picker" placeholder="Дата начала тренировок" required>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field *ngIf="!(userInfoData | userRolePipe:[userRoles.ADMIN])">
+        <textarea formControlName="aboutMe" matInput placeholder="Обо мне"></textarea>
+      </mat-form-field>
+      </div>
+      <div class="item" *ngIf="!(userInfoData | userRolePipe:[userRoles.ADMIN])">
+      <h2>Дополнительная информация</h2>
+      <mat-form-field>
+        <input formControlName="instagram" matInput placeholder="instagram">
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="facebook" matInput placeholder="facebook">
+      </mat-form-field>
+      <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT, userRoles.COACH]">
+        <input formControlName="bestTrick" matInput placeholder="Название лучшего трюка" required>
+      </mat-form-field>
+      </div>
+      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
+      <h2>Информация о родителях</h2>
+      <mat-form-field>
+        <input formControlName="parentName" matInput placeholder="ФИО" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="parentPhone" matInput placeholder="Телефон" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="parentEmail" matInput placeholder="Почта" required>
+      </mat-form-field>
+      </div>
+      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
+        <h2>Группа</h2>
+        <div class="form-group">
+          <mat-form-field>
+              <mat-label>Группа</mat-label>
+              <mat-select [compareWith]="compareObjects" formControlName="group">
+                <mat-option *ngFor="let group of userGroups" [value]="group">{{group.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+      </div>
+      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.PARENT]">
+        <h2>Мой ребенок</h2>
+        <div class="form-group">
+          <mat-form-field>
+              <mat-label>Выберите своего ребенка</mat-label>
+              <mat-select [compareWith]="compareObjects" formControlName="myKid">
+                <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+      </div>
+      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
+        <h2>Тренер</h2>
+        <div class="form-group">
+          <mat-form-field>
+              <mat-label>Выберите своего тренера</mat-label>
+              <mat-select [compareWith]="compareObjects" formControlName="coach">
+                <mat-option *ngFor="let coach of coachsList" [value]="coach">{{coach.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+      </div>
+      <h4 *ngIf="(userInfoData | userRolePipe:[userRoles.STUDENT]) && userInfoData.progress < 100">Ты не можешь поменять тренера и группу пока не выполнишь все задания группы</h4>
+  </div>
+  <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">Сохранить</button>
+  <br>
+  <!-- <button mat-raised-button color="primary" routerLink="../overview">Назад</button> -->
+  </form>
 </div>

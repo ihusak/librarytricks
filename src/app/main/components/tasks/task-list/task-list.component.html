@@ -49,7 +49,7 @@
       </div>
       <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PENDING">На проверке</p>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id !== userInfo.currentTask.id && task.allow" (click)="assignTask(task)" mat-raised-button color="primary">Начать выполнение</button>
-      <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PROCESSING" mat-raised-button color="primary" (click)="passTask(task)">Сдать задание</button>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING" mat-raised-button color="primary" (click)="passTask(task)">Сдать задание</button>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="primary" [routerLink]="['../update-task/', task.id]">Обновить</button>
       <button *ngIf="task.nextTask.id !== 'initial' && (userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="warn" (click)="deleteTask(task.id)">Удалить</button>
     </mat-expansion-panel>

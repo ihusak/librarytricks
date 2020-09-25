@@ -1,4 +1,69 @@
-<h1>Librarytricks online school</h1>
+<div class="wrap">
+  <div class="item centering" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
+    <div>
+      <p>Прогресс в группе <b>{{userInfo.group.name}}</b></p>
+      <div class="result">
+        <span class="number">{{userInfo.progress}}%</span>
+        <mat-progress-bar mode="determinate" [value]="userInfo.progress"></mat-progress-bar>
+      </div>
+    </div>
+  </div>
+  <div class="item current-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask">
+    <div>
+      <h2>Текущая задача</h2>
+      <div class="content">
+        <p>Название задания: {{userInfo.currentTask.title}}</p>
+        <p>Описание задания: {{userInfo.currentTask.description}}</p>
+        <p>Текущий статус: <b>{{userInfo.currentTask.status}}</b></p>
+        </div>
+    </div>
+  </div>
+  <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && coachInfo">
+    <div>
+      <p>Тренер в группе <b>{{userInfo.group.name}}</b></p>
+      <div class="content">
+        <p><b>{{coachInfo.userName}}</b></p>
+        <p>Телефон: {{coachInfo.phone}}</p>
+        <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
+        <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="wrap">
+  <div class="item centering" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
+    <div>
+      <h4>Мои награды</h4>
+      <div class="content">
+        <span class="rating">{{userInfo.rating}}</span>
+        <p>баллов</p>
+      </div>
+    </div>
+  </div>
+  <div class="item current-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask">
+    <div>
+      <h2>Текущая задача</h2>
+      <div class="content">
+        <p>Название задания: {{userInfo.currentTask.title}}</p>
+        <p>Описание задания: {{userInfo.currentTask.description}}</p>
+        <p>Текущий статус: <b>{{userInfo.currentTask.status}}</b></p>
+        </div>
+    </div>
+  </div>
+  <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && coachInfo">
+    <div>
+      <p>Тренер в группе <b>{{userInfo.group.name}}</b></p>
+      <div class="content">
+        <p><b>{{coachInfo.userName}}</b></p>
+        <p>Телефон: {{coachInfo.phone}}</p>
+        <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
+        <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <h1>Librarytricks online school</h1>
 <h3>ШОКЛА ОБУЧЕНИЯ ФУТБОЛЬНОМУ МАСТЕРСТВУ</h3>
 <p>
   Фристайл в Украине популярен среди детей, подростков и молодежи. Желающих пройти обучение футбольным финтам так много, что нами было принято решение открыть школу футбольного фристайла. Записавшись на занятия, вы сможете приобщиться к этому виду спорта, и кто знает, может быть стать восходящей звездой.
@@ -29,4 +94,4 @@
 <p>Футбольный фристайл и обучение по видео вещи несовместимые, потому как только с тренером можно научиться выполнять сложные трюки с мячом.</p>
 <h4>
     Не путайте футбол и фристайл, обучение этим видам спорта базируется на совершенно разных правилах. В футболе главенствует стратегия, бег, борьба за мяч, а фристайл это сила ног, эффектность, яркость трюков. Спешите записаться на занятия и удивить всех своим мастерством!
-</h4>
+</h4> -->

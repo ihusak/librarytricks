@@ -4,11 +4,17 @@
 .main-container-wrap {
     height: 100%;
     // width: 100px;
+    .main-header {
+      height: 100%;
+    display: inline-block;
+    width: 100%;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
     .content-wrap {
         height: 100%;
         .main {
             padding: 25px;
-            background: #fff;
+            background-color: #f1f6fa;
             height: Calc(100vh - 114px);
         }
     }

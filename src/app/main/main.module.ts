@@ -8,7 +8,6 @@ import { HeaderComponent } from './layouts/header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { UserComponent } from './layouts/header/user.component';
 import { SidenavComponent } from './layouts/sidenav/sidenav.component';
 import { VideosComponent } from './components/videos/videos.component';
 import { TasksComponent } from './components/tasks/tasks.component';
@@ -25,7 +24,6 @@ import { PipesModule } from '../shared/pipes/pipes.module';
     MainComponent,
     HeaderComponent,
     NotFoundComponent,
-    UserComponent,
     SidenavComponent,
     VideosComponent,
     RatingsComponent,

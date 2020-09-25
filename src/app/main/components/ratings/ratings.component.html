@@ -1,1 +1,10 @@
 <h1>Рейтинг</h1>
+<div class="rating-wrap">
+  <div class="user-progress" *ngIf="userInfo | userRolePipe:[userRoles.STUDENT]">
+    <p>Прогресс в группе</p>
+    <div class="result">
+      <span class="number">{{userInfo.progress}}%</span>
+      <mat-progress-bar mode="determinate" [value]="userInfo.progress"></mat-progress-bar>
+    </div>
+  </div>
+</div>

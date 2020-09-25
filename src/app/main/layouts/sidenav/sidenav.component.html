@@ -10,7 +10,8 @@
         <li routerLinkActive="active"><mat-icon>home</mat-icon><a routerLink="index">Главная</a></li>
         <li routerLinkActive="active"><mat-icon>equalizer</mat-icon><a routerLink="ratings">Рейтинг</a></li>
         <li routerLinkActive="active"><mat-icon>done_all</mat-icon><a routerLink="tasks">Задания</a></li>
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li>
-        <li routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a routerLink="videos">Видео</a></li>
+        <!-- <li *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li> -->
+        <li routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a routerLink="videos">Полезное видео</a></li>
+        <li routerLinkActive="active"><mat-icon>home_work</mat-icon><a routerLink="homework">Домашнее задание</a></li>
     </ul>
 </div>

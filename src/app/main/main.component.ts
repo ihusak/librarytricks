@@ -32,7 +32,6 @@ export class MainComponent implements OnInit {
   private getUserInfo() {
     const userId = this.appService.getUserId();
     const userRole = this.appService.getUserRole();
-    console.log(userRole);
     this.mainService.getUserInfo(userId, userRole).subscribe(
       (userInfoData: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface) => 
       {
@@ -40,13 +39,10 @@ export class MainComponent implements OnInit {
         userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
       }
       this.userInfo = userInfoData;
-      // this.appService.setUserInfoData(userInfoData);
       this.mainService.userInfo = userInfoData;
-      console.log('main component reflect', this.mainService.userInfo);
     });
   }
   public toggleCollapsed() {
     this.toggleSideNav = !this.toggleSideNav;
-    console.log(this.userInfo);
   }
 }

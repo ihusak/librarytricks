@@ -7,9 +7,5 @@
     </div>
     <span class="spacer"></span>
     <button  (click)="requestAdminPermission()" mat-stroked-button *ngIf="userInfo.role.id === userRole.COACH && !userInfo.role.status">Запрос на тренера</button>
-    <span class="nav">
-        <ul>
-            <li><app-user [userInfo]="userInfo" (userLogout)="logout()"></app-user></li>
-        </ul>
-    </span>
+    <mat-icon (click)="logout()">exit_to_app</mat-icon>
 </mat-toolbar>

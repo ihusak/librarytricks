@@ -34,14 +34,7 @@ export class ProfileService extends AppService {
 
     public getAllStudents(roleId: number) {
       return this.http.get(`${this.apiUrl()}/userInfo/all/${roleId}`).pipe(map((userInfo: any) => {
-        return userInfo.filter((item) => {
-          return item.role.id === this.userRoles.STUDENT;
-        }).map(user => {
-          return {
-            name: user.userName,
-            id: user.id
-          };
-        });
+        return userInfo;
       }));
     }
 

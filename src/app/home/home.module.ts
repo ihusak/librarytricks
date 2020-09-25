@@ -14,6 +14,7 @@ import { ConfirmComponent } from './confirm/register/confirm.component';
 import { ConfirmService } from './confirm/confirm.service';
 import { LoginServiceModule } from './login/login.service.module';
 import { CoachComponent } from './confirm/coach/coach.component';
+import { MainHomeComponent } from './main-home/main-home.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { CoachComponent } from './confirm/coach/coach.component';
     LoginComponent,
     RegisterComponent,
     ConfirmComponent,
-    CoachComponent
+    CoachComponent,
+    MainHomeComponent
   ],
   imports: [
     CommonModule,
