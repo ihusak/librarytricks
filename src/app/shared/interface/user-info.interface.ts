@@ -44,6 +44,10 @@ export interface CoachInfoInterface {
   aboutMe: string;
   bestTrick: string;
   phone: string;
+  socialNetworks: {
+    facebook: string,
+    instagram: string
+  };
   role: {
     id: number;
     name: string;

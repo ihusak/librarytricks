@@ -13,7 +13,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatBadgeModule } from '@angular/material';
+import {MatBadgeModule, MatTableModule} from '@angular/material';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 const material = [
@@ -32,7 +32,8 @@ const material = [
     MatSnackBarModule,
     MatExpansionModule,
     MatBadgeModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTableModule
 ];
 
 @NgModule({

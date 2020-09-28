@@ -1,13 +1,14 @@
 .wrap {
   display: flex;
   margin-top: 30px;
+  flex-wrap: wrap;
   .item {
-    width: 16.65%;
+    width: calc(50% - 90px);
     align-items: center;
     border-radius: 5px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     padding: 15px;
-    margin: 0 15px;
+    margin: 15px;
     background-color: #fff;
     .result {
       display: flex;
@@ -19,7 +20,7 @@
       }
     }
     .content {
-    
+
     }
     &.centering {
       display: flex;
@@ -35,6 +36,19 @@
     }
     &.current-task {
       width: 66.666%;
+    }
+    &.student-rating {
+      width: calc(50% - 90px);
+      min-height: 250px;
+      table {
+        width: 100%;
+        box-shadow: none;
+        tr:last-child {
+          td {
+            border-bottom: none;
+          }
+        }
+      }
     }
   }
 }

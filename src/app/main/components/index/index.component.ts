@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
-import { CoachInfoInterface, StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import {
+  AdminInfoInterface,
+  CoachInfoInterface,
+  ParentInfoInterface,
+  StudentInfoInterface
+} from 'src/app/shared/interface/user-info.interface';
 import { MainService } from '../../main.service';
 import { ProfileService } from '../profile/profile.service';
 
@@ -15,6 +20,7 @@ export class IndexComponent implements OnInit {
   public userInfo: any;
   public coachInfo: CoachInfoInterface;
   public studentsList: StudentInfoInterface[];
+  public studentTableColumns = ['Позиция', 'Имя', 'Группа', 'Рейтинг', 'Прогресс'];
 
   constructor(
     private mainService: MainService,
@@ -29,7 +35,7 @@ export class IndexComponent implements OnInit {
     };
     switch (this.userInfo.role.id) {
       case this.userRoles.STUDENT:
-        if (this.userInfo.coach){
+        if (this.userInfo.coach) {
           this.getCoachInfo(this.userInfo.coach.id);
           this.getStudentsInfo(this.userInfo.group.id);
         }
@@ -49,12 +55,12 @@ export class IndexComponent implements OnInit {
     this.profileService.getAllStudents(studentRole).subscribe((studentsList: StudentInfoInterface[]) => {
       console.log(studentsList);
       this.studentsList = studentsList.filter((studentInfo: StudentInfoInterface) => {
-        if(studentInfo.group) {
+        if (studentInfo.group) {
           return groupId === studentInfo.group.id;
         }
         return false;
-      });
+      }).sort((a, b) => a.rating > b.rating ? -1 : 1);
       console.log(this.studentsList);
-    })
+    });
   }
 }
