@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import {
@@ -9,6 +9,8 @@ import {
 } from 'src/app/shared/interface/user-info.interface';
 import { MainService } from '../../main.service';
 import { ProfileService } from '../profile/profile.service';
+import { TaskModel } from '../tasks/task.model';
+import { TaskService } from '../tasks/tasks.service';
 
 @Component({
   selector: 'app-index',
@@ -21,11 +23,14 @@ export class IndexComponent implements OnInit {
   public coachInfo: CoachInfoInterface;
   public studentsList: StudentInfoInterface[];
   public studentTableColumns = ['Позиция', 'Имя', 'Группа', 'Рейтинг', 'Прогресс'];
+  public studentTasks: TaskModel[];
+  public doneTasks;
 
   constructor(
     private mainService: MainService,
     private appService: AppService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private taskService: TaskService
   ) { }
 
   ngOnInit() {
@@ -38,6 +43,7 @@ export class IndexComponent implements OnInit {
         if (this.userInfo.coach) {
           this.getCoachInfo(this.userInfo.coach.id);
           this.getStudentsInfo(this.userInfo.group.id);
+          this.getStudentTasks();
         }
     }
     console.log(this);
@@ -61,6 +67,23 @@ export class IndexComponent implements OnInit {
         return false;
       }).sort((a, b) => a.rating > b.rating ? -1 : 1);
       console.log(this.studentsList);
+    });
+  }
+  private getStudentTasks() {
+    this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
+      this.studentTasks = tasks.filter(task => task.group.id === this.userInfo.group.id);
+      this.doneTasks = this.userInfo.doneTasks.filter(taskId => {
+        return this.studentTasks.find(task => task.id === taskId);
+      });
+      this.studentTasks = this.studentTasks.map((task: TaskModel) => {
+        if(this.doneTasks.find(taskId => taskId === task.id)) {
+          task.done = true;
+        } else {
+          task.done = false;
+        }
+        return task;
+      });
+      console.log(this.studentTasks);
     });
   }
 }

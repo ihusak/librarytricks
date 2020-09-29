@@ -18,6 +18,7 @@ import { MainGuardService } from './guards/main.guard';
 import { AdminRequestPermissionPopupComponent } from './layouts/popups/admin-request-permission-popup/admin-request-permission-popup.component';
 import { SharedModule } from '../shared/shared.module';
 import { PipesModule } from '../shared/pipes/pipes.module';
+import { TaskService } from './components/tasks/tasks.service';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,7 @@ import { PipesModule } from '../shared/pipes/pipes.module';
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent],
-  providers: [MainService]
+  providers: [MainService, TaskService]
 })
 export class MainModule {
 
