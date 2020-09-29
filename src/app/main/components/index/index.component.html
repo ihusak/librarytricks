@@ -1,5 +1,8 @@
 <div class="wrap">
-  <div class="item centering" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
+  <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
+    <div class="card-icon">
+      <i class="material-icons">follow_the_signs</i>
+    </div>
     <div>
       <p>Прогресс в группе <b>{{userInfo.group.name}}</b></p>
       <div class="result">
