@@ -13,6 +13,18 @@
     background: linear-gradient(60deg,#ffa726,#fb8c00);
     box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(255,152,0,.4);
   }
+  &.blue {
+    background: linear-gradient(60deg,#26c6da,#00acc1);
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(0,188,212,.4);
+  }
+  &.purple {
+    background: linear-gradient(60deg,#ec407a,#d81b60);
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,.14), 0 7px 10px -5px rgba(233,30,99,.4);
+  }
+  &.red {
+    background: linear-gradient(60deg, #ea5555, #d81b1b);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgb(233 30 30 / 40%);
+  }
   i {
     color: #fff;
     font-size: 36px;

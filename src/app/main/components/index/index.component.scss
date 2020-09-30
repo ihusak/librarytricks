@@ -3,13 +3,18 @@
   margin-top: 30px;
   flex-wrap: wrap;
   .item {
-    width: calc(50% - 90px);
+    width: calc(50% - 60px);
     align-items: center;
     border-radius: 5px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     padding: 15px;
-    margin: 15px;
+    margin: 30px 15px;
     background-color: #fff;
+    h5 {
+      margin: 0;
+      padding: 25px 0;
+      border-bottom: 1px solid #eee;
+    }
     .result {
       display: flex;
       justify-content: space-around;
@@ -42,7 +47,17 @@
         }
       }
     }
-    &.centering {
+    &.rewards {
+      .content {
+        text-align: center;
+        margin-top: 50px;
+        .rating {
+          font-weight: 900;
+          font-size: 36px;
+        }
+      }
+    }
+    .centering {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -55,10 +70,10 @@
       }
     }
     &.current-task {
-      width: 66.666%;
+      width: 100%;
     }
     &.student-rating {
-      width: calc(50% - 90px);
+      // width: calc(50% - 90px);
       min-height: 250px;
       table {
         width: 100%;
@@ -66,6 +81,35 @@
         tr:last-child {
           td {
             border-bottom: none;
+          }
+        }
+      }
+    }
+    mat-progress-bar {
+     
+    }
+    .mat-progress-bar {
+      .mat-progress-bar-buffer {
+        background-color: #eee;
+      }
+      &.red {
+        .mat-progress-bar-fill {
+          &:after {
+            background-color: #d81b1b;
+          }
+        }
+      }
+      &.orange {
+        .mat-progress-bar-fill {
+          &:after {
+            background-color: #fb8c00;
+          }
+        }
+      }
+      &.green {
+        .mat-progress-bar-fill {
+          &:after {
+            background-color: #43a047;
           }
         }
       }

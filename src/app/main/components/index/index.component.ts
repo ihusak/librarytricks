@@ -1,4 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, OnInit, ViewEncapsulation } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import {
@@ -15,7 +15,8 @@ import { TaskService } from '../tasks/tasks.service';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss']
+  styleUrls: ['./index.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class IndexComponent implements OnInit {
   public userRoles = UserRolesEnum;

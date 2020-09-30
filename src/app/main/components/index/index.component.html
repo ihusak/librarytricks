@@ -10,7 +10,7 @@
       </div>
       <div class="result">
         <span class="number">{{userInfo.progress}}%</span>
-        <mat-progress-bar mode="determinate" [value]="userInfo.progress"></mat-progress-bar>
+        <mat-progress-bar [ngClass]="{'red': userInfo.progress <= 20, 'orange': userInfo.progress > 20 && userInfo.progress <= 70, 'green': userInfo.progress > 70 && userInfo.progress <= 100}" mode="determinate" [value]="userInfo.progress"></mat-progress-bar>
       </div>
       <div class="done-tasks" *ngIf="studentTasks && doneTasks">
         Заданий выполнено: <b>{{doneTasks.length}} из {{studentTasks.length}}</b>
@@ -72,45 +72,37 @@
       </div>
     </div>
   </div>
-  <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && coachInfo">
-    <div>
-      <p>Тренер в группе <b>{{userInfo.group.name}}</b></p>
-      <div class="content">
-        <p><b>{{coachInfo.userName}}</b></p>
-        <p>Телефон: {{coachInfo.phone}}</p>
-        <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
-        <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
-      </div>
-    </div>
-  </div>
-  <div class="item centering" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
-    <div>
-      <h4>Мои награды</h4>
-      <div class="content">
-        <span class="rating">{{userInfo.rating}}</span>
-        <p>баллов</p>
-      </div>
-    </div>
-  </div>
   <div class="item current-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.id">
-    <div>
-      <h2>Текущая задача</h2>
+    <div class="card-icon red">
+      <i class="material-icons">school</i>
+    </div>
+      <h5>Текущая задача</h5>
       <div class="content">
         <p>Название задания: {{userInfo.currentTask.title}}</p>
         <p>Описание задания: {{userInfo.currentTask.description}}</p>
         <p>Текущий статус: <b>{{userInfo.currentTask.status}}</b></p>
       </div>
-    </div>
   </div>
   <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && coachInfo">
-    <div>
-      <p>Тренер в группе <b>{{userInfo.group.name}}</b></p>
-      <div class="content">
-        <p><b>{{coachInfo.userName}}</b></p>
-        <p>Телефон: {{coachInfo.phone}}</p>
-        <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
-        <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
-      </div>
+    <div class="card-icon blue">
+      <i class="material-icons">record_voice_over</i>
+    </div>
+    <h5>Мой тренер</h5>
+    <div class="content">
+      <p><b>{{coachInfo.userName}}</b></p>
+      <p>Телефон: {{coachInfo.phone}}</p>
+      <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
+      <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
+    </div>
+  </div>
+  <div class="item rewards" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
+    <div class="card-icon purple">
+      <i class="material-icons">plus_one</i>
+    </div>
+    <h5>Мои награды</h5>
+    <div class="content">
+      <span class="rating">{{userInfo.rating}}</span>
+      <p>баллов</p>
     </div>
   </div>
 </div>
