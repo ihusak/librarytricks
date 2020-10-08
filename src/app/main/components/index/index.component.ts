@@ -26,6 +26,9 @@ export class IndexComponent implements OnInit {
   public studentTableColumns = ['Позиция', 'Имя', 'Группа', 'Рейтинг', 'Прогресс'];
   public studentTasks: TaskModel[];
   public doneTasks;
+  public selectGroups;
+  public currentGroup;
+  public currentStudent;
 
   constructor(
     private mainService: MainService,
@@ -37,8 +40,8 @@ export class IndexComponent implements OnInit {
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
     if (this.userInfo.progress) {
-      this.userInfo.progress = Math.round(this.userInfo.progress)
-    };
+      this.userInfo.progress = Math.round(this.userInfo.progress);
+    }
     switch (this.userInfo.role.id) {
       case this.userRoles.STUDENT:
         if (this.userInfo.coach) {
@@ -46,8 +49,41 @@ export class IndexComponent implements OnInit {
           this.getStudentsInfo(this.userInfo.group.id);
           this.getStudentTasks();
         }
+        break;
+      case this.userRoles.COACH:
+        this.profileService.getAllGroups().subscribe((groups) => {
+          this.selectGroups = groups;
+          this.currentGroup = groups[0];
+          this.getStudentsInfo(groups[0].id);
+          this.getStudentTasks();
+        });
+        break;
     }
     console.log(this);
+  }
+
+  compareObjectsStudents(o1: any, o2: any): boolean {
+    return o1.id === o2.id;
+  }
+
+  compareObjectsGroups(o1: any, o2: any): boolean {
+    return o1.name === o2.name && o1.id === o2.id;
+  }
+
+  public changeGroup(group) {
+    const groupId: number = group.id;
+    console.log(groupId);
+    // this.currentStudent = null;
+    this.getStudentsInfo(groupId);
+    this.getStudentTasks();
+    console.log(this.currentStudent);
+  }
+
+  public changeStudent(student) {
+    console.log(student);
+    this.currentStudent = student;
+    this.getStudentsInfo(student.group.id);
+    this.getStudentTasks();
   }
 
   private getCoachInfo(id: string) {
@@ -58,33 +94,33 @@ export class IndexComponent implements OnInit {
   }
 
   private getStudentsInfo(groupId: number) {
+    console.log(groupId);
     const studentRole = this.userRoles.STUDENT;
     this.profileService.getAllStudents(studentRole).subscribe((studentsList: StudentInfoInterface[]) => {
-      console.log(studentsList);
       this.studentsList = studentsList.filter((studentInfo: StudentInfoInterface) => {
         if (studentInfo.group) {
           return groupId === studentInfo.group.id;
         }
         return false;
       }).sort((a, b) => a.rating > b.rating ? -1 : 1);
-      console.log(this.studentsList);
+      if ((this.userInfo.role.id === this.userRoles.COACH) && !this.currentStudent) {
+        this.currentStudent = this.studentsList[0];
+      }
     });
   }
   private getStudentTasks() {
     this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
-      this.studentTasks = tasks.filter(task => task.group.id === this.userInfo.group.id);
-      this.doneTasks = this.userInfo.doneTasks.filter(taskId => {
+      const student = this.currentStudent ? this.currentStudent : this.userInfo;
+      this.studentTasks = tasks.filter(task => {
+        return task.group.id === (this.currentStudent ? this.currentStudent.group.id : student.group.id);
+      });
+      this.doneTasks = student.doneTasks.filter(taskId => {
         return this.studentTasks.find(task => task.id === taskId);
       });
       this.studentTasks = this.studentTasks.map((task: TaskModel) => {
-        if(this.doneTasks.find(taskId => taskId === task.id)) {
-          task.done = true;
-        } else {
-          task.done = false;
-        }
+        task.done = !!this.doneTasks.find(taskId => taskId === task.id);
         return task;
       });
-      console.log(this.studentTasks);
     });
   }
 }

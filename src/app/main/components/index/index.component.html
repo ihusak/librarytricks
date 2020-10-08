@@ -1,16 +1,27 @@
 <div class="wrap">
-  <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
+  <div class="item student-progress" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH])">
     <div class="card-icon green">
       <i class="material-icons">follow_the_signs</i>
     </div>
     <h5>Прогресс</h5>
-    <div class="progress-content">
-      <div class="group">
+    <div class="content">
+      <div class="select-student" *ngIf="(userInfo | userRolePipe:[userRoles.COACH])">
+        <mat-form-field>
+          <mat-label>Выбор ученика</mat-label>
+          <mat-select [compareWith]="compareObjectsStudents" [(ngModel)]="currentStudent" #selectedValue (valueChange)="changeStudent(selectedValue.value)">
+            <mat-option *ngFor="let student of studentsList" [value]="student">{{student.userName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="group" *ngIf="userInfo.group">
         Группа: {{userInfo.group.name}}
       </div>
       <div class="result">
-        <span class="number">{{userInfo.progress}}%</span>
-        <mat-progress-bar [ngClass]="{'red': userInfo.progress <= 20, 'orange': userInfo.progress > 20 && userInfo.progress <= 70, 'green': userInfo.progress > 70 && userInfo.progress <= 100}" mode="determinate" [value]="userInfo.progress"></mat-progress-bar>
+        <span class="number">{{currentStudent ? currentStudent.progress : userInfo.progress}}%</span>
+        <mat-progress-bar [ngClass]="{
+        'red': currentStudent ? currentStudent.progress : userInfo.progress <= 20,
+        'orange': currentStudent ? currentStudent.progress > 20 : userInfo.progress > 20 && currentStudent ? currentStudent.progress <= 70 : userInfo.progress <= 70,
+        'green': currentStudent ? currentStudent.progress > 70 : userInfo.progress > 70 && currentStudent ? currentStudent.progress <= 100 : userInfo.progress <= 100}" mode="determinate" [value]="currentStudent ? currentStudent.progress : userInfo.progress"></mat-progress-bar>
       </div>
       <div class="done-tasks" *ngIf="studentTasks && doneTasks">
         Заданий выполнено: <b>{{doneTasks.length}} из {{studentTasks.length}}</b>
@@ -25,14 +36,22 @@
       </div>
     </div>
   </div>
-  <div class="item student-rating" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.id">
+  <div class="item student-rating" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH])">
     <div class="card-icon orange">
       <i class="material-icons">leaderboard</i>
     </div>
     <h5>Рейтинг в группе</h5>
     <div class="content">
+      <div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH])">
+        <mat-form-field>
+          <mat-label>Выбор группы</mat-label>
+          <mat-select [compareWith]="compareObjectsGroups" [(ngModel)]="currentGroup" #selectedValue (valueChange)="changeGroup(selectedValue.value)">
+            <mat-option *ngFor="let group of selectGroups" [value]="group">{{group.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div class="table">
-        <table mat-table [dataSource]="studentsList" class="mat-elevation-z8">
+        <table mat-table [dataSource]="studentsList" class="mat-elevation-z8" *ngIf="studentsList && studentsList.length > 0">
 
           <!--- Note that these columns can be defined in any order.
                 The actual rendered columns are set as a property on the row definition" -->
@@ -69,6 +88,9 @@
           <tr mat-header-row *matHeaderRowDef="studentTableColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: studentTableColumns;"></tr>
         </table>
+        <div class="empty" *ngIf="studentsList && studentsList.length <= 0">
+          Список пуст
+        </div>
       </div>
     </div>
   </div>

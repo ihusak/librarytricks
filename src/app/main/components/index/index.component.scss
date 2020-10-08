@@ -24,7 +24,7 @@
         margin-right: 15px;
       }
     }
-    .progress-content {
+    .content {
       .group {
         margin: 35px 0;
       }
@@ -45,6 +45,14 @@
             align-items: center;
           }
         }
+      }
+      .select-student {
+        margin-top: 15px;
+        text-align: right;
+      }
+      .select-group {
+        margin-top: 15px;
+        text-align: right;
       }
     }
     &.rewards {
@@ -73,7 +81,12 @@
       width: 100%;
     }
     &.student-rating {
-      // width: calc(50% - 90px);
+     .content {
+       .empty {
+         text-align: center;
+         font-weight: 600;
+       }
+     }
       min-height: 250px;
       table {
         width: 100%;
@@ -86,7 +99,7 @@
       }
     }
     mat-progress-bar {
-     
+
     }
     .mat-progress-bar {
       .mat-progress-bar-buffer {

@@ -1,9 +1,11 @@
 .pending-tasks {
   .task-item {
     padding: 25px;
-    box-shadow: 0px 0px 5px 0px rgb(0 0 0 / 16%);
-    margin-bottom: 15px;
+    box-shadow: 0px 5px 5px 0px rgb(0 0 0 / 16%);
+    margin-top: 15px;
     border-radius: 15px;
+    background: rgb(2,0,36);
+    background: linear-gradient(23deg, rgba(2,0,36,1) 0%, rgba(255,255,255,1) 0%, rgba(227,180,38,0.12648809523809523) 100%);
     h4 {
       font-size: 20px;
       margin-top: 0;

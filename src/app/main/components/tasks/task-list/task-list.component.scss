@@ -4,6 +4,12 @@
     font-weight: bold;
     font-size: 18px;
   }
+  .mat-expansion-panel {
+    button {
+      margin-right: 10px;
+      margin-top: 25px;
+    }
+  }
   .mat-expansion-panel-header-description {
     justify-content: flex-end;
   }
