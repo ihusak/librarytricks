@@ -63,7 +63,9 @@ export class IndexComponent implements OnInit {
   }
 
   compareObjectsStudents(o1: any, o2: any): boolean {
-    return o1.id === o2.id;
+    if (o1.id && o2.id) {
+      return o1.id === o2.id;
+    }
   }
 
   compareObjectsGroups(o1: any, o2: any): boolean {
@@ -73,7 +75,7 @@ export class IndexComponent implements OnInit {
   public changeGroup(group) {
     const groupId: number = group.id;
     console.log(groupId);
-    // this.currentStudent = null;
+    this.currentStudent = null;
     this.getStudentsInfo(groupId);
     this.getStudentTasks();
     console.log(this.currentStudent);

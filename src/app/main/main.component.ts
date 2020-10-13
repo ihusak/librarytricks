@@ -5,6 +5,7 @@ import { ProfileService } from './components/profile/profile.service';
 import { StudentInfoInterface, CoachInfoInterface, ParentInfoInterface, AdminInfoInterface } from '../shared/interface/user-info.interface';
 import * as moment from 'moment';
 import { User } from '../shared/interface/user.interface';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-main',
@@ -21,8 +22,10 @@ export class MainComponent implements OnInit {
   constructor(
     private mainService: MainService,
     protected appService: AppService,
-    protected profileService: ProfileService
+    protected profileService: ProfileService,
+    private cookieService: CookieService
   ) {
+    this.cookieService.set('id', 'some id');
   }
 
   ngOnInit() {
@@ -33,7 +36,7 @@ export class MainComponent implements OnInit {
     const userId = this.appService.getUserId();
     const userRole = this.appService.getUserRole();
     this.mainService.getUserInfo(userId, userRole).subscribe(
-      (userInfoData: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface) => 
+      (userInfoData: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface) =>
       {
       if(userInfoData.startTraining) {
         userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');

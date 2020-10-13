@@ -19,6 +19,7 @@ import { AdminRequestPermissionPopupComponent } from './layouts/popups/admin-req
 import { SharedModule } from '../shared/shared.module';
 import { PipesModule } from '../shared/pipes/pipes.module';
 import { TaskService } from './components/tasks/tasks.service';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { TaskService } from './components/tasks/tasks.service';
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent],
-  providers: [MainService, TaskService]
+  providers: [MainService, TaskService, CookieService]
 })
 export class MainModule {
 
