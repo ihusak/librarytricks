@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { CookieService } from 'ngx-cookie-service';
 
 interface Tokens {
   accessToken: string;
@@ -17,7 +18,7 @@ export class AppService {
   public userInfoData = this.userInfoSource.asObservable();
 
   constructor(
-    protected http: HttpClient) {}
+    protected http: HttpClient, private cookieService: CookieService) {}
 
   public apiUrl(): string{
     return environment.api_url;
@@ -27,6 +28,9 @@ export class AppService {
     localStorage.setItem('t', JSON.stringify(tokens));
     localStorage.setItem('userId', userId);
     localStorage.setItem('roleId', role.id);
+    this.cookieService.set('lb_userId', userId, 9999, '/');
+    this.cookieService.set('lb_userRoleId', role.id, 9999, '/');
+    this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/');
   }
 
   public getTokens(): Tokens {
