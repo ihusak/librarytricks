@@ -21,7 +21,7 @@ export class ProfileService extends AppService {
     }
 
     public getUserInfo(id: string, roleId: number) {
-      return this.http.get(`${this.apiUrl()}/userInfo/${id}/${roleId}`);
+      return this.http.get(`${this.apiUrl()}/userInfo`);
     }
 
     public getUserInfoByCoach(id: string) {

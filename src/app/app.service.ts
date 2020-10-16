@@ -28,9 +28,10 @@ export class AppService {
     localStorage.setItem('t', JSON.stringify(tokens));
     localStorage.setItem('userId', userId);
     localStorage.setItem('roleId', role.id);
-    this.cookieService.set('lb_userId', userId, 9999, '/');
-    this.cookieService.set('lb_userRoleId', role.id, 9999, '/');
-    this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/');
+    // this.cookieService.set('lb_userId', userId, 9999, '/');
+    // this.cookieService.set('lb_userRoleId', role.id, 9999, '/');
+    // this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/');
+    this.cookieService.set('lb_config', tokens.accessToken, 9999, '/');
   }
 
   public getTokens(): Tokens {
@@ -47,6 +48,7 @@ export class AppService {
 
   public clearStorage() {
     localStorage.clear();
+    this.cookieService.delete('lb_config', '/');
   }
 
   public updateAccesToken(newAccesToken) {

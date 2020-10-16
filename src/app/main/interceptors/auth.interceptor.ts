@@ -33,7 +33,7 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     private addToken(req: HttpRequest<any>, token: string) {
       const authReq = req.clone({
-        headers: req.headers.set('Authorization', `Bearer ${token}`),
+        // headers: req.headers.set('Authorization', `Bearer ${token}`),
         withCredentials: true
       });
       return authReq;
