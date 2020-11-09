@@ -20,22 +20,20 @@ export class AppService {
   constructor(
     protected http: HttpClient, private cookieService: CookieService) {}
 
-  public apiUrl(): string{
+  public apiUrl(): string {
     return environment.api_url;
   }
 
   public setUserDataToLocalStorage(tokens: Tokens, userId: string, role: any) {
-    localStorage.setItem('t', JSON.stringify(tokens));
-    localStorage.setItem('userId', userId);
-    localStorage.setItem('roleId', role.id);
-    // this.cookieService.set('lb_userId', userId, 9999, '/');
-    // this.cookieService.set('lb_userRoleId', role.id, 9999, '/');
-    // this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/');
+    this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/');
     this.cookieService.set('lb_config', tokens.accessToken, 9999, '/');
   }
 
   public getTokens(): Tokens {
-    return JSON.parse(localStorage.getItem('t'));
+    return {
+      accessToken: this.cookieService.get('lb_config'),
+      refreshToken:  this.cookieService.get('lb_refreshToken')
+    };
   }
 
   public getUserId(): string {
@@ -47,14 +45,12 @@ export class AppService {
   }
 
   public clearStorage() {
-    localStorage.clear();
     this.cookieService.delete('lb_config', '/');
+    this.cookieService.delete('lb_refreshToken', '/');
   }
 
   public updateAccesToken(newAccesToken) {
-    const tokens = JSON.parse(localStorage.getItem('t'));
-    tokens.accessToken = newAccesToken;
-    localStorage.setItem('t', JSON.stringify(tokens));
+    this.cookieService.set('lb_config', newAccesToken, 9999, '/');
   }
   public setUserInfoData(userInfo) {
     userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');

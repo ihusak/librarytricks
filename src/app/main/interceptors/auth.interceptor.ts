@@ -4,6 +4,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { AppService } from 'src/app/app.service';
 import { catchError, switchMap, filter, take, map } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -12,20 +13,24 @@ export class AuthInterceptor implements HttpInterceptor {
   private accesToken: string;
   private refreshToken: string;
 
-  constructor(private appService: AppService, private authService: AuthService){}
+  constructor(private appService: AppService, private authService: AuthService, private cookieService: CookieService){}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-      this.accesToken = this.appService.getTokens().accessToken;
-      this.refreshToken = this.appService.getTokens().refreshToken;
+      this.accesToken = this.cookieService.getAll().lb_config;
+      this.refreshToken = this.cookieService.getAll().lb_refreshToken;
+      console.log(this);
 
       if(this.accesToken) {
         req = this.addToken(req, this.accesToken);
+        console.log('REQUEST!!!', req);
       }
       return next.handle(req)
       .pipe(catchError((err) => {
         if (err.status === 403) {
           console.log('REfrashing token');
-          return this.handleExpireToken(req, next);
+          this.authService.logout(this.accesToken);
+          this.cookieService.deleteAll();
+          // return this.handleExpireToken(req, next);
         } else {
           return throwError(err);
         }

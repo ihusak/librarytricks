@@ -4,7 +4,8 @@
       <i class="material-icons">follow_the_signs</i>
     </div>
     <h5>Прогресс</h5>
-    <div class="content">
+    <div class="no-student" *ngIf="!currentStudent">Нет данных</div>
+    <div class="content" *ngIf="currentStudent">
       <div class="select-student" *ngIf="(userInfo | userRolePipe:[userRoles.COACH])">
         <mat-form-field>
           <mat-label>Выбор ученика</mat-label>

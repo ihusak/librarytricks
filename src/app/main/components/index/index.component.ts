@@ -77,7 +77,6 @@ export class IndexComponent implements OnInit {
     console.log(groupId);
     this.currentStudent = null;
     this.getStudentsInfo(groupId);
-    this.getStudentTasks();
     console.log(this.currentStudent);
   }
 
@@ -107,22 +106,25 @@ export class IndexComponent implements OnInit {
       }).sort((a, b) => a.rating > b.rating ? -1 : 1);
       if ((this.userInfo.role.id === this.userRoles.COACH) && !this.currentStudent) {
         this.currentStudent = this.studentsList[0];
+        this.getStudentTasks();
       }
     });
   }
   private getStudentTasks() {
     this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
       const student = this.currentStudent ? this.currentStudent : this.userInfo;
-      this.studentTasks = tasks.filter(task => {
-        return task.group.id === (this.currentStudent ? this.currentStudent.group.id : student.group.id);
-      });
-      this.doneTasks = student.doneTasks.filter(taskId => {
-        return this.studentTasks.find(task => task.id === taskId);
-      });
-      this.studentTasks = this.studentTasks.map((task: TaskModel) => {
-        task.done = !!this.doneTasks.find(taskId => taskId === task.id);
-        return task;
-      });
+      if (student.group) {
+        this.studentTasks = tasks.filter(task => {
+          return task.group.id === (this.currentStudent ? this.currentStudent.group.id : student.group.id);
+        });
+        this.doneTasks = student.doneTasks.filter(taskId => {
+          return this.studentTasks.find(task => task.id === taskId);
+        });
+        this.studentTasks = this.studentTasks.map((task: TaskModel) => {
+          task.done = !!this.doneTasks.find(taskId => taskId === task.id);
+          return task;
+        });
+      }
     });
   }
 }
