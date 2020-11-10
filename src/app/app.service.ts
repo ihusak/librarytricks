@@ -18,7 +18,9 @@ export class AppService {
   public userInfoData = this.userInfoSource.asObservable();
 
   constructor(
-    protected http: HttpClient, private cookieService: CookieService) {}
+    protected http: HttpClient,
+    private cookieService: CookieService
+    ) {}
 
   public apiUrl(): string {
     return environment.api_url;

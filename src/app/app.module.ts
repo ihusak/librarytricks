@@ -31,8 +31,13 @@ import { PipesModule } from './shared/pipes/pipes.module';
   MainModule,
   PipesModule
   ],
-  providers: [MainGuardService,
-  {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+  providers: [
+    MainGuardService,
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  },
   {
     provide: HTTP_INTERCEPTORS,
     useClass: LoaderInterceptorService,

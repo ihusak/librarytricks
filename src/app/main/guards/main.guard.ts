@@ -11,8 +11,9 @@ export class MainGuardService implements CanActivate {
     status: boolean;
     constructor(private mainService: MainService, private appService: AppService, private router: Router, private ngZone: NgZone) {}
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean>  {
-      const userId = this.appService.getUserId();
-      if (userId) {
+      console.log(route);
+      const token = this.appService.getTokens().accessToken;
+      if (token) {
         if (state.url.split('/').length <= 2) {
           this.navigate(['main/index']);
         }

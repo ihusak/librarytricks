@@ -2,9 +2,10 @@ import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { AppService } from 'src/app/app.service';
-import { catchError, switchMap, filter, take, map } from 'rxjs/operators';
+import { catchError, switchMap, filter, take, map, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth.service';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -13,7 +14,12 @@ export class AuthInterceptor implements HttpInterceptor {
   private accesToken: string;
   private refreshToken: string;
 
-  constructor(private appService: AppService, private authService: AuthService, private cookieService: CookieService){}
+  constructor(
+    private appService: AppService,
+    private authService: AuthService,
+    private cookieService: CookieService,
+    private router: Router
+    ){}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
       this.accesToken = this.cookieService.getAll().lb_config;
@@ -22,16 +28,33 @@ export class AuthInterceptor implements HttpInterceptor {
       if(this.accesToken) {
         req = this.addToken(req, this.accesToken);
       }
-      return next.handle(req)
-      .pipe(catchError((err) => {
-        if (err.status === 403 || err.status === 401) {
-          this.authService.logout(this.accesToken);
-          this.cookieService.deleteAll();
+      return next.handle(req).pipe(
+        tap((event => {}),
+        (err) => {
+        if (err.status === 401) {
+          this.authService.logout(this.accesToken).subscribe(() => {
+            this.router.navigate(['/']);
+            this.cookieService.delete('lb_config', '/');
+            this.cookieService.delete('lb_refreshToken', '/');
+          });
           // return this.handleExpireToken(req, next);
-        } else {
-          return throwError(err);
+        } else if (err.status === 403) {
+          this.router.navigate(['/']);
+          this.cookieService.delete('lb_config', '/');
+          this.cookieService.delete('lb_refreshToken', '/');
         }
-      }));
+        })
+      )
+      // .pipe(catchError((err) => {
+      //   if (err.status === 403 || err.status === 401) {
+      //     this.router.navigate(['/']);
+      //     this.cookieService.deleteAll();
+      //     this.authService.logout(this.accesToken);
+      //     // return this.handleExpireToken(req, next);
+      //   } else {
+      //     return throwError(err);
+      //   }
+      // }));
     }
     private addToken(req: HttpRequest<any>, token: string) {
       const authReq = req.clone({
