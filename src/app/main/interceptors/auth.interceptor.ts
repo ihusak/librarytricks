@@ -18,16 +18,13 @@ export class AuthInterceptor implements HttpInterceptor {
 
       this.accesToken = this.cookieService.getAll().lb_config;
       this.refreshToken = this.cookieService.getAll().lb_refreshToken;
-      console.log(this);
 
       if(this.accesToken) {
         req = this.addToken(req, this.accesToken);
-        console.log('REQUEST!!!', req);
       }
       return next.handle(req)
       .pipe(catchError((err) => {
-        if (err.status === 403) {
-          console.log('REfrashing token');
+        if (err.status === 403 || err.status === 401) {
           this.authService.logout(this.accesToken);
           this.cookieService.deleteAll();
           // return this.handleExpireToken(req, next);

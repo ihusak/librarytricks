@@ -47,7 +47,6 @@ export class IndexComponent implements OnInit {
         if (this.userInfo.coach) {
           this.getCoachInfo(this.userInfo.coach.id);
           this.getStudentsInfo(this.userInfo.group.id);
-          this.getStudentTasks();
         }
         break;
       case this.userRoles.COACH:
@@ -74,14 +73,11 @@ export class IndexComponent implements OnInit {
 
   public changeGroup(group) {
     const groupId: number = group.id;
-    console.log(groupId);
     this.currentStudent = null;
     this.getStudentsInfo(groupId);
-    console.log(this.currentStudent);
   }
 
   public changeStudent(student) {
-    console.log(student);
     this.currentStudent = student;
     this.getStudentsInfo(student.group.id);
     this.getStudentTasks();
@@ -95,7 +91,6 @@ export class IndexComponent implements OnInit {
   }
 
   private getStudentsInfo(groupId: number) {
-    console.log(groupId);
     const studentRole = this.userRoles.STUDENT;
     this.profileService.getAllStudents(studentRole).subscribe((studentsList: StudentInfoInterface[]) => {
       this.studentsList = studentsList.filter((studentInfo: StudentInfoInterface) => {
@@ -106,8 +101,10 @@ export class IndexComponent implements OnInit {
       }).sort((a, b) => a.rating > b.rating ? -1 : 1);
       if ((this.userInfo.role.id === this.userRoles.COACH) && !this.currentStudent) {
         this.currentStudent = this.studentsList[0];
-        this.getStudentTasks();
+      } else {
+        this.currentStudent = this.studentsList.filter(student => student.id === this.userInfo.id)[0];
       }
+      this.getStudentTasks();
     });
   }
   private getStudentTasks() {
