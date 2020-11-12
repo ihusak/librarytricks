@@ -14,12 +14,10 @@ interface Tokens {
   providedIn: 'root'
 })
 export class AppService {
-  private userInfoSource = new BehaviorSubject<object>({});
-  public userInfoData = this.userInfoSource.asObservable();
 
   constructor(
     protected http: HttpClient,
-    private cookieService: CookieService
+    protected cookieService: CookieService
     ) {}
 
   public apiUrl(): string {
@@ -53,9 +51,5 @@ export class AppService {
 
   public updateAccesToken(newAccesToken) {
     this.cookieService.set('lb_config', newAccesToken, 9999, '/');
-  }
-  public setUserInfoData(userInfo) {
-    userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
-    this.userInfoSource.next(userInfo);
   }
 }

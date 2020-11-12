@@ -9,9 +9,13 @@ import { AppService } from 'src/app/app.service';
 })
 export class MainGuardService implements CanActivate {
     status: boolean;
-    constructor(private mainService: MainService, private appService: AppService, private router: Router, private ngZone: NgZone) {}
+    constructor(private mainService: MainService,
+                private appService: AppService,
+                private router: Router,
+                private ngZone: NgZone
+    ) {}
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean>  {
-      console.log(route);
+      console.log('guard', route);
       const token = this.appService.getTokens().accessToken;
       if (token) {
         if (state.url.split('/').length <= 2) {
