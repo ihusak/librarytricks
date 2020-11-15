@@ -32,8 +32,8 @@ export class ProfileService extends AppService {
       return this.http.put(`${this.apiUrl()}/userInfo/${id}/${roleId}`, userInfo);
     }
 
-    public getAllStudents(roleId: number) {
-      return this.http.get(`${this.apiUrl()}/userInfo/all/${roleId}`).pipe(map((userInfo: any) => {
+    public getAllStudents() {
+      return this.http.get(`${this.apiUrl()}/userInfo/all`).pipe(map((userInfo: any) => {
         return userInfo;
       }));
     }
