@@ -30,9 +30,7 @@ export class MainComponent implements OnInit {
   }
 
   private getUserInfo() {
-    const userId = this.appService.getUserId();
-    const userRole = this.appService.getUserRole();
-    this.mainService.getUserInfo(userId, userRole).subscribe(
+    this.profileService.getUserInfo().subscribe(
       (userInfoData: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface) =>
       {
       if(userInfoData.startTraining) {

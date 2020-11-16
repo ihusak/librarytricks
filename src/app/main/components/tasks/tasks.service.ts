@@ -13,7 +13,7 @@ export class TaskService extends AppService {
         }));
     }
     public getAllTasks() {
-      return this.http.get(`${this.apiUrl()}/task/all`).pipe(map((tasks: any) => {
+      return this.http.get(`${this.apiUrl()}/task/list`).pipe(map((tasks: any) => {
         return tasks.map(task => new TaskModel(task));
       }));
     }
@@ -27,14 +27,14 @@ export class TaskService extends AppService {
     }
 
     public createTask(task: TaskModel) {
-      return this.http.post(`${this.apiUrl()}/task/create-task`, task);
+      return this.http.post(`${this.apiUrl()}/task/create`, task);
     }
 
     public updateTask(taskId: string, task: TaskModel) {
-      return this.http.put(`${this.apiUrl()}/task/update-task/${taskId}`, task);
+      return this.http.put(`${this.apiUrl()}/task/update/${taskId}`, task);
     }
 
     public deleteTask(taskId: string) {
-      return this.http.delete(`${this.apiUrl()}/task/delete-task/${taskId}`);
+      return this.http.delete(`${this.apiUrl()}/task/delete/${taskId}`);
     }
 }

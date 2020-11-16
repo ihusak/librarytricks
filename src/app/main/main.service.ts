@@ -6,15 +6,10 @@ import { AppService } from '../app.service';
 @Injectable()
 export class MainService extends AppService {
   public userInfo: StudentInfoInterface | ParentInfoInterface | CoachInfoInterface | AdminInfoInterface;
-    // getUser(id: string) {
-    //     return this.http.get(`api/users/${id}`);
-    // }
-    public getUserInfo(id: string, roleId: number) {
-      return this.http.get(`${this.apiUrl()}/userInfo`);
-    }
-    public requestCoachPermission(id: string, phone: string) {
-      return this.http.post(`${this.apiUrl()}/userInfo/request/coach/${id}`, {
-        phone
-      });
-    }
+
+  public requestCoachPermission(id: string, phone: string) {
+    return this.http.post(`${this.apiUrl()}/userInfo/request/coach/${id}`, {
+      phone
+    });
+  }
 }

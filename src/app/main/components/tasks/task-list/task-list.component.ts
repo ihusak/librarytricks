@@ -124,7 +124,9 @@ export class TaskListComponent implements OnInit {
         // default group for admin adn coach
         this.currentGroup = allGroups[0];
       }
-      this.getTasksStatuses(this.currentGroup.id);
+      if(this.userInfo.role.id === this.userRoles.COACH) {
+        this.getTasksStatuses(this.currentGroup.id);
+      }
       // this.getPendingTasks(this.currentGroup.id);
     });
   }

@@ -25,9 +25,7 @@ export class OverviewComponent implements OnInit {
     this.getUserInfo();
   }
   public getUserInfo() {
-    const userId = this.appService.getUserId();
-    const userRole = this.appService.getUserRole();
-    this.profileService.getUserInfo(userId, userRole).subscribe((userInfo: any) => {
+    this.profileService.getUserInfo().subscribe((userInfo: any) => {
       userInfo.startTraining = moment(userInfo.startTraining).format('DD.MM.YYYY');
       this.userInfo = userInfo;
       // this.appService.setUserInfoData(userInfo);

@@ -20,9 +20,13 @@ export class ProfileService extends AppService {
       return this.http.put(`${this.apiUrl()}/userInfo/task-status/${userId}`, {task});
     }
 
-    public getUserInfo(id: string, roleId: number) {
+    public getUserInfo() {
       return this.http.get(`${this.apiUrl()}/userInfo`);
     }
+
+  public getUserInfoWithParams(id: string, roleId: number) {
+    return this.http.get(`${this.apiUrl()}/userInfo/${id}/${roleId}`);
+  }
 
     public getUserInfoByCoach(id: string) {
       return this.http.get(`${this.apiUrl()}/userInfo/coach/${id}`);
@@ -33,7 +37,7 @@ export class ProfileService extends AppService {
     }
 
     public getAllStudents() {
-      return this.http.get(`${this.apiUrl()}/userInfo/all`).pipe(map((userInfo: any) => {
+      return this.http.get(`${this.apiUrl()}/userInfo/all/${this.userRoles.STUDENT}`).pipe(map((userInfo: any) => {
         return userInfo;
       }));
     }

@@ -25,20 +25,5 @@ export class RatingsComponent implements OnInit {
     this.userInfo.progress = Math.round(this.userInfo.progress);
   }
 
-  private getUsersInfo() {
-    const userId = this.appService.getUserId();
-    const userRole = this.appService.getUserRole();
-    this.mainService.getUserInfo(userId, userRole).subscribe(
-      (userInfoData: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface) => 
-      {
-      if(userInfoData.startTraining) {
-        userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
-      }
-      this.userInfo = userInfoData;
-      // this.appService.setUserInfoData(userInfoData);
-      this.mainService.userInfo = userInfoData;
-      console.log('main component reflect', this.mainService.userInfo);
-    });
-  }
 
 }

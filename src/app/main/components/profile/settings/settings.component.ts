@@ -44,8 +44,7 @@ export class SettingsComponent implements OnInit {
     this.getUserDetails();
   }
   getUserDetails() {
-    const userId = this.appService.getUserId();
-    this.profileService.getUserInfo(userId, this.roleId).subscribe((data: any) => {
+    this.profileService.getUserInfo().subscribe((data: any) => {
       this.userInfoData = data;
       this.switchValidatorsOnRole(this.userInfoData.role.id, data);
       if (data.userImg) {
@@ -153,7 +152,7 @@ export class SettingsComponent implements OnInit {
         this.initForm = true;
         break;
       case this.userRoles.PARENT:
-      this.profileService.getAllStudents(this.userRoles.STUDENT).subscribe(result => {
+      this.profileService.getAllStudents().subscribe(result => {
         console.log(result);
         this.userInfo = this.formBuilder.group({
           phone: [data.phone || '', [Validators.required]],

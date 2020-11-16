@@ -54,7 +54,6 @@ export class IndexComponent implements OnInit {
           this.selectGroups = groups;
           this.currentGroup = groups[0];
           this.getStudentsInfo(groups[0].id);
-          this.getStudentTasks();
         });
         break;
     }
@@ -85,14 +84,13 @@ export class IndexComponent implements OnInit {
 
   private getCoachInfo(id: string) {
     const coachRole = this.userRoles.COACH;
-    this.profileService.getUserInfo(id, coachRole).subscribe((coachInfo: CoachInfoInterface) => {
+    this.profileService.getUserInfoWithParams(id, coachRole).subscribe((coachInfo: CoachInfoInterface) => {
       this.coachInfo = coachInfo;
     });
   }
 
   private getStudentsInfo(groupId: number) {
-    const studentRole = this.userRoles.STUDENT;
-    this.profileService.getAllStudents(studentRole).subscribe((studentsList: StudentInfoInterface[]) => {
+    this.profileService.getAllStudents().subscribe((studentsList: StudentInfoInterface[]) => {
       this.studentsList = studentsList.filter((studentInfo: StudentInfoInterface) => {
         if (studentInfo.group) {
           return groupId === studentInfo.group.id;
