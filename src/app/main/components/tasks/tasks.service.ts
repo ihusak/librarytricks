@@ -18,6 +18,12 @@ export class TaskService extends AppService {
       }));
     }
 
+    public getTasksByGroup(groupId: string) {
+      return this.http.get(`${this.apiUrl()}/task/group/${groupId}/list`).pipe(map((tasks: any) => {
+        return tasks.map(task => new TaskModel(task));
+      }));
+    }
+
     public getAllGroups() {
       return this.http.get(`${this.apiUrl()}/groups`);
     }

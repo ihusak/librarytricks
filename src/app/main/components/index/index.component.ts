@@ -47,6 +47,9 @@ export class IndexComponent implements OnInit {
         if (this.userInfo.coach) {
           this.getCoachInfo(this.userInfo.coach.id);
           this.getStudentsInfo(this.userInfo.group.id);
+          // this.getStudentTasks();
+          this.getTaskByGroup(this.userInfo.group.id);
+          this.checkStatusTask();
         }
         break;
       case this.userRoles.COACH:
@@ -54,6 +57,8 @@ export class IndexComponent implements OnInit {
           this.selectGroups = groups;
           this.currentGroup = groups[0];
           this.getStudentsInfo(groups[0].id);
+          this.getTaskByGroup(groups[0].id);
+          // this.getStudentTasks();
         });
         break;
     }
@@ -74,12 +79,16 @@ export class IndexComponent implements OnInit {
     const groupId: number = group.id;
     this.currentStudent = null;
     this.getStudentsInfo(groupId);
+    this.checkStatusTask();
+    console.log(this.currentStudent);
+    // this.getStudentTasks();
   }
 
   public changeStudent(student) {
     this.currentStudent = student;
-    this.getStudentsInfo(student.group.id);
-    this.getStudentTasks();
+    this.checkStatusTask();
+    // this.getStudentInfo(student);
+    // this.getStudentTasks();
   }
 
   private getCoachInfo(id: string) {
@@ -88,30 +97,29 @@ export class IndexComponent implements OnInit {
       this.coachInfo = coachInfo;
     });
   }
-
   private getStudentsInfo(groupId: number) {
-    this.profileService.getAllStudents().subscribe((studentsList: StudentInfoInterface[]) => {
-      this.studentsList = studentsList.filter((studentInfo: StudentInfoInterface) => {
-        if (studentInfo.group) {
-          return groupId === studentInfo.group.id;
-        }
-        return false;
-      }).sort((a, b) => a.rating > b.rating ? -1 : 1);
+    this.profileService.getUsersInfoByGroupId(groupId).subscribe((studentsList: StudentInfoInterface[]) => {
+      this.studentsList = studentsList.sort((a, b) => a.rating > b.rating ? -1 : 1);
       if ((this.userInfo.role.id === this.userRoles.COACH) && !this.currentStudent) {
         this.currentStudent = this.studentsList[0];
       } else {
         this.currentStudent = this.studentsList.filter(student => student.id === this.userInfo.id)[0];
       }
-      this.getStudentTasks();
+      this.checkStatusTask();
     });
   }
-  private getStudentTasks() {
-    this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
+  private getTaskByGroup(groupId: string) {
+    this.taskService.getTasksByGroup(groupId).subscribe(tasks => {
+      this.studentTasks = tasks;
+      this.checkStatusTask();
+    });
+  }
+  private checkStatusTask() {
       const student = this.currentStudent ? this.currentStudent : this.userInfo;
-      if (student.group) {
-        this.studentTasks = tasks.filter(task => {
-          return task.group.id === (this.currentStudent ? this.currentStudent.group.id : student.group.id);
-        });
+      if (student.group && this.studentTasks) {
+        // this.studentTasks.filter(task => {
+        //   return task.group.id === (this.currentStudent ? this.currentStudent.group.id : student.group.id);
+        // });
         this.doneTasks = student.doneTasks.filter(taskId => {
           return this.studentTasks.find(task => task.id === taskId);
         });
@@ -120,6 +128,11 @@ export class IndexComponent implements OnInit {
           return task;
         });
       }
-    });
+      if (!student.group) {
+        this.studentTasks = this.studentTasks.map((task: TaskModel) => {
+          task.done = false;
+          return task;
+        });
+      }
   }
 }
