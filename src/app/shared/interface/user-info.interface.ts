@@ -19,7 +19,7 @@ export interface StudentInfoInterface {
     phone: string
   };
   group: {
-    id: number;
+    id: string;
     name: string;
   };
   rating: number;

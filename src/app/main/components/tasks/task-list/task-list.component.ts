@@ -56,9 +56,9 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  private getAllTasks(groupId?: number) {
-    this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
-      this.tasksList = tasks.filter((task: TaskModel) => task.group.id === this.currentGroup.id);
+  private getAllTasks(groupId?: string) {
+    this.taskService.getTasksByGroup(groupId).subscribe((tasks: TaskModel[]) => {
+      this.tasksList = tasks;
       if(this.userInfo.role.id === UserRolesEnum.STUDENT) {
         this.tasksList.map((task: TaskModel, index) => {
           this.userInfo.doneTasks.find((id: string) => {
@@ -77,7 +77,7 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  private getTasksStatuses(groupId: number) {
+  private getTasksStatuses(groupId: string) {
     this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
       this.processingTasks = 0;
       this.pendingTasks = 0;
@@ -146,7 +146,7 @@ export class TaskListComponent implements OnInit {
   }
 
   public changeGroup(group) {
-    const groupId: number = group.id;
+    const groupId: string = group.id;
     this.getAllTasks(groupId);
     this.getTasksStatuses(groupId);
     // this.getPendingTasks(groupId);
