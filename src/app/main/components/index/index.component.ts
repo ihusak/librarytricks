@@ -39,9 +39,6 @@ export class IndexComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
-    if (this.userInfo.progress) {
-      this.userInfo.progress = Math.round(this.userInfo.progress);
-    }
     switch (this.userInfo.role.id) {
       case this.userRoles.STUDENT:
         if (this.userInfo.coach) {
@@ -50,6 +47,9 @@ export class IndexComponent implements OnInit {
           // this.getStudentTasks();
           this.getTaskByGroup(this.userInfo.group.id);
           this.checkStatusTask();
+          if (this.userInfo.progress) {
+            this.userInfo.progress = Math.round(this.userInfo.progress);
+          }
         }
         break;
       case this.userRoles.COACH:

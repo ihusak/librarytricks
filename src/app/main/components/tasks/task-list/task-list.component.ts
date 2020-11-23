@@ -42,7 +42,6 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit() {
     this.getGroups();
-    this.getAllTasks();
   }
 
   public assignTask(task: TaskModel) {
@@ -127,6 +126,7 @@ export class TaskListComponent implements OnInit {
       if(this.userInfo.role.id === this.userRoles.COACH) {
         this.getTasksStatuses(this.currentGroup.id);
       }
+      this.getAllTasks(this.currentGroup.id);
       // this.getPendingTasks(this.currentGroup.id);
     });
   }
