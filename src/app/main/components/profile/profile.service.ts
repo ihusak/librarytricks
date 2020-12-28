@@ -3,6 +3,9 @@ import { AppService } from 'src/app/app.service';
 import { map } from 'rxjs/operators';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { TaskModel } from '../tasks/task.model';
+import { CoachInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +35,12 @@ export class ProfileService extends AppService {
     return this.http.get(`${this.apiUrl()}/userInfo/coach/${id}`);
   }
 
-  public getUsersInfoByGroupId(id: number) {
+  public getUsersInfoByGroupId(id: string) {
     return this.http.get(`${this.apiUrl()}/userInfo/group/${id}`);
   }
 
-  public updateUserInfo(id: string, userInfo: any, roleId: number) {
-    return this.http.put(`${this.apiUrl()}/userInfo/${id}/${roleId}`, userInfo);
+  public updateUserInfo(userInfo: any) {
+    return this.http.put(`${this.apiUrl()}/userInfo`, userInfo);
   }
 
   public getAllStudents() {
@@ -46,15 +49,12 @@ export class ProfileService extends AppService {
     }));
   }
 
-  public getAllCoaches(roleId: number) {
-    return this.http.get(`${this.apiUrl()}/userInfo/all/${roleId}`).pipe(map((userInfo: any) => {
+  public getAllCoaches(roleId: number): Observable<UserCoachModel[]> {
+    return this.http.get(`${this.apiUrl()}/userInfo/all/${roleId}`).pipe(map((userInfo: CoachInfoInterface[]) => {
       return userInfo.filter((item) => {
         return item.role.id === this.userRoles.COACH;
       }).map(user => {
-        return {
-          name: user.userName,
-          id: user.id
-        };
+        return new UserCoachModel(user);
       });
     }));
   }

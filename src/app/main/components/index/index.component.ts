@@ -44,7 +44,6 @@ export class IndexComponent implements OnInit {
         if (this.userInfo.coach) {
           this.getCoachInfo(this.userInfo.coach.id);
           this.getStudentsInfo(this.userInfo.group.id);
-          // this.getStudentTasks();
           this.getTaskByGroup(this.userInfo.group.id);
           this.checkStatusTask();
           if (this.userInfo.progress) {
@@ -58,7 +57,23 @@ export class IndexComponent implements OnInit {
           this.currentGroup = groups[0];
           this.getStudentsInfo(groups[0].id);
           this.getTaskByGroup(groups[0].id);
-          // this.getStudentTasks();
+        });
+        break;
+      case this.userRoles.PARENT: 
+        const kidRole = this.userRoles.STUDENT;
+        this.profileService.getUserInfoWithParams(this.userInfo.myKid.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
+          this.currentStudent = studentInfo;
+          this.getTaskByGroup(studentInfo.group.id);
+          this.getStudentsInfo(studentInfo.group.id);
+          this.getCoachInfo(studentInfo.coach.id);
+        })
+      break;
+      case this.userRoles.ADMIN:
+        this.profileService.getAllGroups().subscribe((groups) => {
+          this.selectGroups = groups;
+          this.currentGroup = groups[0];
+          this.getStudentsInfo(groups[0].id);
+          this.getTaskByGroup(groups[0].id);
         });
         break;
     }
@@ -76,19 +91,15 @@ export class IndexComponent implements OnInit {
   }
 
   public changeGroup(group) {
-    const groupId: number = group.id;
+    const groupId: string = group.id;
     this.currentStudent = null;
     this.getStudentsInfo(groupId);
     this.checkStatusTask();
-    console.log(this.currentStudent);
-    // this.getStudentTasks();
   }
 
   public changeStudent(student) {
     this.currentStudent = student;
     this.checkStatusTask();
-    // this.getStudentInfo(student);
-    // this.getStudentTasks();
   }
 
   private getCoachInfo(id: string) {
@@ -97,12 +108,13 @@ export class IndexComponent implements OnInit {
       this.coachInfo = coachInfo;
     });
   }
-  private getStudentsInfo(groupId: number) {
+  private getStudentsInfo(groupId: string) {
     this.profileService.getUsersInfoByGroupId(groupId).subscribe((studentsList: StudentInfoInterface[]) => {
       this.studentsList = studentsList.sort((a, b) => a.rating > b.rating ? -1 : 1);
-      if ((this.userInfo.role.id === this.userRoles.COACH) && !this.currentStudent) {
+      if ((this.userInfo.role.id === this.userRoles.COACH) && 
+          !this.currentStudent || (this.userInfo.role.id === this.userRoles.ADMIN)) {
         this.currentStudent = this.studentsList[0];
-      } else {
+      } else if(!(this.userInfo.role.id === this.userRoles.PARENT)) {
         this.currentStudent = this.studentsList.filter(student => student.id === this.userInfo.id)[0];
       }
       this.checkStatusTask();
@@ -117,9 +129,6 @@ export class IndexComponent implements OnInit {
   private checkStatusTask() {
       const student = this.currentStudent ? this.currentStudent : this.userInfo;
       if (student.group && this.studentTasks) {
-        // this.studentTasks.filter(task => {
-        //   return task.group.id === (this.currentStudent ? this.currentStudent.group.id : student.group.id);
-        // });
         this.doneTasks = student.doneTasks.filter(taskId => {
           return this.studentTasks.find(task => task.id === taskId);
         });
@@ -128,7 +137,7 @@ export class IndexComponent implements OnInit {
           return task;
         });
       }
-      if (!student.group) {
+      if (!student.group && this.studentTasks) {
         this.studentTasks = this.studentTasks.map((task: TaskModel) => {
           task.done = false;
           return task;

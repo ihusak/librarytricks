@@ -88,12 +88,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
-    this.profileService.updateUserInfo(userId, formData, this.roleId).subscribe((updateUser: string) => {
+    this.profileService.updateUserInfo(formData).subscribe((updateUser: string) => {
       this.snackBar.open('Сохранено', '', {
         duration: 2000,
         panelClass: ['success']
       });
-      this.router.navigate(['main/profile/overview'])
       // .then(() => {
       //   window.location.reload();
       // });
@@ -102,6 +101,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   compareObjects(o1: any, o2: any): boolean {
     return o1.name === o2.name && o1.id === o2.id;
+  }
+
+  compareObjectsCoach(o1: any, o2: any): boolean {
+    return o1.id === o2.id;
   }
   /**
    *
@@ -129,7 +132,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       case this.userRoles.STUDENT:
         this.userGroup = data.group;
         this.profileService.getAllGroups().subscribe(allGroups => {
-          console.log('all group', allGroups);
           this.userGroups = allGroups;
         });
         this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
@@ -167,7 +169,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         break;
       case this.userRoles.PARENT:
       this.profileService.getAllStudents().subscribe(result => {
-        console.log(result);
         this.userInfo = this.formBuilder.group({
           phone: [data.phone || '', [Validators.required]],
           userName: [data.userName || '', [Validators.required]],
@@ -182,5 +183,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       });
       break;
     }
+    console.log(this);
   }
 }

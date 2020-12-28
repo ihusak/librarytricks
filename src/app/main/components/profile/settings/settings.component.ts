@@ -74,7 +74,7 @@ export class SettingsComponent implements OnInit {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
-    this.profileService.updateUserInfo(userId, formData, this.roleId).subscribe((updateUser: string) => {
+    this.profileService.updateUserInfo(formData).subscribe((updateUser: string) => {
       this.snackBar.open('Сохранено', '', {
         duration: 2000,
         panelClass: ['success']

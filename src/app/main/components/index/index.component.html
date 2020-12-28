@@ -1,12 +1,12 @@
 <div class="wrap">
-  <div class="item student-progress" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH])">
+  <div class="item student-progress" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH, userRoles.PARENT, userRoles.ADMIN])">
     <div class="card-icon green">
       <i class="material-icons">follow_the_signs</i>
     </div>
-    <h5>Прогресс</h5>
+    <h5>Прогресс <span *ngIf="currentStudent && (userInfo | userRolePipe:[userRoles.PARENT])">{{currentStudent.userName}}</span></h5>
     <div class="no-student" *ngIf="!currentStudent">Нет данных</div>
     <div class="content" *ngIf="currentStudent">
-      <div class="select-student" *ngIf="(userInfo | userRolePipe:[userRoles.COACH])">
+      <div class="select-student" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
         <mat-form-field>
           <mat-label>Выбор ученика</mat-label>
           <mat-select [compareWith]="compareObjectsStudents" [(ngModel)]="currentStudent" #selectedValue (valueChange)="changeStudent(selectedValue.value)">
@@ -37,13 +37,13 @@
       </div>
     </div>
   </div>
-  <div class="item student-rating" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH])">
+  <div class="item student-rating" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH, userRoles.PARENT, userRoles.ADMIN])">
     <div class="card-icon orange">
       <i class="material-icons">leaderboard</i>
     </div>
     <h5>Рейтинг в группе</h5>
     <div class="content">
-      <div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH])">
+      <div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
         <mat-form-field>
           <mat-label>Выбор группы</mat-label>
           <mat-select [compareWith]="compareObjectsGroups" [(ngModel)]="currentGroup" #selectedValue (valueChange)="changeGroup(selectedValue.value)">
@@ -106,11 +106,11 @@
         <p>Текущий статус: <b>{{userInfo.currentTask.status}}</b></p>
       </div>
   </div>
-  <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && coachInfo">
+  <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.PARENT]) && coachInfo">
     <div class="card-icon blue">
       <i class="material-icons">record_voice_over</i>
     </div>
-    <h5>Мой тренер</h5>
+    <h5>Тренер</h5>
     <div class="content">
       <p><b>{{coachInfo.userName}}</b></p>
       <p>Телефон: {{coachInfo.phone}}</p>
