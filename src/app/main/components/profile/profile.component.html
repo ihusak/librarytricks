@@ -72,7 +72,7 @@
           <mat-form-field>
               <mat-label>Выберите своего ребенка</mat-label>
               <mat-select [compareWith]="compareObjects" formControlName="myKid">
-                <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.name}}</mat-option>
+                <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
               </mat-select>
             </mat-form-field>
         </div>

@@ -129,7 +129,9 @@
     </div>
   </div>
 </div>
-
+<div class="messages">
+  <h4 *ngIf="(userInfo | userRolePipe:[userRoles.PARENT]) && !userInfo.myKid">Что бы увидеть прогресс своего ребенка вам нужно его закрепить в настройках своего профиля (<a routerLink="../profile">Перейти в настройки профиля</a>)</h4>
+</div>
 <!-- <h1>Librarytricks online school</h1>
 <h3>ШОКЛА ОБУЧЕНИЯ ФУТБОЛЬНОМУ МАСТЕРСТВУ</h3>
 <p>

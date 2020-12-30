@@ -10,11 +10,19 @@ import { HomeModule } from './home/home.module';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SharedModule } from './shared/shared.module';
 import { MainGuardService } from './main/guards/main.guard';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './main/interceptors/auth.interceptor';
 import { LoaderInterceptorService } from './shared/loader/loader.interceptor';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { PipesModule } from './shared/pipes/pipes.module';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, 'api/translate/', '.json');
+}
+
 
 @NgModule({
   declarations: [
@@ -29,7 +37,15 @@ import { PipesModule } from './shared/pipes/pipes.module';
   SharedModule,
   HomeModule,
   MainModule,
-  PipesModule
+  PipesModule,
+  TranslateModule.forRoot({
+    defaultLanguage: 'ru',
+    loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+    }
+})
   ],
   providers: [
     MainGuardService,

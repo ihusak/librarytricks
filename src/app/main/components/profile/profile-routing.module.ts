@@ -8,11 +8,11 @@ const routes: Routes = [
     {
         path: '',
         component: ProfileComponent,
-        children: [
-            {path: '', redirectTo: 'overview', pathMatch: 'full'},
-            {path: 'overview', component: OverviewComponent},
-            {path: 'settings', component: SettingsComponent},
-        ]
+        // children: [
+        //     {path: '', redirectTo: 'overview', pathMatch: 'full'},
+        //     {path: 'overview', component: OverviewComponent},
+        //     {path: 'settings', component: SettingsComponent},
+        // ]
     }
 ]
 

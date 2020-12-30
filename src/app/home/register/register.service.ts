@@ -3,17 +3,18 @@ import { from, Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { UserRole } from '../interface/userRole.interface';
 import { AppService } from 'src/app/app.service';
+import { userFormInterface } from './register.component';
 
 @Injectable()
 export class RegisterService extends AppService {
   isLoggedIn: boolean;
 
-  registerUser(email: string, userPassword: string, userName: string, userRole: UserRole): Observable<any> {
-    return this.http.post(`${this.apiUrl()}/users`, {
-      email,
-      userPassword,
-      userName,
-      userRole
+  registerUser(userForm: userFormInterface): Observable<any> {
+    return this.http.post(`${this.apiUrl()}/users/create`, {
+      email: userForm.email,
+      userPassword: userForm.password,
+      userName: userForm.name,
+      userRole: userForm.type
     });
   }
   public getRoles(): Observable<UserRole[]> {

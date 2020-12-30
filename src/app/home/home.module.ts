@@ -15,6 +15,7 @@ import { ConfirmService } from './confirm/confirm.service';
 import { LoginServiceModule } from './login/login.service.module';
 import { CoachComponent } from './confirm/coach/coach.component';
 import { MainHomeComponent } from './main-home/main-home.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { MainHomeComponent } from './main-home/main-home.component';
     SharedModule,
     HttpClientModule,
     ReactiveFormsModule,
-    LoginServiceModule
+    LoginServiceModule,
+    TranslateModule
   ],
   exports: [
     HomeRoutingModule

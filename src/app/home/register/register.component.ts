@@ -3,7 +3,19 @@ import { RegisterService } from './register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRole } from '../interface/userRole.interface';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
-import { environment } from 'src/environments/environment';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+export interface userFormInterface {
+  name: string,
+  email: string
+  password: string,
+  type: {
+    id: number,
+    name: string,
+    status: boolean
+  }
+}
 
 @Component({
   selector: 'app-register',
@@ -11,17 +23,20 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  userEmail: string;
-  userPass: string;
-  userStatus: UserRole;
-  userName: string;
-  registerMessage: string;
+  registerMessage: string; // need remove
   userRoles: UserRole[];
   userRolesEnum = UserRolesEnum;
+  registerUserFrom = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
+    type: new FormControl('', [Validators.required])
+  })
 
   constructor(
     private registerService: RegisterService,
     private snackBar: MatSnackBar,
+    private router: Router
     ) { }
 
   ngOnInit() {
@@ -33,32 +48,24 @@ export class RegisterComponent implements OnInit {
         this.userRoles = roles.filter(role => role.id !== this.userRolesEnum.ADMIN);
       }
     });
-    console.log('env', environment.api_url);
   }
-  registerUser(email: string, pass: string, userName: string) {
-    this.registerService.registerUser(email, pass, userName, this.userStatus).subscribe((result) => {
+  registerUser() {
+    const userForm: userFormInterface = this.registerUserFrom.value;
+    this.registerService.registerUser(userForm).subscribe((result) => {
       if (result._id) {
-        this.snackBar.open('Success', '', {
-          duration: 2000,
+        this.snackBar.open(`Письмо для подтверждения о регистрации отправленно на ${userForm.email}`, '', {
+          duration: 10000,
           panelClass: ['success']
         });
-        this.userEmail = '';
-        this.userPass = '';
-        this.userStatus = null;
-        this.userName = '';
+        this.registerUserFrom.reset();
+        this.router.navigate(['/login'])
       }
     },
     (error) => {
-      // Handle Errors here.
       const err = error.error;
-      console.log(error);
       const errorCode = err.status;
       const errorMessage = err.message;
       this.registerMessage = errorMessage;
     });
-  }
-  selectUserType(value: UserRole) {
-    console.log(value);
-    this.userStatus = value;
   }
 }

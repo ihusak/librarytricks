@@ -61,12 +61,14 @@ export class IndexComponent implements OnInit {
         break;
       case this.userRoles.PARENT: 
         const kidRole = this.userRoles.STUDENT;
-        this.profileService.getUserInfoWithParams(this.userInfo.myKid.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
-          this.currentStudent = studentInfo;
-          this.getTaskByGroup(studentInfo.group.id);
-          this.getStudentsInfo(studentInfo.group.id);
-          this.getCoachInfo(studentInfo.coach.id);
-        })
+        if(this.userInfo.myKid) {
+          this.profileService.getUserInfoWithParams(this.userInfo.myKid.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
+            this.currentStudent = studentInfo;
+            this.getTaskByGroup(studentInfo.group.id);
+            this.getStudentsInfo(studentInfo.group.id);
+            this.getCoachInfo(studentInfo.coach.id);
+          })
+        }
       break;
       case this.userRoles.ADMIN:
         this.profileService.getAllGroups().subscribe((groups) => {
