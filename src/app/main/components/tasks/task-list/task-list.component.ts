@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PassTaskComponent } from '../popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from '../popups/process-tasks/process-tasks.component';
 import { of } from 'rxjs';
+import { CreateGroupComponent } from '../popups/create-group/create-group/create-group.component';
 
 @Component({
   selector: 'app-task-list',
@@ -116,7 +117,14 @@ export class TaskListComponent implements OnInit {
 
   private getGroups() {
     this.taskService.getAllGroups().subscribe((allGroups: any[]) => {
-      this.groupsList = allGroups;
+      if(this.userInfo.role.id === this.userRoles.ADMIN) {
+        this.groupsList = allGroups;
+      } else {
+        this.groupsList = allGroups.filter(group => {
+          return group.coachId === this.userInfo.id || group.forAll;
+        });
+      }
+      console.log(this.groupsList);
       if(this.userInfo.group && this.userInfo.group.id) {
         this.currentGroup = allGroups.filter((group) => group.id === this.userInfo.group.id)[0];
       } else {
@@ -135,6 +143,12 @@ export class TaskListComponent implements OnInit {
     const dialogRef = this.dialog.open(PassTaskComponent, {
       width: '650px',
       data: {task, userInfo: this.userInfo}
+    });
+  }
+
+  public createGroup(task: TaskModel) {
+    const dialogRef = this.dialog.open(CreateGroupComponent, {
+      width: '650px'
     });
   }
 

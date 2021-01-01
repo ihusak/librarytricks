@@ -4,6 +4,12 @@ import { TaskModel } from './task.model';
 import { map } from 'rxjs/operators';
 import { AppService } from 'src/app/app.service';
 
+interface createGroupInterface {
+  groupName: string;
+  coachId: string;
+  forAll: boolean
+}
+
 @Injectable()
 export class TaskService extends AppService {
 
@@ -26,6 +32,14 @@ export class TaskService extends AppService {
 
     public getAllGroups() {
       return this.http.get(`${this.apiUrl()}/groups`);
+    }
+
+    public createGroup(values: createGroupInterface) {
+      return this.http.post(`${this.apiUrl()}/groups/create-group`, {
+        groupName: values.groupName,
+        coachId: values.coachId,
+        forAll: values.forAll
+      });
     }
 
     public getStatusTasks(coachId: string, groupId: number, status: string) {

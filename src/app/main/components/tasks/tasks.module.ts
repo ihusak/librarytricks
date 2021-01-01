@@ -14,6 +14,7 @@ import { CheckTasksComponent } from './check-tasks/check-tasks.component';
 import { PassTaskComponent } from './popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from './popups/process-tasks/process-tasks.component';
 import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.component';
+import { CreateGroupComponent } from './popups/create-group/create-group/create-group.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.compo
     CheckTasksComponent,
     PassTaskComponent,
     ProcessTasksComponent,
-    RejectTaskComponent
+    RejectTaskComponent,
+    CreateGroupComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,7 @@ import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.compo
     ReactiveFormsModule,
     YouTubePlayerModule
   ],
-  entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent],
+  entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateGroupComponent],
   providers: [TaskService]
 })
 export class TasksModule {

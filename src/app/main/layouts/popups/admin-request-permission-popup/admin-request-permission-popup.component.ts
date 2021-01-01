@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainService } from 'src/app/main/main.service';
 import { CoachInfoInterface } from 'src/app/shared/interface/user-info.interface';
 
@@ -14,7 +15,8 @@ export class AdminRequestPermissionPopupComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AdminRequestPermissionPopupComponent>,
     @Inject(MAT_DIALOG_DATA) public user: CoachInfoInterface,
-    private mainService: MainService) {
+    private mainService: MainService,
+    private snackBar: MatSnackBar) {
       this.phone = this.user.phone;
     }
 
@@ -22,10 +24,12 @@ export class AdminRequestPermissionPopupComponent implements OnInit {
     this.dialogRef.close();
   }
   request() {
-    console.log('request', this.user);
     this.dialogRef.close();
     this.mainService.requestCoachPermission(this.user.id, this.phone).subscribe((res) => {
-      console.log(res);
+      this.snackBar.open('Запрос успешно отправлен', '', {
+        duration: 2000,
+        panelClass: ['success']
+      });
     })
   }
 

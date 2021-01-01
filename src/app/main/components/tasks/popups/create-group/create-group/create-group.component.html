@@ -1,0 +1,22 @@
+<h3>Создание группы</h3>
+<p>Здесь ты можешь создать любую группу для учеников</p>
+<p>Внимание! Созданная группа будет доступна лишь вашим ученикам</p>
+<form class="form" [formGroup]="createGroupFrom">
+<mat-form-field class="group-name-field">
+  <mat-label>Название группы</mat-label>
+  <input matInput type="text" formControlName="groupName">
+</mat-form-field>
+
+<mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createGroupFrom.value.forAll">
+  <mat-label>Тренер</mat-label>
+  <mat-select formControlName="coachId">
+    <mat-option *ngFor="let coach of coachList" [value]="coach.id">{{coach.userName}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<section class="for-all-coaches" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createGroupFrom.value.coachId">
+  <mat-checkbox formControlName="forAll" (change)="forAllCoaches()">Для все тренеров</mat-checkbox>
+</section>
+
+<button mat-flat-button color="primary" [disabled]="!createGroupFrom.valid" (click)="createGroup()">Создать группу</button>
+</form>
