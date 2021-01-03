@@ -10,7 +10,7 @@ import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { PassTaskComponent } from '../popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from '../popups/process-tasks/process-tasks.component';
-import { of } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { CreateGroupComponent } from '../popups/create-group/create-group/create-group.component';
 
 @Component({
@@ -146,9 +146,15 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  public createGroup(task: TaskModel) {
+  public createGroup(){
     const dialogRef = this.dialog.open(CreateGroupComponent, {
       width: '650px'
+    });
+    dialogRef.afterClosed().subscribe(group => {
+      console.log(group);
+      if(group) {
+        this.groupsList.push(group);
+      }
     });
   }
 

@@ -28,7 +28,7 @@ export class CreateGroupComponent {
     private taskService: TaskService,
     private mainService: MainService,
     private snackBar: MatSnackBar,
-    private formBuilder: FormBuilder) { 
+    private formBuilder: FormBuilder) {
       this.userInfo = this.mainService.userInfo;
       if(this.userInfo.role.id === this.userRoles.ADMIN) {
         this.profileService.getAllCoaches(this.userRoles.COACH).subscribe((coaches) => {
@@ -49,11 +49,11 @@ export class CreateGroupComponent {
         });
       }
     }
- 
+
   public createGroup() {
     console.log(this.createGroupFrom);
-    this.taskService.createGroup(this.createGroupFrom.value).subscribe((result) => {
-      this.dialogRef.close();
+    this.taskService.createGroup(this.createGroupFrom.value).subscribe((group: object) => {
+      this.dialogRef.close(group);
       this.snackBar.open('Группа создана', '', {
         duration: 2000,
         panelClass: ['success']
