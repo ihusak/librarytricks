@@ -145,8 +145,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           aboutMe: [data.aboutMe || ''],
           group: [{value: data.group || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]],
           coach: [{value: data.coach || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]],
-          instagram: [data.instagram || ''],
-          facebook: [data.facebook || ''],
+          instagram: [data.socialNetworks.instagram || ''],
+          facebook: [data.socialNetworks.facebook || ''],
           bestTrick: [data.bestTrick || '', [Validators.required]],
           parentName: [data.parent.name || '', [Validators.required]],
           parentPhone: [data.parent.phone || '', [Validators.required]],
@@ -161,8 +161,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           startTraining: [data.startTraining || '', [Validators.required]],
           aboutMe: [data.aboutMe || ''],
-          instagram: [data.instagram || ''],
-          facebook: [data.facebook || ''],
+          instagram: [data.socialNetworks.instagram || ''],
+          facebook: [data.socialNetworks.facebook || ''],
           bestTrick: [data.bestTrick || '', [Validators.required]]
         });
         this.initForm = true;
@@ -174,8 +174,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           userName: [data.userName || '', [Validators.required]],
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           aboutMe: [data.aboutMe || ''],
-          instagram: [data.instagram || ''],
-          facebook: [data.facebook || ''],
+          instagram: [data.socialNetworks.instagram || ''],
+          facebook: [data.socialNetworks.facebook || ''],
           myKid: [data.myKid || '', [Validators.required]],
         });
         this.kidsList = result;

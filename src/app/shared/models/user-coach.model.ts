@@ -11,16 +11,20 @@ export class UserCoachModel {
     instagram: string
   };
   phone: string;
+  startTraining: Date;
+  bestTrick: string;
 
-  constructor(responseObj: CoachInfoInterface) {
+  constructor(responseObj: any) {
     this.id = responseObj.id;
     this.userImg = responseObj.userImg;
     this.userName = responseObj.userName;
     this.email = responseObj.email;
     this.aboutMe = responseObj.aboutMe;
+    this.startTraining = responseObj.startTraining;
+    this.bestTrick = responseObj.bestTrick;
     this.socialNetworks = {
-      facebook: responseObj.socialNetworks ? responseObj.socialNetworks.facebook : '',
-      instagram: responseObj.socialNetworks ? responseObj.socialNetworks.instagram : ''
+      facebook: responseObj.facebook ? responseObj.facebook : '',
+      instagram: responseObj.instagram ? responseObj.instagram : ''
     };
     this.phone = responseObj.phone;
   }
