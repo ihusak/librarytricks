@@ -18,10 +18,6 @@ import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  // public userInfo: any;
-  // public previewUrl;
-  // private observerUserInfoData: Subscription;
-  // public userRoles = UserRolesEnum;
   public previewUrl: any = '../../assets/user-default.png';
   public userGroups;
   public fileData: File = null;
@@ -33,6 +29,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userInfoData: any;
   public kidsList;
   private roleId: number;
+  public coach: any = null;
 
   constructor(
     private profileService: ProfileService,
@@ -99,6 +96,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
+  public changeCoach(value: any) {
+    this.coach = value;
+    this.userGroups = this.userGroups.filter((group: any) => {
+      // return this.coach.id === group.coachId || group.forAll; // include general groups
+      return this.coach.id === group.coachId; // not include general groups
+    });
+  }
+
   compareObjects(o1: any, o2: any): boolean {
     return o1.name === o2.name && o1.id === o2.id;
   }
@@ -133,6 +138,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.userGroup = data.group;
         this.profileService.getAllGroups().subscribe(allGroups => {
           this.userGroups = allGroups;
+          this.coach = data.coach;
+          this.changeCoach(data.coach);
         });
         this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
           this.coachsList = coaches;

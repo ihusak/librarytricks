@@ -20,7 +20,7 @@
       </mat-form-field>
       <mat-form-field>
         <input formControlName="email" matInput placeholder="Почта" required>
-        
+
       </mat-form-field>
       <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT, userRoles.COACH]">
         <input formControlName="startTraining" matInput [matDatepicker]="picker" placeholder="Дата начала тренировок" required>
@@ -55,7 +55,18 @@
         <input formControlName="parentEmail" matInput placeholder="Почта" required>
       </mat-form-field>
       </div>
-      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
+    <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
+      <h2>Тренер</h2>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Выберите своего тренера</mat-label>
+          <mat-select [compareWith]="compareObjectsCoach" formControlName="coach" (selectionChange)="changeCoach($event.value)">
+            <mat-option *ngFor="let coach of coachsList" [value]="coach">{{coach.userName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+      <div class="item" *ngIf="(userInfoData | userRolePipe:[userRoles.STUDENT]) && coach">
         <h2>Группа</h2>
         <div class="form-group">
           <mat-form-field>
@@ -73,17 +84,6 @@
               <mat-label>Выберите своего ребенка</mat-label>
               <mat-select [compareWith]="compareObjects" formControlName="myKid">
                 <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
-              </mat-select>
-            </mat-form-field>
-        </div>
-      </div>
-      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
-        <h2>Тренер</h2>
-        <div class="form-group">
-          <mat-form-field>
-              <mat-label>Выберите своего тренера</mat-label>
-              <mat-select [compareWith]="compareObjectsCoach" formControlName="coach">
-                <mat-option *ngFor="let coach of coachsList" [value]="coach">{{coach.userName}}</mat-option>
               </mat-select>
             </mat-form-field>
         </div>
