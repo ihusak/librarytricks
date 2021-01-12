@@ -17,9 +17,10 @@
         <input formControlName="example" matInput placeholder="URL на видео" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="reward" matInput placeholder="Оценка задания" required type='number' min="0" 
-        max="100" >
+        <input id="reward" formControlName="reward" matInput placeholder="Оценка задания" required type='number' min="0" 
+        max="100">
       </mat-form-field>
+      <label for="reward">Максимум 100 баллов</label>
     </div>
     <div class="item">
       <h3>Группа заданий</h3>

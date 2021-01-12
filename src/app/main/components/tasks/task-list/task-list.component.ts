@@ -121,7 +121,7 @@ export class TaskListComponent implements OnInit {
         this.groupsList = allGroups;
       } else {
         this.groupsList = allGroups.filter(group => {
-          return group.coachId === this.userInfo.id || group.forAll;
+          return group.coachId === this.userInfo.id;
         });
       }
       console.log(this.groupsList);
@@ -129,7 +129,7 @@ export class TaskListComponent implements OnInit {
         this.currentGroup = allGroups.filter((group) => group.id === this.userInfo.group.id)[0];
       } else {
         // default group for admin adn coach
-        this.currentGroup = allGroups[0];
+        this.currentGroup = this.groupsList[0];
       }
       if(this.userInfo.role.id === this.userRoles.COACH) {
         this.getTasksStatuses(this.currentGroup.id);

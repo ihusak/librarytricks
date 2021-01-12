@@ -72,9 +72,10 @@
           <mat-form-field>
             <mat-label>Группа</mat-label>
             <mat-select [compareWith]="compareObjects" formControlName="group">
-              <mat-option *ngFor="let group of userGroups" [value]="group">{{group.name}}</mat-option>
+              <mat-option *ngFor="let group of coachGroups" [value]="group">{{group.name}}</mat-option>
             </mat-select>
           </mat-form-field>
+          <div class="empty" *ngIf="!coachGroups.length">У тренер нет групп</div>
         </div>
       </div>
       <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.PARENT]">
@@ -88,7 +89,7 @@
             </mat-form-field>
         </div>
       </div>
-      <h4 *ngIf="(userInfoData | userRolePipe:[userRoles.STUDENT]) && userInfoData.progress < 100">Ты не можешь поменять тренера и группу пока не выполнишь все задания группы</h4>
+      <h4 *ngIf="(userInfoData | userRolePipe:[userRoles.STUDENT]) && userInfoData.progress < 100 && userInfoData.progress > 0">Ты не можешь поменять тренера и группу пока не выполнишь все задания группы</h4>
   </div>
   <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">Сохранить</button>
   <br>

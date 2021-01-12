@@ -7,6 +7,19 @@ import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interfa
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { RejectTaskComponent } from './reject-task/reject-task.component';
 
+interface marksInterface {
+  value: number;
+  title: string;
+}
+
+const MARKS: marksInterface[] = [
+  {value: 20, title: 'BAD'},
+  {value: 40, title: 'NOT_BAD'},
+  {value: 60, title: 'GOOD'},
+  {value: 80, title: 'WOW'},
+  {value: 100, title: 'PERFECT'},
+]
+
 @Component({
   selector: 'app-check-tasks',
   templateUrl: './check-tasks.component.html',
@@ -15,6 +28,9 @@ import { RejectTaskComponent } from './reject-task/reject-task.component';
 export class CheckTasksComponent implements OnInit {
   public userInfo;
   public pendingTasksData: StudentInfoInterface[];
+  public marks: marksInterface[] = MARKS;
+  public coachMark: number = 0;
+  public resultMark: number = 0;
 
   constructor(
     private mainService: MainService,
@@ -37,12 +53,15 @@ export class CheckTasksComponent implements OnInit {
       });
     });
   }
+  public changeMark(userInfo: StudentInfoInterface) {
+    this.resultMark = userInfo.currentTask.reward * (this.coachMark / 100);
+  }
 
   public acceptTask(userInfo: StudentInfoInterface) {
     const task = {
       taskId: userInfo.currentTask.id,
       coachId: userInfo.coach.id,
-      reward: userInfo.currentTask.reward,
+      reward: userInfo.currentTask.reward * (this.coachMark / 100),
       groupId: userInfo.group.id
     }
     this.profileService.acceptUserTask(userInfo.id, task).subscribe(res => {

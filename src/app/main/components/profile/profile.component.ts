@@ -19,7 +19,8 @@ import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   public previewUrl: any = '../../assets/user-default.png';
-  public userGroups;
+  public coachGroups: any[] = [];
+  public coachGroupList: any[] = [];
   public fileData: File = null;
   public initForm: boolean = false;
   public userGroup;
@@ -98,7 +99,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   public changeCoach(value: any) {
     this.coach = value;
-    this.userGroups = this.userGroups.filter((group: any) => {
+    this.coachGroups = [...this.coachGroupList];
+    this.coachGroups = this.coachGroups.filter((group: any) => {
       // return this.coach.id === group.coachId || group.forAll; // include general groups
       return this.coach.id === group.coachId; // not include general groups
     });
@@ -136,10 +138,12 @@ export class ProfileComponent implements OnInit, OnDestroy {
     switch (userRole) {
       case this.userRoles.STUDENT:
         this.userGroup = data.group;
-        this.profileService.getAllGroups().subscribe(allGroups => {
-          this.userGroups = allGroups;
-          this.coach = data.coach;
-          this.changeCoach(data.coach);
+        this.profileService.getAllGroups().subscribe((allGroups: any[]) => {
+          this.coachGroupList = allGroups;
+          this.coach = data.coach.id ? data.coach : null;
+          if(this.coach) {
+            this.changeCoach(data.coach);
+          }
         });
         this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
           this.coachsList = coaches;

@@ -52,11 +52,11 @@ export class IndexComponent implements OnInit {
         }
         break;
       case this.userRoles.COACH:
-        this.profileService.getAllGroups().subscribe((groups) => {
-          this.selectGroups = groups;
-          this.currentGroup = groups[0];
-          this.getStudentsInfo(groups[0].id);
-          this.getTaskByGroup(groups[0].id);
+        this.profileService.getAllGroups().subscribe((groups: any[]) => {
+          this.selectGroups = groups.filter(group => group.coachId === this.userInfo.id);
+          this.currentGroup = this.selectGroups[0];
+          this.getStudentsInfo(this.selectGroups[0].id);
+          this.getTaskByGroup(this.selectGroups[0].id);
         });
         break;
       case this.userRoles.PARENT: 

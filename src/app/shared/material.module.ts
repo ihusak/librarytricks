@@ -13,8 +13,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
-import {MatBadgeModule, MatCheckboxModule, MatTableModule} from '@angular/material';
+import {MatBadgeModule, MatCheckboxModule, MatTableModule, MatTooltipModule} from '@angular/material';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio';
 
 const material = [
     MatButtonModule,
@@ -34,12 +35,18 @@ const material = [
     MatBadgeModule,
     MatProgressBarModule,
     MatTableModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatRadioModule
 ];
 
 @NgModule({
     imports: material,
-    exports: material
+    exports: material,
+    providers: [{
+      provide: MAT_RADIO_DEFAULT_OPTIONS,
+      useValue: { color: 'primary' },
+  }]
 })
 export class AppMaterialModule {
 
