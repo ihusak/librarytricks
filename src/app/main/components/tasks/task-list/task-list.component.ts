@@ -43,6 +43,7 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit() {
     this.getGroups();
+    console.log(this);
   }
 
   public assignTask(task: TaskModel) {
@@ -59,13 +60,17 @@ export class TaskListComponent implements OnInit {
   private getAllTasks(groupId?: string) {
     this.taskService.getTasksByGroup(groupId).subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks;
+      let currentStudentDoneTasks = [];
       if(this.userInfo.role.id === UserRolesEnum.STUDENT) {
         this.tasksList.map((task: TaskModel, index) => {
           this.userInfo.doneTasks.find((id: string) => {
             if (id === task.id) {
+              currentStudentDoneTasks.push(id);
               task.done = true;
-              this.tasksList[index].allow = false;
-              this.tasksList[index + 1].allow = true;
+              if(this.tasksList.length !== currentStudentDoneTasks.length) {
+                this.tasksList[index].allow = false;
+                this.tasksList[index + 1].allow = true;
+              }
             } else if(!task.done) {
               task.done = false;
             }
@@ -144,6 +149,9 @@ export class TaskListComponent implements OnInit {
       width: '650px',
       data: {task, userInfo: this.userInfo}
     });
+    dialogRef.afterClosed().subscribe(() => {
+      this.ngOnInit();
+    })
   }
 
   public createGroup(){

@@ -64,7 +64,7 @@ export class CheckTasksComponent implements OnInit {
       reward: userInfo.currentTask.reward * (this.coachMark / 100),
       groupId: userInfo.group.id
     }
-    this.profileService.acceptUserTask(userInfo.id, task).subscribe(res => {
+    this.profileService.acceptStudentTask(userInfo.id, task).subscribe(res => {
       this.ngOnInit();
       this.snackBar.open(`Вы приняли задания ученика: ${userInfo.userName}`, '', {
         duration: 2000,

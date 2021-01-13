@@ -15,7 +15,7 @@ export class ProfileService extends AppService {
   public userInfo;
   private userRoles = UserRolesEnum;
 
-  public acceptUserTask(userId: string, task: any) {
+  public acceptStudentTask(userId: string, task: any) {
     return this.http.put(`${this.apiUrl()}/userInfo/accept-task/${userId}`, {task});
   }
 

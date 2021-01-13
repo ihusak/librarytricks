@@ -9,6 +9,9 @@
       margin-right: 10px;
       margin-top: 25px;
     }
+    &.done {
+      background-color: #c0dabd;
+    }
   }
   .mat-expansion-panel-header-description {
     justify-content: flex-end;

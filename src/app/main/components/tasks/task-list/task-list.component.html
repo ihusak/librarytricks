@@ -20,21 +20,24 @@
   </div>
   <mat-accordion>
     <mat-expansion-panel *ngFor="let task of tasksList; let i = index"
-  
+    [ngClass]="{'done': (userInfo | userRolePipe:[userRoles.STUDENT]) && task.done}"
     (opened)="panelOpenState = true"
     (closed)="panelOpenState = false"
     [expanded]="userInfo.currentTask && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
+          <mat-icon *ngIf="task.done">done</mat-icon>
          {{task.title}}
-         <mat-icon *ngIf="task.done">done_all</mat-icon>
         </mat-panel-title>
         <mat-panel-description>
           {{task.group.name}}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <p>{{task.description}} <a [href]="task.example" target="_blank">ссылка на пример задания</a></p>
+      <p class="reward">
+        Оценка задания: {{task.reward}} баллов
+      </p>
       <div class="video">
         <youtube-player 
           [videoId]="youTubeGetID(task.example)" 
@@ -46,10 +49,13 @@
       <div *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.rejectReason" class="reject-reason">
         <h4>Причина отклонения задания</h4>
         <p>
-          {{userInfo.currentTask.rejectReason}}
+          <span class="material-icons">warning</span> {{userInfo.currentTask.rejectReason}}
         </p>
       </div>
-      <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PENDING">На проверке</p>
+      <p class="task-done" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.done">
+        <mat-icon *ngIf="task.done">done</mat-icon> Задание выполнено
+      </p>
+      <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PENDING && userInfo.currentTask.id === task.id">На проверке</p>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id !== userInfo.currentTask.id && task.allow" (click)="assignTask(task)" mat-raised-button color="primary">Начать выполнение</button>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING" mat-raised-button color="primary" (click)="passTask(task)">Сдать задание</button>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="primary" [routerLink]="['../update-task/', task.id]">Обновить</button>
