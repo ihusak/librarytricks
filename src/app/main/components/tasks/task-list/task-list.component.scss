@@ -10,7 +10,24 @@
       margin-top: 25px;
     }
     &.done {
-      background-color: #c0dabd;
+      .mat-icon {
+        &.done {
+          color: #c0dabd;
+          position: relative;
+          padding: 0 10px;
+          margin-right: 10px;
+          border-left: 1px solid #c0dabd;
+          border-right: 1px solid #c0dabd;
+          //&:before {
+          //  content: '';
+          //  width: 1px;
+          //  height: 100%;
+          //  background-color: #c0dabd;
+          //  position: absolute;
+          //  left: 0;
+          //}
+        }
+      }
     }
   }
   .mat-expansion-panel-header-description {

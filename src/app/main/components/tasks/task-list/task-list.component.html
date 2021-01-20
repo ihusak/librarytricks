@@ -23,12 +23,13 @@
     [ngClass]="{'done': (userInfo | userRolePipe:[userRoles.STUDENT]) && task.done}"
     (opened)="panelOpenState = true"
     (closed)="panelOpenState = false"
+    [disabled]="(userInfo | userRolePipe:[userRoles.STUDENT]) && !task.allow && !task.done"
     [expanded]="userInfo.currentTask && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING"
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <mat-icon *ngIf="task.done">done</mat-icon>
-         {{task.title}}
+          <mat-icon *ngIf="task.done" [ngClass]="{'done': task.done}">done</mat-icon>
+          {{task.title}}
         </mat-panel-title>
         <mat-panel-description>
           {{task.group.name}}
@@ -39,10 +40,10 @@
         Оценка задания: {{task.reward}} баллов
       </p>
       <div class="video">
-        <youtube-player 
-          [videoId]="youTubeGetID(task.example)" 
-          suggestedQuality="highres" 
-          [height]="250" 
+        <youtube-player
+          [videoId]="youTubeGetID(task.example)"
+          suggestedQuality="highres"
+          [height]="250"
           [width]="500">
         </youtube-player>
       </div>
