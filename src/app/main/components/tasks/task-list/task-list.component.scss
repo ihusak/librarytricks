@@ -9,24 +9,46 @@
       margin-right: 10px;
       margin-top: 25px;
     }
-    &.done {
+    .task-statuses {
       .mat-icon {
-        &.done {
-          color: #c0dabd;
-          position: relative;
-          padding: 0 10px;
+        position: relative;
+        margin-right: 10px;
+        //&.done {
+        //  color: #c0dabd;
+        //  border-left: 1px solid #c0dabd;
+        //  border-right: 1px solid #c0dabd;
+        //}
+        //&.processing {
+        //  color: #1E90FF;
+        //  border-left: 1px solid #1E90FF;
+        //  border-right: 1px solid #1E90FF;
+        //}
+        //&.pending {
+        //  color: #FF0000;
+        //  border-left: 1px solid #FF0000;
+        //  border-right: 1px solid #FF0000;
+        //}
+      }
+    }
+    .task-done {
+      display: flex;
+      align-items: center;
+      .icon {
+      margin-right: 10px;
+    }
+    }
+    .reject-reason{
+      h4 {
+        .icon {
           margin-right: 10px;
-          border-left: 1px solid #c0dabd;
-          border-right: 1px solid #c0dabd;
-          //&:before {
-          //  content: '';
-          //  width: 1px;
-          //  height: 100%;
-          //  background-color: #c0dabd;
-          //  position: absolute;
-          //  left: 0;
-          //}
         }
+        display: flex;
+        align-items: center;
+      }
+      p {
+        background-color: rgba(128, 128, 128, 0.1);
+        border-radius: 3px;
+        padding: 15px;
       }
     }
   }
@@ -44,6 +66,16 @@
   .coach-actions-button {
     button {
       margin-right: 15px;
+    }
+  }
+}
+.markers {
+  .marker-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    .icon {
+      margin-right: 10px;
     }
   }
 }

@@ -3,7 +3,7 @@
     <img [src]="userImage" alt="user-avatar">
   </div>
     <p class="name">{{userInfo.userName}}<mat-icon *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLink="profile">edit</mat-icon></p>
-    <span>{{userInfo.role.name}}</span>
+    <span>{{'COMMON.ROLES.' + userInfo.role.name | translate}}</span>
 </div>
 <div class="sidenav-menu">
     <ul>

@@ -60,22 +60,26 @@ export class TaskListComponent implements OnInit {
   private getAllTasks(groupId?: string) {
     this.taskService.getTasksByGroup(groupId).subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks;
-      let currentStudentDoneTasks = [];
-      if(this.userInfo.role.id === UserRolesEnum.STUDENT) {
+      const currentStudentDoneTasks = [];
+      if (this.userInfo.role.id === UserRolesEnum.STUDENT) {
         this.tasksList.map((task: TaskModel, index) => {
           this.userInfo.doneTasks.find((id: string) => {
             if (id === task.id) {
               currentStudentDoneTasks.push(id);
               task.done = true;
-              if(this.tasksList.length !== currentStudentDoneTasks.length) {
+              task.status = this.taskStatuses.DONE;
+              if (this.tasksList.length !== currentStudentDoneTasks.length) {
                 this.tasksList[index].allow = false;
                 this.tasksList[index + 1].allow = true;
               }
-              if(this.tasksList.length <= 1) {
+              if (this.tasksList.length <= 1) {
                 this.tasksList[0].allow = false;
               }
-            } else if(!task.done) {
+            } else if (!task.done) {
               task.done = false;
+            }
+            if (this.userInfo.currentTask.id === task.id) {
+              task.status = this.userInfo.currentTask.status;
             }
           });
           return task;

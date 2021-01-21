@@ -1,6 +1,20 @@
 <h1>Задания футбольного фристайла</h1>
 <h4 *ngIf="(userInfo | userRolePipe:[userRoles.COACH]) && !userInfo.role.status ">Что бы создавать задания вы должны получить подтверждения о тренерстве</h4>
 <h4 *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])">Группа: {{userInfo.currentTask.group.name}}</h4>
+<div class="markers" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])">
+  <div class="marker-item">
+    <mat-icon class="icon">check_circle_outline</mat-icon>
+    <span>Задание выполнено</span>
+  </div>
+  <div class="marker-item">
+    <mat-icon class="icon">slow_motion_video</mat-icon>
+    <span>Задание в процесе выполнения</span>
+  </div>
+  <div class="marker-item">
+    <mat-icon class="icon">flaky</mat-icon>
+    <span>Задание проверяеться</span>
+  </div>
+</div>
 <div class="nav" *ngIf="userInfo.role.status  || userInfo.coach">
   <div class="coach-actions-button">
   <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status" mat-raised-button color="primary"  (click)="createGroup()">Создать группу</button>
@@ -29,7 +43,11 @@
     >
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <mat-icon *ngIf="task.done" [ngClass]="{'done': task.done}">done</mat-icon>
+          <span *ngIf="userInfo.currentTask" class="task-statuses">
+          <mat-icon *ngIf="task.done" class="done">check_circle_outline</mat-icon>
+          <mat-icon *ngIf="task.status === taskStatuses.PROCESSING" class="processing">slow_motion_video</mat-icon>
+          <mat-icon *ngIf="task.status === taskStatuses.PENDING" class="pending">flaky</mat-icon>
+          </span>
           {{task.title}}
         </mat-panel-title>
         <mat-panel-description>
@@ -48,15 +66,18 @@
           [width]="500">
         </youtube-player>
       </div>
-      <div *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.rejectReason" class="reject-reason">
-        <h4>Причина отклонения задания</h4>
+      <div *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.status === taskStatuses.PROCESSING && userInfo.currentTask.rejectReason" class="reject-reason">
+        <h4><mat-icon class="icon warn">warning</mat-icon> Причина отклонения задания</h4>
         <p>
-          <span class="material-icons">warning</span> {{userInfo.currentTask.rejectReason}}
+          {{userInfo.currentTask.rejectReason}}
         </p>
       </div>
-      <p class="task-done" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.done">
-        <mat-icon *ngIf="task.done">done</mat-icon> Задание выполнено
-      </p>
+      <div class="task-done" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.done">
+        <mat-icon class="icon">done</mat-icon>
+        <p>
+          Задание выполнено
+        </p>
+      </div>
       <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PENDING && userInfo.currentTask.id === task.id">На проверке</p>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id !== userInfo.currentTask.id && task.allow" (click)="assignTask(task)" mat-raised-button color="primary">Начать выполнение</button>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING" mat-raised-button color="primary" (click)="passTask(task)">Сдать задание</button>

@@ -18,6 +18,7 @@ import { SharedModule } from '../shared/shared.module';
 import { PipesModule } from '../shared/pipes/pipes.module';
 import { TaskService } from './components/tasks/tasks.service';
 import {CookieService} from 'ngx-cookie-service';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {CookieService} from 'ngx-cookie-service';
     MatIconModule,
     MatMenuModule,
     SharedModule,
-    PipesModule
+    PipesModule,
+    TranslateModule
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent],
