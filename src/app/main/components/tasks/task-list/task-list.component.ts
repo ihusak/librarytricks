@@ -71,6 +71,9 @@ export class TaskListComponent implements OnInit {
                 this.tasksList[index].allow = false;
                 this.tasksList[index + 1].allow = true;
               }
+              if(this.tasksList.length <= 1) {
+                this.tasksList[0].allow = false;
+              }
             } else if(!task.done) {
               task.done = false;
             }

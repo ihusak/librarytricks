@@ -46,9 +46,6 @@ export class IndexComponent implements OnInit {
           this.getStudentsInfo(this.userInfo.group.id);
           this.getTaskByGroup(this.userInfo.group.id);
           this.checkStatusTask();
-          if (this.userInfo.progress) {
-            this.userInfo.progress = Math.round(this.userInfo.progress);
-          }
         }
         break;
       case this.userRoles.COACH:
@@ -96,6 +93,7 @@ export class IndexComponent implements OnInit {
     const groupId: string = group.id;
     this.currentStudent = null;
     this.getStudentsInfo(groupId);
+    this.getTaskByGroup(groupId);
     this.checkStatusTask();
   }
 
@@ -138,6 +136,7 @@ export class IndexComponent implements OnInit {
           task.done = !!this.doneTasks.find(taskId => taskId === task.id);
           return task;
         });
+        student.progress = ((this.studentTasks.filter((task: TaskModel) => task.done).length) * 100) / this.studentTasks.length;
       }
       if (!student.group && this.studentTasks) {
         this.studentTasks = this.studentTasks.map((task: TaskModel) => {
@@ -145,5 +144,13 @@ export class IndexComponent implements OnInit {
           return task;
         });
       }
+  }
+  public calculateProgress(student?: StudentInfoInterface): number {
+    let doneLength; 
+    if(this.studentTasks) {
+      doneLength = this.studentTasks.filter((task: TaskModel) => student.doneTasks.find(id => task.id == id)).length;
+      return Math.round((doneLength * 100) / this.studentTasks.length);
+    }
+    return 0;
   }
 }

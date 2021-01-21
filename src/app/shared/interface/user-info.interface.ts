@@ -34,6 +34,7 @@ export interface StudentInfoInterface {
     id: string,
     name: string
   };
+  doneTasks: string[];
 };
 
 export interface CoachInfoInterface {

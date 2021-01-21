@@ -90,10 +90,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.snackBar.open('Сохранено', '', {
         duration: 2000,
         panelClass: ['success']
-      });
-      // .then(() => {
-      //   window.location.reload();
-      // });
+      })
+      window.location.reload();
     });
   }
 
