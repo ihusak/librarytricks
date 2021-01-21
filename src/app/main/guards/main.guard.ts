@@ -19,7 +19,7 @@ export class MainGuardService implements CanActivate {
       const token = this.appService.getTokens().accessToken;
       if (token) {
         if (state.url.split('/').length <= 2) {
-          this.navigate(['main/index']);
+          this.navigate(['main/dashboard']);
         }
         return true;
       } else {

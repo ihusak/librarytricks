@@ -1,16 +1,14 @@
-import { IndexComponent } from './components/index/index.component';
-import { MainGuardService } from './guards/main.guard';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes} from '@angular/router';
 import { MainComponent } from './main.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { VideosComponent } from './components/videos/videos.component';
-import { TasksComponent } from './components/tasks/tasks.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
 
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
-    {path: 'index', component: IndexComponent},
+    {path: 'dashboard', component: DashboardComponent},
     {path: 'profile', loadChildren: () => import('./components/profile/profile.module').then(m => m.ProfileModule)},
     {path: 'videos', component: VideosComponent},
     {path: 'tasks', loadChildren: () => import('./components/tasks/tasks.module').then(m => m.TasksModule)},

@@ -10,11 +10,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SidenavComponent } from './layouts/sidenav/sidenav.component';
 import { VideosComponent } from './components/videos/videos.component';
-import { TasksComponent } from './components/tasks/tasks.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
 import { MainService } from './main.service';
-import { IndexComponent } from './components/index/index.component';
-import { MainGuardService } from './guards/main.guard';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AdminRequestPermissionPopupComponent } from './layouts/popups/admin-request-permission-popup/admin-request-permission-popup.component';
 import { SharedModule } from '../shared/shared.module';
 import { PipesModule } from '../shared/pipes/pipes.module';
@@ -29,7 +27,7 @@ import {CookieService} from 'ngx-cookie-service';
     SidenavComponent,
     VideosComponent,
     RatingsComponent,
-    IndexComponent,
+    DashboardComponent,
     AdminRequestPermissionPopupComponent
   ],
   imports: [

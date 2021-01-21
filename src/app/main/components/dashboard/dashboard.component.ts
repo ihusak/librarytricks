@@ -14,11 +14,11 @@ import { TaskService } from '../tasks/tasks.service';
 
 @Component({
   selector: 'app-index',
-  templateUrl: './index.component.html',
-  styleUrls: ['./index.component.scss'],
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class IndexComponent implements OnInit {
+export class DashboardComponent implements OnInit {
   public userRoles = UserRolesEnum;
   public userInfo: any;
   public coachInfo: CoachInfoInterface;
@@ -56,7 +56,7 @@ export class IndexComponent implements OnInit {
           this.getTaskByGroup(this.selectGroups[0].id);
         });
         break;
-      case this.userRoles.PARENT: 
+      case this.userRoles.PARENT:
         const kidRole = this.userRoles.STUDENT;
         if(this.userInfo.myKid) {
           this.profileService.getUserInfoWithParams(this.userInfo.myKid.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
@@ -111,7 +111,7 @@ export class IndexComponent implements OnInit {
   private getStudentsInfo(groupId: string) {
     this.profileService.getUsersInfoByGroupId(groupId).subscribe((studentsList: StudentInfoInterface[]) => {
       this.studentsList = studentsList.sort((a, b) => a.rating > b.rating ? -1 : 1);
-      if ((this.userInfo.role.id === this.userRoles.COACH) && 
+      if ((this.userInfo.role.id === this.userRoles.COACH) &&
           !this.currentStudent || (this.userInfo.role.id === this.userRoles.ADMIN)) {
         this.currentStudent = this.studentsList[0];
       } else if(!(this.userInfo.role.id === this.userRoles.PARENT)) {
