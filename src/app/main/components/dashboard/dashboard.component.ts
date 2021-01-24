@@ -51,9 +51,11 @@ export class DashboardComponent implements OnInit {
       case this.userRoles.COACH:
         this.profileService.getAllGroups().subscribe((groups: any[]) => {
           this.selectGroups = groups.filter(group => group.coachId === this.userInfo.id);
-          this.currentGroup = this.selectGroups[0];
-          this.getStudentsInfo(this.selectGroups[0].id);
-          this.getTaskByGroup(this.selectGroups[0].id);
+          if(this.selectGroups.length) {
+            this.currentGroup = this.selectGroups[0];
+            this.getStudentsInfo(this.selectGroups[0].id);
+            this.getTaskByGroup(this.selectGroups[0].id);
+          }
         });
         break;
       case this.userRoles.PARENT:

@@ -29,7 +29,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userRoles = UserRolesEnum;
   public userInfoData: any;
   public kidsList;
-  private roleId: number;
   public coach: any = null;
 
   constructor(
@@ -41,7 +40,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder
   ) {
       this.dateAdapter.setLocale('ru');
-      this.roleId = this.appService.getUserRole();
   }
 
   ngOnInit() {
@@ -51,9 +49,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     console.log('profile destroy');
-    // if(this.observerUserInfoData) {
-    //    this.observerUserInfoData.unsubscribe();
-    // }
   }
   getUserDetails() {
     this.profileService.getUserInfo().subscribe((data: any) => {
@@ -69,7 +64,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   public addInfo() {
     let userInfo;
-    const userId = this.appService.getUserId();
     switch(this.userInfoData.role.id) {
       case this.userRoles.STUDENT:
         userInfo = new UserStudentModel(this.userInfo.value);
@@ -86,12 +80,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
+    console.log(userInfo, this.userInfo.value);
     this.profileService.updateUserInfo(formData).subscribe((updateUser: string) => {
       this.snackBar.open('Сохранено', '', {
         duration: 2000,
         panelClass: ['success']
       })
-      window.location.reload();
+      // window.location.reload();
     });
   }
 
@@ -102,6 +97,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
       // return this.coach.id === group.coachId || group.forAll; // include general groups
       return this.coach.id === group.coachId; // not include general groups
     });
+  }
+
+  public changeGroup(group: any) {
+    console.log(this);
+    const coach = this.coachsList.find(coach => group.coachId === coach.id)
+    this.userInfo.controls.coach.setValue({
+      id: coach.id,
+      userName: coach.userName
+    })
   }
 
   compareObjects(o1: any, o2: any): boolean {

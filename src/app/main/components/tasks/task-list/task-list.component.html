@@ -1,18 +1,25 @@
 <h1>Задания футбольного фристайла</h1>
 <h4 *ngIf="(userInfo | userRolePipe:[userRoles.COACH]) && !userInfo.role.status ">Что бы создавать задания вы должны получить подтверждения о тренерстве</h4>
-<h4 *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])">Группа: {{userInfo.currentTask.group.name}}</h4>
-<div class="markers" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])">
-  <div class="marker-item">
-    <mat-icon class="icon">check_circle_outline</mat-icon>
-    <span>Задание выполнено</span>
+<div class="header-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])">
+  <div class="info-item">
+    <p><b>Группа:</b> {{userInfo.group.name}}</p>
+    <p><b>Тренер:</b> {{userInfo.coach.name}}</p>
   </div>
-  <div class="marker-item">
-    <mat-icon class="icon">slow_motion_video</mat-icon>
-    <span>Задание в процесе выполнения</span>
-  </div>
-  <div class="marker-item">
-    <mat-icon class="icon">flaky</mat-icon>
-    <span>Задание проверяеться</span>
+  <div class="info-item">
+    <div class="markers">
+      <div class="marker-item">
+        <mat-icon class="icon">check_circle_outline</mat-icon>
+        <span>Задание выполнено</span>
+      </div>
+      <div class="marker-item">
+        <mat-icon class="icon">slow_motion_video</mat-icon>
+        <span>Задание в процесе выполнения</span>
+      </div>
+      <div class="marker-item">
+        <mat-icon class="icon">flaky</mat-icon>
+        <span>Задание проверяеться</span>
+      </div>
+    </div>
   </div>
 </div>
 <div class="nav" *ngIf="userInfo.role.status  || userInfo.coach">
@@ -22,7 +29,7 @@
   <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && processingTasks" mat-raised-button color="primary" (click)="viewProcessingTasks()"><span [matBadge]="processingTasks" matBadgeOverlap="false" matBadgeColor="accent">В процессе</span></button>
   <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && pendingTasks" mat-raised-button color="primary" routerLink="../check-tasks"><span [matBadge]="pendingTasks" matBadgeOverlap="false" matBadgeColor="accent">Ожидают проверки</span></button>
   </div>
-<mat-form-field *ngIf="userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]">
+<mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && groupsList && groupsList.length">
   <mat-label>Группа</mat-label>
   <mat-select [compareWith]="compareObjects" [(ngModel)]="currentGroup" #selectedvalue (valueChange)="changeGroup(selectedvalue.value)">
     <mat-option *ngFor="let groupItem of groupsList" [value]="groupItem">{{groupItem.name}}</mat-option>

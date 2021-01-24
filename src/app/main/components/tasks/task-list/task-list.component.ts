@@ -144,9 +144,13 @@ export class TaskListComponent implements OnInit {
         this.currentGroup = this.groupsList[0];
       }
       if(this.userInfo.role.id === this.userRoles.COACH) {
-        this.getTasksStatuses(this.currentGroup.id);
+        if(this.currentGroup) {
+          this.getTasksStatuses(this.currentGroup.id);
+        }
       }
-      this.getAllTasks(this.currentGroup.id);
+      if(this.currentGroup) {
+        this.getAllTasks(this.currentGroup.id);
+      }
       // this.getPendingTasks(this.currentGroup.id);
     });
   }

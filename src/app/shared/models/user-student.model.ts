@@ -61,7 +61,7 @@ export class UserStudentModel {
     this.progress = responseObj.group.progress;
     this.coach = {
       id: responseObj.coach.id,
-      name: responseObj.coach.name
+      name: responseObj.coach.userName
     };
   }
 }
