@@ -1,6 +1,24 @@
 <h1>Задания футбольного фристайла</h1>
+<!-- Only coach and admin role -->
 <h4 *ngIf="(userInfo | userRolePipe:[userRoles.COACH]) && !userInfo.role.status ">Что бы создавать задания вы должны получить подтверждения о тренерстве</h4>
-<div class="header-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])">
+<div class="nav" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status">
+  <div class="coach-actions-button">
+    <button mat-raised-button color="primary"  (click)="createGroup()">Создать группу</button>
+    <button mat-raised-button color="primary" routerLink="../create-task">Создать задание</button>
+    <button *ngIf="processingTasks" mat-raised-button color="primary" (click)="viewProcessingTasks()"><span [matBadge]="processingTasks" matBadgeOverlap="false" matBadgeColor="accent">В процессе</span></button>
+    <button *ngIf="pendingTasks" mat-raised-button color="primary" routerLink="../check-tasks"><span [matBadge]="pendingTasks" matBadgeOverlap="false" matBadgeColor="accent">Ожидают проверки</span></button>
+  </div>
+  <mat-form-field *ngIf="groupsList && groupsList.length">
+    <mat-label>Группа</mat-label>
+    <mat-select [compareWith]="compareObjects" [(ngModel)]="currentGroup" #selectedvalue (valueChange)="changeGroup(selectedvalue.value)">
+      <mat-option *ngFor="let groupItem of groupsList" [value]="groupItem">{{groupItem.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<!-- Only coach and admin role -->
+
+<!-- Only student -->
+<div class="header-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && currentGroup">
   <div class="info-item">
     <p><b>Группа:</b> {{userInfo.group.name}}</p>
     <p><b>Тренер:</b> {{userInfo.coach.name}}</p>
@@ -21,21 +39,12 @@
       </div>
     </div>
   </div>
-</div>
-<div class="nav" *ngIf="userInfo.role.status  || userInfo.coach">
-  <div class="coach-actions-button">
-  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status" mat-raised-button color="primary"  (click)="createGroup()">Создать группу</button>
-  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status" mat-raised-button color="primary" routerLink="../create-task">Создать задание</button>
-  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && processingTasks" mat-raised-button color="primary" (click)="viewProcessingTasks()"><span [matBadge]="processingTasks" matBadgeOverlap="false" matBadgeColor="accent">В процессе</span></button>
-  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && pendingTasks" mat-raised-button color="primary" routerLink="../check-tasks"><span [matBadge]="pendingTasks" matBadgeOverlap="false" matBadgeColor="accent">Ожидают проверки</span></button>
+  <div class="help-info" *ngIf="!currentGroup">
+    <h4>Выберите тренера и группу что бы начать выполнять задания</h4>
   </div>
-<mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && groupsList && groupsList.length">
-  <mat-label>Группа</mat-label>
-  <mat-select [compareWith]="compareObjects" [(ngModel)]="currentGroup" #selectedvalue (valueChange)="changeGroup(selectedvalue.value)">
-    <mat-option *ngFor="let groupItem of groupsList" [value]="groupItem">{{groupItem.name}}</mat-option>
-  </mat-select>
-</mat-form-field>
 </div>
+<!-- Only student -->
+
 <div class="task-list-wrap"  *ngIf="userInfo.role.status || userInfo.coach">
   <div class="empty-tasks" *ngIf="tasksList && !tasksList.length">
     <h2>Список заданий пуст</h2>

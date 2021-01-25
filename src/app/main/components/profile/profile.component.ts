@@ -156,8 +156,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           startTraining: [data.startTraining || '', [Validators.required]],
           aboutMe: [data.aboutMe || ''],
-          group: [{value: data.group || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]],
-          coach: [{value: data.coach || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]],
+          group: [data.group, [Validators.required]],
+          // group: [{value: data.group || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]], //TODO??
+          coach: [data.coach || '', [Validators.required]],
+          // coach: [{value: data.coach || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]], //TODO??
           instagram: [data.socialNetworks.instagram || ''],
           facebook: [data.socialNetworks.facebook || ''],
           bestTrick: [data.bestTrick || '', [Validators.required]],
