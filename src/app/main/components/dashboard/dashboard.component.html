@@ -18,7 +18,7 @@
         Группа: {{userInfo.group.name}}
       </div>
       <div class="result">
-        <span class="number">{{currentStudent ? currentStudent.progress : userInfo.progress}}%</span>
+        <span class="number">{{currentStudent ? calculateProgress(currentStudent) : calculateProgress(userInfo)}}%</span>
         <mat-progress-bar [ngClass]="{
         'red': currentStudent ? currentStudent.progress : userInfo.progress <= 20,
         'orange': currentStudent ? currentStudent.progress > 20 : userInfo.progress > 20 && currentStudent ? currentStudent.progress <= 70 : userInfo.progress <= 70,

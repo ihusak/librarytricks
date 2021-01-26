@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import { UserRole } from '../interface/userRole.interface';
 import { AppService } from 'src/app/app.service';
-import { userFormInterface } from './register.component';
+import { UserFormInterface } from './register.component';
 
 @Injectable()
 export class RegisterService extends AppService {
-  isLoggedIn: boolean;
 
-  registerUser(userForm: userFormInterface): Observable<any> {
+  registerUser(userForm: UserFormInterface): Observable<any> {
     return this.http.post(`${this.apiUrl()}/users/create`, {
       email: userForm.email,
       userPassword: userForm.password,
@@ -23,7 +22,7 @@ export class RegisterService extends AppService {
           id: role.id,
           name: role.name,
           status: role.status
-      }))
+      }));
     }));
   }
 }

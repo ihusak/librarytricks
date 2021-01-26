@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit {
   public coachInfo: CoachInfoInterface;
   public studentsList: StudentInfoInterface[];
   public studentTableColumns = ['Позиция', 'Имя', 'Группа', 'Рейтинг', 'Прогресс'];
-  public studentTasks: TaskModel[];
+  public studentTasks: TaskModel[] = [];
   public doneTasks;
   public selectGroups;
   public currentGroup;
@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit {
     this.userInfo = this.mainService.userInfo;
     switch (this.userInfo.role.id) {
       case this.userRoles.STUDENT:
-        if (this.userInfo.coach) {
+        if (this.userInfo.coach.id) {
           this.getCoachInfo(this.userInfo.coach.id);
           this.getStudentsInfo(this.userInfo.group.id);
           this.getTaskByGroup(this.userInfo.group.id);
@@ -148,9 +148,9 @@ export class DashboardComponent implements OnInit {
       }
   }
   public calculateProgress(student?: StudentInfoInterface): number {
-    let doneLength; 
-    if(this.studentTasks) {
-      doneLength = this.studentTasks.filter((task: TaskModel) => student.doneTasks.find(id => task.id == id)).length;
+    let doneLength;
+    if (this.studentTasks.length) {
+      doneLength = this.studentTasks.filter((task: TaskModel) => student.doneTasks.find(id => task.id === id)).length;
       return Math.round((doneLength * 100) / this.studentTasks.length);
     }
     return 0;

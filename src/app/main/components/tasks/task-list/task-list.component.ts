@@ -10,8 +10,8 @@ import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { MatDialog } from '@angular/material/dialog';
 import { PassTaskComponent } from '../popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from '../popups/process-tasks/process-tasks.component';
-import {Observable, of} from 'rxjs';
 import { CreateGroupComponent } from '../popups/create-group/create-group/create-group.component';
+import {GroupInterface} from '../../../../shared/interface/group.interface';
 
 @Component({
   selector: 'app-task-list',
@@ -19,17 +19,17 @@ import { CreateGroupComponent } from '../popups/create-group/create-group/create
   styleUrls: ['./task-list.component.scss']
 })
 export class TaskListComponent implements OnInit {
-  public panelOpenState = false;
+  public panelOpenState: boolean = false;
   public tasksList: TaskModel[];
-  public groupsList;
-  public currentGroup;
+  public groupsList: GroupInterface[] = [];
+  public currentGroup: GroupInterface;
   public userInfo: any;
   public userRoles = UserRolesEnum;
   public processingTasks: number = 0;
   public pendingTasks: number = 0;
   public doneTasks: number = 0;
   public taskStatuses = TaskStatuses;
-  public processingTasksData = [];
+  public processingTasksData: any[] = [];
 
   constructor(
     private taskService: TaskService,
@@ -83,7 +83,7 @@ export class TaskListComponent implements OnInit {
             }
           });
           return task;
-        })
+        });
       }
       console.log(this.tasksList);
     });
@@ -128,8 +128,8 @@ export class TaskListComponent implements OnInit {
   // }
 
   private getGroups() {
-    this.taskService.getAllGroups().subscribe((allGroups: any[]) => {
-      if(this.userInfo.role.id === this.userRoles.ADMIN) {
+    this.taskService.getAllGroups().subscribe((allGroups: GroupInterface[]) => {
+      if (this.userInfo.role.id === this.userRoles.ADMIN) {
         this.groupsList = allGroups;
       } else {
         this.groupsList = allGroups.filter(group => {
@@ -137,18 +137,20 @@ export class TaskListComponent implements OnInit {
         });
       }
       console.log(this.groupsList);
-      if(this.userInfo.group && this.userInfo.group.id) {
-        this.currentGroup = allGroups.filter((group) => group.id === this.userInfo.group.id)[0];
+      if (this.userInfo.group && this.userInfo.group.id) {
+        this.currentGroup = allGroups.filter((group: GroupInterface) => {
+          return group.id === this.userInfo.group.id;
+        })[0];
       } else {
         // default group for admin adn coach
         this.currentGroup = this.groupsList[0];
       }
-      if(this.userInfo.role.id === this.userRoles.COACH) {
-        if(this.currentGroup) {
+      if (this.userInfo.role.id === this.userRoles.COACH) {
+        if (this.currentGroup) {
           this.getTasksStatuses(this.currentGroup.id);
         }
       }
-      if(this.currentGroup) {
+      if (this.currentGroup) {
         this.getAllTasks(this.currentGroup.id);
       }
       // this.getPendingTasks(this.currentGroup.id);
@@ -162,17 +164,19 @@ export class TaskListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(() => {
       this.ngOnInit();
-    })
+    });
   }
 
-  public createGroup(){
+  public createGroup() {
     const dialogRef = this.dialog.open(CreateGroupComponent, {
       width: '650px'
     });
     dialogRef.afterClosed().subscribe(group => {
-      console.log(group);
-      if(group) {
+      if (group) {
         this.groupsList.push(group);
+      }
+      if (!this.currentGroup) {
+        this.currentGroup = group;
       }
     });
   }
@@ -206,6 +210,6 @@ export class TaskListComponent implements OnInit {
         panelClass: ['success']
       });
       this.ngOnInit();
-    })
+    });
   }
 }

@@ -4,7 +4,7 @@
 <div class="nav" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status">
   <div class="coach-actions-button">
     <button mat-raised-button color="primary"  (click)="createGroup()">Создать группу</button>
-    <button mat-raised-button color="primary" routerLink="../create-task">Создать задание</button>
+    <button *ngIf="groupsList.length && currentGroup" mat-raised-button color="primary" routerLink="../create-task">Создать задание</button>
     <button *ngIf="processingTasks" mat-raised-button color="primary" (click)="viewProcessingTasks()"><span [matBadge]="processingTasks" matBadgeOverlap="false" matBadgeColor="accent">В процессе</span></button>
     <button *ngIf="pendingTasks" mat-raised-button color="primary" routerLink="../check-tasks"><span [matBadge]="pendingTasks" matBadgeOverlap="false" matBadgeColor="accent">Ожидают проверки</span></button>
   </div>
@@ -39,9 +39,9 @@
       </div>
     </div>
   </div>
-  <div class="help-info" *ngIf="!currentGroup">
-    <h4>Выберите тренера и группу что бы начать выполнять задания</h4>
-  </div>
+</div>
+<div class="help-info" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && !currentGroup">
+  <h4>Выберите тренера и группу что бы начать выполнять задания</h4>
 </div>
 <!-- Only student -->
 

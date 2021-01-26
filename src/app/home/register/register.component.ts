@@ -6,15 +6,15 @@ import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-export interface userFormInterface {
-  name: string,
-  email: string
-  password: string,
+export interface UserFormInterface {
+  name: string;
+  email: string;
+  password: string;
   type: {
     id: number,
     name: string,
     status: boolean
-  }
+  };
 }
 
 @Component({
@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     type: new FormControl('', [Validators.required])
-  })
+  });
 
   constructor(
     private registerService: RegisterService,
@@ -50,7 +50,7 @@ export class RegisterComponent implements OnInit {
     });
   }
   registerUser() {
-    const userForm: userFormInterface = this.registerUserFrom.value;
+    const userForm: UserFormInterface = this.registerUserFrom.value;
     this.registerService.registerUser(userForm).subscribe((result) => {
       if (result._id) {
         this.snackBar.open(`Письмо для подтверждения о регистрации отправленно на ${userForm.email}`, '', {
@@ -58,7 +58,7 @@ export class RegisterComponent implements OnInit {
           panelClass: ['success']
         });
         this.registerUserFrom.reset();
-        this.router.navigate(['/login'])
+        this.router.navigate(['/login']);
       }
     },
     (error) => {
