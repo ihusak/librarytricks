@@ -7,7 +7,8 @@ import { AppService } from 'src/app/app.service';
 interface createGroupInterface {
   groupName: string;
   coachId: string;
-  forAll: boolean
+  forAll: boolean;
+  price: number;
 }
 
 @Injectable()
@@ -38,7 +39,8 @@ export class TaskService extends AppService {
       return this.http.post(`${this.apiUrl()}/groups/create-group`, {
         groupName: values.groupName,
         coachId: values.coachId,
-        forAll: values.forAll
+        forAll: values.forAll,
+        price: values.price
       });
     }
 

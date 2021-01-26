@@ -16,8 +16,6 @@ export class CreateGroupComponent {
   public groupName: string = '';
   public userRoles = UserRolesEnum;
   public userInfo;
-  // public forAll: boolean = false;
-  // public selectedCoachId: any = null;
   public coachList;
 
   public createGroupFrom: FormGroup;
@@ -39,12 +37,14 @@ export class CreateGroupComponent {
         this.createGroupFrom = this.formBuilder.group({
           groupName: new FormControl('', [Validators.required]),
           coachId: new FormControl('', [Validators.required]),
+          price: new FormControl('', [Validators.required]),
           forAll: new FormControl(false),
         });
       }
       if(this.userInfo.role.id === this.userRoles.COACH) {
         this.createGroupFrom = this.formBuilder.group({
           groupName: new FormControl('', [Validators.required]),
+          price: new FormControl('', [Validators.required]),
           coachId: new FormControl(this.userInfo.id),
         });
       }

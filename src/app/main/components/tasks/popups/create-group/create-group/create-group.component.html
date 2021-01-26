@@ -14,6 +14,13 @@
   </mat-select>
 </mat-form-field>
 
+<div class="price">
+  <mat-form-field>
+    <mat-label>Цена за курс(грн)</mat-label>
+    <input formControlName="price" matInput type="number">
+  </mat-form-field>
+</div>
+
 <section class="for-all-coaches" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createGroupFrom.value.coachId">
   <mat-checkbox formControlName="forAll" (change)="forAllCoaches()">Для все тренеров</mat-checkbox>
 </section>
