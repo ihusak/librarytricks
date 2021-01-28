@@ -70,7 +70,7 @@
           {{task.group.name}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <p>{{task.description}} <a [href]="task.example" target="_blank">ссылка на пример задания</a></p>
+      <quill-view-html [content]="task.description" theme="snow"></quill-view-html>
       <p class="reward">
         Оценка задания: {{task.reward}} баллов
       </p>

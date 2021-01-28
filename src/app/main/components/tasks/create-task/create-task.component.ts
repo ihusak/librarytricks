@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
@@ -11,7 +11,8 @@ import { AdminInfoInterface, CoachInfoInterface } from 'src/app/shared/interface
 @Component({
   selector: 'app-create-task',
   templateUrl: './create-task.component.html',
-  styleUrls: ['./create-task.component.scss']
+  styleUrls: ['./create-task.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CreateTaskComponent implements OnInit {
   public taskForm: FormGroup;

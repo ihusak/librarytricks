@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
 import { TaskModel } from '../task.model';
 import { TaskService } from '../tasks.service';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
@@ -9,7 +9,8 @@ import { Location } from '@angular/common';
 @Component({
   selector: 'app-update-task',
   templateUrl: './update-task.component.html',
-  styleUrls: ['./update-task.component.scss']
+  styleUrls: ['./update-task.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class UpdateTaskComponent implements OnInit, AfterViewInit {
   public tasksList: TaskModel[];

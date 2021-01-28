@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
 import { MainService } from 'src/app/main/main.service';
@@ -16,7 +16,8 @@ import {GroupInterface} from '../../../../shared/interface/group.interface';
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
-  styleUrls: ['./task-list.component.scss']
+  styleUrls: ['./task-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class TaskListComponent implements OnInit {
   public panelOpenState: boolean = false;
