@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
@@ -14,19 +14,26 @@ interface Tokens {
   providedIn: 'root'
 })
 export class AppService {
+  private domain: string;
 
   constructor(
     protected http: HttpClient,
     protected cookieService: CookieService
-    ) {}
+    ) {
+      if(environment.production) {
+        this.domain = 'afreestylers.com'
+      } else {
+        this.domain = 'localhost'
+      }
+    }
 
   public apiUrl(): string {
     return environment.api_url;
   }
 
   public setUserDataToLocalStorage(tokens: Tokens, userId: string, role: any) {
-    this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/', 'afreestylers.com');
-    this.cookieService.set('lb_config', tokens.accessToken, 9999, '/', 'afreestylers.com');
+    this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/', this.domain);
+    this.cookieService.set('lb_config', tokens.accessToken, 9999, '/', this.domain);
   }
 
   public getTokens(): Tokens {
@@ -45,11 +52,11 @@ export class AppService {
   }
 
   public clearStorage() {
-    this.cookieService.delete('lb_config', '/');
-    this.cookieService.delete('lb_refreshToken', '/');
+    this.cookieService.delete('lb_config', '/', this.domain);
+    this.cookieService.delete('lb_refreshToken', '/', this.domain);
   }
 
   public updateAccesToken(newAccesToken) {
-    this.cookieService.set('lb_config', newAccesToken, 9999, '/');
+    this.cookieService.set('lb_config', newAccesToken, 9999, '/', this.domain);
   }
 }
