@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginUser(email: string, pass: string) {
     this.subscription = this.loginService.loginUser(email, pass).subscribe((user: User) => {
      this.appService.setUserDataToLocalStorage(user.tokens, user.id, user.role);
+     console.log('CALLED', user);
      this.loginService.userId = user.id;
      if (user.id && user.confirmed) {
       this.router.navigate(['main/dashboard']);

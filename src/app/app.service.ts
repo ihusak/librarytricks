@@ -25,8 +25,8 @@ export class AppService {
   }
 
   public setUserDataToLocalStorage(tokens: Tokens, userId: string, role: any) {
-    this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/');
-    this.cookieService.set('lb_config', tokens.accessToken, 9999, '/');
+    this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/', 'afreestylers.com');
+    this.cookieService.set('lb_config', tokens.accessToken, 9999, '/', 'afreestylers.com');
   }
 
   public getTokens(): Tokens {
