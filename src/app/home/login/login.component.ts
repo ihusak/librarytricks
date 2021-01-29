@@ -12,8 +12,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  email = 'ilyagusak@gmail.com';
-  pass = 'gusakilya1993';
+  email = '';
+  pass = '';
   loginMessage: string;
   private subscription: Subscription;
 
