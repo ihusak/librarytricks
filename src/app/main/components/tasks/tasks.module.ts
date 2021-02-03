@@ -14,7 +14,7 @@ import { CheckTasksComponent } from './check-tasks/check-tasks.component';
 import { PassTaskComponent } from './popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from './popups/process-tasks/process-tasks.component';
 import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.component';
-import { CreateGroupComponent } from './popups/create-group/create-group/create-group.component';
+import { CreateCourseComponent } from './popups/create-course/create-course.component';
 // import { QuillModule } from 'ngx-quill';
 
 @NgModule({
@@ -27,7 +27,7 @@ import { CreateGroupComponent } from './popups/create-group/create-group/create-
     PassTaskComponent,
     ProcessTasksComponent,
     RejectTaskComponent,
-    CreateGroupComponent
+    CreateCourseComponent
   ],
   imports: [
     CommonModule,
@@ -38,7 +38,7 @@ import { CreateGroupComponent } from './popups/create-group/create-group/create-
     YouTubePlayerModule,
     // QuillModule.forRoot()
   ],
-  entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateGroupComponent],
+  entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateCourseComponent],
   providers: [TaskService]
 })
 export class TasksModule {

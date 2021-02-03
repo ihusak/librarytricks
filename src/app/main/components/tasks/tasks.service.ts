@@ -35,7 +35,7 @@ export class TaskService extends AppService {
       return this.http.get(`${this.apiUrl()}/groups`);
     }
 
-    public createGroup(values: createGroupInterface) {
+    public createCourse(values: createGroupInterface) {
       return this.http.post(`${this.apiUrl()}/groups/create-group`, {
         groupName: values.groupName,
         coachId: values.coachId,

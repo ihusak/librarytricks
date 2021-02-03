@@ -5,14 +5,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from 'src/app/main/components/profile/profile.service';
 import { MainService } from 'src/app/main/main.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
-import { TaskService } from '../../../tasks.service';
+import { TaskService } from '../../tasks.service';
 
 @Component({
-  selector: 'app-create-group',
-  templateUrl: './create-group.component.html',
-  styleUrls: ['./create-group.component.scss']
+  selector: 'app-create-course',
+  templateUrl: './create-course.component.html',
+  styleUrls: ['./create-course.component.scss']
 })
-export class CreateGroupComponent {
+export class CreateCourseComponent {
   public groupName: string = '';
   public userRoles = UserRolesEnum;
   public userInfo;
@@ -21,7 +21,7 @@ export class CreateGroupComponent {
   public createGroupFrom: FormGroup;
 
   constructor(
-    public dialogRef: MatDialogRef<CreateGroupComponent>,
+    public dialogRef: MatDialogRef<CreateCourseComponent>,
     private profileService: ProfileService,
     private taskService: TaskService,
     private mainService: MainService,
@@ -52,7 +52,7 @@ export class CreateGroupComponent {
 
   public createGroup() {
     console.log(this.createGroupFrom);
-    this.taskService.createGroup(this.createGroupFrom.value).subscribe((group: object) => {
+    this.taskService.createCourse(this.createGroupFrom.value).subscribe((group: object) => {
       this.dialogRef.close(group);
       this.snackBar.open('Группа создана', '', {
         duration: 2000,
