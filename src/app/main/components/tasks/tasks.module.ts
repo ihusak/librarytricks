@@ -15,7 +15,7 @@ import { PassTaskComponent } from './popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from './popups/process-tasks/process-tasks.component';
 import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.component';
 import { CreateGroupComponent } from './popups/create-group/create-group/create-group.component';
-import { QuillModule } from 'ngx-quill';
+// import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { QuillModule } from 'ngx-quill';
     TasksRoutingModule,
     ReactiveFormsModule,
     YouTubePlayerModule,
-    QuillModule.forRoot()
+    // QuillModule.forRoot()
   ],
   entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateGroupComponent],
   providers: [TaskService]
