@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  api_url: 'http://api.afreestylers.com'
+  api_url: 'https://api.afreestylers.com'
 };

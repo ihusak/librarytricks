@@ -19,6 +19,7 @@ import { PipesModule } from '../shared/pipes/pipes.module';
 import { TaskService } from './components/tasks/tasks.service';
 import {CookieService} from 'ngx-cookie-service';
 import {TranslateModule} from '@ngx-translate/core';
+import {QuillModule} from 'ngx-quill';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {TranslateModule} from '@ngx-translate/core';
     MatMenuModule,
     SharedModule,
     PipesModule,
-    TranslateModule
+    TranslateModule,
+    QuillModule
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent],

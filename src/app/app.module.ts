@@ -17,6 +17,7 @@ import { LoaderComponent } from './shared/loader/loader.component';
 import { PipesModule } from './shared/pipes/pipes.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import {QuillModule} from 'ngx-quill';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -38,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   HomeModule,
   MainModule,
   PipesModule,
+  QuillModule.forRoot(),
   TranslateModule.forRoot({
     defaultLanguage: 'ru',
     loader: {
