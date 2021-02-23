@@ -15,7 +15,7 @@ import { PassTaskComponent } from './popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from './popups/process-tasks/process-tasks.component';
 import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.component';
 import { CreateCourseComponent } from './popups/create-course/create-course.component';
-// import { QuillModule } from 'ngx-quill';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { CreateCourseComponent } from './popups/create-course/create-course.comp
     TasksRoutingModule,
     ReactiveFormsModule,
     YouTubePlayerModule,
-    // QuillModule.forRoot()
+    QuillModule.forRoot()
   ],
   entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateCourseComponent],
   providers: [TaskService]

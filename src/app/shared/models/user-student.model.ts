@@ -16,7 +16,7 @@ export class UserStudentModel {
     email: string,
     phone: string
   };
-  group: {
+  course: {
     id: number;
     name: string;
   };
@@ -52,13 +52,13 @@ export class UserStudentModel {
       email: responseObj.parentEmail,
       phone: responseObj.parentPhone
     };
-    this.group = {
-      id: responseObj.group ? responseObj.group.id : null,
-      name: responseObj.group ? responseObj.group.name : '',
+    this.course = {
+      id: responseObj.course ? responseObj.course.id : null,
+      name: responseObj.course ? responseObj.course.name : '',
     };
-    this.level = responseObj.group.level,
-    this.position = responseObj.group.position,
-    this.progress = responseObj.group.progress;
+    this.level = responseObj.course.level,
+    this.position = responseObj.course.position,
+    this.progress = responseObj.course.progress;
     this.coach = {
       id: responseObj.coach.id,
       name: responseObj.coach.userName

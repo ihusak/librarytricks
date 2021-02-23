@@ -35,8 +35,8 @@ export class ProfileService extends AppService {
     return this.http.get(`${this.apiUrl()}/userInfo/coach/${id}`);
   }
 
-  public getUsersInfoByGroupId(id: string) {
-    return this.http.get(`${this.apiUrl()}/userInfo/group/${id}`);
+  public getUsersInfoByCourseId(courseId: string) {
+    return this.http.get(`${this.apiUrl()}/userInfo/course/${courseId}`);
   }
 
   public updateUserInfo(userInfo: any) {
@@ -57,9 +57,5 @@ export class ProfileService extends AppService {
         return new UserCoachModel(user);
       });
     }));
-  }
-
-  public getAllGroups() {
-    return this.http.get(`${this.apiUrl()}/groups`);
   }
 }

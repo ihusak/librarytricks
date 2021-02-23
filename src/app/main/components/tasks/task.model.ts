@@ -8,7 +8,7 @@ export class TaskModel {
   nextTask?: {
     id: string
   };
-  group: {
+  course: {
     id: string,
     name: string;
   };
@@ -37,9 +37,9 @@ export class TaskModel {
         id: responseObj.nextTask ? responseObj.nextTask.id : 'initial'
       };
     }
-    this.group = {
-      id: responseObj.group.id,
-      name: responseObj.group.name
+    this.course = {
+      id: responseObj.course.id,
+      name: responseObj.course.name
     };
   }
 }

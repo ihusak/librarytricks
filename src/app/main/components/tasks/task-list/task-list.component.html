@@ -3,24 +3,24 @@
 <h4 *ngIf="(userInfo | userRolePipe:[userRoles.COACH]) && !userInfo.role.status ">Что бы создавать задания вы должны получить подтверждения о тренерстве</h4>
 <div class="nav" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status">
   <div class="coach-actions-button">
-    <button mat-raised-button color="primary"  (click)="createGroup()">Создать группу</button>
-    <button *ngIf="groupsList.length && currentGroup" mat-raised-button color="primary" routerLink="../create-task">Создать задание</button>
+    <button mat-raised-button color="primary" (click)="createCourse()">Создать курс</button>
+    <button *ngIf="coursesList.length && currentCourse" mat-raised-button color="primary" routerLink="../create-task">Создать задание</button>
     <button *ngIf="processingTasks" mat-raised-button color="primary" (click)="viewProcessingTasks()"><span [matBadge]="processingTasks" matBadgeOverlap="false" matBadgeColor="accent">В процессе</span></button>
     <button *ngIf="pendingTasks" mat-raised-button color="primary" routerLink="../check-tasks"><span [matBadge]="pendingTasks" matBadgeOverlap="false" matBadgeColor="accent">Ожидают проверки</span></button>
   </div>
-  <mat-form-field *ngIf="groupsList && groupsList.length">
-    <mat-label>Группа</mat-label>
-    <mat-select [compareWith]="compareObjects" [(ngModel)]="currentGroup" #selectedvalue (valueChange)="changeGroup(selectedvalue.value)">
-      <mat-option *ngFor="let groupItem of groupsList" [value]="groupItem">{{groupItem.name}}</mat-option>
+  <mat-form-field *ngIf="coursesList && coursesList.length">
+    <mat-label>Курс</mat-label>
+    <mat-select [compareWith]="compareObjects" [(ngModel)]="currentCourse" #selectedvalue (valueChange)="changeCourse(selectedvalue.value)">
+      <mat-option *ngFor="let course of coursesList" [value]="course">{{course.name}}</mat-option>
     </mat-select>
   </mat-form-field>
 </div>
 <!-- Only coach and admin role -->
 
 <!-- Only student -->
-<div class="header-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && currentGroup">
+<div class="header-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && currentCourse">
   <div class="info-item">
-    <p><b>Группа:</b> {{userInfo.group.name}}</p>
+    <p><b>Курс:</b> {{userInfo.course.name}}</p>
     <p><b>Тренер:</b> {{userInfo.coach.name}}</p>
   </div>
   <div class="info-item">
@@ -40,7 +40,7 @@
     </div>
   </div>
 </div>
-<div class="help-info" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && !currentGroup">
+<div class="help-info" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && !currentCourse">
   <h4>Выберите тренера и группу что бы начать выполнять задания</h4>
 </div>
 <!-- Only student -->
@@ -67,7 +67,7 @@
           {{task.title}}
         </mat-panel-title>
         <mat-panel-description>
-          {{task.group.name}}
+          {{task.course.name}}
         </mat-panel-description>
       </mat-expansion-panel-header>
       <!-- <quill-view-html [content]="task.description" theme="snow"></quill-view-html> -->

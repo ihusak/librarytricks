@@ -13,12 +13,11 @@ import { TaskService } from '../../tasks.service';
   styleUrls: ['./create-course.component.scss']
 })
 export class CreateCourseComponent {
-  public groupName: string = '';
   public userRoles = UserRolesEnum;
   public userInfo;
   public coachList;
 
-  public createGroupFrom: FormGroup;
+  public createCourseFrom: FormGroup;
 
   constructor(
     public dialogRef: MatDialogRef<CreateCourseComponent>,
@@ -34,27 +33,27 @@ export class CreateCourseComponent {
         })
       }
       if(this.userInfo.role.id === this.userRoles.ADMIN) {
-        this.createGroupFrom = this.formBuilder.group({
-          groupName: new FormControl('', [Validators.required]),
+        this.createCourseFrom = this.formBuilder.group({
+          courseName: new FormControl('', [Validators.required]),
           coachId: new FormControl('', [Validators.required]),
           price: new FormControl('', [Validators.required]),
           forAll: new FormControl(false),
         });
       }
       if(this.userInfo.role.id === this.userRoles.COACH) {
-        this.createGroupFrom = this.formBuilder.group({
-          groupName: new FormControl('', [Validators.required]),
+        this.createCourseFrom = this.formBuilder.group({
+          courseName: new FormControl('', [Validators.required]),
           price: new FormControl('', [Validators.required]),
           coachId: new FormControl(this.userInfo.id),
         });
       }
     }
 
-  public createGroup() {
-    console.log(this.createGroupFrom);
-    this.taskService.createCourse(this.createGroupFrom.value).subscribe((group: object) => {
-      this.dialogRef.close(group);
-      this.snackBar.open('Группа создана', '', {
+  public create() {
+    console.log(this.createCourseFrom);
+    this.taskService.createCourse(this.createCourseFrom.value).subscribe((course: object) => {
+      this.dialogRef.close(course);
+      this.snackBar.open('Курс создан', '', {
         duration: 2000,
         panelClass: ['success']
       });
@@ -62,10 +61,10 @@ export class CreateCourseComponent {
   }
 
   public forAllCoaches() {
-    if(this.createGroupFrom.value.forAll) {
-      this.createGroupFrom.removeControl('coachId');
+    if(this.createCourseFrom.value.forAll) {
+      this.createCourseFrom.removeControl('coachId');
     } else {
-      this.createGroupFrom.addControl('coachId', new FormControl('', [Validators.required]));
+      this.createCourseFrom.addControl('coachId', new FormControl('', [Validators.required]));
     }
   }
 }

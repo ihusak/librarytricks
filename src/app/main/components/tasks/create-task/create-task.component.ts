@@ -17,7 +17,7 @@ import { AdminInfoInterface, CoachInfoInterface } from 'src/app/shared/interface
 export class CreateTaskComponent implements OnInit {
   public taskForm: FormGroup;
   public initForm: boolean = false;
-  public groupsList;
+  public coursesList;
   public tasksList;
   public userInfo: any;
   private userRoles = UserRolesEnum;
@@ -37,30 +37,30 @@ export class CreateTaskComponent implements OnInit {
       example: ['', [Validators.required]],
       reward: [null, [Validators.required, Validators.max(100), Validators.min(0)]],
       nextTask: ['', [Validators.required]],
-      group: [null, [Validators.required]],
+      course: [null, [Validators.required]],
     });
     this.initForm = true;
-    this.getGroups();
+    this.getCourses();
     this.getAllTasks();
   }
 
-  private getGroups() {
-    this.taskService.getAllGroups().subscribe((allGroups: any[]) => {
-      let filteredGroups;
+  private getCourses() {
+    this.taskService.getAllCourses().subscribe((allcourses: any[]) => {
+      let filteredCourses;
       switch(this.userInfo.role.id) {
         case this.userRoles.COACH: 
-          filteredGroups = allGroups.filter(group => group.coachId === this.userInfo.id);
+        filteredCourses = allcourses.filter(course => course.coachId === this.userInfo.id);
           break;
         case this.userRoles.ADMIN: 
-          filteredGroups = allGroups;
+        filteredCourses = allcourses;
           break;
       }
-      this.groupsList = filteredGroups;
+      this.coursesList = filteredCourses;
     })
   }
-  private getAllTasks(groupId?: number) {
+  private getAllTasks(courseId?: string) {
     this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
-      this.tasksList = tasks.filter((task: any) => task.group.id === groupId);
+      this.tasksList = tasks.filter((task: TaskModel) => task.course.id === courseId);
       console.log(tasks,this.tasksList);
       if(!this.tasksList.length) {
         this.taskForm.removeControl('nextTask');
@@ -83,9 +83,9 @@ export class CreateTaskComponent implements OnInit {
       this.location.back();
     });
   }
-  public changeGroup(group) {
+  public changeCourse(course) {
     console.log(this.taskForm);
-    const groupId: number = group.id;
-    this.getAllTasks(groupId);
+    const courseId: string = course.id;
+    this.getAllTasks(courseId);
   }
 }

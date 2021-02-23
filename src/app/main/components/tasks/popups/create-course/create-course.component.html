@@ -1,13 +1,13 @@
-<h3>Создание группы</h3>
-<p>Здесь ты можешь создать любую группу для учеников</p>
-<p>Внимание! Созданная группа будет доступна лишь вашим ученикам</p>
-<form class="form" [formGroup]="createGroupFrom">
+<h3>Создание курса</h3>
+<p>Здесь ты можешь создать любой курс для учеников</p>
+<p>Внимание! Созданный курс будет доступен лишь вашим ученикам</p>
+<form class="form" [formGroup]="createCourseFrom">
 <mat-form-field class="group-name-field">
-  <mat-label>Название группы</mat-label>
-  <input matInput type="text" formControlName="groupName">
+  <mat-label>Название курса</mat-label>
+  <input matInput type="text" formControlName="courseName">
 </mat-form-field>
 
-<mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createGroupFrom.value.forAll">
+<mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createCourseFrom.value.forAll">
   <mat-label>Тренер</mat-label>
   <mat-select formControlName="coachId">
     <mat-option *ngFor="let coach of coachList" [value]="coach.id">{{coach.userName}}</mat-option>
@@ -21,9 +21,9 @@
   </mat-form-field>
 </div>
 
-<section class="for-all-coaches" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createGroupFrom.value.coachId">
+<section class="for-all-coaches" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createCourseFrom.value.coachId">
   <mat-checkbox formControlName="forAll" (change)="forAllCoaches()">Для все тренеров</mat-checkbox>
 </section>
 
-<button mat-flat-button color="primary" [disabled]="!createGroupFrom.valid" (click)="createGroup()">Создать группу</button>
+<button mat-flat-button color="primary" [disabled]="!createCourseFrom.valid" (click)="create()">Создать курс</button>
 </form>

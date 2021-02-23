@@ -7,7 +7,7 @@
         <input formControlName="title" matInput placeholder="Название задания" required>
       </mat-form-field>
       <h3>Детальное описание задания</h3>
-      <!-- <quill-editor formControlName="description" placeholder="Детали" required="true"></quill-editor> -->
+      <quill-editor formControlName="description" placeholder="Детали" required="true"></quill-editor>
     </div>
     <div class="item">
       <h3>Видео пример задания</h3>
@@ -24,8 +24,8 @@
       <h3>Группа заданий</h3>
       <mat-form-field>
         <mat-label>Группа</mat-label>
-        <mat-select formControlName="group" #selectedvalue (valueChange)="changeGroup(selectedvalue.value)">
-          <mat-option *ngFor="let groupItem of groupsList" [value]="groupItem">{{groupItem.name}}</mat-option>
+        <mat-select formControlName="course" #selectedvalue (valueChange)="changeCourse(selectedvalue.value)">
+          <mat-option *ngFor="let courseItem of coursesList" [value]="courseItem">{{courseItem.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

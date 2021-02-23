@@ -23,8 +23,8 @@
       <h3>Группа заданий</h3>
       <mat-form-field>
         <mat-label>Группа</mat-label>
-        <mat-select [compareWith]="compareObjects" formControlName="group" #selectedvalue (valueChange)="changeGroup(selectedvalue.value)">
-          <mat-option *ngFor="let groupItem of groupsList" [value]="groupItem">{{groupItem.name}}</mat-option>
+        <mat-select [compareWith]="compareObjects" formControlName="course" #selectedvalue (valueChange)="changeCourse(selectedvalue.value)">
+          <mat-option *ngFor="let courseItem of coursesList" [value]="courseItem">{{courseItem.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

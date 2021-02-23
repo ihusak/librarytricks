@@ -4,8 +4,8 @@ import { TaskModel } from './task.model';
 import { map } from 'rxjs/operators';
 import { AppService } from 'src/app/app.service';
 
-interface createGroupInterface {
-  groupName: string;
+interface createCourseInterface {
+  courseName: string;
   coachId: string;
   forAll: boolean;
   price: number;
@@ -25,27 +25,27 @@ export class TaskService extends AppService {
       }));
     }
 
-    public getTasksByGroup(groupId: string) {
-      return this.http.get(`${this.apiUrl()}/task/group/${groupId}/list`).pipe(map((tasks: any) => {
+    public getTasksByCourse(courseId: string) {
+      return this.http.get(`${this.apiUrl()}/task/course/${courseId}/list`).pipe(map((tasks: any) => {
         return tasks.map(task => new TaskModel(task));
       }));
     }
 
-    public getAllGroups() {
-      return this.http.get(`${this.apiUrl()}/groups`);
+    public getAllCourses() {
+      return this.http.get(`${this.apiUrl()}/courses`);
     }
 
-    public createCourse(values: createGroupInterface) {
-      return this.http.post(`${this.apiUrl()}/groups/create-group`, {
-        groupName: values.groupName,
+    public createCourse(values: createCourseInterface) {
+      return this.http.post(`${this.apiUrl()}/courses/create-course`, {
+        courseName: values.courseName,
         coachId: values.coachId,
         forAll: values.forAll,
         price: values.price
       });
     }
 
-    public getStatusTasks(coachId: string, groupId: number, status: string) {
-      return this.http.post(`${this.apiUrl()}/task/status/coach/${coachId}/group/${groupId}`, {status});
+    public getStatusTasks(coachId: string, courseId: string, status: string) {
+      return this.http.post(`${this.apiUrl()}/task/status/coach/${coachId}/course/${courseId}`, {status});
     }
 
     public createTask(task: TaskModel) {

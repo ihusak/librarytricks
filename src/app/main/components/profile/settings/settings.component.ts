@@ -9,6 +9,7 @@ import { DateAdapter } from '@angular/material';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { UserParentModel } from 'src/app/shared/models/user-parent.model';
 import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
+import { TaskService } from '../../tasks/tasks.service';
 
 @Component({
   selector: 'app-settings',
@@ -30,6 +31,7 @@ export class SettingsComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
+    private taskService: TaskService,
     protected appService: AppService,
     private snackBar: MatSnackBar,
     private router: Router,
@@ -114,7 +116,7 @@ export class SettingsComponent implements OnInit {
     switch (userRole) {
       case this.userRoles.STUDENT:
         this.userGroup = data.group;
-        this.profileService.getAllGroups().subscribe(allGroups => {
+        this.taskService.getAllCourses().subscribe(allGroups => {
           console.log('all group', allGroups);
           this.userGroups = allGroups;
         });

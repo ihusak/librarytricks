@@ -62,7 +62,7 @@ export class CheckTasksComponent implements OnInit {
       taskId: userInfo.currentTask.id,
       coachId: userInfo.coach.id,
       reward: userInfo.currentTask.reward * (this.coachMark / 100),
-      groupId: userInfo.group.id
+      courseId: userInfo.course.id
     }
     this.profileService.acceptStudentTask(userInfo.id, task).subscribe(res => {
       this.ngOnInit();

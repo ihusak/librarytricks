@@ -71,11 +71,11 @@
         <div class="form-group">
           <mat-form-field>
             <mat-label>Группа</mat-label>
-            <mat-select [compareWith]="compareObjects" formControlName="group" (selectionChange)="changeGroup($event.value)">
-              <mat-option *ngFor="let group of coachGroups" [value]="group">{{group.name}}</mat-option>
+            <mat-select [compareWith]="compareObjects" formControlName="course" (selectionChange)="changeCourse($event.value)">
+              <mat-option *ngFor="let course of coachCourses" [value]="course">{{course.name}}</mat-option>
             </mat-select>
           </mat-form-field>
-          <div class="empty" *ngIf="!coachGroups.length">У тренер нет групп</div>
+          <div class="empty" *ngIf="!coachCourses.length">У тренер нет групп</div>
         </div>
       </div>
       <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.PARENT]">

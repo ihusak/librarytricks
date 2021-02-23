@@ -1,7 +1,5 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
 import { AppService } from 'src/app/app.service';
-import { Subscription } from 'rxjs/internal/Subscription';
-import { MainService } from '../../main.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { ProfileService } from './profile.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserStudentModel } from 'src/app/shared/models/user-student.model';
 import { UserParentModel } from 'src/app/shared/models/user-parent.model';
 import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
+import { TaskService } from '../tasks/tasks.service';
 
 @Component({
   selector: 'app-profile',
@@ -19,11 +18,11 @@ import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   public previewUrl: any = '../../assets/user-default.png';
-  public coachGroups: any[] = [];
-  public coachGroupList: any[] = [];
+  public coachCourses: any[] = [];
+  public coachCourseList: any[] = [];
   public fileData: File = null;
   public initForm: boolean = false;
-  public userGroup;
+  public userCourse;
   public coachsList: any;
   public userInfo: FormGroup;
   public userRoles = UserRolesEnum;
@@ -33,6 +32,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private profileService: ProfileService,
+    private taskService: TaskService,
     protected appService: AppService,
     private snackBar: MatSnackBar,
     private router: Router,
@@ -92,16 +92,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   public changeCoach(value: any) {
     this.coach = value;
-    this.coachGroups = [...this.coachGroupList];
-    this.coachGroups = this.coachGroups.filter((group: any) => {
-      // return this.coach.id === group.coachId || group.forAll; // include general groups
-      return this.coach.id === group.coachId; // not include general groups
+    this.coachCourses = [...this.coachCourseList];
+    this.coachCourses = this.coachCourses.filter((course: any) => {
+      // return this.coach.id === course.coachId || course.forAll; // include general courses
+      return this.coach.id === course.coachId; // not include general courses
     });
   }
 
-  public changeGroup(group: any) {
+  public changeCourse(course: any) {
     console.log(this);
-    const coach = this.coachsList.find(coach => group.coachId === coach.id)
+    const coach = this.coachsList.find(coach => course.coachId === coach.id)
     this.userInfo.controls.coach.setValue({
       id: coach.id,
       userName: coach.userName
@@ -139,9 +139,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   private switchValidatorsOnRole(userRole: number, data) {
     switch (userRole) {
       case this.userRoles.STUDENT:
-        this.userGroup = data.group;
-        this.profileService.getAllGroups().subscribe((allGroups: any[]) => {
-          this.coachGroupList = allGroups;
+        this.userCourse = data.course;
+        this.taskService.getAllCourses().subscribe((allCourses: any[]) => {
+          this.coachCourseList = allCourses;
           this.coach = data.coach.id ? data.coach : null;
           if(this.coach) {
             this.changeCoach(data.coach);
@@ -156,8 +156,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           startTraining: [data.startTraining || '', [Validators.required]],
           aboutMe: [data.aboutMe || ''],
-          group: [data.group, [Validators.required]],
-          // group: [{value: data.group || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]], //TODO??
+          course: [data.course, [Validators.required]],
+          // course: [{value: data.course || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]], //TODO??
           coach: [data.coach || '', [Validators.required]],
           // coach: [{value: data.coach || '', disabled: data.progress < 100 && data.currentTask.id}, [Validators.required]], //TODO??
           instagram: [data.socialNetworks.instagram || ''],

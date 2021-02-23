@@ -1,4 +1,4 @@
-export interface GroupInterface {
+export interface CourseInterface {
   id: string;
   name: string;
   forAll: boolean;

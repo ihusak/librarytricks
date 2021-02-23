@@ -14,8 +14,8 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="group" *ngIf="userInfo.group">
-        Группа: {{userInfo.group.name}}
+      <div class="group" *ngIf="userInfo.course">
+        Группа: {{userInfo.course.name}}
       </div>
       <div class="result">
         <span class="number">{{currentStudent ? calculateProgress(currentStudent) : calculateProgress(userInfo)}}%</span>
@@ -46,8 +46,8 @@
       <div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
         <mat-form-field>
           <mat-label>Выбор группы</mat-label>
-          <mat-select [compareWith]="compareObjectsGroups" [(ngModel)]="currentGroup" #selectedValue (valueChange)="changeGroup(selectedValue.value)">
-            <mat-option *ngFor="let group of selectGroups" [value]="group">{{group.name}}</mat-option>
+          <mat-select [compareWith]="compareObjectsCourses" [(ngModel)]="currentCourse" #selectedValue (valueChange)="changeCourse(selectedValue.value)">
+            <mat-option *ngFor="let course of selectCourses" [value]="course">{{course.name}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -72,7 +72,7 @@
           <!-- Weight Column -->
           <ng-container matColumnDef="Группа">
             <th mat-header-cell *matHeaderCellDef> Группа </th>
-            <td mat-cell *matCellDef="let student"> {{student.group ? student.group.name : ''}} </td>
+            <td mat-cell *matCellDef="let student"> {{student.course ? student.course.name : ''}} </td>
           </ng-container>
 
           <!-- Symbol Column -->

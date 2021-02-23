@@ -1,5 +1,4 @@
-import { Component, ComponentFactoryResolver, OnInit, ViewEncapsulation } from '@angular/core';
-import { AppService } from 'src/app/app.service';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import {
   AdminInfoInterface,
@@ -26,13 +25,12 @@ export class DashboardComponent implements OnInit {
   public studentTableColumns = ['Позиция', 'Имя', 'Группа', 'Рейтинг', 'Прогресс'];
   public studentTasks: TaskModel[] = [];
   public doneTasks;
-  public selectGroups;
-  public currentGroup;
+  public selectCourses;
+  public currentCourse;
   public currentStudent;
 
   constructor(
     private mainService: MainService,
-    private appService: AppService,
     private profileService: ProfileService,
     private taskService: TaskService
   ) { }
@@ -43,18 +41,18 @@ export class DashboardComponent implements OnInit {
       case this.userRoles.STUDENT:
         if (this.userInfo.coach.id) {
           this.getCoachInfo(this.userInfo.coach.id);
-          this.getStudentsInfo(this.userInfo.group.id);
-          this.getTaskByGroup(this.userInfo.group.id);
+          this.getStudentsInfo(this.userInfo.course.id);
+          this.getTaskByCourse(this.userInfo.course.id);
           this.checkStatusTask();
         }
         break;
       case this.userRoles.COACH:
-        this.profileService.getAllGroups().subscribe((groups: any[]) => {
-          this.selectGroups = groups.filter(group => group.coachId === this.userInfo.id);
-          if(this.selectGroups.length) {
-            this.currentGroup = this.selectGroups[0];
-            this.getStudentsInfo(this.selectGroups[0].id);
-            this.getTaskByGroup(this.selectGroups[0].id);
+        this.taskService.getAllCourses().subscribe((courses: any[]) => {
+          this.selectCourses = courses.filter(course => course.coachId === this.userInfo.id);
+          if(this.selectCourses.length) {
+            this.currentCourse = this.selectCourses[0];
+            this.getStudentsInfo(this.selectCourses[0].id);
+            this.getTaskByCourse(this.selectCourses[0].id);
           }
         });
         break;
@@ -63,18 +61,18 @@ export class DashboardComponent implements OnInit {
         if(this.userInfo.myKid) {
           this.profileService.getUserInfoWithParams(this.userInfo.myKid.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
             this.currentStudent = studentInfo;
-            this.getTaskByGroup(studentInfo.group.id);
-            this.getStudentsInfo(studentInfo.group.id);
+            this.getTaskByCourse(studentInfo.course.id);
+            this.getStudentsInfo(studentInfo.course.id);
             this.getCoachInfo(studentInfo.coach.id);
           })
         }
       break;
       case this.userRoles.ADMIN:
-        this.profileService.getAllGroups().subscribe((groups) => {
-          this.selectGroups = groups;
-          this.currentGroup = groups[0];
-          this.getStudentsInfo(groups[0].id);
-          this.getTaskByGroup(groups[0].id);
+        this.taskService.getAllCourses().subscribe((courses) => {
+          this.selectCourses = courses;
+          this.currentCourse = courses[0];
+          this.getStudentsInfo(courses[0].id);
+          this.getTaskByCourse(courses[0].id);
         });
         break;
     }
@@ -87,15 +85,15 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  compareObjectsGroups(o1: any, o2: any): boolean {
+  compareObjectsCourses(o1: any, o2: any): boolean {
     return o1.name === o2.name && o1.id === o2.id;
   }
 
-  public changeGroup(group) {
-    const groupId: string = group.id;
+  public changeCourse(course) {
+    const courseId: string = course.id;
     this.currentStudent = null;
-    this.getStudentsInfo(groupId);
-    this.getTaskByGroup(groupId);
+    this.getStudentsInfo(courseId);
+    this.getTaskByCourse(courseId);
     this.checkStatusTask();
   }
 
@@ -110,8 +108,8 @@ export class DashboardComponent implements OnInit {
       this.coachInfo = coachInfo;
     });
   }
-  private getStudentsInfo(groupId: string) {
-    this.profileService.getUsersInfoByGroupId(groupId).subscribe((studentsList: StudentInfoInterface[]) => {
+  private getStudentsInfo(courseId: string) {
+    this.profileService.getUsersInfoByCourseId(courseId).subscribe((studentsList: StudentInfoInterface[]) => {
       this.studentsList = studentsList.sort((a, b) => a.rating > b.rating ? -1 : 1);
       if ((this.userInfo.role.id === this.userRoles.COACH) &&
           !this.currentStudent || (this.userInfo.role.id === this.userRoles.ADMIN)) {
@@ -122,15 +120,15 @@ export class DashboardComponent implements OnInit {
       this.checkStatusTask();
     });
   }
-  private getTaskByGroup(groupId: string) {
-    this.taskService.getTasksByGroup(groupId).subscribe(tasks => {
+  private getTaskByCourse(courseId: string) {
+    this.taskService.getTasksByCourse(courseId).subscribe(tasks => {
       this.studentTasks = tasks;
       this.checkStatusTask();
     });
   }
   private checkStatusTask() {
       const student = this.currentStudent ? this.currentStudent : this.userInfo;
-      if (student.group && this.studentTasks) {
+      if (student.course && this.studentTasks) {
         this.doneTasks = student.doneTasks.filter(taskId => {
           return this.studentTasks.find(task => task.id === taskId);
         });
@@ -140,7 +138,7 @@ export class DashboardComponent implements OnInit {
         });
         student.progress = ((this.studentTasks.filter((task: TaskModel) => task.done).length) * 100) / this.studentTasks.length;
       }
-      if (!student.group && this.studentTasks) {
+      if (!student.course && this.studentTasks) {
         this.studentTasks = this.studentTasks.map((task: TaskModel) => {
           task.done = false;
           return task;

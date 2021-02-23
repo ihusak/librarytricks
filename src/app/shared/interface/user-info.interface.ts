@@ -18,7 +18,7 @@ export interface StudentInfoInterface {
     email: string,
     phone: string
   };
-  group: {
+  course: {
     id: string;
     name: string;
   };

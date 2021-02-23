@@ -16,9 +16,9 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
   public tasksList: TaskModel[];
   public taskForm: FormGroup;
   public initForm: boolean = false;
-  public groupsList;
-  private taskId: string;
+  public coursesList;
   public nextTask: string;
+  private taskId: string;
   private currentTask: TaskModel;
 
   constructor(
@@ -68,20 +68,20 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
         example: [task.example, [Validators.required]],
         reward: [task.reward, [Validators.required]],
         nextTask: [task.nextTask.id, [Validators.required]],
-        group: [task.group, [Validators.required]],
+        course: [task.course, [Validators.required]],
         allow: [task.allow],
         _id: [task.id],
       });
       this.nextTask = task.nextTask.id;
-      this.getAllTasks(task.group.id);
-      this.getGroups();
+      this.getAllTasks(task.course.id);
+      this.getCourses();
       this.initForm = true;
     });
   }
 
-  private getAllTasks(groupId?: string) {
+  private getAllTasks(courseId?: string) {
     this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
-      this.tasksList = tasks.filter((task: any) => task.group.id === groupId && this.currentTask.id !== task.id);
+      this.tasksList = tasks.filter((task: TaskModel) => task.course.id === courseId && this.currentTask.id !== task.id);
       if (!this.tasksList.length) {
         this.taskForm.removeControl('nextTask');
       } else {
@@ -90,15 +90,15 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private getGroups() {
-    this.taskService.getAllGroups().subscribe(allGroups => {
-      this.groupsList = allGroups;
+  private getCourses() {
+    this.taskService.getAllCourses().subscribe(allCourses => {
+      this.coursesList = allCourses;
     })
   }
 
-  public changeGroup(group) {
-    const groupId: string = group.id;
-    this.getAllTasks(groupId);
+  public changeCourse(course) {
+    const courseId: string = course.id;
+    this.getAllTasks(courseId);
   }
 
   compareObjects(o1: any, o2: any): boolean {

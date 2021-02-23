@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PassTaskComponent } from '../popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from '../popups/process-tasks/process-tasks.component';
 import { CreateCourseComponent } from '../popups/create-course/create-course.component';
-import {GroupInterface} from '../../../../shared/interface/group.interface';
+import {CourseInterface} from '../../../../shared/interface/course.interface';
 
 @Component({
   selector: 'app-task-list',
@@ -22,8 +22,8 @@ import {GroupInterface} from '../../../../shared/interface/group.interface';
 export class TaskListComponent implements OnInit {
   public panelOpenState: boolean = false;
   public tasksList: TaskModel[];
-  public groupsList: GroupInterface[] = [];
-  public currentGroup: GroupInterface;
+  public coursesList: CourseInterface[] = [];
+  public currentCourse: CourseInterface;
   public userInfo: any;
   public userRoles = UserRolesEnum;
   public processingTasks: number = 0;
@@ -43,7 +43,7 @@ export class TaskListComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.getGroups();
+    this.getCourses();
     console.log(this);
   }
 
@@ -58,8 +58,8 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  private getAllTasks(groupId?: string) {
-    this.taskService.getTasksByGroup(groupId).subscribe((tasks: TaskModel[]) => {
+  private getAllTasks(courseId?: string) {
+    this.taskService.getTasksByCourse(courseId).subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks;
       const currentStudentDoneTasks = [];
       if (this.userInfo.role.id === UserRolesEnum.STUDENT) {
@@ -90,14 +90,14 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  private getTasksStatuses(groupId: string) {
+  private getTasksStatuses(courseId: string) {
     this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
       this.processingTasks = 0;
       this.pendingTasks = 0;
       this.doneTasks = 0;
       this.processingTasksData = [];
       usersInfo.map((info: StudentInfoInterface) => {
-        if (info.group.id === groupId) {
+        if (info.course.id === courseId) {
           switch (info.currentTask.status) {
             case TaskStatuses.PROCESSING:
               this.processingTasksData.push(info);
@@ -128,31 +128,31 @@ export class TaskListComponent implements OnInit {
   //   }
   // }
 
-  private getGroups() {
-    this.taskService.getAllGroups().subscribe((allGroups: GroupInterface[]) => {
+  private getCourses() {
+    this.taskService.getAllCourses().subscribe((allCourses: CourseInterface[]) => {
       if (this.userInfo.role.id === this.userRoles.ADMIN) {
-        this.groupsList = allGroups;
+        this.coursesList = allCourses;
       } else {
-        this.groupsList = allGroups.filter(group => {
-          return group.coachId === this.userInfo.id;
+        this.coursesList = allCourses.filter((course: CourseInterface) => {
+          return course.coachId === this.userInfo.id;
         });
       }
-      console.log(this.groupsList);
-      if (this.userInfo.group && this.userInfo.group.id) {
-        this.currentGroup = allGroups.filter((group: GroupInterface) => {
-          return group.id === this.userInfo.group.id;
+      console.log(this.coursesList);
+      if (this.userInfo.course && this.userInfo.course.id) {
+        this.currentCourse = allCourses.filter((course: CourseInterface) => {
+          return course.id === this.userInfo.course.id;
         })[0];
       } else {
         // default group for admin adn coach
-        this.currentGroup = this.groupsList[0];
+        this.currentCourse = this.coursesList[0];
       }
       if (this.userInfo.role.id === this.userRoles.COACH) {
-        if (this.currentGroup) {
-          this.getTasksStatuses(this.currentGroup.id);
+        if (this.currentCourse) {
+          this.getTasksStatuses(this.currentCourse.id);
         }
       }
-      if (this.currentGroup) {
-        this.getAllTasks(this.currentGroup.id);
+      if (this.currentCourse) {
+        this.getAllTasks(this.currentCourse.id);
       }
       // this.getPendingTasks(this.currentGroup.id);
     });
@@ -168,16 +168,16 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  public createGroup() {
+  public createCourse() {
     const dialogRef = this.dialog.open(CreateCourseComponent, {
       width: '650px'
     });
-    dialogRef.afterClosed().subscribe(group => {
-      if (group) {
-        this.groupsList.push(group);
+    dialogRef.afterClosed().subscribe(course => {
+      if (course) {
+        this.coursesList.push(course);
       }
-      if (!this.currentGroup) {
-        this.currentGroup = group;
+      if (!this.currentCourse) {
+        this.currentCourse = course;
       }
     });
   }
@@ -189,10 +189,10 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  public changeGroup(group) {
-    const groupId: string = group.id;
-    this.getAllTasks(groupId);
-    this.getTasksStatuses(groupId);
+  public changeCourse(course) {
+    const courseId: string = course.id;
+    this.getAllTasks(courseId);
+    this.getTasksStatuses(courseId);
     // this.getPendingTasks(groupId);
   }
 

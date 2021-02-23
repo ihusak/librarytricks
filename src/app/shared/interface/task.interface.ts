@@ -5,7 +5,7 @@ export interface TaskInterface {
   allow: boolean;
   reward: number;
   nextTask: {id: string};
-  group: {
+  course: {
     id: number,
     name: string,
   };
