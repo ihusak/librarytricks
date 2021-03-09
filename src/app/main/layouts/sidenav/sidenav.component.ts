@@ -1,5 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Router } from '@angular/router';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sidenav',
@@ -7,16 +9,28 @@ import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
   styleUrls: ['./sidenav.component.scss']
 })
 export class SidenavComponent implements OnInit {
-  @Input() showToggle = true;
   @Input() userInfo;
+  @Input() sideNav;
   @Output() toggleCollapsed = new EventEmitter();
-  public userImage: string;
   public userRoles = UserRolesEnum;
+  public env: any = environment;
   
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
-    this.userImage = this.userInfo.userImg ? `api/${this.userInfo.userImg}` : 'assets/user-default.png';
+    console.log(this);
   }
 
+  public close() {
+    this.sideNav.close();
+  }
+
+  public navigate(route: string) {
+    console.log('!!!route', route);
+    this.router.navigate(['/main/'+route]).then(() => {
+      setTimeout(() => {
+        this.close();
+      })
+    });
+  }
 }

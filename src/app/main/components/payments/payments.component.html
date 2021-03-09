@@ -1,0 +1,49 @@
+<h1>Оплата</h1>
+
+<div class="payments-form">
+  <form action="">
+    <p>Выберите курс который хотите оплатить</p>
+    <mat-form-field *ngIf="coursesList && coursesList.length">
+      <mat-label>Курс</mat-label>
+      <mat-select #selectedvalue (valueChange)="changeCourse(selectedvalue.value)">
+        <mat-option *ngFor="let course of coursesList" [value]="course">{{course.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+  <div class="course-description" *ngIf="selectedCourse && selectedCourse.description">
+    <div class="video" *ngIf="selectedCourse.description.video">
+      <youtube-player
+      [videoId]="youTubeGetID(selectedCourse.description.video)"
+      suggestedQuality="highres"
+      [height]="250"
+      [width]="500">
+      </youtube-player>
+    </div>
+    <p class="text"[innerHtml]="selectedCourse.description.text"></p>
+  </div>
+</div>
+
+<div id="liqpay_checkout" *ngIf="signature">
+  <form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+    <input type="hidden" name="data" [value]="sign_string"/>
+    <input type="hidden" name="signature" [value]="signature"/>
+    <button (click)="pay()" style="border: none !important; display:inline-block !important;text-align: center !important;padding: 7px 20px !important;
+    color: #fff !important; font-size:16px !important; font-weight: 600 !important; font-family:OpenSans, sans-serif; cursor: pointer !important; border-radius: 2px !important;
+    background: rgba(122,183,43,1) !important;"onmouseover="this.style.opacity='0.5';" onmouseout="this.style.opacity='1';">
+    <img src="https://static.liqpay.ua/buttons/logo-small.png" name="btn_text"
+      style="margin-right: 7px !important; vertical-align: middle !important;"/>
+    <span style="vertical-align:middle; !important">Оплатить {{selectedCourse.price}} UAH</span>
+  </button>
+   </form>
+</div>
+<div class="bought-courses" *ngIf="paidCourses.length">
+  <p>
+    <b>Купленные курсы</b>
+  </p>
+    <ul>
+      <li *ngFor="let paid of paidCourses">
+        <h3>{{paid.course?.name}} ({{paid.price}} UAH)</h3>
+        <p [innerHtml]="paid.course.description"></p>
+      </li>
+    </ul>
+</div>

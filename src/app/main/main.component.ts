@@ -27,6 +27,10 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.getUserInfo();
+    this.appService.userInfoSubject.subscribe((userInfo: any) => {
+      this.userInfo = userInfo;
+      this.mainService.userInfo = userInfo;
+    });
   }
 
   private getUserInfo() {
@@ -35,9 +39,10 @@ export class MainComponent implements OnInit {
       {
       if(userInfoData.startTraining) {
         userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
-      }
-      this.userInfo = userInfoData;
-      this.mainService.userInfo = userInfoData;
+      };
+      this.appService.userInfoSubject.next(userInfoData);
+      // this.userInfo = userInfoData;
+      // this.mainService.userInfo = userInfoData;
     });
   }
   public toggleCollapsed() {

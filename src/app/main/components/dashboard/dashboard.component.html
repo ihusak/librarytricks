@@ -102,7 +102,7 @@
       <h5>Текущая задача</h5>
       <div class="content">
         <p>Название задания: {{userInfo.currentTask.title}}</p>
-        <p>Описание задания: {{userInfo.currentTask.description}}</p>
+        <span>Описание задачи: </span><span [innerHtml]="userInfo.currentTask.description"></span>
         <p>Текущий статус: <b>{{userInfo.currentTask.status}}</b></p>
       </div>
   </div>
@@ -116,6 +116,7 @@
       <p>Телефон: {{coachInfo.phone}}</p>
       <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
       <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
+      <p>БИО: {{coachInfo.aboutMe ? coachInfo.aboutMe : 'Пусто'}}</p>
     </div>
   </div>
   <div class="item rewards" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
@@ -125,7 +126,7 @@
     <h5>Мои награды</h5>
     <div class="content">
       <span class="rating">{{userInfo.rating}}</span>
-      <p>баллов</p>
+      <p>skillz</p>
     </div>
   </div>
 </div>

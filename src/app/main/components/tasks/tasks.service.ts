@@ -1,13 +1,15 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { TaskModel } from './task.model';
 import { map } from 'rxjs/operators';
 import { AppService } from 'src/app/app.service';
+import { CourseInterface } from 'src/app/shared/interface/course.interface';
 
-interface createCourseInterface {
-  courseName: string;
+interface CourseCreateInterface {
   coachId: string;
+  text: string;
+  video: string;
   forAll: boolean;
+  name: string;
   price: number;
 }
 
@@ -35,12 +37,16 @@ export class TaskService extends AppService {
       return this.http.get(`${this.apiUrl()}/courses`);
     }
 
-    public createCourse(values: createCourseInterface) {
+    public createCourse(values: CourseCreateInterface) {
       return this.http.post(`${this.apiUrl()}/courses/create-course`, {
-        courseName: values.courseName,
         coachId: values.coachId,
+        description: {
+          text: values.text,
+          video: values.video
+        },
         forAll: values.forAll,
-        price: values.price
+        name: values.name,
+        price: values.price,
       });
     }
 

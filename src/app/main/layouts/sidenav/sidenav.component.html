@@ -1,17 +1,37 @@
 <div class="user-panel">
-  <div class="user-avatar">
-    <img [src]="userImage" alt="user-avatar">
+  <div class="close" (click)="close()">
+    <mat-icon>close</mat-icon>
   </div>
-    <p class="name">{{userInfo.userName}}<mat-icon *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLink="profile">edit</mat-icon></p>
+  <div class="user-avatar">
+    <img [src]="userInfo.userImg ? 'api/' + userInfo.userImg : 'assets/user-default.png'" alt="user-avatar">
+  </div>
+    <p class="name">{{userInfo.userName}}<mat-icon *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" (click)="navigate('profile')">edit</mat-icon></p>
     <span>{{'COMMON.ROLES.' + userInfo.role.name | translate}}</span>
 </div>
-<div class="sidenav-menu">
+<div class="navigation-side">
+  <div class="sidenav-menu">
     <ul>
-        <li routerLinkActive="active"><mat-icon>home</mat-icon><a routerLink="dashboard">Главная</a></li>
+        <li routerLinkActive="active"><mat-icon>home</mat-icon><a (click)="navigate('dashboard')">Главная</a></li>
         <!-- <li routerLinkActive="active"><mat-icon>equalizer</mat-icon><a routerLink="ratings">Рейтинг</a></li> -->
-        <li routerLinkActive="active"><mat-icon>done_all</mat-icon><a routerLink="tasks">Задания</a></li>
+        <li routerLinkActive="active"><mat-icon>done_all</mat-icon><a (click)="navigate('tasks')">Задания</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.COACH])" (click)="navigate('payments')"><mat-icon>payment</mat-icon><a routerLink="payments">Оплата</a></li>
         <!-- <li *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li> -->
-        <li routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a routerLink="videos">Полезное видео</a></li>
-        <li routerLinkActive="active"><mat-icon>home_work</mat-icon><a routerLink="homework">Домашнее задание</a></li>
+        <li routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a (click)="navigate('videos')">Полезное видео</a></li>
+        <li routerLinkActive="active"><mat-icon>home_work</mat-icon><a (click)="navigate('homework')">Домашнее задание</a></li>
+        <li routerLinkActive="active"><mat-icon>groups</mat-icon><a (click)="navigate('about-us')">О нас</a></li>
     </ul>
+</div>
+<div class="site-info">
+  <a [href]="!env.production ? 'http://localhost:3000/static/using.pdf' : 'api/static/using.pdf'" target="_black">
+    Условия использывания сервиса
+  </a> |
+  <a [href]="!env.production ? 'http://localhost:3000/static/oferta.pdf' : 'api/static/oferta.pdf'" target="_black">
+    Оферта
+  </a>
+  <span>Библиотека трюков | Librarytricks</span>
+  <div><b>2021</b></div>
+  <span class="payments-logo">
+    <img src="assets/img/payments.png" alt="">
+  </span>
+</div>
 </div>

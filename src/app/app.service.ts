@@ -1,20 +1,17 @@
-import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import * as moment from 'moment';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 interface Tokens {
   accessToken: string;
   refreshToken: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
 export class AppService {
   private domain: string;
+  public userInfoSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+
 
   constructor(
     protected http: HttpClient,

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { RegisterService } from './register.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserRole } from '../interface/userRole.interface';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 export interface UserFormInterface {
   name: string;
@@ -20,7 +21,8 @@ export interface UserFormInterface {
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
   registerMessage: string; // need remove
@@ -30,8 +32,10 @@ export class RegisterComponent implements OnInit {
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
-    type: new FormControl('', [Validators.required])
+    type: new FormControl('', [Validators.required]),
+    concent: new FormControl('', [Validators.requiredTrue])
   });
+  public env: any = environment;
 
   constructor(
     private registerService: RegisterService,

@@ -38,8 +38,7 @@ import { QuillModule } from 'ngx-quill';
     YouTubePlayerModule,
     QuillModule.forRoot()
   ],
-  entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateCourseComponent],
-  providers: [TaskService]
+  entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateCourseComponent]
 })
 export class TasksModule {
 

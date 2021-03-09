@@ -19,6 +19,10 @@ import { PipesModule } from '../shared/pipes/pipes.module';
 import { TaskService } from './components/tasks/tasks.service';
 import {CookieService} from 'ngx-cookie-service';
 import {TranslateModule} from '@ngx-translate/core';
+import { PaymentsComponent } from './components/payments/payments.component';
+import { YouTubePlayerModule } from '@angular/youtube-player';
+import { AboutUsComponent } from './components/about-us/about-us.component';
+import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +33,10 @@ import {TranslateModule} from '@ngx-translate/core';
     VideosComponent,
     RatingsComponent,
     DashboardComponent,
-    AdminRequestPermissionPopupComponent
+    AdminRequestPermissionPopupComponent,
+    PaymentsComponent,
+    AboutUsComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +47,8 @@ import {TranslateModule} from '@ngx-translate/core';
     MatMenuModule,
     SharedModule,
     PipesModule,
-    TranslateModule
+    TranslateModule,
+    YouTubePlayerModule
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent],

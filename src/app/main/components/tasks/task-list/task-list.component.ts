@@ -12,6 +12,7 @@ import { PassTaskComponent } from '../popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from '../popups/process-tasks/process-tasks.component';
 import { CreateCourseComponent } from '../popups/create-course/create-course.component';
 import {CourseInterface} from '../../../../shared/interface/course.interface';
+import { Checkout, PaymentsService } from '../../payments/payments.service';
 
 @Component({
   selector: 'app-task-list',
@@ -23,7 +24,18 @@ export class TaskListComponent implements OnInit {
   public panelOpenState: boolean = false;
   public tasksList: TaskModel[];
   public coursesList: CourseInterface[] = [];
-  public currentCourse: CourseInterface;
+  public currentCourse: CourseInterface = {
+    id: '',
+    name: '',
+    forAll: false,
+    coachId: '',
+    price: null,
+    description: {
+      text: '',
+      video: ''
+    },
+    paid: false
+  };
   public userInfo: any;
   public userRoles = UserRolesEnum;
   public processingTasks: number = 0;
@@ -36,6 +48,7 @@ export class TaskListComponent implements OnInit {
     private taskService: TaskService,
     private mainService: MainService,
     private profileService: ProfileService,
+    private paymentsService: PaymentsService,
     private snackBar: MatSnackBar,
     public dialog: MatDialog
     ) {
@@ -115,19 +128,6 @@ export class TaskListComponent implements OnInit {
     });
   }
 
-  // private getPendingTasks(groupId: number) {
-  //   this.pendingTasks = 0;
-  //   if (this.userInfo.role.id === this.userRoles.COACH) {
-  //     this.taskService.getStatusTasks(this.userInfo.id, groupId, this.taskStatuses.PENDING).subscribe((tasks: any[]) => {
-  //      tasks.map(task => {
-  //       if (task.taskStatus === TaskStatuses.PENDING) {
-  //         this.pendingTasks += 1;
-  //       }
-  //      });
-  //     });
-  //   }
-  // }
-
   private getCourses() {
     this.taskService.getAllCourses().subscribe((allCourses: CourseInterface[]) => {
       if (this.userInfo.role.id === this.userRoles.ADMIN) {
@@ -142,6 +142,13 @@ export class TaskListComponent implements OnInit {
         this.currentCourse = allCourses.filter((course: CourseInterface) => {
           return course.id === this.userInfo.course.id;
         })[0];
+        this.paymentsService.getPaidCourses(this.userInfo.id).subscribe((paid: Checkout[]) => {
+          if(paid.find((item: Checkout) => this.currentCourse.id === item.course.id || item.price === 0)) {
+            this.currentCourse.paid = true;
+          } else {
+            this.currentCourse.paid = false;
+          }
+        })
       } else {
         // default group for admin adn coach
         this.currentCourse = this.coursesList[0];
@@ -203,7 +210,7 @@ export class TaskListComponent implements OnInit {
   public youTubeGetID(url: any): string {
     url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
     return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
- }
+  }
   public deleteTask(taskId: string) {
     this.taskService.deleteTask(taskId).subscribe(deletedTask => {
       this.snackBar.open('Задание успешно удалено', '', {

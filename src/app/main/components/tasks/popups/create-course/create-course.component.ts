@@ -34,16 +34,20 @@ export class CreateCourseComponent {
       }
       if(this.userInfo.role.id === this.userRoles.ADMIN) {
         this.createCourseFrom = this.formBuilder.group({
-          courseName: new FormControl('', [Validators.required]),
+          name: new FormControl('', [Validators.required]),
           coachId: new FormControl('', [Validators.required]),
           price: new FormControl('', [Validators.required]),
+          text: new FormControl('', [Validators.required]),
+          video: new FormControl(''),
           forAll: new FormControl(false),
         });
       }
       if(this.userInfo.role.id === this.userRoles.COACH) {
         this.createCourseFrom = this.formBuilder.group({
-          courseName: new FormControl('', [Validators.required]),
+          name: new FormControl('', [Validators.required]),
           price: new FormControl('', [Validators.required]),
+          text: new FormControl('', [Validators.required]),
+          video: new FormControl(''),
           coachId: new FormControl(this.userInfo.id),
         });
       }
