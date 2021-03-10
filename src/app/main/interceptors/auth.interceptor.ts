@@ -25,36 +25,38 @@ export class AuthInterceptor implements HttpInterceptor {
       this.accesToken = this.cookieService.getAll().lb_config;
       this.refreshToken = this.cookieService.getAll().lb_refreshToken;
 
-      if(this.accesToken) {
+      if (this.accesToken) {
         req = this.addToken(req, this.accesToken);
       }
-      return next.handle(req).pipe(
-        tap((event => {}),
-        (err) => {
-        if (err.status === 401) {
-          this.authService.logout(this.accesToken).subscribe(() => {
+      return next.handle(req)
+        .pipe(catchError((err) => {
+          if (err.status === 403) {
+            console.log('REfrashing token');
+            return this.handleExpireToken(req, next);
+          } else if (err.status === 401) {
             this.router.navigate(['/']);
             this.cookieService.delete('lb_config', '/');
             this.cookieService.delete('lb_refreshToken', '/');
-          });
-          // return this.handleExpireToken(req, next);
-        } else if (err.status === 403) {
-          this.router.navigate(['/']);
-          this.cookieService.delete('lb_config', '/');
-          this.cookieService.delete('lb_refreshToken', '/');
-        }
-        })
-      )
-      // .pipe(catchError((err) => {
-      //   if (err.status === 403 || err.status === 401) {
-      //     this.router.navigate(['/']);
-      //     this.cookieService.deleteAll();
-      //     this.authService.logout(this.accesToken);
-      //     // return this.handleExpireToken(req, next);
-      //   } else {
-      //     return throwError(err);
+          }
+          return throwError(err);
+        }));
+      //   .pipe(
+      //   tap((event => {}),
+      //   (err) => {
+      //   if (err.status === 401) {
+      //     // this.authService.logout(this.accesToken).subscribe(() => {
+      //       this.router.navigate(['/']);
+      //       this.cookieService.delete('lb_config', '/');
+      //       this.cookieService.delete('lb_refreshToken', '/');
+      //     // });
+      //   } else if (err.status === 403) {
+      //     // this.router.navigate(['/']);
+      //     this.cookieService.delete('lb_config', '/');
+      //     // this.cookieService.delete('lb_refreshToken', '/');
+      //     return this.handleExpireToken(req, next);
       //   }
-      // }));
+      //   })
+      // );
     }
     private addToken(req: HttpRequest<any>, token: string) {
       const authReq = req.clone({
@@ -72,6 +74,7 @@ export class AuthInterceptor implements HttpInterceptor {
         .pipe(
           switchMap((token: any) => {
             this.isRefreshing = false;
+            this.cookieService.delete('lb_config', '/');
             this.appService.updateAccesToken(token.accessToken);
             return next.handle(this.addToken(request, token.accessToken));
           })

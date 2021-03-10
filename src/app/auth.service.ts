@@ -10,7 +10,7 @@ import { AppService } from './app.service';
 export class AuthService extends AppService {
 
   public updateAccessToken(refreshToken: string): Observable<object> {
-    return this.http.post(`${this.apiUrl()}/users/token`, {refreshToken});
+    return this.http.put(`${this.apiUrl()}/users/token`, {refreshToken});
   }
 
   public logout(token: string): Observable<any> {
