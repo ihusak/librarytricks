@@ -1,6 +1,6 @@
 <div *ngIf="userInfo" class="main-container-wrap" dir="ltr" [ngClass]="{'sidenav-collapsed': sidenavCollapsed}">
   <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav class="sidenav" mode="side" fixedInViewport="true">
+  <mat-sidenav #sidenav class="sidenav" mode="side" [opened]="alwaysOpenedSidenav" fixedInViewport="true">
     <app-sidenav [userInfo]='userInfo' [sideNav]="sidenav"></app-sidenav>
   </mat-sidenav>
   <mat-sidenav-content class="content-wrap" #content [class.opened]="sidenav.opened">

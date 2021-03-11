@@ -14,11 +14,18 @@ export class SidenavComponent implements OnInit {
   @Output() toggleCollapsed = new EventEmitter();
   public userRoles = UserRolesEnum;
   public env: any = environment;
+  private mobile: boolean = false;
   
   constructor(private router: Router) { }
 
   ngOnInit() {
-    console.log(this);
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+      // true for mobile device
+      this.mobile = true;
+    }else{
+      // false for not mobile device
+      this.mobile = false;
+    }
   }
 
   public close() {
@@ -28,9 +35,11 @@ export class SidenavComponent implements OnInit {
   public navigate(route: string) {
     console.log('!!!route', route);
     this.router.navigate(['/main/'+route]).then(() => {
-      setTimeout(() => {
-        this.close();
-      })
+      if(this.mobile) {
+        setTimeout(() => {
+          this.close();
+        })
+      }
     });
   }
 }

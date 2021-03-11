@@ -17,12 +17,20 @@ export class MainComponent implements OnInit {
   userInfo: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface;
   user: User;
   sidenavCollapsed;
+  public alwaysOpenedSidenav = true;
 
   constructor(
     private mainService: MainService,
     protected appService: AppService,
     protected profileService: ProfileService
   ) {
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+      // true for mobile device
+      this.alwaysOpenedSidenav = false;
+    }else{
+      // false for not mobile device
+      this.alwaysOpenedSidenav = true;
+    }
   }
 
   ngOnInit() {
