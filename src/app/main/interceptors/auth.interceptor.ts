@@ -35,8 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return this.handleExpireToken(req, next);
           } else if (err.status === 401) {
             this.router.navigate(['/']);
-            this.cookieService.delete('lb_config', '/');
-            this.cookieService.delete('lb_refreshToken', '/');
+            this.appService.clearStorage();
           }
           return throwError(err);
         }));
@@ -74,7 +73,6 @@ export class AuthInterceptor implements HttpInterceptor {
         .pipe(
           switchMap((token: any) => {
             this.isRefreshing = false;
-            this.cookieService.delete('lb_config', '/');
             this.appService.updateAccesToken(token.accessToken);
             return next.handle(this.addToken(request, token.accessToken));
           })
