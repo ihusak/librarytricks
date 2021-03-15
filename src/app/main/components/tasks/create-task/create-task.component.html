@@ -10,7 +10,7 @@
       <quill-editor formControlName="description" placeholder="Детали" required="true"></quill-editor>
     </div>
     <div class="item">
-      <h3>Видео пример задания</h3>
+      <h3>Видео пример задания (YouTube)</h3>
       <mat-form-field>
         <input formControlName="example" matInput placeholder="URL на видео" required>
       </mat-form-field>
@@ -21,10 +21,10 @@
       <label for="reward">Максимум 100 баллов</label>
     </div>
     <div class="item">
-      <h3>Группа заданий</h3>
+      <h3>Курс заданий</h3>
       <mat-form-field>
-        <mat-label>Группа</mat-label>
-        <mat-select formControlName="course" #selectedvalue (valueChange)="changeCourse(selectedvalue.value)">
+        <mat-label>Курс</mat-label>
+        <mat-select formControlName="course" [(ngModel)]="currentCourse" #selectedvalue (valueChange)="changeCourse(selectedvalue.value.id)">
           <mat-option *ngFor="let courseItem of coursesList" [value]="courseItem">{{courseItem.name}}</mat-option>
         </mat-select>
       </mat-form-field>

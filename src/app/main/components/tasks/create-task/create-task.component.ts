@@ -7,6 +7,8 @@ import { Location } from '@angular/common';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { MainService } from 'src/app/main/main.service';
 import { AdminInfoInterface, CoachInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { ActivatedRoute } from '@angular/router';
+import { CourseInterface } from 'src/app/shared/interface/course.interface';
 
 @Component({
   selector: 'app-create-task',
@@ -20,27 +22,35 @@ export class CreateTaskComponent implements OnInit {
   public tasksList;
   public userInfo: any;
   private userRoles = UserRolesEnum;
+  private courseId: string;
+  public currentCourse: any;
 
   constructor(
     private mainService: MainService,
     private formBuilder: FormBuilder,
     private taskService: TaskService,
     private snackBar: MatSnackBar,
-    private location: Location) { }
+    private location: Location,
+    private route: ActivatedRoute,
+    ) {
+      this.courseId = this.route.snapshot.queryParamMap.get('courseId');
+      
+    }
 
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
     this.taskForm = this.formBuilder.group({
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
-      example: ['', [Validators.required]],
+      example: ['', [Validators.required, Validators.pattern('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$')]],
       reward: [null, [Validators.required, Validators.max(100), Validators.min(0)]],
       nextTask: ['', [Validators.required]],
       course: [null, [Validators.required]],
     });
     this.initForm = true;
     this.getCourses();
-    this.getAllTasks();
+    this.changeCourse(this.courseId);
+    // this.getAllTasks();
   }
 
   private getCourses() {
@@ -55,12 +65,15 @@ export class CreateTaskComponent implements OnInit {
           break;
       }
       this.coursesList = filteredCourses;
+      this.currentCourse = this.coursesList.find((course: CourseInterface) => {
+        return course.id === this.courseId;
+      })
     })
   }
   private getAllTasks(courseId?: string) {
     this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks.filter((task: TaskModel) => task.course.id === courseId);
-      console.log(tasks,this.tasksList);
+      console.log(this.tasksList);
       if(!this.tasksList.length) {
         this.taskForm.removeControl('nextTask');
       } else {
@@ -82,9 +95,8 @@ export class CreateTaskComponent implements OnInit {
       this.location.back();
     });
   }
-  public changeCourse(course) {
+  public changeCourse(courseId: string) {
     console.log(this.taskForm);
-    const courseId: string = course.id;
     this.getAllTasks(courseId);
   }
 }

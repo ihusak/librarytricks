@@ -2,13 +2,13 @@
 <div mat-dialog-content>
   <h4>Ти хочешь стать тренером или уже занимаешь тренерской деятельность?</h4>
   <p>Тогда отправляй запрос на подтвержение статуса "ТРЕНЕР"</p>
-  <p>С тобой свяжется наш человек что бы подтвердить твой статус</p>
+  <p>С тобой свяжется наш Администратор что бы подтвердить твой статус</p>
   <mat-form-field class="full-width">
     <mat-label>Телефон</mat-label>
-    <input matInput value="user.phone" [(ngModel)]="phone">
+    <input matInput value="user.phone" [(ngModel)]="phone" [showMaskTyped]="true" prefix="+3 " mask="(000) 000-00-00">
   </mat-form-field>
 </div>
 <div mat-dialog-actions align="end">
   <button mat-stroked-button class="cancel" (click)="onNoClick()">Отмена</button>
-  <button mat-raised-button color="primary" [disabled]="!phone" (click)="request()" cdkFocusInitial>Запрос</button>
+  <button mat-raised-button color="primary" [disabled]="phone.length < 10" (click)="request()" cdkFocusInitial>Запрос</button>
 </div>

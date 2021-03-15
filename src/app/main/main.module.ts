@@ -23,6 +23,7 @@ import { PaymentsComponent } from './components/payments/payments.component';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-poli
     SharedModule,
     PipesModule,
     TranslateModule,
-    YouTubePlayerModule
+    YouTubePlayerModule,
+    NgxMaskModule.forRoot(),
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent],

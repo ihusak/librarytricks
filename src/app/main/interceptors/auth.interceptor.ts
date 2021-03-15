@@ -82,7 +82,7 @@ export class AuthInterceptor implements HttpInterceptor {
         .pipe(
           switchMap((token: any) => {
             this.isRefreshing = false;
-            this.appService.updateAccesToken(token.accessToken);
+            this.appService.updateAccesTokenCookie(token);
             return next.handle(this.addToken(request, token.accessToken));
           })
         );

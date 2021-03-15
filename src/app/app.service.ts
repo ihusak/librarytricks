@@ -53,7 +53,8 @@ export class AppService {
     this.cookieService.delete('lb_refreshToken', '/', this.domain);
   }
 
-  public updateAccesToken(newAccesToken) {
-    this.cookieService.set('lb_config', newAccesToken, 9999, '/', this.domain);
+  public updateAccesTokenCookie(tokens) {
+    this.cookieService.set('lb_config', tokens.accessToken, 9999, '/', this.domain);
+    this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/', this.domain);
   }
 }

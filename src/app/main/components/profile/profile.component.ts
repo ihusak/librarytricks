@@ -54,7 +54,6 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       if (data.userImg) {
         this.previewUrl = 'api/' + data.userImg;
       }
-      console.log(this.userInfo.valid);
 
     }, err => {
       console.log('userInfo err', err);

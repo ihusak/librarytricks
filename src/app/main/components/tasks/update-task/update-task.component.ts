@@ -65,7 +65,7 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
       this.taskForm = this.formBuilder.group({
         title: [task.title, [Validators.required]],
         description: [task.description, [Validators.required]],
-        example: [task.example, [Validators.required]],
+        example: [task.example, [Validators.required, Validators.pattern('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$')]],
         reward: [task.reward, [Validators.required]],
         nextTask: [task.nextTask.id, [Validators.required]],
         course: [task.course, [Validators.required]],
