@@ -56,5 +56,22 @@
           }
         }
       }
+      app-task-list {
+        .nav {
+          display: block;
+          .coach-actions-button {
+            button {
+              display: block;
+              width: 100%;
+              margin-bottom: 15px;
+            }
+          }
+        }
+      }
+    }
+    app-payments {
+      iframe {
+        width: 100%;
+      }
     }
 }

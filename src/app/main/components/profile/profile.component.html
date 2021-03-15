@@ -60,22 +60,22 @@
         <div class="form-group">
            <mat-form-field>
               <mat-label>Выберите своего тренера</mat-label>
-              <mat-select [compareWith]="compareObjectsCoach" formControlName="coach" (selectionChange)="changeCoach($event.value)">
+              <mat-select [compareWith]="compareObjectsCoach" formControlName="coach" (selectionChange)="changeCoach($event.value, true)">
               <mat-option *ngFor="let coach of coachsList" [value]="coach">{{coach.userName}}</mat-option>
               </mat-select>
            </mat-form-field>
         </div>
      </div>
      <div class="item" *ngIf="(userInfoData | userRolePipe:[userRoles.STUDENT]) && coach">
-        <h2>Группа</h2>
+        <h2>Курсы</h2>
         <div class="form-group">
            <mat-form-field>
-              <mat-label>Группа</mat-label>
+              <mat-label>Курс</mat-label>
               <mat-select [compareWith]="compareObjects" formControlName="course" (selectionChange)="changeCourse($event.value)">
               <mat-option *ngFor="let course of coachCourses" [value]="course">{{course.name}}</mat-option>
               </mat-select>
            </mat-form-field>
-           <div class="empty" *ngIf="!coachCourses.length">У тренер нет групп</div>
+           <div class="empty" *ngIf="!coachCourses.length">У тренер нет курсов</div>
         </div>
      </div>
      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.PARENT]">
@@ -89,7 +89,6 @@
            </mat-form-field>
         </div>
      </div>
-     <!-- <h4 *ngIf="(userInfoData | userRolePipe:[userRoles.STUDENT]) && userInfoData.progress < 100 && userInfoData.progress > 0">Ты не можешь поменять тренера и группу пока не выполнишь все задания группы</h4> -->
   </div>
   <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">Сохранить</button>
   </form>

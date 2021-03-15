@@ -6,6 +6,7 @@ import { catchError, switchMap, filter, take, map, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -18,7 +19,8 @@ export class AuthInterceptor implements HttpInterceptor {
     private appService: AppService,
     private authService: AuthService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar,
     ){}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -31,9 +33,16 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req)
         .pipe(catchError((err) => {
           if (err.status === 403) {
-            console.log('REfrashing token');
+            this.snackBar.open('User session expired and recover', '', {
+              duration: 2000,
+              panelClass: ['error']
+            });
             return this.handleExpireToken(req, next);
           } else if (err.status === 401) {
+            this.snackBar.open('User session expired', '', {
+              duration: 2000,
+              panelClass: ['error']
+            });
             this.router.navigate(['/']);
             this.cookieService.delete('lb_config', '/');
             this.cookieService.delete('lb_refreshToken', '/');

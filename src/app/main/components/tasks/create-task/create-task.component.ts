@@ -11,8 +11,7 @@ import { AdminInfoInterface, CoachInfoInterface } from 'src/app/shared/interface
 @Component({
   selector: 'app-create-task',
   templateUrl: './create-task.component.html',
-  styleUrls: ['./create-task.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./create-task.component.scss']
 })
 export class CreateTaskComponent implements OnInit {
   public taskForm: FormGroup;

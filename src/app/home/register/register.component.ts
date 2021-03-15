@@ -67,9 +67,11 @@ export class RegisterComponent implements OnInit {
     },
     (error) => {
       const err = error.error;
-      const errorCode = err.status;
-      const errorMessage = err.message;
-      this.registerMessage = errorMessage;
+      const errorMessage = err.errorMessage;
+      this.snackBar.open(errorMessage, '', {
+        duration: 10000,
+        panelClass: ['error']
+      });
     });
   }
 }

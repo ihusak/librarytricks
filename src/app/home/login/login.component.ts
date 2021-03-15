@@ -41,7 +41,13 @@ export class LoginComponent implements OnInit, OnDestroy {
      }
     },
     (error) => {
-      this.loginMessage = error.error.message;
+      const err = error.error;
+      const errorMessage = err.errorMessage;
+      this.loginMessage = errorMessage;
+      this.snackBar.open(errorMessage, '', {
+        duration: 2000,
+        panelClass: ['error']
+      });
       console.log(error);
     });
   }

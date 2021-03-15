@@ -148,6 +148,7 @@ export class TaskListComponent implements OnInit {
           } else {
             this.currentCourse.paid = false;
           }
+          this.currentCourse.paid = this.currentCourse.price <= 0;
         })
       } else {
         // default group for admin adn coach
