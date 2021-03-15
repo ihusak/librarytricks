@@ -4,7 +4,7 @@
    <div class="item" *ngFor="let user of processingUsers; let i = index">
     <h6>{{user.userName}}</h6>
       <h3>{{user.currentTask.title}} (<b>{{user.currentTask.status}}</b>)</h3>
-      <p>{{user.currentTask.description}}</p>
+      <p [innerHtml]="user.currentTask.description"></p>
     </div>
   </div>
 </div>

@@ -59,7 +59,7 @@
     [ngClass]="{'done': (userInfo | userRolePipe:[userRoles.STUDENT]) && task.done}"
     (opened)="panelOpenState = true"
     (closed)="panelOpenState = false"
-    [disabled]="(userInfo | userRolePipe:[userRoles.STUDENT]) && !task.allow && !task.done || !currentCourse.paid"
+    [disabled]="((userInfo | userRolePipe:[userRoles.STUDENT]) && !task.allow && !task.done || !currentCourse.paid) && !!(userInfo | userRolePipe:[userRoles.STUDENT])"
     [expanded]="userInfo.currentTask && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING"
     >
       <mat-expansion-panel-header>

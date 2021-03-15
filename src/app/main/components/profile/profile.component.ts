@@ -160,9 +160,12 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     console.log(this);
   }
 
-  public changeCoach(value: any) {
+  public changeCoach(value: any, op?: boolean) {
     this.coach = value;
     this.coachCourses = [...this.coachCourseList];
+    if(op) {
+      this.userInfo.controls.course.setValue('');
+    }
     this.coachCourses = this.coachCourses.filter((course: any) => {
       // return this.coach.id === course.coachId || course.forAll; // include general courses
       return this.coach.id === course.coachId; // not include general courses
