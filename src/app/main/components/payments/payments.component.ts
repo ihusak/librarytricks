@@ -47,8 +47,8 @@ export class PaymentsComponent implements OnInit {
       this.paymentsService.getPaidCourses(this.userInfo.id).subscribe((paid: Checkout[]) => {
         this.paidCourses = paid;
         this.coursesList = this.coursesList.filter(course => {
-          return !paid.find(paid => paid.course.id === course.id || course.price === 0)
-        })
+          return paid.find((paid: Checkout) => paid.course.id === course.id || course.price > 0) || course.price > 0;
+        });
       });
     });
     console.log(this);
@@ -57,7 +57,7 @@ export class PaymentsComponent implements OnInit {
   public changeCourse(course: CourseInterface) {
     this.selectedCourse = course;
     this.preparePayment(course);
-    
+
   }
   private preparePayment(course: CourseInterface) {
     const PAYMENT = {
