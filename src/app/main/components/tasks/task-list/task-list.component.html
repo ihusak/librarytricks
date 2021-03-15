@@ -1,5 +1,5 @@
 <h1>Задания футбольного фристайла</h1>
-   
+
 <!-- Only coach and admin role -->
 <h4 *ngIf="(userInfo | userRolePipe:[userRoles.COACH]) && !userInfo.role.status ">Что бы создавать задания вы должны получить подтверждения о тренерстве</h4>
 <div class="nav" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status">
@@ -50,7 +50,7 @@
   <div class="empty-tasks" *ngIf="tasksList && !tasksList.length">
     <h2>Список заданий пуст</h2>
   </div>
-  <div class="checkout" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && !currentCourse.paid">
+  <div class="checkout" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && currentCourse && !currentCourse?.paid">
     <h2>Курс не оплачен</h2>
     <button routerLink="../../payments" mat-raised-button color="primary"><mat-icon>payment</mat-icon>Оплатить</button>
   </div>
