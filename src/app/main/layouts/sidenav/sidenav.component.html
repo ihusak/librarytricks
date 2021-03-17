@@ -19,8 +19,8 @@
         <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" routerLinkActive="active"><mat-icon>done_all</mat-icon><a (click)="navigate('tasks')">Задания</a></li>
         <li *ngIf="!(userInfo | userRolePipe:[userRoles.COACH, userRoles.PARENT]) && false" (click)="navigate('payments')"><mat-icon>payment</mat-icon><a routerLink="payments">Оплата</a></li>
         <!-- <li *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li> -->
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a (click)="navigate('videos')">Полезное видео</a></li>
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" routerLinkActive="active"><mat-icon>home_work</mat-icon><a (click)="navigate('homework')">Домашнее задание</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT]) && false" routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a (click)="navigate('videos')">Полезное видео</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT]) && false" routerLinkActive="active"><mat-icon>home_work</mat-icon><a (click)="navigate('homework')">Домашнее задание</a></li>
         <li routerLinkActive="active"><mat-icon>groups</mat-icon><a (click)="navigate('about-us')">О нас</a></li>
     </ul>
 </div>

@@ -157,6 +157,8 @@ export class TaskListComponent implements OnInit {
         const courseIdQuery = this.route.snapshot.queryParamMap.get('courseId');
         if(courseIdQuery) {
           this.currentCourse = this.coursesList.filter((course: CourseInterface) => course.id === courseIdQuery)[0];
+        } else if(!courseIdQuery && this.coursesList.length > 0) {
+          this.currentCourse = this.coursesList[0];
         }
         if (this.currentCourse) {
           this.getTasksStatuses(this.currentCourse.id);
