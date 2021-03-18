@@ -1,0 +1,15 @@
+<h2 mat-dialog-title>Отклонение задания</h2>
+<div mat-dialog-content>
+  <h4>Если ты считаешь что ученик не выполнил задание корректно</h4>
+  <p>Опиши ему его ошибки и отправляй его снова тренироваться</p>
+  <p>Статус его зхадачи снова поменяеться на "В ПРОЦЕССЕ"</p>
+  <mat-form-field class="full-width">
+    <mat-label>Причина отклонения</mat-label>
+    <input matInput value="rejectReason" [(ngModel)]="rejectReason">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button class="cancel" (click)="onNoClick()">Отмена</button>
+  <button mat-raised-button color="primary" [disabled]="!rejectReason" (click)="reject(rejectReason)" cdkFocusInitial>Отправить на тренировку</button>
+</div>
+

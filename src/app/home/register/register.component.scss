@@ -1,1 +1,23 @@
 @import './../login/login.component.scss';
+app-register {
+  .mat-checkbox-layout .mat-checkbox-label  {
+    white-space: normal;
+    font-size: 14px;
+    line-height: 14px;
+  }
+  .links-info {
+    text-align: center;
+    margin-top: 15px;
+    a {
+      display: block;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 9px;
+      color: #3E3E3E;
+      margin-top: 10px;
+      &:hover {
+        opacity: .7;
+      }
+    }
+  }
+}

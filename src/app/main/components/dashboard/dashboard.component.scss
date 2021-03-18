@@ -1,0 +1,133 @@
+.wrap {
+  display: flex;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  .item {
+    width: calc(50% - 60px);
+    align-items: center;
+    border-radius: 5px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    margin: 30px 15px;
+    background-color: #fff;
+    h5 {
+      margin: 0;
+      padding: 25px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .result {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .number {
+        font-weight: bold;
+        margin-right: 15px;
+      }
+    }
+    .content {
+      margin-top: 15px;
+      .group {
+        margin: 35px 0;
+      }
+      .done-tasks {
+        font-size: 14px;
+        margin-top: 5px;
+        opacity: .5;
+      }
+      .tasks {
+        margin-top: 35px;
+        .material-icons {
+          color: #43a047;
+          margin-right: 5px;
+        }
+        ul {
+          li {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+      .select-student {
+        margin-top: 15px;
+        text-align: right;
+      }
+      .select-group {
+        margin-top: 15px;
+        text-align: right;
+      }
+    }
+    &.rewards {
+      .content {
+        text-align: center;
+        margin-top: 50px;
+        .rating {
+          font-weight: 900;
+          font-size: 36px;
+        }
+      }
+    }
+    .centering {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .content {
+        text-align: center;
+      }
+      span {
+        font-size: 45px;
+        font-weight: bold;
+      }
+    }
+    &.current-task {
+      width: 100%;
+    }
+    &.student-rating {
+     .content {
+       .empty {
+         text-align: center;
+         font-weight: 600;
+       }
+     }
+      min-height: 250px;
+      table {
+        width: 100%;
+        box-shadow: none;
+        tr:last-child {
+          td {
+            border-bottom: none;
+          }
+        }
+      }
+    }
+    .mat-progress-bar {
+      .mat-progress-bar-buffer {
+        background-color: #eee;
+      }
+      &.red {
+        .mat-progress-bar-fill {
+          &:after {
+            background-color: #d81b1b;
+          }
+        }
+      }
+      &.orange {
+        .mat-progress-bar-fill {
+          &:after {
+            background-color: #fb8c00;
+          }
+        }
+      }
+      &.green {
+        .mat-progress-bar-fill {
+          &:after {
+            background-color: #43a047;
+          }
+        }
+      }
+    }
+  }
+  .no-student {
+    text-align: center;
+    margin-top: 50px;
+  }
+}

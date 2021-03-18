@@ -1,0 +1,104 @@
+.task-list-wrap {
+  padding: 25px 0;
+  .checkout {
+    margin-bottom: 15px;
+  }
+  mat-panel-title {
+    font-weight: bold;
+    font-size: 18px;
+  }
+  .mat-expansion-panel {
+    button {
+      margin-right: 10px;
+      margin-top: 25px;
+    }
+    .task-statuses {
+      .mat-icon {
+        position: relative;
+        margin-right: 10px;
+        //&.done {
+        //  color: #c0dabd;
+        //  border-left: 1px solid #c0dabd;
+        //  border-right: 1px solid #c0dabd;
+        //}
+        //&.processing {
+        //  color: #1E90FF;
+        //  border-left: 1px solid #1E90FF;
+        //  border-right: 1px solid #1E90FF;
+        //}
+        //&.pending {
+        //  color: #FF0000;
+        //  border-left: 1px solid #FF0000;
+        //  border-right: 1px solid #FF0000;
+        //}
+      }
+    }
+    .task-done {
+      display: flex;
+      align-items: center;
+      .icon {
+      margin-right: 10px;
+    }
+    }
+    .reject-reason{
+      h4 {
+        .icon {
+          margin-right: 10px;
+        }
+        display: flex;
+        align-items: center;
+      }
+      p {
+        background-color: rgba(128, 128, 128, 0.1);
+        border-radius: 3px;
+        padding: 15px;
+      }
+    }
+  }
+  .mat-expansion-panel-header-description {
+    justify-content: flex-end;
+  }
+  .empty-tasks {
+    text-align: center;
+  }
+  quill-view-html {
+    .ql-editor {
+      padding: 0;
+    }
+  }
+}
+.nav {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  .coach-actions-button {
+    button {
+      margin-right: 15px;
+    }
+  }
+}
+.markers {
+  .marker-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    .icon {
+      margin-right: 10px;
+    }
+  }
+}
+
+.header-task {
+  display: flex;
+  justify-content: space-between;
+  .info-item {
+    border-radius: 5px;
+    padding: 8px;
+    background-color: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11), 
+              0 2px 2px rgba(0,0,0,0.11), 
+              0 4px 4px rgba(0,0,0,0.11), 
+              0 6px 8px rgba(0,0,0,0.11),
+              0 8px 16px rgba(0,0,0,0.11);
+  }
+}

@@ -1,0 +1,13 @@
+<div class="process-tasks-popup">
+  <h3 mat-dialog-title>Задания сейчас выполняют</h3>
+  <div mat-dialog-content class="process-tasks-wrap">
+   <div class="item" *ngFor="let user of processingUsers; let i = index">
+    <h6>{{user.userName}}</h6>
+      <h3>{{user.currentTask.title}} (<b>{{user.currentTask.status}}</b>)</h3>
+      <p [innerHtml]="user.currentTask.description"></p>
+    </div>
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-stroked-button class="cancel" (click)="onNoClick()">Закрыть</button>
+</div>

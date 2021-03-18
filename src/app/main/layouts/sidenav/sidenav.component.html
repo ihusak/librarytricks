@@ -1,0 +1,43 @@
+<div class="user-panel">
+  <div class="close" (click)="close()">
+    <mat-icon>close</mat-icon>
+  </div>
+  <div class="user-avatar">
+    <img [src]="userInfo.userImg ? 'api/' + userInfo.userImg : 'assets/user-default.png'" alt="user-avatar">
+  </div>
+    <p class="name">{{userInfo.userName}}<mat-icon *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" (click)="navigate('profile')">edit</mat-icon></p>
+    <div class="user-info">
+      <span>{{'COMMON.ROLES.' + userInfo.role.name | translate}}</span>
+      <span *ngIf="userInfo | userRolePipe:[userRoles.STUDENT]">{{userInfo.course ? userInfo.course.name : 'Not selected course'}}</span>
+    </div>
+</div>
+<div class="navigation-side">
+  <div class="sidenav-menu">
+    <ul>
+        <li routerLinkActive="active"><mat-icon>home</mat-icon><a (click)="navigate('dashboard')">Главная</a></li>
+        <!-- <li routerLinkActive="active"><mat-icon>equalizer</mat-icon><a routerLink="ratings">Рейтинг</a></li> -->
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" routerLinkActive="active"><mat-icon>done_all</mat-icon><a (click)="navigate('tasks')">Задания</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.COACH, userRoles.PARENT]) && false" (click)="navigate('payments')"><mat-icon>payment</mat-icon><a routerLink="payments">Оплата</a></li>
+        <!-- <li *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li> -->
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT]) && false" routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a (click)="navigate('videos')">Полезное видео</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" routerLinkActive="active"><mat-icon>home_work</mat-icon><a (click)="navigate('homeworks')">Домашнее задание</a></li>
+        <li routerLinkActive="active"><mat-icon>groups</mat-icon><a (click)="navigate('about-us')">О нас</a></li>
+    </ul>
+</div>
+<div class="site-info">
+  <a [href]="!env.production ? 'http://localhost:3000/static/using.pdf' : 'api/static/using.pdf'" target="_black">
+    Условия использывания
+  </a> |
+  <a [href]="!env.production ? 'http://localhost:3000/static/oferta.pdf' : 'api/static/oferta.pdf'" target="_black">
+    Оферта
+  </a>
+  <div>Библиотека трюков | Librarytricks</div>
+  <div><b>2021</b></div>
+  <span class="payments-logo">
+    <img src="assets/img/payments.png" alt="">
+  </span>
+  <div class="update">
+    Обновления <a href=""><b>v{{env.version}}</b></a>
+  </div>
+</div>
+</div>

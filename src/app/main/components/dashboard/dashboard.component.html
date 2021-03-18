@@ -1,0 +1,167 @@
+<div class="wrap">
+  <div class="item student-progress" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH, userRoles.PARENT, userRoles.ADMIN])">
+    <div class="card-icon green">
+      <i class="material-icons">follow_the_signs</i>
+    </div>
+    <h5>Прогресс <span *ngIf="currentStudent && (userInfo | userRolePipe:[userRoles.PARENT])">{{currentStudent.userName}}</span></h5>
+    <div class="no-student" *ngIf="!currentStudent">Нет данных</div>
+    <div class="content" *ngIf="currentStudent">
+      <div class="select-student" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
+        <mat-form-field>
+          <mat-label>Выбор ученика</mat-label>
+          <mat-select [compareWith]="compareObjectsStudents" [(ngModel)]="currentStudent" #selectedValue (valueChange)="changeStudent(selectedValue.value)">
+            <mat-option *ngFor="let student of studentsList" [value]="student">{{student.userName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="group" *ngIf="userInfo.course">
+        Группа: {{userInfo.course.name}}
+      </div>
+      <div class="result">
+        <span class="number">{{currentStudent ? calculateProgress(currentStudent) : calculateProgress(userInfo)}}%</span>
+        <mat-progress-bar [ngClass]="{
+        'red': currentStudent ? currentStudent.progress : userInfo.progress <= 20,
+        'orange': currentStudent ? currentStudent.progress > 20 : userInfo.progress > 20 && currentStudent ? currentStudent.progress <= 70 : userInfo.progress <= 70,
+        'green': currentStudent ? currentStudent.progress > 70 : userInfo.progress > 70 && currentStudent ? currentStudent.progress <= 100 : userInfo.progress <= 100}" mode="determinate" [value]="currentStudent ? currentStudent.progress : userInfo.progress"></mat-progress-bar>
+      </div>
+      <div class="done-tasks" *ngIf="studentTasks && doneTasks">
+        Заданий выполнено: <b>{{doneTasks.length}} из {{studentTasks.length}}</b>
+      </div>
+      <div class="tasks">
+        <ul>
+          <li class="task-title" *ngFor="let task of studentTasks">
+            <span *ngIf="task.done" class="material-icons">done</span>
+            {{task.title}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="item student-rating" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH, userRoles.PARENT, userRoles.ADMIN])">
+    <div class="card-icon orange">
+      <i class="material-icons">leaderboard</i>
+    </div>
+    <h5>Рейтинг в группе</h5>
+    <div class="content">
+      <div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
+        <mat-form-field>
+          <mat-label>Выбор группы</mat-label>
+          <mat-select [compareWith]="compareObjectsCourses" [(ngModel)]="currentCourse" #selectedValue (valueChange)="changeCourse(selectedValue.value)">
+            <mat-option *ngFor="let course of selectCourses" [value]="course">{{course.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="table">
+        <table mat-table [dataSource]="studentsList" class="mat-elevation-z8" *ngIf="studentsList && studentsList.length > 0">
+
+          <!--- Note that these columns can be defined in any order.
+                The actual rendered columns are set as a property on the row definition" -->
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="Позиция">
+            <th mat-header-cell *matHeaderCellDef> Позиция </th>
+            <td mat-cell *matCellDef="let student, let index = index"> {{index + 1}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="Имя">
+            <th mat-header-cell *matHeaderCellDef> Имя </th>
+            <td mat-cell *matCellDef="let student"> {{student.userName}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="Группа">
+            <th mat-header-cell *matHeaderCellDef> Группа </th>
+            <td mat-cell *matCellDef="let student"> {{student.course ? student.course.name : ''}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="Рейтинг">
+            <th mat-header-cell *matHeaderCellDef> Рейтинг </th>
+            <td mat-cell *matCellDef="let student"> {{student.rating}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Прогресс">
+            <th mat-header-cell *matHeaderCellDef> Прогресс </th>
+            <td mat-cell *matCellDef="let student"> {{calculateProgress(student)}}% </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="studentTableColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: studentTableColumns;"></tr>
+        </table>
+        <div class="empty" *ngIf="studentsList && studentsList.length <= 0">
+          Список пуст
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="item current-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.id">
+    <div class="card-icon red">
+      <i class="material-icons">school</i>
+    </div>
+      <h5>Текущая задача</h5>
+      <div class="content">
+        <p>Название задания: {{userInfo.currentTask.title}}</p>
+        <span>Описание задачи: </span><span [innerHtml]="userInfo.currentTask.description"></span>
+        <p>Текущий статус: <b>{{userInfo.currentTask.status}}</b></p>
+      </div>
+  </div>
+  <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.PARENT]) && coachInfo">
+    <div class="card-icon blue">
+      <i class="material-icons">record_voice_over</i>
+    </div>
+    <h5>Тренер</h5>
+    <div class="content">
+      <p><b>{{coachInfo.userName}}</b></p>
+      <p>Телефон: {{coachInfo.phone}}</p>
+      <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
+      <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
+      <p>БИО: {{coachInfo.aboutMe ? coachInfo.aboutMe : 'Пусто'}}</p>
+    </div>
+  </div>
+  <div class="item rewards" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
+    <div class="card-icon purple">
+      <i class="material-icons">plus_one</i>
+    </div>
+    <h5>Мои награды</h5>
+    <div class="content">
+      <span class="rating">{{userInfo.rating}}</span>
+      <p>skillz</p>
+    </div>
+  </div>
+</div>
+<div class="messages">
+  <h4 *ngIf="(userInfo | userRolePipe:[userRoles.PARENT]) && !userInfo.myKid">Что бы увидеть прогресс своего ребенка вам нужно его закрепить в настройках своего профиля (<a routerLink="../profile">Перейти в настройки профиля</a>)</h4>
+</div>
+<!-- <h1>Librarytricks online school</h1>
+<h3>ШОКЛА ОБУЧЕНИЯ ФУТБОЛЬНОМУ МАСТЕРСТВУ</h3>
+<p>
+  Фристайл в Украине популярен среди детей, подростков и молодежи. Желающих пройти обучение футбольным финтам так много, что нами было принято решение открыть школу футбольного фристайла. Записавшись на занятия, вы сможете приобщиться к этому виду спорта, и кто знает, может быть стать восходящей звездой.
+</p>
+<h3>
+  Футбольный фристайл: обучение для начинающих и любителей
+</h3>
+<p>
+  Обучение футбольному фристайлу доступно каждому, нужно только немного терпения и упорного стремления к цели.
+<br>
+  Для начала нужно подготовиться к занятиям:
+</p>
+<b>обзавестись удобной обувью и одеждой, не стесняющей движения:</b>
+<ul class="default">
+  <li>
+«не опускать руки» даже если получается не сразу.
+  </li>
+  <li>
+    приобрести специальный мяч для дополнительных тренировок вне школы;
+  </li>
+  <li>
+    посещать регулярно занятия;
+  </li>
+</ul>
+<p>Самое первое, с чем придется столкнуться – чеканка мяча.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/cux_p4-8jfU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<p>Это самый простой элемент, после того как он будет усвоен можно переходить к более сложным.</p>
+<p>Футбольный фристайл и обучение по видео вещи несовместимые, потому как только с тренером можно научиться выполнять сложные трюки с мячом.</p>
+<h4>
+    Не путайте футбол и фристайл, обучение этим видам спорта базируется на совершенно разных правилах. В футболе главенствует стратегия, бег, борьба за мяч, а фристайл это сила ног, эффектность, яркость трюков. Спешите записаться на занятия и удивить всех своим мастерством!
+</h4> -->

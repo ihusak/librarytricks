@@ -1,0 +1,11 @@
+<mat-toolbar class="toolbar">
+<button [disabled]='!userInfo' mat-button class="hamburger" (click)="toogleCollapsed.emit()">
+    <mat-icon>menu</mat-icon>
+</button>
+<div class="logo">
+        <img src="assets/img/logo-single.png" alt="">
+    </div>
+    <span class="spacer"></span>
+    <button  (click)="requestAdminPermission()" mat-stroked-button *ngIf="userInfo.role.id === userRole.COACH && !userInfo.role.status">Запрос на тренера</button>
+    <mat-icon (click)="logout()">exit_to_app</mat-icon>
+</mat-toolbar>
