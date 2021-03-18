@@ -1,0 +1,77 @@
+/* Portrait */
+@media only screen 
+  and (min-device-width: 10px) 
+  and (max-device-width: 1020px)
+  and (orientation: portrait) {
+    mat-sidenav {
+      &.mat-drawer-opened {
+        width: 100% !important;
+      }
+      .user-panel {
+        .close {
+          display: block !important;
+        }
+      }
+    }
+    app-index {
+      .wrap {
+       .item {
+         display: block;
+         width: 100%;
+       } 
+      }
+    }
+    app-profile {
+      .edit-profile {
+        form {
+          .avatar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+          }
+          .form-view {
+            display: inline-block;
+            .item {
+              display: block;
+              width: 100% !important;
+            }
+          }
+        }
+      }
+    }
+    app-tasks {
+      .header-task {
+        display: inline-block;
+        .info-item {
+          margin-bottom: 25px;
+          width: 100%;
+          display: block;
+        }
+      }
+      .video {
+        youtube-player {
+          iframe {
+            width: 100%;
+          }
+        }
+      }
+      app-task-list {
+        .nav {
+          display: block;
+          .coach-actions-button {
+            button {
+              display: block;
+              width: 100%;
+              margin-bottom: 15px;
+            }
+          }
+        }
+      }
+    }
+    app-payments {
+      iframe {
+        width: 100%;
+      }
+    }
+}

@@ -1,18 +1,28 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { from } from 'rxjs';
+import { Observable } from 'rxjs';
+import {map} from 'rxjs/operators';
+import { UserRole } from '../interface/userRole.interface';
+import { AppService } from 'src/app/app.service';
+import { UserFormInterface } from './register.component';
 
 @Injectable()
-export class RegisterService {
-    isLoggedIn: boolean;
+export class RegisterService extends AppService {
 
-    constructor(
-        private http: HttpClient,
-        private authUser: AngularFireAuth) {}
-
-    registerUser(email: string, pass: string) {
-        console.log(email, pass);
-        return from(this.authUser.auth.createUserWithEmailAndPassword(email, pass));
-    }
+  registerUser(userForm: UserFormInterface): Observable<any> {
+    return this.http.post(`${this.apiUrl()}/users/create`, {
+      email: userForm.email,
+      userPassword: userForm.password,
+      userName: userForm.name,
+      userRole: userForm.type
+    });
+  }
+  public getRoles(): Observable<UserRole[]> {
+    return this.http.get(`${this.apiUrl()}/roles`).pipe(map((response: any) => {
+      return response.map(role => ({
+          id: role.id,
+          name: role.name,
+          status: role.status
+      }));
+    }));
+  }
 }

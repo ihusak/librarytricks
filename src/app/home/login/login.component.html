@@ -14,14 +14,14 @@
                 <div class="form-group">
                     <mat-form-field appearance="outline">
                         <mat-label>Password</mat-label>
-                        <input required matInput [(ngModel)]="pass">
+                        <input type="password" required matInput [(ngModel)]="pass">
                     </mat-form-field>
                 </div>
                 <div class="message">
                     <p>{{loginMessage}}</p>
                 </div>
                 <div class="line-block">
-                    <button [disabled]="!pass || !email" mat-flat-button color="primary"(click)="loginUser(email, pass)">Вход</button>
+                    <button [disabled]="!pass || !email" mat-flat-button color="primary" (click)="loginUser(email, pass)">Вход</button>
                 </div>
             </div>
             <!-- <div class="login-social line-block item-auth">

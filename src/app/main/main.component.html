@@ -1,4 +1,13 @@
-<app-nav></app-nav>
-<div class="main-page">
+<div *ngIf="userInfo" class="main-container-wrap" dir="ltr" [ngClass]="{'sidenav-collapsed': sidenavCollapsed}">
+  <mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav class="sidenav" mode="side" [opened]="alwaysOpenedSidenav" fixedInViewport="true">
+    <app-sidenav [userInfo]='userInfo' [sideNav]="sidenav"></app-sidenav>
+  </mat-sidenav>
+  <mat-sidenav-content class="content-wrap" #content [class.opened]="sidenav.opened">
+    <app-header [userInfo]='userInfo' #header class="main-header" (toogleCollapsed)="sidenav.toggle()"></app-header>
+    <div class="main">
     <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>

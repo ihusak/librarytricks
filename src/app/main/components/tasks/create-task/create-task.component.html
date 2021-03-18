@@ -1,0 +1,44 @@
+<h1>Создание задания</h1>
+<form [formGroup]="taskForm" (ngSubmit)="createTask()" *ngIf='initForm'>
+  <div class="form-view">
+    <div class="item">
+      <h3>Описание задания</h3>
+      <mat-form-field>
+        <input formControlName="title" matInput placeholder="Название задания" required>
+      </mat-form-field>
+      <h3>Детальное описание задания</h3>
+      <quill-editor formControlName="description" placeholder="Детали" required="true"></quill-editor>
+    </div>
+    <div class="item">
+      <h3>Видео пример задания (YouTube)</h3>
+      <mat-form-field>
+        <input formControlName="example" matInput placeholder="URL на видео" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input id="reward" formControlName="reward" matInput placeholder="Оценка задания" required type='number' min="0" 
+        max="100">
+      </mat-form-field>
+      <label for="reward">Максимум 100 баллов</label>
+    </div>
+    <div class="item">
+      <h3>Курс заданий</h3>
+      <mat-form-field>
+        <mat-label>Курс</mat-label>
+        <mat-select formControlName="course" [(ngModel)]="currentCourse" #selectedvalue (valueChange)="changeCourse(selectedvalue.value.id)">
+          <mat-option *ngFor="let courseItem of coursesList" [value]="courseItem">{{courseItem.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="item" *ngIf="tasksList && tasksList.length > 0">
+      <h3>Ссылка на задание после которого задание "{{taskForm.value.title}}" будет доступно</h3>
+      <mat-form-field>
+        <mat-label>Задание для доступа текущего задания</mat-label>
+        <mat-select formControlName="nextTask">
+          <mat-option *ngFor="let task of tasksList" [value]="task.id">{{task.title}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <button mat-raised-button color="primary" [disabled]="!taskForm.valid">Создать задание</button>
+  <button mat-raised-button color="primary" routerLink="../task-list">Назад</button>
+</form>

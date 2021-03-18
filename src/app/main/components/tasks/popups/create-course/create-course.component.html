@@ -1,0 +1,43 @@
+<h3>Создание курса</h3>
+<p>Здесь ты можешь создать любой курс для учеников</p>
+<p>Внимание! Созданный курс будет доступен лишь вашим ученикам</p>
+<form class="form" [formGroup]="createCourseFrom">
+<mat-form-field class="group-name-field">
+  <mat-label>Название курса</mat-label>
+  <input matInput type="text" formControlName="name">
+</mat-form-field>
+
+<mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createCourseFrom.value.forAll">
+  <mat-label>Тренер</mat-label>
+  <mat-select formControlName="coachId">
+    <mat-option *ngFor="let coach of coachList" [value]="coach.id">{{coach.userName}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div class="description">
+  <div class="describe-course">
+    <h3>Описание курса</h3>
+    <quill-editor formControlName="text" placeholder="Детали" required="true"></quill-editor>
+  </div>
+
+  <mat-form-field>
+    <mat-label>Короткое видео курса</mat-label>
+      <input formControlName="video" matInput type="text">
+  </mat-form-field>
+</div>
+
+<div class="price">
+  <div class="text">
+    <mat-form-field>
+      <mat-label>Цена за курс(грн)</mat-label>
+      <input formControlName="price" matInput type="number">
+    </mat-form-field>
+  </div>
+</div>
+
+<section class="for-all-coaches" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createCourseFrom.value.coachId">
+  <mat-checkbox formControlName="forAll" (change)="forAllCoaches()">Для все тренеров</mat-checkbox>
+</section>
+
+<button mat-flat-button color="primary" [disabled]="!createCourseFrom.valid" (click)="create()">Создать курс</button>
+</form>

@@ -1,0 +1,16 @@
+.rating-wrap {
+  .user-progress {
+    border-radius: 5px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    .result {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .number {
+        font-weight: bold;
+        margin-right: 15px;
+      }
+    }
+  }
+}

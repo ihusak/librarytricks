@@ -1,21 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginService } from './login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { AppService } from 'src/app/app.service';
+import { User } from 'src/app/shared/interface/user.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  email = 'ilyagusak@gmail.com';
-  pass = 'gusakilya1993';
+export class LoginComponent implements OnInit, OnDestroy {
+  email = '';
+  pass = '';
   loginMessage: string;
-  loggedIn: boolean = false;
+  private subscription: Subscription;
 
   constructor(
     private loginService: LoginService,
+    private appService: AppService,
     private snackBar: MatSnackBar,
     private router: Router
     ) { }
@@ -23,22 +27,33 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
   loginUser(email: string, pass: string) {
-    this.loginService.loginUser(email, pass).subscribe((result) => {
-      console.log('result of login in component', result);
-      this.router.navigate(['main']);
-      localStorage.setItem('userId', result.id);
+    this.subscription = this.loginService.loginUser(email, pass).subscribe((user: User) => {
+     this.appService.setUserDataToLocalStorage(user.tokens, user.id, user.role);
+     console.log('CALLED', user);
+     this.loginService.userId = user.id;
+     if (user.id && user.confirmed) {
+      this.router.navigate(['main/dashboard']);
+      localStorage.setItem('userId', user.id);
       this.snackBar.open('Success', '', {
         duration: 2000,
         panelClass: ['success']
       });
+     }
     },
     (error) => {
-      // Handle Errors here.
-      const errorCode = error.code;
-      const errorMessage = error.message;
+      const err = error.error;
+      const errorMessage = err.errorMessage;
       this.loginMessage = errorMessage;
+      this.snackBar.open(errorMessage, '', {
+        duration: 2000,
+        panelClass: ['error']
+      });
       console.log(error);
     });
   }
-
+ ngOnDestroy() {
+   if (this.subscription) {
+     this.subscription.unsubscribe();
+   }
+ }
 }

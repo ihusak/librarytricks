@@ -1,3 +1,25 @@
-.main-page {
-    margin-top: 70px;
+@import '../shared/styles.mixins.scss';
+@import '../main/layouts/popups/popups-shared.scss';
+.cdk-overlay-pane {
+  max-height: 90vh;
+}
+
+.main-container-wrap {
+    .main-header {
+      height: 100%;
+      display: inline-block;
+      width: 100%;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .mat-sidenav-content {
+        min-height: 100vh;
+        background-color: #f1f6fa;
+        .main {
+          padding: 25px;
+        }
+    }
+    .sidenav {
+        height: 100%;
+        width: 260px;
+    }
 }
