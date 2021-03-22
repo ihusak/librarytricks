@@ -8,11 +8,13 @@ import { QuillModule } from 'ngx-quill';
 import { HomeworksRoutingModule } from './homeworks-routing.module';
 import { HomeworkListComponent } from './homework-list/homework-list.component';
 import { HomeworksComponent } from './homeworks.component';
+import { CreateHomeworkComponent } from './create-homework/create-homework.component';
 
 @NgModule({
   declarations: [
     HomeworksComponent,
-    HomeworkListComponent
+    HomeworkListComponent,
+    CreateHomeworkComponent
   ],
   imports: [
     CommonModule,

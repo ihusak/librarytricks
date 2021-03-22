@@ -1,0 +1,26 @@
+<h3>Создание</h3>
+<form [formGroup]="hmForm" (ngSubmit)="createHm()" *ngIf='initForm'>
+  <div class="form-view">
+    <div class="item">
+      <h3>Описание задания</h3>
+      <mat-form-field>
+        <input formControlName="title" matInput placeholder="Название задания" required>
+      </mat-form-field>
+      <h3>Детальное описание задания</h3>
+      <quill-editor formControlName="description" placeholder="Детали" required="true"></quill-editor>
+    </div>
+    <div class="item">
+      <h3>Видео пример задания (YouTube)</h3>
+      <mat-form-field>
+        <input formControlName="example" matInput placeholder="URL на видео" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input id="reward" formControlName="reward" matInput placeholder="Оценка задания" required type='number' min="0"
+               max="100">
+      </mat-form-field>
+      <label for="reward">Максимум 100 баллов</label>
+    </div>
+  </div>
+  <button mat-raised-button color="primary" [disabled]="!hmForm.valid">Создать задание</button>
+  <button mat-raised-button color="primary" routerLink="../list">Назад</button>
+</form>
