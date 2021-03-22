@@ -9,6 +9,7 @@ import { HomeworksRoutingModule } from './homeworks-routing.module';
 import { HomeworkListComponent } from './homework-list/homework-list.component';
 import { HomeworksComponent } from './homeworks.component';
 import { CreateHomeworkComponent } from './create-homework/create-homework.component';
+import { HomeworksService } from './homeworks.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { CreateHomeworkComponent } from './create-homework/create-homework.compo
     YouTubePlayerModule,
     QuillModule.forRoot()
   ],
-  entryComponents: [HomeworkListComponent]
+  entryComponents: [HomeworkListComponent],
+  providers: [HomeworksService]
 })
 export class HomeworksModule {
 

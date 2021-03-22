@@ -17,6 +17,7 @@ import {MatBadgeModule, MatTableModule, MatTooltipModule} from '@angular/materia
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 const material = [
     MatButtonModule,
@@ -38,7 +39,8 @@ const material = [
     MatTableModule,
     MatCheckboxModule,
     MatTooltipModule,
-    MatRadioModule
+    MatRadioModule,
+    MatAutocompleteModule
 ];
 
 @NgModule({

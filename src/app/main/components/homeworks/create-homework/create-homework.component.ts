@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {MainService} from '../../../main.service';
-import {TaskService} from '../../tasks/tasks.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
-import {CourseInterface} from '../../../../shared/interface/course.interface';
-import {TaskModel} from '../../tasks/task.model';
+import { ProfileService } from '../../profile/profile.service';
+import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { HomeworksService } from '../homeworks.service';
 
 @Component({
   selector: 'app-create-homework',
@@ -18,12 +18,14 @@ export class CreateHomeworkComponent implements OnInit {
   public hmForm: FormGroup;
   public initForm: boolean = false;
   public userInfo: any;
+  public studentList: StudentInfoInterface[];
   private userRoles = UserRolesEnum;
 
   constructor(
     private mainService: MainService,
     private formBuilder: FormBuilder,
-    private taskService: TaskService,
+    private profileService: ProfileService,
+    private homeworksService: HomeworksService,
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
@@ -35,24 +37,26 @@ export class CreateHomeworkComponent implements OnInit {
       title: ['', [Validators.required]],
       description: ['', [Validators.required]],
       example: ['', [Validators.required, Validators.pattern('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$')]],
-      reward: [null, [Validators.required, Validators.max(100), Validators.min(0)]],
-      nextTask: ['', [Validators.required]],
-      course: [null, [Validators.required]],
+      reward: [null, [Validators.required, Validators.max(50), Validators.min(0)]],
+      students: [[], [Validators.required]],
     });
     this.initForm = true;
+    this.profileService.getAllStudents().subscribe((allStudents: StudentInfoInterface[]) => {
+      this.studentList = allStudents;
+    });
   }
   public createHm() {
-    // const taskModel = new TaskModel(this.taskForm.value);
-    // delete taskModel.id;
-    // if(taskModel.nextTask.id === 'initial') {
-    //   taskModel.allow = true;
-    // }
-    // this.taskService.createTask(taskModel).subscribe(result => {
-    //   this.snackBar.open('Задание успешно созданно', '', {
-    //     duration: 2000,
-    //     panelClass: ['success']
-    //   });
-    //   this.location.back();
-    // });
+    const HOMEWORK = this.hmForm.value;
+    HOMEWORK.students = HOMEWORK.students.map((st: StudentInfoInterface) => ({id: st.id, name: st.userName}));
+    console.log(HOMEWORK);
+    this.homeworksService.createHomework(HOMEWORK).subscribe(res => {
+      if(res) {
+        this.snackBar.open('Задание успешно созданно', '', {
+          duration: 2000,
+          panelClass: ['success']
+        });
+        this.location.back();
+      }
+    })
   }
 }
