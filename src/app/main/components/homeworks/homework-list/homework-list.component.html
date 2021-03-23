@@ -1,3 +1,30 @@
 <div class="coach-actions-button">
   <button routerLink="../create" mat-raised-button color="primary">Создать ДЗ</button>
 </div>
+<div class="homeworks-list">
+  <mat-grid-list cols="4" rowHeight="1:1" [gutterSize]="'10px'">
+    <mat-grid-tile *ngFor="let homework of homeworksList">
+      <mat-card class="example-card">
+        <div mat-card-image>
+          <youtube-player
+          [videoId]="youTubeGetID(homework.example)"
+          suggestedQuality="highres"
+          [height]="200"
+          width="100%">
+        </youtube-player>
+        </div>
+        <mat-card-content>
+          <h4>{{homework.title}}</h4>
+          <p [innerHtml]="homework.description"></p>
+        </mat-card-content>
+        <mat-card-actions>
+          <!-- <button mat-button>LIKE</button>
+          <button mat-button>SHARE</button> -->
+        </mat-card-actions>
+      </mat-card>
+      <!-- <div class="item">
+        {{homework.title}}
+      </div> -->
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
