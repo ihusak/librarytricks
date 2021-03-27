@@ -7,7 +7,10 @@
         <input formControlName="title" matInput placeholder="Название задания" required>
       </mat-form-field>
       <h3>Детальное описание задания</h3>
-      <quill-editor formControlName="description" placeholder="Детали" required="true"></quill-editor>
+      <mat-form-field>
+      <textarea formControlName="description" matInput placeholder="Детали"></textarea>
+      <label for="reward">Максимум 250 символов</label>
+      </mat-form-field>
     </div>
     <div class="item">
       <h3>Видео пример задания (YouTube)</h3>

@@ -35,7 +35,7 @@ export class CreateHomeworkComponent implements OnInit {
     this.userInfo = this.mainService.userInfo;
     this.hmForm = this.formBuilder.group({
       title: ['', [Validators.required]],
-      description: ['', [Validators.required]],
+      description: ['', [Validators.required, Validators.maxLength(250)]],
       example: ['', [Validators.required, Validators.pattern('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$')]],
       reward: [null, [Validators.required, Validators.max(50), Validators.min(0)]],
       students: [[], [Validators.required]],

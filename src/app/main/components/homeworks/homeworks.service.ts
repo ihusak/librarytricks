@@ -10,6 +10,7 @@ export interface HomeworkInterface {
   example: string;
   reward: number;
   createdDate: Date;
+  likes: number;
 }
 
 class HomeworksModel {
@@ -19,6 +20,7 @@ class HomeworksModel {
   example: string;
   reward: number;
   createdDate: Date;
+  likes: number;
   constructor(obj) {
     this.students = obj.students.map(st => ({id: st.id, name: st.name}));
     this.title = obj.title;
@@ -26,6 +28,7 @@ class HomeworksModel {
     this.example = obj.example;
     this.reward = obj.reward;
     this.createdDate = obj.createdDate;
+    this.likes = obj.likes;
   }
 }
 

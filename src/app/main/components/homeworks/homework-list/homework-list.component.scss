@@ -1,10 +1,15 @@
 .homeworks-list {
   padding: 30px 0;
   mat-grid-list {
-    height: 500px;
-    min-height: 400px;
+    height: 600px;
+    min-height: 600px;
     mat-card {
       width: 100%;
+    }
+    mat-grid-tile {
+      overflow: visible;
+      //min-height: 600px;
+      //padding-top: 0 !important;
     }
   }
 }

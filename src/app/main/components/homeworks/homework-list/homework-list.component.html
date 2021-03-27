@@ -16,10 +16,24 @@
         <mat-card-content>
           <h4>{{homework.title}}</h4>
           <p [innerHtml]="homework.description"></p>
+          <span *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])"
+               class="students"
+               [matTooltip]="studentNames(homework)"
+               matTooltipClass="example-tooltip-red"
+               matTooltipPosition="above"
+               aria-label="Button that shows a red tooltip"
+          >
+            Студенты
+          </span>
         </mat-card-content>
         <mat-card-actions>
-          <!-- <button mat-button>LIKE</button>
-          <button mat-button>SHARE</button> -->
+          <div class="homework-actions">
+            <button mat-icon-button color="warn" aria-label="like">
+              <mat-icon>favorite</mat-icon> {{homework.likes}}
+            </button>
+            <button mat-button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">Редактировать</button>
+            <button mat-button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">Удалить</button>
+          </div>
         </mat-card-actions>
       </mat-card>
       <!-- <div class="item">
