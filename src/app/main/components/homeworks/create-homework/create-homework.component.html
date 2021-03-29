@@ -8,9 +8,9 @@
       </mat-form-field>
       <h3>Детальное описание задания</h3>
       <mat-form-field>
-      <textarea formControlName="description" matInput placeholder="Детали"></textarea>
-      <label for="reward">Максимум 250 символов</label>
+      <textarea id="description" formControlName="description" matInput placeholder="Детали"></textarea>
       </mat-form-field>
+      <label for="description">Максимум 250 символов ({{hmForm.value.description.length}})</label>
     </div>
     <div class="item">
       <h3>Видео пример задания (YouTube)</h3>

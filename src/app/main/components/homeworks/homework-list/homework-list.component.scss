@@ -5,6 +5,9 @@
     min-height: 600px;
     mat-card {
       width: 100%;
+      .mat-card-content {
+        min-height: 170px;
+      }
     }
     mat-grid-tile {
       overflow: visible;
