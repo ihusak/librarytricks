@@ -23,13 +23,13 @@
                matTooltipPosition="above"
                aria-label="Button that shows a red tooltip"
           >
-            Студенты
+            <b>Студенты</b>
           </span>
         </mat-card-content>
         <mat-card-actions>
           <div class="homework-actions">
-            <button mat-icon-button color="warn" aria-label="like">
-              <mat-icon>favorite</mat-icon> {{homework.likes}}
+            <button (click)="likeHomework(homework.id)" mat-icon-button [color]="homework.likes.indexOf(userInfo.id) >= 0 ? 'warn' : ''" aria-label="like">
+              <mat-icon>favorite</mat-icon> {{homework.likes.length}}
             </button>
             <button mat-button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">Редактировать</button>
             <button mat-button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">Удалить</button>

@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { HomeworksModel } from './homeworks.model';
 
 export interface HomeworkInterface {
+  id: string;
   students: [{id: string, name: string}];
   title: string;
   description: string;
@@ -12,26 +14,6 @@ export interface HomeworkInterface {
   createdDate: Date;
   likes: number;
 }
-
-class HomeworksModel {
-  students: [{id: string, name: string}];
-  title: string;
-  description: string;
-  example: string;
-  reward: number;
-  createdDate: Date;
-  likes: number;
-  constructor(obj) {
-    this.students = obj.students.map(st => ({id: st.id, name: st.name}));
-    this.title = obj.title;
-    this.description = obj.description;
-    this.example = obj.example;
-    this.reward = obj.reward;
-    this.createdDate = obj.createdDate;
-    this.likes = obj.likes;
-  }
-}
-
 @Injectable({
   providedIn: 'root'
 })
@@ -43,6 +25,11 @@ export class HomeworksService extends AppService {
   public getAllHomeworks(): Observable<HomeworkInterface[]> {
     return this.http.get(`${this.apiUrl()}/homeworks`).pipe(map(((res: HomeworkInterface[]) => {
       return res.map(item => new HomeworksModel(item));
+    })));
+  }
+  public like(userId: string, homeworkId: string): Observable<any> {
+    return this.http.put(`${this.apiUrl()}/homeworks/like`, {userId, homeworkId}).pipe(map(((res: HomeworkInterface[]) => {
+      return new HomeworksModel(res)
     })));
   }
 
