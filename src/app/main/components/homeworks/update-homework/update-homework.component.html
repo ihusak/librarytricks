@@ -1,4 +1,4 @@
-<h3>Создание</h3>
+<h3>Обновление</h3>
 <form [formGroup]="hmForm" (ngSubmit)="createHm()" *ngIf='initForm'>
   <div class="form-view">
     <div class="item">
@@ -26,13 +26,13 @@
     <div class="item">
       <mat-form-field appearance="fill">
         <mat-label>Студенты</mat-label>
-        <mat-select formControlName="students" multiple>
+        <mat-select [compareWith]="compareStudents" (selectionChange)="showSelectValue($event.value)" [(ngModel)]="selectedStudents" formControlName="students" multiple>
           <mat-option *ngFor="let student of studentList" [value]="student">{{student.userName}}</mat-option>
         </mat-select>
       </mat-form-field>
       <label for="reward">Студенты которым будет выдано ДЗ</label>
     </div>
   </div>
-  <button mat-raised-button color="primary" [disabled]="!hmForm.valid">Создать задание</button>
-  <button mat-raised-button color="primary" routerLink="../list">Назад</button>
+  <button mat-raised-button color="primary" [disabled]="!hmForm.valid">Обновить</button>
+  <button mat-raised-button color="primary" routerLink="../../list">Назад</button>
 </form>

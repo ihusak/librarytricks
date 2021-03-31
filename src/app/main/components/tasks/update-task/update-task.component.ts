@@ -27,7 +27,9 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
     private activateRoute: ActivatedRoute,
     private snackBar: MatSnackBar,
     private location: Location) {
-      activateRoute.params.subscribe(params => this.taskId = params.id);
+      activateRoute.params.subscribe(params => {
+        this.taskId = params.id;
+      });
      }
 
   ngOnInit() {

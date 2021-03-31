@@ -4,7 +4,6 @@ export class HomeworksModel {
   title: string;
   description: string;
   example: string;
-  reward: number;
   createdDate: Date;
   likes: number;
   constructor(obj) {
@@ -13,7 +12,6 @@ export class HomeworksModel {
     this.title = obj.title;
     this.description = obj.description;
     this.example = obj.example;
-    this.reward = obj.reward;
     this.createdDate = obj.createdDate;
     this.likes = obj.likes;
   }

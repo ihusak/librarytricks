@@ -10,12 +10,14 @@ import { HomeworkListComponent } from './homework-list/homework-list.component';
 import { HomeworksComponent } from './homeworks.component';
 import { CreateHomeworkComponent } from './create-homework/create-homework.component';
 import { HomeworksService } from './homeworks.service';
+import { UpdateHomeworkComponent } from './update-homework/update-homework.component';
 
 @NgModule({
   declarations: [
     HomeworksComponent,
     HomeworkListComponent,
-    CreateHomeworkComponent
+    CreateHomeworkComponent,
+    UpdateHomeworkComponent
   ],
   imports: [
     CommonModule,

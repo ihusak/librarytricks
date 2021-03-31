@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeworkListComponent } from './homework-list/homework-list.component';
 import { HomeworksComponent } from './homeworks.component';
 import {CreateHomeworkComponent} from './create-homework/create-homework.component';
+import { UpdateHomeworkComponent } from './update-homework/update-homework.component';
 
 const routes: Routes = [
     {
@@ -11,7 +12,8 @@ const routes: Routes = [
         children: [
             {path: '', redirectTo: 'list', pathMatch: 'full'},
             {path: 'list', component: HomeworkListComponent},
-            {path: 'create', component: CreateHomeworkComponent}
+            {path: 'create', component: CreateHomeworkComponent},
+            {path: 'edit/:id', component: UpdateHomeworkComponent}
         ]
     }
 ];

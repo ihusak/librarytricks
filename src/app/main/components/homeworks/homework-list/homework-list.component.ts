@@ -3,6 +3,7 @@ import {HomeworkInterface, HomeworksService} from '../homeworks.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {MainService} from '../../../main.service';
 import { HomeworksModel } from '../homeworks.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-homework-list',
@@ -17,6 +18,7 @@ export class HomeworkListComponent implements OnInit {
   constructor(
     private homeworksService: HomeworksService,
     private mainService: MainService,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit() {
@@ -43,6 +45,18 @@ export class HomeworkListComponent implements OnInit {
         }
         return homework;
       })
+    })
+  }
+
+  public deleteHomework(homeworkId: string) {
+    this.homeworksService.deleteHomework(homeworkId).subscribe((response: any) => {
+      if(response.result === 'ok') {
+        this.homeworksList = this.homeworksList.filter((homework: HomeworksModel) => homework.id !== homeworkId);
+        this.snackBar.open('Домашнее задание успешно удалено', '', {
+          duration: 4000,
+          panelClass: ['success']
+        })
+      }
     })
   }
 }

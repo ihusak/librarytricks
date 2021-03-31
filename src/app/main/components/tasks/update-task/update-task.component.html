@@ -32,7 +32,7 @@
       <h3>Ссылка на задание после которого задание "{{taskForm.value.title}}" будет доступно</h3>
       <mat-form-field>
         <mat-label>Задание для доступа текущего задания</mat-label>
-        <mat-select [compareWith]="compareNextTask" [(ngModel)]="nextTask"  formControlName="nextTask">
+        <mat-select [compareWith]="compareNextTask" [(ngModel)]="nextTask" formControlName="nextTask">
           <mat-option *ngFor="let task of tasksList" [value]="task.id">{{task.title}}</mat-option>
         </mat-select>
       </mat-form-field>

@@ -3,6 +3,7 @@ import { AppService } from 'src/app/app.service';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HomeworksModel } from './homeworks.model';
+import { HttpHeaders } from '@angular/common/http';
 
 export interface HomeworkInterface {
   id: string;
@@ -10,7 +11,6 @@ export interface HomeworkInterface {
   title: string;
   description: string;
   example: string;
-  reward: number;
   createdDate: Date;
   likes: number;
 }
@@ -21,6 +21,22 @@ export class HomeworksService extends AppService {
 
   public createHomework(homework: HomeworkInterface): Observable<any> {
     return this.http.post(`${this.apiUrl()}/homeworks/create`, homework);
+  }
+  public deleteHomework(homeworkId: string) {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: {homeworkId}
+    };
+    return this.http.delete(`${this.apiUrl()}/homeworks/delete`, options).pipe(map(((res: HomeworkInterface[]) => {
+      return res;
+    })));
+  }
+  public getHomeworkById(homeworkId: string) {
+    return this.http.get(`${this.apiUrl()}/homeworks/${homeworkId}`).pipe(map(((res: HomeworkInterface) => {
+      return new HomeworksModel(res);
+    })));
   }
   public getAllHomeworks(): Observable<HomeworkInterface[]> {
     return this.http.get(`${this.apiUrl()}/homeworks`).pipe(map(((res: HomeworkInterface[]) => {

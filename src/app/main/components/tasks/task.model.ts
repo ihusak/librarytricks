@@ -21,7 +21,7 @@ export class TaskModel {
   rejectReason?: string;
   done?: boolean;
   constructor(responseObj: any) {
-    this.id = responseObj._id;
+    this.id = responseObj.id;
     this.title = responseObj.title;
     this.description = responseObj.description;
     this.example = responseObj.example;
