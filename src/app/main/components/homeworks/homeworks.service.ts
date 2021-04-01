@@ -22,7 +22,7 @@ export class HomeworksService extends AppService {
   public createHomework(homework: HomeworkInterface): Observable<any> {
     return this.http.post(`${this.apiUrl()}/homeworks/create`, homework);
   }
-  public deleteHomework(homeworkId: string) {
+  public deleteHomework(homeworkId: string): Observable<object> {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json'
@@ -33,7 +33,7 @@ export class HomeworksService extends AppService {
       return res;
     })));
   }
-  public getHomeworkById(homeworkId: string) {
+  public getHomeworkById(homeworkId: string): Observable<HomeworksModel> {
     return this.http.get(`${this.apiUrl()}/homeworks/${homeworkId}`).pipe(map(((res: HomeworkInterface) => {
       return new HomeworksModel(res);
     })));
@@ -45,7 +45,12 @@ export class HomeworksService extends AppService {
   }
   public like(userId: string, homeworkId: string): Observable<any> {
     return this.http.put(`${this.apiUrl()}/homeworks/like`, {userId, homeworkId}).pipe(map(((res: HomeworkInterface[]) => {
-      return new HomeworksModel(res)
+      return new HomeworksModel(res);
+    })));
+  }
+  public updateHomework(homeworkId: string, homework: HomeworksModel): Observable<object> {
+    return this.http.put(`${this.apiUrl()}/homeworks/update/${homeworkId}`, homework).pipe(map(((res: HomeworkInterface[]) => {
+      return res;
     })));
   }
 

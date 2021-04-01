@@ -49,7 +49,7 @@ export class CreateHomeworkComponent implements OnInit {
     HOMEWORK.students = HOMEWORK.students.map((st: StudentInfoInterface) => ({id: st.id, name: st.userName}));
     console.log(HOMEWORK);
     this.homeworksService.createHomework(HOMEWORK).subscribe(res => {
-      if(res) {
+      if (res) {
         this.snackBar.open('Задание успешно созданно', '', {
           duration: 2000,
           panelClass: ['success']

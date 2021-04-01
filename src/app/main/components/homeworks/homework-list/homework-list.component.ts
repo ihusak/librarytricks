@@ -24,9 +24,12 @@ export class HomeworkListComponent implements OnInit {
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
     this.homeworksService.getAllHomeworks().subscribe((hm: HomeworkInterface[]) => {
-      this.homeworksList = hm;
+      if (this.userInfo.role.id === this.userRoles.STUDENT) {
+        this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => s.id === this.userInfo.id));
+      } else {
+        this.homeworksList = hm;
+      }
     });
-    console.log(this);
   }
   public studentNames(homework: HomeworkInterface): string {
     return homework.students.map(s => s.name).join(', ');

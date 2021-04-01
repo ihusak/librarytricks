@@ -54,16 +54,21 @@ export class UpdateHomeworkComponent implements OnInit {
       this.studentList = allStudents;
     });
     });
-    console.log(this);
   }
 
   compareStudents(o1: any, o2: any): boolean {
     return o1 && o2 ? o1.userName === o2.name : o2 === o2;
     // return o1.userName === o2.name && o1._id === o2.id;
   }
-
-  showSelectValue(mySelect){
-    this.selectedStudents = mySelect;
-    console.log(mySelect);
+  public updateHomework() {
+    this.homeworksService.updateHomework(this.hmId, this.hmForm.value).subscribe((res: any) => {
+      if (res.result === 'ok') {
+        this.snackBar.open('Задание успешно обновленно', '', {
+          duration: 2000,
+          panelClass: ['success']
+        });
+        this.location.back();
+      }
+    });
   }
 }

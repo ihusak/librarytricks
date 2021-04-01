@@ -1,8 +1,11 @@
 <div class="coach-actions-button">
-  <button routerLink="../create" mat-raised-button color="primary">Создать ДЗ</button>
+  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" routerLink="../create" mat-raised-button color="primary">Создать ДЗ</button>
 </div>
 <div class="homeworks-list">
-  <mat-grid-list cols="4" rowHeight="450px" [gutterSize]="'30px'">
+  <div class="empty" *ngIf="homeworksList && !homeworksList.length">
+    Домашние задания пусты
+  </div>
+  <mat-grid-list cols="4" rowHeight="450px" [gutterSize]="'30px'" *ngIf="homeworksList && homeworksList.length">
     <mat-grid-tile *ngFor="let homework of homeworksList">
       <mat-card class="example-card">
         <div mat-card-image>
@@ -28,7 +31,7 @@
         </mat-card-content>
         <mat-card-actions>
           <div class="homework-actions">
-            <button (click)="likeHomework(homework.id)" mat-icon-button [color]="homework.likes.indexOf(userInfo.id) >= 0 ? 'warn' : ''" aria-label="like">
+            <button (click)="likeHomework(homework.id)" mat-icon-button [color]="homework.likes.indexOf(userInfo.id) >= 0 ? 'warn' : 'basic'" aria-label="like">
               <mat-icon>favorite</mat-icon> {{homework.likes.length}}
             </button>
             <button mat-button [routerLink]="['../edit/', homework.id]" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">Редактировать</button>
@@ -36,9 +39,6 @@
           </div>
         </mat-card-actions>
       </mat-card>
-      <!-- <div class="item">
-        {{homework.title}}
-      </div> -->
     </mat-grid-tile>
   </mat-grid-list>
 </div>
