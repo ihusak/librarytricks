@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { TranslateLocalService } from '../shared/translate/translate.service';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +9,11 @@ import { TranslateLocalService } from '../shared/translate/translate.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private route: Router, private translateService: TranslateLocalService) { }
+  constructor(private route: Router, private appService: AppService) { }
 
   ngOnInit() {
-    const checkLoggedIn = localStorage.getItem('userId');
-    if (checkLoggedIn) {
+    const checkLoggedIn = this.appService.getTokens();
+    if (checkLoggedIn.accessToken) {
       this.route.navigate(['main']);
     }
   }

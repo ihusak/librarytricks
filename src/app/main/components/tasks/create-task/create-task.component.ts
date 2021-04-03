@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
@@ -8,13 +8,14 @@ import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { MainService } from 'src/app/main/main.service';
 import { ActivatedRoute } from '@angular/router';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-task',
   templateUrl: './create-task.component.html',
   styleUrls: ['./create-task.component.scss']
 })
-export class CreateTaskComponent implements OnInit {
+export class CreateTaskComponent implements OnInit, OnDestroy {
   public taskForm: FormGroup;
   public initForm: boolean = false;
   public coursesList;
@@ -23,6 +24,7 @@ export class CreateTaskComponent implements OnInit {
   private userRoles = UserRolesEnum;
   private readonly courseId: string;
   public currentCourse: any;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private mainService: MainService,
@@ -52,7 +54,7 @@ export class CreateTaskComponent implements OnInit {
   }
 
   private getCourses() {
-    this.taskService.getAllCourses().subscribe((allcourses: any[]) => {
+    const getAllCourses = this.taskService.getAllCourses().subscribe((allcourses: any[]) => {
       let filteredCourses;
       switch (this.userInfo.role.id) {
         case this.userRoles.COACH:
@@ -67,9 +69,10 @@ export class CreateTaskComponent implements OnInit {
         return course.id === this.courseId;
       });
     });
+    this.subscription.add(getAllCourses);
   }
   private getAllTasks(courseId?: string) {
-    this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
+    const getAllTasks = this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks.filter((task: TaskModel) => task.course.id === courseId);
       console.log(this.tasksList);
       if (!this.tasksList.length) {
@@ -78,6 +81,7 @@ export class CreateTaskComponent implements OnInit {
         this.taskForm.setControl('nextTask', new FormControl('', Validators.required));
       }
     });
+    this.subscription.add(getAllTasks);
   }
   public createTask() {
     const taskModel = new TaskModel(this.taskForm.value);
@@ -85,16 +89,20 @@ export class CreateTaskComponent implements OnInit {
     if (taskModel.nextTask.id === 'initial') {
       taskModel.allow = true;
     }
-    this.taskService.createTask(taskModel).subscribe(result => {
+    const createTask = this.taskService.createTask(taskModel).subscribe(result => {
       this.snackBar.open('Задание успешно созданно', '', {
         duration: 2000,
         panelClass: ['success']
       });
       this.location.back();
     });
+    this.subscription.add(createTask);
   }
   public changeCourse(courseId: string) {
     console.log(this.taskForm);
     this.getAllTasks(courseId);
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

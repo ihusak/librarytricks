@@ -9,6 +9,7 @@ import { UserStudentModel } from 'src/app/shared/models/user-student.model';
 import { UserParentModel } from 'src/app/shared/models/user-parent.model';
 import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 import { TaskService } from '../tasks/tasks.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -29,6 +30,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   public userInfoData: any;
   public kidsList;
   public coach: any = null;
+  private subscription: Subscription = new Subscription();
 
   @ViewChild('formImgHidden',  {static: false}) formImgHidden: ElementRef;
 
@@ -48,7 +50,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
-    this.appService.userInfoSubject.subscribe((data: any) => {
+    const userInfoSubject = this.appService.userInfoSubject.subscribe((data: any) => {
       this.userInfoData = data;
       this.switchValidatorsOnRole(this.userInfoData.role.id, data);
       if (data.userImg) {
@@ -58,12 +60,8 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }, err => {
       console.log('userInfo err', err);
     });
+    this.subscription.add(userInfoSubject);
   }
-  ngOnDestroy() {
-    console.log('profile destroy');
-    // this.appService.userInfoSubject.unsubscribe();
-  }
-
   public addInfo() {
     let userInfo;
     switch(this.userInfoData.role.id) {
@@ -83,7 +81,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     formData.append('userInfo', JSON.stringify(userInfo));
     console.log(userInfo, this.userInfo.value);
-    this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
+    const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
       this.appService.userInfoSubject.next(updateUser);
       console.log(updateUser);
       this.snackBar.open('Сохранено', '', {
@@ -91,22 +89,25 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         panelClass: ['success']
       })
     });
+    this.subscription.add(updateUserInfo);
   }
 
   private switchValidatorsOnRole(userRole: number, data) {
     switch (userRole) {
       case this.userRoles.STUDENT:
         this.userCourse = data.course;
-        this.taskService.getAllCourses().subscribe((allCourses: any[]) => {
+        const getAllCourses = this.taskService.getAllCourses().subscribe((allCourses: any[]) => {
           this.coachCourseList = allCourses;
           this.coach = data.coach.id ? data.coach : null;
           if(this.coach) {
             this.changeCoach(data.coach);
           }
         });
-        this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
+        this.subscription.add(getAllCourses);
+        const getAllCoaches = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
           this.coachsList = coaches;
         });
+        this.subscription.add(getAllCoaches);
         this.userInfo = this.formBuilder.group({
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
@@ -140,7 +141,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.initForm = true;
         break;
       case this.userRoles.PARENT:
-      this.profileService.getAllStudents().subscribe(result => {
+      const getAllStudents = this.profileService.getAllStudents().subscribe(result => {
         this.userInfo = this.formBuilder.group({
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
@@ -154,6 +155,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.kidsList = result;
         this.initForm = true;
       });
+      this.subscription.add(getAllStudents);
       break;
     }
     console.log(this);
@@ -211,5 +213,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.userInfo.controls['userImg'].markAsDirty();
       this.previewUrl = reader.result;
     }
+  }
+  ngOnDestroy() {
+    console.log('profile destroy');
+    this.subscription.unsubscribe();
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
 import { MainService } from 'src/app/main/main.service';
@@ -14,6 +14,7 @@ import { CreateCourseComponent } from '../popups/create-course/create-course.com
 import {CourseInterface} from '../../../../shared/interface/course.interface';
 import { Checkout, PaymentsService } from '../../payments/payments.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
@@ -21,7 +22,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./task-list.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class TaskListComponent implements OnInit {
+export class TaskListComponent implements OnInit, OnDestroy {
   public panelOpenState: boolean = false;
   public tasksList: TaskModel[];
   public coursesList: CourseInterface[] = [];
@@ -44,6 +45,7 @@ export class TaskListComponent implements OnInit {
   public doneTasks: number = 0;
   public taskStatuses = TaskStatuses;
   public processingTasksData: any[] = [];
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private taskService: TaskService,
@@ -60,22 +62,22 @@ export class TaskListComponent implements OnInit {
 
   ngOnInit() {
     this.getCourses();
-    console.log(this);
   }
 
   public assignTask(task: TaskModel) {
     task.status = TaskStatuses.PROCESSING;
-    this.profileService.changeCurrentTask(task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
+    const changeCurrentTask = this.profileService.changeCurrentTask(task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
       this.userInfo = updatedUserInfo;
       this.snackBar.open('Вы начали выполнение задания', '', {
         duration: 2000,
         panelClass: ['success']
       });
     });
+    this.subscription.add(changeCurrentTask);
   }
 
   private getAllTasks(courseId?: string) {
-    this.taskService.getTasksByCourse(courseId).subscribe((tasks: TaskModel[]) => {
+    const getTasksByCourse = this.taskService.getTasksByCourse(courseId).subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks;
       const currentStudentDoneTasks = [];
       if (this.userInfo.role.id === UserRolesEnum.STUDENT) {
@@ -102,12 +104,12 @@ export class TaskListComponent implements OnInit {
           return task;
         });
       }
-      console.log(this.tasksList);
     });
+    this.subscription.add(getTasksByCourse);
   }
 
   private getTasksStatuses(courseId: string) {
-    this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
+    const getUserInfoByCoach = this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
       this.processingTasks = 0;
       this.pendingTasks = 0;
       this.doneTasks = 0;
@@ -129,10 +131,11 @@ export class TaskListComponent implements OnInit {
         }
       });
     });
+    this.subscription.add(getUserInfoByCoach);
   }
 
   private getCourses() {
-    this.taskService.getAllCourses().subscribe((allCourses: CourseInterface[]) => {
+    const getAllCourses = this.taskService.getAllCourses().subscribe((allCourses: CourseInterface[]) => {
       if (this.userInfo.role.id === this.userRoles.ADMIN) {
         this.coursesList = allCourses;
       } else {
@@ -144,14 +147,15 @@ export class TaskListComponent implements OnInit {
         this.currentCourse = allCourses.filter((course: CourseInterface) => {
           return course.id === this.userInfo.course.id;
         })[0];
-        this.paymentsService.getPaidCourses(this.userInfo.id).subscribe((paid: Checkout[]) => {
+        const getPaidCourses = this.paymentsService.getPaidCourses(this.userInfo.id).subscribe((paid: Checkout[]) => {
           if(paid.find((item: Checkout) => this.currentCourse.id === item.course.id || item.price === 0)) {
             this.currentCourse.paid = true;
           } else {
             this.currentCourse.paid = false;
           }
           this.currentCourse.paid = this.currentCourse.price <= 0;
-        })
+        });
+        this.subscription.add(getPaidCourses);
       } else {
         // default group for admin and coach
         const courseIdQuery = this.route.snapshot.queryParamMap.get('courseId');
@@ -169,6 +173,7 @@ export class TaskListComponent implements OnInit {
       }
       // this.getPendingTasks(this.currentGroup.id);
     });
+    this.subscription.add(getAllCourses);
   }
 
   public passTask(task: TaskModel) {
@@ -190,9 +195,9 @@ export class TaskListComponent implements OnInit {
         this.coursesList.push(course);
         course.id = course._id;
         delete course._id;
+        this.currentCourse = course;
+        this.changeCourse(course.id);
       }
-      this.currentCourse = course;
-      this.changeCourse(course.id);
     });
   }
 
@@ -230,5 +235,8 @@ export class TaskListComponent implements OnInit {
 
   private changeCourseIdQuery(courseId: string) {
     this.router.navigate(['.'], { relativeTo: this.route, queryParams: {courseId}});
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

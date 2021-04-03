@@ -1,10 +1,11 @@
-import { Component, OnInit, AfterViewInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { TaskModel } from '../task.model';
 import { TaskService } from '../tasks.service';
 import { FormGroup, Validators, FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-update-task',
@@ -12,7 +13,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./update-task.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class UpdateTaskComponent implements OnInit, AfterViewInit {
+export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
   public tasksList: TaskModel[];
   public taskForm: FormGroup;
   public initForm: boolean = false;
@@ -20,6 +21,7 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
   public nextTask: string;
   private taskId: string;
   private currentTask: TaskModel;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private taskService: TaskService,
@@ -45,13 +47,14 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
       updatedTask.allow = true;
     }
     if (this.taskForm.valid) {
-      this.taskService.updateTask(this.taskId, updatedTask).subscribe(result => {
+     const updateTask = this.taskService.updateTask(this.taskId, updatedTask).subscribe(result => {
         this.snackBar.open('Задание успешно обновленно', '', {
           duration: 2000,
           panelClass: ['success']
         });
         this.location.back();
       });
+      this.subscription.add(updateTask);
     } else {
       this.snackBar.open('Все поля должны быть заполнены', '', {
         duration: 2000,
@@ -61,7 +64,7 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
   }
 
   private getCurrentTasks(id: string) {
-    this.taskService.getTaskById(id).subscribe((task: TaskModel) => {
+    const getTaskById = this.taskService.getTaskById(id).subscribe((task: TaskModel) => {
       this.nextTask = task.nextTask.id;
       this.currentTask = task;
       this.taskForm = this.formBuilder.group({
@@ -79,10 +82,11 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
       this.getCourses();
       this.initForm = true;
     });
+    this.subscription.add(getTaskById);
   }
 
   private getAllTasks(courseId?: string) {
-    this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
+    const getAllTasks = this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks.filter((task: TaskModel) => task.course.id === courseId && this.currentTask.id !== task.id);
       if (!this.tasksList.length) {
         this.taskForm.removeControl('nextTask');
@@ -90,12 +94,14 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
         this.taskForm.setControl('nextTask', new FormControl('', Validators.required));
       }
     });
+    this.subscription.add(getAllTasks);
   }
 
   private getCourses() {
-    this.taskService.getAllCourses().subscribe(allCourses => {
+    const getAllCourses = this.taskService.getAllCourses().subscribe(allCourses => {
       this.coursesList = allCourses;
-    })
+    });
+    this.subscription.add(getAllCourses);
   }
 
   public changeCourse(course) {
@@ -109,5 +115,8 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit {
 
   compareNextTask(o1: any, o2: any): boolean {
     return o1 === o2;
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

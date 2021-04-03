@@ -1,18 +1,20 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { ProfileService } from '../../../profile/profile.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-reject-task',
   templateUrl: './reject-task.component.html',
   styleUrls: ['./reject-task.component.scss']
 })
-export class RejectTaskComponent {
+export class RejectTaskComponent implements OnDestroy {
   public stundetInfo: StudentInfoInterface;
   public rejectReason: string = '';
+  private subscription: Subscription = new Subscription();
 
   constructor(
     public dialogRef: MatDialogRef<RejectTaskComponent>,
@@ -29,13 +31,16 @@ export class RejectTaskComponent {
     const userCurrentTask = this.stundetInfo.currentTask;
     userCurrentTask.status = TaskStatuses.PROCESSING;
     userCurrentTask.rejectReason = reason;
-    this.profileService.changeCurrentTask(userCurrentTask, this.stundetInfo.id).subscribe(() => {
+    const changeCurrentTask = this.profileService.changeCurrentTask(userCurrentTask, this.stundetInfo.id).subscribe(() => {
       this.snackBar.open(`Вы отправили назад на тренировку ${this.stundetInfo.userName}`, '', {
         duration: 2000,
         panelClass: ['error']
       });
       this.dialogRef.close();
     });
+    this.subscription.add(changeCurrentTask);
   }
-
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   email = '';
   pass = '';
   loginMessage: string;
-  private subscription: Subscription;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private loginService: LoginService,
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
   loginUser(email: string, pass: string) {
-    this.subscription = this.loginService.loginUser(email, pass).subscribe((user: User) => {
+    const login = this.loginService.loginUser(email, pass).subscribe((user: User) => {
      this.appService.setUserDataToLocalStorage(user.tokens, user.id, user.role);
      console.log('CALLED', user);
      this.loginService.userId = user.id;
@@ -50,10 +50,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
       console.log(error);
     });
+    this.subscription.add(login);
   }
  ngOnDestroy() {
-   if (this.subscription) {
-     this.subscription.unsubscribe();
-   }
+  this.subscription.unsubscribe();
  }
 }

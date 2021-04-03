@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProfileService } from '../../profile/profile.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,6 +6,7 @@ import { MainService } from 'src/app/main/main.service';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { RejectTaskComponent } from './reject-task/reject-task.component';
+import { Subscription } from 'rxjs';
 
 interface marksInterface {
   value: number;
@@ -25,12 +26,13 @@ const MARKS: marksInterface[] = [
   templateUrl: './check-tasks.component.html',
   styleUrls: ['./check-tasks.component.scss']
 })
-export class CheckTasksComponent implements OnInit {
+export class CheckTasksComponent implements OnInit, OnDestroy {
   public userInfo;
   public pendingTasksData: StudentInfoInterface[];
   public marks: marksInterface[] = MARKS;
   public coachMark: number = 0;
   public resultMark: number = 0;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private mainService: MainService,
@@ -44,7 +46,7 @@ export class CheckTasksComponent implements OnInit {
     this.getPendingTasks();
   }
   private getPendingTasks() {
-    this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
+    const getUserInfoByCoach = this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
       this.pendingTasksData = [];
       usersInfo.map((info: StudentInfoInterface) => {
         if (info.currentTask.status === TaskStatuses.PENDING) {
@@ -52,6 +54,7 @@ export class CheckTasksComponent implements OnInit {
         }
       });
     });
+    this.subscription.add(getUserInfoByCoach);
   }
   public changeMark(userInfo: StudentInfoInterface) {
     this.resultMark = userInfo.currentTask.reward * (this.coachMark / 100);
@@ -64,13 +67,14 @@ export class CheckTasksComponent implements OnInit {
       reward: userInfo.currentTask.reward * (this.coachMark / 100),
       courseId: userInfo.course.id
     }
-    this.profileService.acceptStudentTask(userInfo.id, task).subscribe(res => {
+    const acceptStudentTask = this.profileService.acceptStudentTask(userInfo.id, task).subscribe(res => {
       this.ngOnInit();
       this.snackBar.open(`Вы приняли задания ученика: ${userInfo.userName}`, '', {
         duration: 2000,
         panelClass: ['success']
       });
-    })
+    });
+    this.subscription.add(acceptStudentTask);
   }
 
   public reject(studentInfo: StudentInfoInterface) {
@@ -81,5 +85,8 @@ export class CheckTasksComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.ngOnInit();
     })
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

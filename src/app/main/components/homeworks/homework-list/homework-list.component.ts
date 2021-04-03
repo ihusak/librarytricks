@@ -1,19 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {HomeworkInterface, HomeworksService} from '../homeworks.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {MainService} from '../../../main.service';
 import { HomeworksModel } from '../homeworks.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-homework-list',
   templateUrl: './homework-list.component.html',
   styleUrls: ['./homework-list.component.scss']
 })
-export class HomeworkListComponent implements OnInit {
+export class HomeworkListComponent implements OnInit, OnDestroy {
   public homeworksList: HomeworkInterface[];
   public userInfo: any;
   public userRoles = UserRolesEnum;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private homeworksService: HomeworksService,
@@ -23,13 +25,14 @@ export class HomeworkListComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
-    this.homeworksService.getAllHomeworks().subscribe((hm: HomeworkInterface[]) => {
+    const getAllHomeworks = this.homeworksService.getAllHomeworks().subscribe((hm: HomeworkInterface[]) => {
       if (this.userInfo.role.id === this.userRoles.STUDENT) {
         this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => s.id === this.userInfo.id));
       } else {
         this.homeworksList = hm;
       }
     });
+    this.subscription.add(getAllHomeworks);
   }
   public studentNames(homework: HomeworkInterface): string {
     return homework.students.map(s => s.name).join(', ');
@@ -41,18 +44,19 @@ export class HomeworkListComponent implements OnInit {
   }
 
   public likeHomework(homeworkId: string) {
-    this.homeworksService.like(this.userInfo.id, homeworkId).subscribe((response: HomeworkInterface) => {
+    const like = this.homeworksService.like(this.userInfo.id, homeworkId).subscribe((response: HomeworkInterface) => {
       this.homeworksList.filter((homework: HomeworksModel) => {
         if(homework.id === response.id) {
           homework.likes = response.likes;
         }
         return homework;
-      })
-    })
+      });
+    });
+    this.subscription.add(like);
   }
 
   public deleteHomework(homeworkId: string) {
-    this.homeworksService.deleteHomework(homeworkId).subscribe((response: any) => {
+    const deleteHomework = this.homeworksService.deleteHomework(homeworkId).subscribe((response: any) => {
       if(response.result === 'ok') {
         this.homeworksList = this.homeworksList.filter((homework: HomeworksModel) => homework.id !== homeworkId);
         this.snackBar.open('Домашнее задание успешно удалено', '', {
@@ -60,6 +64,10 @@ export class HomeworkListComponent implements OnInit {
           panelClass: ['success']
         })
       }
-    })
+    });
+    this.subscription.add(deleteHomework);
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

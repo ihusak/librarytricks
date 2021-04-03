@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
@@ -9,13 +9,14 @@ import { ProfileService } from '../../profile/profile.service';
 import { HomeworksModel } from '../homeworks.model';
 import { HomeworksService } from '../homeworks.service';
 import {Location} from '@angular/common';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-update-homework',
   templateUrl: './update-homework.component.html',
   styleUrls: ['./update-homework.component.scss']
 })
-export class UpdateHomeworkComponent implements OnInit {
+export class UpdateHomeworkComponent implements OnInit, OnDestroy {
   public hmForm: FormGroup;
   public initForm: boolean = false;
   public userInfo: any;
@@ -23,6 +24,7 @@ export class UpdateHomeworkComponent implements OnInit {
   public selectedStudents: {id: string, name: string}[];
   private userRoles = UserRolesEnum;
   private hmId: string;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private mainService: MainService,
@@ -40,7 +42,7 @@ export class UpdateHomeworkComponent implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
-    this.homeworksService.getHomeworkById(this.hmId).subscribe((homework: HomeworksModel) => {
+    const getHomeworkById = this.homeworksService.getHomeworkById(this.hmId).subscribe((homework: HomeworksModel) => {
     this.hmForm = this.formBuilder.group({
       title: [homework.title, [Validators.required]],
       description: [homework.description, [Validators.required, Validators.maxLength(250)]],
@@ -50,10 +52,12 @@ export class UpdateHomeworkComponent implements OnInit {
     this.selectedStudents = homework.students;
     this.hmForm.controls.students.setValue(this.selectedStudents );
     this.initForm = true;
-    this.profileService.getAllStudents().subscribe((allStudents: StudentInfoInterface[]) => {
+    const getAllStudents = this.profileService.getAllStudents().subscribe((allStudents: StudentInfoInterface[]) => {
       this.studentList = allStudents;
     });
+    this.subscription.add(getAllStudents);
     });
+    this.subscription.add(getHomeworkById);
   }
 
   compareStudents(o1: any, o2: any): boolean {
@@ -61,7 +65,7 @@ export class UpdateHomeworkComponent implements OnInit {
     // return o1.userName === o2.name && o1._id === o2.id;
   }
   public updateHomework() {
-    this.homeworksService.updateHomework(this.hmId, this.hmForm.value).subscribe((res: any) => {
+    const updateHomework = this.homeworksService.updateHomework(this.hmId, this.hmForm.value).subscribe((res: any) => {
       if (res.result === 'ok') {
         this.snackBar.open('Задание успешно обновленно', '', {
           duration: 2000,
@@ -70,5 +74,9 @@ export class UpdateHomeworkComponent implements OnInit {
         this.location.back();
       }
     });
+    this.subscription.add(updateHomework);
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
