@@ -33,7 +33,6 @@ export class SidenavComponent implements OnInit {
   }
 
   public navigate(route: string) {
-    console.log('!!!route', route);
     this.router.navigate(['/main/'+route]).then(() => {
       if(this.mobile) {
         setTimeout(() => {
@@ -41,5 +40,9 @@ export class SidenavComponent implements OnInit {
         })
       }
     });
+  }
+  public isActive(url: string): boolean {
+    console.log(this.router.url);
+    return !!this.router.url.indexOf(url);
   }
 }

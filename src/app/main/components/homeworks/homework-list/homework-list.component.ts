@@ -16,6 +16,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   public userInfo: any;
   public userRoles = UserRolesEnum;
   private subscription: Subscription = new Subscription();
+  public breakpoint: number = 4;
 
   constructor(
     private homeworksService: HomeworksService,
@@ -32,6 +33,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
         this.homeworksList = hm;
       }
     });
+    this.breakpoint = (window.innerWidth <= 1200) ? 1 : 4;
     this.subscription.add(getAllHomeworks);
   }
   public studentNames(homework: HomeworkInterface): string {
@@ -66,6 +68,9 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
       }
     });
     this.subscription.add(deleteHomework);
+  }
+  public onResize(event) {
+    this.breakpoint = (event.target.innerWidth <= 1200) ? 1 : 4;
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

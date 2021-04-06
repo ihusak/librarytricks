@@ -60,6 +60,7 @@
             list-style-type: none;
             align-items: center;
             padding: 0 16px;
+            outline: none;
             &:hover {
                 background: rgba(0,0,0,.04);
             }
@@ -73,6 +74,7 @@
                 height: 48px;
                 width: 100%;
                 text-decoration: none;
+                cursor: pointer;
             }
             &.active {
                 background: rgba(0,0,0,.04);
@@ -88,8 +90,22 @@
     a {
       text-decoration: none;
       color: #3E3E3E;
+      cursor: pointer;
       &:hover {
         color: #000;
+      }
+    }
+    .socials {
+      .social-item {
+        a {
+          img {
+            width: 20px;
+            height: 20px;
+            &:hover {
+              filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+            }
+          }
+        }
       }
     }
     .payments-logo {

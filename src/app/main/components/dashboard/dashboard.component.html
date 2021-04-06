@@ -15,7 +15,7 @@
         </mat-form-field>
       </div>
       <div class="group" *ngIf="userInfo.course">
-        Группа: {{userInfo.course.name}}
+        Курс: {{userInfo.course.name}}
       </div>
       <div class="result">
         <span class="number">{{currentStudent ? calculateProgress(currentStudent) : calculateProgress(userInfo)}}%</span>
@@ -41,11 +41,11 @@
     <div class="card-icon orange">
       <i class="material-icons">leaderboard</i>
     </div>
-    <h5>Рейтинг в группе</h5>
+    <h5>Рейтинг курса</h5>
     <div class="content">
       <div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
         <mat-form-field>
-          <mat-label>Выбор группы</mat-label>
+          <mat-label>Выбор курса</mat-label>
           <mat-select [compareWith]="compareObjectsCourses" [(ngModel)]="currentCourse" #selectedValue (valueChange)="changeCourse(selectedValue.value)">
             <mat-option *ngFor="let course of selectCourses" [value]="course">{{course.name}}</mat-option>
           </mat-select>
@@ -113,10 +113,10 @@
     <h5>Тренер</h5>
     <div class="content">
       <p><b>{{coachInfo.userName}}</b></p>
-      <p>Телефон: {{coachInfo.phone}}</p>
-      <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
-      <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
-      <p>БИО: {{coachInfo.aboutMe ? coachInfo.aboutMe : 'Пусто'}}</p>
+      <p>Телефон: {{coachInfo.phone ? coachInfo.phone : 'пусто'}}</p>
+      <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'пусто'}}</p>
+      <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'пусто'}}</p>
+      <p>БИО: {{coachInfo.aboutMe ? coachInfo.aboutMe : 'пусто'}}</p>
     </div>
   </div>
   <div class="item rewards" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">

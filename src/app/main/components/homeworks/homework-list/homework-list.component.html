@@ -5,7 +5,7 @@
   <div class="empty" *ngIf="homeworksList && !homeworksList.length">
     Домашние задания пусты
   </div>
-  <mat-grid-list cols="4" rowHeight="450px" [gutterSize]="'30px'" *ngIf="homeworksList && homeworksList.length">
+  <mat-grid-list [cols]="breakpoint" rowHeight="450px" [gutterSize]="'30px'" *ngIf="homeworksList && homeworksList.length" (window:resize)="onResize($event)">
     <mat-grid-tile *ngFor="let homework of homeworksList">
       <mat-card class="example-card">
         <div mat-card-image>

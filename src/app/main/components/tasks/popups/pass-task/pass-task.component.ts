@@ -7,6 +7,8 @@ import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 
+const YOUTUBE_REGEXP = new RegExp('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$');
+
 @Component({
   selector: 'app-pass-task',
   templateUrl: './pass-task.component.html',
@@ -18,6 +20,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
   public userInfo: StudentInfoInterface;
   public reviewExample: string;
   private subscription: Subscription = new Subscription();
+  public valid: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<PassTaskComponent>,
@@ -47,6 +50,13 @@ export class PassTaskComponent implements OnInit, OnDestroy {
     });
     this.subscription.add(changeCurrentTask);
     this.dialogRef.close();
+  }
+  public validUrl(url: string) {
+    if(url && YOUTUBE_REGEXP.exec(url)) {
+      this.valid = true;
+    } else {
+      this.valid = false;
+    }
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
