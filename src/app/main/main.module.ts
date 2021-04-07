@@ -25,6 +25,7 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { VersionsComponent } from './components/versions/versions.component';
+import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { VersionsComponent } from './components/versions/versions.component';
     PaymentsComponent,
     AboutUsComponent,
     PrivacyPolicyComponent,
-    VersionsComponent
+    VersionsComponent,
+    HowToUseComponent
   ],
   imports: [
     CommonModule,

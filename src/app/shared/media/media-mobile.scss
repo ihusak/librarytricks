@@ -3,6 +3,13 @@
   and (min-device-width: 10px) 
   and (max-device-width: 1020px)
   and (orientation: portrait) {
+    app-home {
+      .main {
+        .view {
+          padding: 100px 10px !important;
+        }
+      }
+    }
     mat-sidenav {
       &.mat-drawer-opened {
         width: 100% !important;

@@ -40,7 +40,7 @@
            <input formControlName="facebook" matInput placeholder="facebook">
         </mat-form-field>
         <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT, userRoles.COACH]">
-           <input formControlName="bestTrick" matInput placeholder="Название лучшего трюка" required>
+           <input formControlName="bestTrick" matInput placeholder="Название лучшего трюка">
         </mat-form-field>
      </div>
      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">

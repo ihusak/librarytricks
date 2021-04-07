@@ -7,7 +7,7 @@
     </div>
     <span class="spacer"></span>
     <button  (click)="requestAdminPermission()" mat-stroked-button *ngIf="userInfo.role.id === userRole.COACH && !userInfo.role.status">Запрос на тренера</button>
-    <a class="help-info" href="https://www.youtube.com/watch?v=0vLwXdoOH60&ab_channel=%D0%9A%D0%B0%D0%BD%D0%B0%D0%BB%D0%9B%D1%83%D1%87%D0%BA%D0%BE%D0%B2%D0%B0" target="_blank"><mat-icon>
+    <a class="help-info" [routerLink]="['./how-to-use']"><mat-icon>
       help_outline</mat-icon></a>
     <mat-icon (click)="logout()">exit_to_app</mat-icon>
 </mat-toolbar>

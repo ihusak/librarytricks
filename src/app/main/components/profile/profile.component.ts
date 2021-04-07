@@ -119,7 +119,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           coach: [data.coach || '', [Validators.required]],
           instagram: [data.socialNetworks.instagram || ''],
           facebook: [data.socialNetworks.facebook || ''],
-          bestTrick: [data.bestTrick || '', [Validators.required]],
+          bestTrick: [data.bestTrick || ''],
           parentName: [data.parent.name || '', [Validators.required]],
           parentPhone: [data.parent.phone || '', [Validators.required]],
           parentEmail: [data.parent.email || '', [Validators.required, Validators.email]],
