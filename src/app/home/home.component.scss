@@ -3,7 +3,8 @@
 .main {
     background-image: url('./../../assets/img/bg.jpg');
     background-size: cover;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
     .logo {
         max-width: 40px;
         max-height: 45px;
@@ -15,14 +16,14 @@
         position: absolute;
         top: 0;
         &.mat-toolbar-single-row {
-            background-color: $white !important;
+            background-color: transparent !important;
         }
         .nav {
             li {
                 display: inline-block;
                 margin-left: 25px;
                 a {
-                    color: #000;
+                    color: #fff;
                     text-decoration: none;
                 }
             }
@@ -32,9 +33,10 @@
         flex: 1 1 auto;
       }
       .view {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
+        // height: 100vh;
+        padding: 100px 50px;
       }
 }

@@ -23,7 +23,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public userInfo: any;
   public coachInfo: CoachInfoInterface;
   public studentsList: StudentInfoInterface[];
-  public studentTableColumns = ['Позиция', 'Имя', 'Группа', 'Рейтинг', 'Прогресс'];
+  public studentTableColumns = ['Позиция', 'Имя', 'Курс', 'Рейтинг', 'Прогресс'];
   public studentTasks: TaskModel[] = [];
   public doneTasks;
   public selectCourses;
