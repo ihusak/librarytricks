@@ -9,6 +9,8 @@ import { AppMaterialModule } from 'src/app/shared/material.module';
 import { ProfileService } from './profile.service';
 import { ProfileComponent } from './profile.component';
 import { PipesModule } from 'src/app/shared/pipes/pipes.module';
+import { TranslateModule } from '@ngx-translate/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [ProfileComponent, OverviewComponent, SettingsComponent],
@@ -16,10 +18,11 @@ import { PipesModule } from 'src/app/shared/pipes/pipes.module';
     CommonModule,
     ProfileRoutingModule,
     MatCardModule,
-    AppMaterialModule,
+    SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    PipesModule
+    PipesModule,
+    TranslateModule
   ],
   providers: [ProfileService]
 })

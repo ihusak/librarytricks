@@ -181,8 +181,10 @@ export class TaskListComponent implements OnInit, OnDestroy {
       width: '650px',
       data: {task, userInfo: this.userInfo}
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.ngOnInit();
+    dialogRef.afterClosed().subscribe((param) => {
+      if(!param) {
+        window.location.reload();
+      }
     });
   }
 

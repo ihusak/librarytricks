@@ -36,7 +36,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
   request() {
     this.task.status = TaskStatuses.PENDING;

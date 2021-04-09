@@ -15,8 +15,8 @@ interface marksInterface {
 
 const MARKS: marksInterface[] = [
   {value: 20, title: 'BAD'},
-  {value: 40, title: 'NOT_BAD'},
-  {value: 60, title: 'GOOD'},
+  {value: 40, title: 'GOOD'},
+  {value: 60, title: 'NOT_BAD'},
   {value: 80, title: 'WOW'},
   {value: 100, title: 'PERFECT'},
 ]

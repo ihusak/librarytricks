@@ -11,6 +11,7 @@ import { HomeworksComponent } from './homeworks.component';
 import { CreateHomeworkComponent } from './create-homework/create-homework.component';
 import { HomeworksService } from './homeworks.service';
 import { UpdateHomeworkComponent } from './update-homework/update-homework.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { UpdateHomeworkComponent } from './update-homework/update-homework.compo
     HomeworksRoutingModule,
     ReactiveFormsModule,
     YouTubePlayerModule,
+    TranslateModule,
     QuillModule.forRoot()
   ],
   entryComponents: [HomeworkListComponent],

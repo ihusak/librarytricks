@@ -8,7 +8,7 @@ import { TranslateLocalService } from './shared/translate/translate.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private cookieService: CookieService, translateService: TranslateLocalService) {
+  constructor(private cookieService: CookieService, private translateService: TranslateLocalService) {
     if (!cookieService.get('lang')) {
       cookieService.set('lang', 'ru');
     } else {

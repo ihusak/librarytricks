@@ -1,0 +1,53 @@
+.mat-menu-custom-lang {
+  button {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    &.lang {
+      span {
+        &.flag {
+          width: 32px;
+          height: 19px;
+          display: inline-block;
+          background-image: url('../../../../assets/img/flags.png');
+          background-size: 100%;
+          background-repeat: no-repeat;
+          border-radius: 5px;
+          box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+          &.ua {
+            background-position: 0 -21px;
+          }
+          &.en {
+            background-position: 0 0;
+          }
+          &.ru {
+            background-position: 0 -41px;
+          }
+        }
+      }
+    }
+  }
+}
+button {
+  span {
+    &.selected-flag {
+      width: 32px;
+      height: 19px;
+      display: inline-block;
+      background-image: url('../../../../assets/img/flags.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      border-radius: 5px;
+      box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+      &.ua {
+        background-position: 0 -21px;
+      }
+      &.en {
+        background-position: 0 0;
+      }
+      &.ru {
+        background-position: 0 -41px;
+      }
+    }
+  }
+}

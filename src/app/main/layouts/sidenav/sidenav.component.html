@@ -14,14 +14,13 @@
 <div class="navigation-side">
   <div class="sidenav-menu">
     <ul>
-        <li routerLinkActive="active" [routerLink]="['dashboard']"><mat-icon>home</mat-icon><a (click)="navigate('dashboard')">Главная</a></li>
+        <li routerLinkActive="active" [routerLink]="['dashboard']"><mat-icon>home</mat-icon><a (click)="navigate('dashboard')">{{'COMMON.MAIN' | translate}}</a></li>
         <!-- <li routerLinkActive="active"><mat-icon>equalizer</mat-icon><a routerLink="ratings">Рейтинг</a></li> -->
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" [routerLink]="['tasks']" routerLinkActive="active"><mat-icon>done_all</mat-icon><a (click)="navigate('tasks')">Задания</a></li>
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.COACH, userRoles.PARENT]) && false" [routerLink]="['payments']" routerLinkActive="active"><mat-icon>payment</mat-icon><a (click)="navigate('payments')">Оплата</a></li>
-        <!-- <li *ngIf="!(userInfo | userRolePipe:[userRoles.ADMIN])" routerLinkActive="active"><mat-icon>face</mat-icon><a routerLink="profile">Профиль</a></li> -->
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT]) && false" [routerLink]="['videos']" routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a (click)="navigate('videos')">Полезное видео</a></li>
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" [routerLink]="['homeworks']" routerLinkActive="active"><mat-icon>home_work</mat-icon><a (click)="navigate('homeworks')">Домашнее задание</a></li>
-        <li [routerLink]="['about-us']" routerLinkActive="active"><mat-icon>groups</mat-icon><a (click)="navigate('about-us')">О нас</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" [routerLink]="['tasks']" routerLinkActive="active"><mat-icon>done_all</mat-icon><a (click)="navigate('tasks')">{{'COMMON.TASKS' | translate}}</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.COACH, userRoles.PARENT]) && false" [routerLink]="['payments']" routerLinkActive="active"><mat-icon>payment</mat-icon><a (click)="navigate('payments')">{{'COMMON.PAYMENT' | translate}}</a></li>
+        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT]) && false" [routerLink]="['videos']" routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a (click)="navigate('videos')">{{'COMMON.USEFULL_VIDEO' | translate}}</a></li>
+        <li [routerLink]="['homeworks']" routerLinkActive="active"><mat-icon>home_work</mat-icon><a (click)="navigate('homeworks')">{{'COMMON.HOMEWORKS' | translate}}</a></li>
+        <li [routerLink]="['about-us']" routerLinkActive="active"><mat-icon>groups</mat-icon><a (click)="navigate('about-us')">{{'COMMON.ABOUT_US' | translate}}</a></li>
     </ul>
 </div>
 <div class="site-info">
@@ -33,18 +32,18 @@
     </div>
   </div>
   <a [href]="!env.production ? 'http://localhost:3000/static/using.pdf' : 'api/static/using.pdf'" target="_black">
-    Условия использывания
+    {{'COMMON.SERVICE_USAGE' | translate}}
   </a> |
   <a [href]="!env.production ? 'http://localhost:3000/static/oferta.pdf' : 'api/static/oferta.pdf'" target="_black">
-    Оферта
+    {{'COMMON.OFFER' | translate}}
   </a>
-  <div>Библиотека трюков | Librarytricks</div>
+  <div>Librarytricks</div>
   <div><b>2021</b></div>
   <span class="payments-logo">
     <img src="assets/img/payments.png" alt="">
   </span>
   <div class="update">
-    Обновления <a (click)="navigate('versions')"><b>v{{env.version}}</b></a>
+    {{'COMMON.UPDATES' | translate}} <a (click)="navigate('versions')"><b>v{{env.version}}</b></a>
   </div>
 </div>
 </div>

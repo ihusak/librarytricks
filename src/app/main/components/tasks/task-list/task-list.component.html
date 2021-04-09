@@ -1,15 +1,15 @@
-<h1>Задания</h1>
+<h1>{{'TEMPLATE.TASK_LIST.TITLE' | translate}}</h1>
 <!-- Only coach and admin role -->
-<h4 *ngIf="(userInfo | userRolePipe:[userRoles.COACH]) && !userInfo.role.status ">Что бы создавать задания вы должны получить подтверждения о тренерстве</h4>
+<h4 *ngIf="(userInfo | userRolePipe:[userRoles.COACH]) && !userInfo.role.status ">{{'TEMPLATE.TASK_LIST.COACH.WARNING_MESSAGE' | translate}}</h4>
 <div class="nav" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status">
   <div class="coach-actions-button">
-    <button mat-raised-button color="primary" (click)="createCourse()">Создать курс</button>
-    <button *ngIf="coursesList.length && currentCourse" mat-raised-button color="primary" routerLink="../create-task" [queryParams]="{courseId: currentCourse.id}">Создать задание</button>
-    <button *ngIf="processingTasks" mat-raised-button color="primary" (click)="viewProcessingTasks()"><span [matBadge]="processingTasks" matBadgeOverlap="false" matBadgeColor="accent">В процессе</span></button>
-    <button *ngIf="pendingTasks" mat-raised-button color="primary" routerLink="../check-tasks"><span [matBadge]="pendingTasks" matBadgeOverlap="false" matBadgeColor="accent">Ожидают проверки</span></button>
+    <button mat-raised-button color="primary" (click)="createCourse()">{{'TEMPLATE.TASK_LIST.COACH.COACH_BUTTONS.CREATE_COURSE' | translate}}</button>
+    <button *ngIf="coursesList.length && currentCourse" mat-raised-button color="primary" routerLink="../create-task" [queryParams]="{courseId: currentCourse.id}">{{'TEMPLATE.TASK_LIST.COACH.COACH_BUTTONS.CREATE_TASK' | translate}}</button>
+    <button *ngIf="processingTasks" mat-raised-button color="primary" (click)="viewProcessingTasks()"><span [matBadge]="processingTasks" matBadgeOverlap="false" matBadgeColor="accent">{{'TEMPLATE.TASK_LIST.COACH.COACH_BUTTONS.IN_PROGRESS' | translate}}</span></button>
+    <button *ngIf="pendingTasks" mat-raised-button color="primary" routerLink="../check-tasks"><span [matBadge]="pendingTasks" matBadgeOverlap="false" matBadgeColor="accent">{{'TEMPLATE.TASK_LIST.COACH.COACH_BUTTONS.CHECK' | translate}}</span></button>
   </div>
   <mat-form-field *ngIf="coursesList && coursesList.length">
-    <mat-label>Курс</mat-label>
+    <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
     <mat-select [compareWith]="compareObjects" [(ngModel)]="currentCourse" #selectedvalue (valueChange)="changeCourse(selectedvalue.value.id)">
       <mat-option *ngFor="let course of coursesList" [value]="course">{{course.name}}</mat-option>
     </mat-select>
@@ -19,42 +19,42 @@
 
 <!-- Only student -->
 <div class="warning" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && !userInfo.coach.id">
-  <h4>Выбери тренера в профиле что бы начать выполнять курс</h4>
+  <h4>{{'TEMPLATE.TASK_LIST.STUDENT.WARNING_MESSAGE' | translate}}</h4>
 </div>
 <div class="header-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && currentCourse.id">
   <div class="info-item">
-    <p><b>Курс:</b> {{userInfo.course.name}}</p>
-    <p><b>Тренер:</b> {{userInfo.coach.name}}</p>
+    <p><b>{{'COMMON.COURSE' | translate}}:</b> {{userInfo.course.name}}</p>
+    <p><b>{{'COMMON.COACH' | translate}}:</b> {{userInfo.coach.name}}</p>
   </div>
   <div class="info-item">
     <div class="markers">
       <div class="marker-item">
         <mat-icon class="icon">check_circle_outline</mat-icon>
-        <span>Задание выполнено</span>
+        <span>{{'TEMPLATE.TASK_LIST.TASK_STATUSES.DONE' | translate}}</span>
       </div>
       <div class="marker-item">
         <mat-icon class="icon">slow_motion_video</mat-icon>
-        <span>Задание в процесе выполнения</span>
+        <span>{{'TEMPLATE.TASK_LIST.TASK_STATUSES.PROGRESS' | translate}}</span>
       </div>
       <div class="marker-item">
         <mat-icon class="icon">flaky</mat-icon>
-        <span>Задание проверяеться</span>
+        <span>{{'TEMPLATE.TASK_LIST.TASK_STATUSES.CHECKING' | translate}}</span>
       </div>
     </div>
   </div>
 </div>
 <div class="help-info" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && !currentCourse">
-  <h4>Выберите тренера и курс что бы начать выполнять задания</h4>
+  <h4>{{'TEMPLATE.TASK_LIST.STUDENT.NO_COACH_NO_COURSE' | translate}}</h4>
 </div>
 <!-- Only student -->
 
 <div class="task-list-wrap"  *ngIf="userInfo.role.status || userInfo.coach">
   <div class="empty-tasks" *ngIf="tasksList && !tasksList.length">
-    <h2>Список заданий пуст</h2>
+    <h2>{{'COMMON.EMPTY_LIST' | translate}}</h2>
   </div>
   <div class="checkout" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && currentCourse && currentCourse.id && !currentCourse?.paid">
-    <h2>Курс не оплачен</h2>
-    <button routerLink="../../payments" mat-raised-button color="primary"><mat-icon>payment</mat-icon>Оплатить</button>
+    <h2>{{'TEMPLATE.TASK_LIST.STUDENT.COURSE_NOT_PAID' | translate}}</h2>
+    <button routerLink="../../payments" mat-raised-button color="primary"><mat-icon>payment</mat-icon>{{'COMMON.BUY' | translate}}</button>
   </div>
   <mat-accordion>
     <mat-expansion-panel *ngFor="let task of tasksList; let i = index"
@@ -79,7 +79,7 @@
       </mat-expansion-panel-header>
       <div [innerHtml]="task.description"></div>
       <p class="reward">
-        Оценка задания: {{task.reward}} skillz
+        {{'TEMPLATE.TASK_LIST.TASK_REWARD' | translate}}: {{task.reward}} skillz
       </p>
       <div class="video">
         <youtube-player
@@ -90,7 +90,7 @@
         </youtube-player>
       </div>
       <div *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.status === taskStatuses.PROCESSING && userInfo.currentTask.rejectReason" class="reject-reason">
-        <h4><mat-icon class="icon warn">warning</mat-icon> Причина отклонения задания</h4>
+        <h4><mat-icon class="icon warn">warning</mat-icon>{{'TEMPLATE.TASK_LIST.STUDENT.REJECT_REASON' | translate}}</h4>
         <p>
           {{userInfo.currentTask.rejectReason}}
         </p>
@@ -98,14 +98,14 @@
       <div class="task-done" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.done">
         <mat-icon class="icon">done</mat-icon>
         <p>
-          Задание выполнено
+          {{'TEMPLATE.TASK_LIST.TASK_STATUSES.DONE' | translate}}
         </p>
       </div>
-      <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PENDING && userInfo.currentTask.id === task.id">На проверке</p>
-      <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id !== userInfo.currentTask.id && task.allow" (click)="assignTask(task)" mat-raised-button color="primary">Начать выполнение</button>
-      <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING" mat-raised-button color="primary" (click)="passTask(task)">Сдать задание</button>
-      <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="primary" [routerLink]="['../update-task/', task.id]">Обновить</button>
-      <button *ngIf="task.nextTask.id !== 'initial' && (userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="warn" (click)="deleteTask(task.id)">Удалить</button>
+      <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.currentTask.status === taskStatuses.PENDING && userInfo.currentTask.id === task.id">{{'TEMPLATE.TASK_LIST.TASK_STATUSES.CHECKING' | translate}}</p>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id !== userInfo.currentTask.id && task.allow" (click)="assignTask(task)" mat-raised-button color="primary">{{'TEMPLATE.TASK_LIST.STUDENT.START_TASK' | translate}}</button>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING" mat-raised-button color="primary" (click)="passTask(task)">{{'TEMPLATE.TASK_LIST.STUDENT.PASS_TASK' | translate}}</button>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="primary" [routerLink]="['../update-task/', task.id]">{{'COMMON.UPDATE' | translate}}</button>
+      <button *ngIf="task.nextTask.id !== 'initial' && (userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="warn" (click)="deleteTask(task.id)">{{'COMMON.DELETE' | translate}}</button>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

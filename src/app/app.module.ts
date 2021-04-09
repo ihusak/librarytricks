@@ -40,7 +40,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   MainModule,
   PipesModule,
   TranslateModule.forRoot({
-    defaultLanguage: 'ru',
     loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,

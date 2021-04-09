@@ -3,29 +3,29 @@
      <div class="content">
         <div class="line-block item-auth">
            <h2 class="title-login">Library[tricks]</h2>
-           <p class="name-page">Регистрация</p>
+           <p class="name-page">{{'COMMON.SIGN_UP' | translate}}</p>
            <form class="form" [formGroup]="registerUserFrom">
               <div class="form-group">
                  <mat-form-field appearance="outline">
-                    <mat-label>Имя</mat-label>
+                    <mat-label>{{'COMMON.NAME' | translate}}</mat-label>
                     <input formControlName="name" type="text" matInput>
                  </mat-form-field>
               </div>
               <div class="form-group">
                  <mat-form-field appearance="outline">
-                    <mat-label>Почта</mat-label>
+                    <mat-label>{{'COMMON.EMAIL' | translate}}</mat-label>
                     <input formControlName="email" type="email" matInput>
                  </mat-form-field>
               </div>
               <div class="form-group">
                  <mat-form-field appearance="outline">
-                    <mat-label>Пароль</mat-label>
+                    <mat-label>{{'COMMON.PASSWORD' | translate}}</mat-label>
                     <input formControlName="password" type="password" matInput>
                  </mat-form-field>
               </div>
               <div class="form-group">
                  <mat-form-field>
-                    <mat-label>Тип пользователя</mat-label>
+                    <mat-label>{{'COMMON.USER_TYPE' | translate}}</mat-label>
                     <mat-select formControlName="type">
                        <mat-option *ngFor="let role of userRoles" [value]="role">{{"COMMON.ROLES." + role.name | translate}}</mat-option>
                     </mat-select>
@@ -33,18 +33,18 @@
               </div>
               <div class="form-group">
                 <section>
-                  <mat-checkbox formControlName="concent" color="primary" labelPosition="after" class="concent">Согласие с политикой конфидецальности и обработкой персональных данных</mat-checkbox>
+                  <mat-checkbox formControlName="concent" color="primary" labelPosition="after" class="concent">{{'COMMON.CONSENT' | translate}}</mat-checkbox>
                 </section>
               </div>
               <div class="links-info">
-                <a [href]="!env.production ? 'http://localhost:3000/static/using.pdf' : 'api/static/using.pdf'" target="_black">Использование сервиса</a>
-                <a [href]="!env.production ? 'http://localhost:3000/static/personal-data.pdf' : 'api/static/personal-data.pdf'" target="_black">Обработка персональных данных</a>
+                <a [href]="!env.production ? 'http://localhost:3000/static/using.pdf' : 'api/static/using.pdf'" target="_black">{{'COMMON.SERVICE_USAGE' | translate}}</a>
+                <a [href]="!env.production ? 'http://localhost:3000/static/personal-data.pdf' : 'api/static/personal-data.pdf'" target="_black">{{'COMMON.PROCESSING_OF_PERSONAL_DATA' | translate}}</a>
               </div>
               <div class="message">
                  <p>{{registerMessage}}</p>
               </div>
               <div class="line-block">
-                 <button [disabled]="!registerUserFrom.valid" mat-flat-button color="primary"(click)="registerUser()">Регистраия</button>
+                 <button [disabled]="!registerUserFrom.valid" mat-flat-button color="primary"(click)="registerUser()">{{'COMMON.SIGN_UP' | translate}}</button>
               </div>
             </form>
         </div>

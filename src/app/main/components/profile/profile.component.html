@@ -4,7 +4,7 @@
         <div class="previewImg" *ngIf="previewUrl">
            <img [src]="previewUrl" alt="avatar">
         </div>
-        <button mat-raised-button color="primary" (click)="fileInput.click()">Загрузить фото</button>
+        <button mat-raised-button color="primary" (click)="fileInput.click()">{{'TEMPLATE.PROFILE.UPLOAD_PHOTO' | translate}}</button>
         <input type="file" name="avatar" #fileInput (change)="fileProgress($event)" class="avatarAddImage">
      </div>
   </form>
@@ -12,54 +12,54 @@
   <input type="text" formControlName="userImg" #formImgHidden hidden>
   <div class="form-view">
      <div class="item">
-        <h2>Профайл</h2>
+        <h2>{{'TEMPLATE.PROFILE.PROFILE' | translate}}</h2>
         <mat-form-field>
-           <input formControlName="userName" matInput placeholder="ФИО" name="fio" required>
+           <input formControlName="userName" matInput placeholder="{{'TEMPLATE.PROFILE.FULL_NAME' | translate}}" name="fio" required>
         </mat-form-field>
         <mat-form-field>
-           <input formControlName="phone" matInput placeholder="Телефон" required>
+           <input formControlName="phone" matInput placeholder="{{'COMMON.PHONE' | translate}}" required>
         </mat-form-field>
         <mat-form-field>
-           <input formControlName="email" matInput placeholder="Почта" required>
+           <input formControlName="email" matInput placeholder="{{'COMMON.EMAIL' | translate}}" required>
         </mat-form-field>
         <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT, userRoles.COACH]">
-           <input formControlName="startTraining" matInput [matDatepicker]="picker" placeholder="Дата начала тренировок" required>
+           <input formControlName="startTraining" matInput [matDatepicker]="picker" placeholder="{{'TEMPLATE.PROFILE.START_TRAINING' | translate}}" required>
            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
            <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <mat-form-field *ngIf="!(userInfoData | userRolePipe:[userRoles.ADMIN])">
-           <textarea formControlName="aboutMe" matInput placeholder="Обо мне"></textarea>
+           <textarea formControlName="aboutMe" matInput placeholder="{{'TEMPLATE.PROFILE.ABOUT_ME' | translate}}"></textarea>
         </mat-form-field>
      </div>
      <div class="item" *ngIf="!(userInfoData | userRolePipe:[userRoles.ADMIN])">
-        <h2>Дополнительная информация</h2>
+        <h2>{{'TEMPLATE.PROFILE.ADDITIONAL_INFO' | translate}}</h2>
         <mat-form-field>
-           <input formControlName="instagram" matInput placeholder="instagram">
+           <input formControlName="instagram" matInput placeholder="{{'COMMON.SOCIAL_NETWORKS.INSTAGRAM' | translate}}">
         </mat-form-field>
         <mat-form-field>
-           <input formControlName="facebook" matInput placeholder="facebook">
+           <input formControlName="facebook" matInput placeholder="{{'COMMON.SOCIAL_NETWORKS.FACEBOOK' | translate}}">
         </mat-form-field>
         <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT, userRoles.COACH]">
-           <input formControlName="bestTrick" matInput placeholder="Название лучшего трюка">
+           <input formControlName="bestTrick" matInput placeholder="{{'TEMPLATE.PROFILE.BEST_TRICK' | translate}}">
         </mat-form-field>
      </div>
      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
-        <h2>Информация о родителях</h2>
+        <h2>{{'TEMPLATE.PROFILE.PARENTS_INFO' | translate}}</h2>
         <mat-form-field>
-           <input formControlName="parentName" matInput placeholder="ФИО" required>
+           <input formControlName="parentName" matInput placeholder="{{'TEMPLATE.PROFILE.FULL_NAME' | translate}}" required>
         </mat-form-field>
         <mat-form-field>
-           <input formControlName="parentPhone" matInput placeholder="Телефон" required>
+           <input formControlName="parentPhone" matInput placeholder="{{'COMMON.PHONE' | translate}}" required>
         </mat-form-field>
         <mat-form-field>
-           <input formControlName="parentEmail" matInput placeholder="Почта" required>
+           <input formControlName="parentEmail" matInput placeholder="{{'COMMON.EMAIL' | translate}}" required>
         </mat-form-field>
      </div>
      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
-        <h2>Тренер</h2>
+        <h2>{{'COMMON.COACH' | translate}}</h2>
         <div class="form-group">
            <mat-form-field>
-              <mat-label>Выберите своего тренера</mat-label>
+              <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_COACH' | translate}}</mat-label>
               <mat-select [compareWith]="compareObjectsCoach" formControlName="coach" (selectionChange)="changeCoach($event.value, true)">
               <mat-option *ngFor="let coach of coachsList" [value]="coach">{{coach.userName}}</mat-option>
               </mat-select>
@@ -67,22 +67,22 @@
         </div>
      </div>
      <div class="item" *ngIf="(userInfoData | userRolePipe:[userRoles.STUDENT]) && coach">
-        <h2>Курсы</h2>
+        <h2>{{'COMMON.COURSE' | translate}}es</h2>
         <div class="form-group">
            <mat-form-field>
-              <mat-label>Курс</mat-label>
+              <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
               <mat-select [compareWith]="compareObjects" formControlName="course" (selectionChange)="changeCourse($event.value)">
               <mat-option *ngFor="let course of coachCourses" [value]="course">{{course.name}}</mat-option>
               </mat-select>
            </mat-form-field>
-           <div class="empty" *ngIf="!coachCourses.length">У тренер нет курсов</div>
+           <div class="empty" *ngIf="!coachCourses.length">{{'TEMPLATE.PROFILE.EMPTY_COURSE_LIST' | translate}}</div>
         </div>
      </div>
      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.PARENT]">
-        <h2>Мой ребенок</h2>
+        <h2>{{'TEMPLATE.PROFILE.MY_KID' | translate}}</h2>
         <div class="form-group">
            <mat-form-field>
-              <mat-label>Выберите своего ребенка</mat-label>
+              <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
               <mat-select [compareWith]="compareObjects" formControlName="myKid">
                  <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
               </mat-select>
@@ -90,6 +90,6 @@
         </div>
      </div>
   </div>
-  <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">Сохранить</button>
+  <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">{{'COMMON.SAVE' | translate}}</button>
   </form>
 </div>

@@ -33,6 +33,10 @@ export class AppService {
     this.cookieService.set('lb_config', tokens.accessToken, 9999, '/', this.domain);
   }
 
+  public setLangToStorage(lang: string) {
+    this.cookieService.set('lang', lang, 9999, '/', this.domain);
+  }
+
   public getTokens(): Tokens {
     return {
       accessToken: this.cookieService.get('lb_config'),

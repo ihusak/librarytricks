@@ -16,6 +16,7 @@ import { ProcessTasksComponent } from './popups/process-tasks/process-tasks.comp
 import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.component';
 import { CreateCourseComponent } from './popups/create-course/create-course.component';
 import { QuillModule } from 'ngx-quill';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { QuillModule } from 'ngx-quill';
     TasksRoutingModule,
     ReactiveFormsModule,
     YouTubePlayerModule,
+    TranslateModule,
     QuillModule.forRoot()
   ],
   entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateCourseComponent]

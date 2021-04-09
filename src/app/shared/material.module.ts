@@ -19,6 +19,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCardModule} from '@angular/material/card';
+import { MatMenuModule} from '@angular/material/menu';
 
 const material = [
     MatButtonModule,
@@ -42,7 +43,8 @@ const material = [
     MatTooltipModule,
     MatRadioModule,
     MatAutocompleteModule,
-    MatCardModule
+    MatCardModule,
+    MatMenuModule
 ];
 
 @NgModule({

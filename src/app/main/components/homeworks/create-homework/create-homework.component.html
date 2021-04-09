@@ -1,21 +1,20 @@
-<h3>Создание</h3>
 <form [formGroup]="hmForm" (ngSubmit)="createHm()" *ngIf='initForm'>
   <div class="form-view">
     <div class="item">
-      <h3>Описание задания</h3>
+      <h3>{{'COMMON.DESCRIPTION' | translate}}</h3>
       <mat-form-field>
-        <input formControlName="title" matInput placeholder="Название задания" required>
+        <input formControlName="title" matInput placeholder="{{'COMMON.TASK_NAME' | translate}}" required>
       </mat-form-field>
-      <h3>Детальное описание задания</h3>
+      <h3>{{'COMMON.TASK_DESCRIPTION' | translate}}</h3>
       <mat-form-field>
-      <textarea id="description" formControlName="description" matInput placeholder="Детали"></textarea>
+      <textarea id="description" formControlName="description" matInput placeholder="{{'COMMON.DETAILS' | translate}}"></textarea>
       </mat-form-field>
-      <label for="description">Максимум 250 символов ({{hmForm.value.description.length}})</label>
+      <label for="description">{{'COMMON.MAX_SYMBOLS' | translate: {amount: hmForm.value.description.length} }}</label>
     </div>
     <div class="item">
-      <h3>Видео пример задания (YouTube)</h3>
+      <h3>{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.VIDEO_EXAMPLE' | translate: {examples: 'YouTube'} }}</h3>
       <mat-form-field>
-        <input formControlName="example" matInput placeholder="URL на видео" required>
+        <input formControlName="example" matInput placeholder="{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.VIDEO_URL' | translate}}" required>
       </mat-form-field>
       <!-- <mat-form-field>
         <input id="reward" formControlName="reward" matInput placeholder="Оценка задания" required type='number' min="0"
@@ -25,14 +24,14 @@
     </div>
     <div class="item">
       <mat-form-field appearance="fill">
-        <mat-label>Студенты</mat-label>
+        <mat-label>{{'COMMON.STUDENTS' | translate}}</mat-label>
         <mat-select formControlName="students" multiple>
           <mat-option *ngFor="let student of studentList" [value]="student">{{student.userName}}</mat-option>
         </mat-select>
       </mat-form-field>
-      <label for="reward">Студенты которым будет выдано ДЗ</label>
+      <label for="reward">{{'TEMPLATE.HOMEWORKS.STUDENTS_WHO_RECEIVE_HOMEWORK' | translate}}</label>
     </div>
   </div>
-  <button mat-raised-button color="primary" [disabled]="!hmForm.valid">Создать задание</button>
-  <button mat-raised-button color="primary" routerLink="../list">Назад</button>
+  <button mat-raised-button color="primary" [disabled]="!hmForm.valid">{{'COMMON.CREATE' | translate}}</button>
+  <button mat-raised-button color="primary" routerLink="../list">{{'COMMON.BACK' | translate}}</button>
 </form>

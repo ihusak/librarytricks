@@ -6,9 +6,10 @@
         <span class="spacer"></span>
         <span class="nav">
             <ul>
-                <li><a routerLink="">Главная</a></li>
-                <li><a routerLink="/login">Логин</a></li>
-                <li><a routerLink="/register">Регистрация</a></li>
+                <li><app-language></app-language></li>
+                <li><a routerLink="">{{'COMMON.MAIN' | translate}}</a></li>
+                <li><a routerLink="/login">{{'COMMON.SIGN_IN' | translate}}</a></li>
+                <li><a routerLink="/register">{{'COMMON.SIGN_UP' | translate}}</a></li>
             </ul>
         </span>
     </mat-toolbar>

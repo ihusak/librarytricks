@@ -3,17 +3,17 @@
       <div class="content">
         <div class="line-block item-auth">
   <h2 class="title-login">Library[tricks]</h2>
-  <p class="name-page">Вход в систему</p>
+  <p class="name-page">{{'TEMPLATE.LOGIN.ENTER_SYSTEM' | translate}}</p>
             <div class="form">
                 <div class="form-group">
                     <mat-form-field appearance="outline">
-                        <mat-label>Email</mat-label>
+                        <mat-label>{{'COMMON.EMAIL' | translate}}</mat-label>
                         <input required type="email" matInput [(ngModel)]="email">
                     </mat-form-field>
                 </div>
                 <div class="form-group">
                     <mat-form-field appearance="outline">
-                        <mat-label>Password</mat-label>
+                        <mat-label>{{'COMMON.PASSWORD' | translate}}</mat-label>
                         <input type="password" required matInput [(ngModel)]="pass">
                     </mat-form-field>
                 </div>
@@ -21,7 +21,7 @@
                     <p>{{loginMessage}}</p>
                 </div>
                 <div class="line-block">
-                    <button [disabled]="!pass || !email" mat-flat-button color="primary" (click)="loginUser(email, pass)">Вход</button>
+                    <button [disabled]="!pass || !email" mat-flat-button color="primary" (click)="loginUser(email, pass)">{{'COMMON.SIGN_IN' | translate}}</button>
                 </div>
             </div>
             <!-- <div class="login-social line-block item-auth">
@@ -33,7 +33,7 @@
                 <button mat-raised-button color="primary" (click)="loginGoogle()">Login with Google</button>
             </div> -->
         </div>
-        <div class="line-block"><a class="sign-up" routerLink="/register">Нет аккаунта, зарегестрируйся</a></div>
+        <div class="line-block"><a class="sign-up" routerLink="/register">{{'TEMPLATE.LOGIN.DONT_HAVE_ACCOUNT' | translate}}</a></div>
       </div>
     </div>
   </div>

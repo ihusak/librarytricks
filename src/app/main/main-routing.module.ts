@@ -7,8 +7,6 @@ import { VideosComponent } from './components/videos/videos.component';
 import { RatingsComponent } from './components/ratings/ratings.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
-import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
-import { HomeworksComponent } from './components/homeworks/homeworks.component';
 import { VersionsComponent } from './components/versions/versions.component';
 import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
 
@@ -22,7 +20,6 @@ const routes: Routes = [
     {path: 'payments', component: PaymentsComponent},
     {path: 'about-us', component: AboutUsComponent},
     {path: 'homeworks', loadChildren: () => import('./components/homeworks/homeworks.module').then(m => m.HomeworksModule)},
-    {path: 'privacy', component: PrivacyPolicyComponent},
     {path: 'versions', component: VersionsComponent},
     {path: 'how-to-use', component: HowToUseComponent}
   ]},

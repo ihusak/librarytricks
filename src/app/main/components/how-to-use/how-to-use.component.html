@@ -1,72 +1,65 @@
-<h1>Как использовать olbrarytricks</h1>
-<h3>Регистрация</h3>
-<p>
-  После, регистрации, на почту которую вы указали придет письмо для подтверждения вашего аккаунта. После подтверждения вы сможете зайти в сервис.
-</p>
-<p>
-  Главное заполнить профиль(<mat-icon>edit</mat-icon>) и подробную информацию.
-</p>
+<h1>{{'TEMPLATE.HOW_TO_USE.TITLE' | translate}}</h1>
+<div class="common">
+  <h4>{{'COMMON.SIGN_UP' | translate}}</h4>
+  <p>{{'TEMPLATE.HOW_TO_USE.COMMON.AFTER_SIGN_UP' | translate}}</p>
+  <p innerHtml="{{'TEMPLATE.HOW_TO_USE.COMMON.FILL_PROFILE' | translate}}"></p>
+</div>
 <div class="role" *ngIf="userInfo | userRolePipe:[userRoles.STUDENT]">
-  <h2>Студент(Ученик)</h2>
-  <h4>Главная</h4>
+  <h2>{{'COMMON.STUDENT' | translate}}</h2>
+  <h4>{{'COMMON.MAIN' | translate}}</h4>
   <p>
-    На главной странице вы можете найти информацию про позицию в курсе, количество полученны skillz, состояние текущей задачи, информацию про тренера.
+    {{'TEMPLATE.HOW_TO_USE.STUDENT.MAIN' | translate}}
   </p>
-  <h4>Задания</h4>
-  <p>
-    Что бы начать выполнять задания из курса, нужно в профиле выбрать тренера и курс. 
-    <br>
-    <b>Внимание!</b> Курсы выполняються постепенно. Следующее задание будет доступно после выполнения и подтвеждения тренером о выполнении данного задания.
-  </p>
+  <h4>{{'COMMON.TASKS' | translate}}</h4>
+  <span>
+    <p>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.TO_START' | translate}}</p>
+    <p><b>{{'COMMON.ATTENTION' | translate}}!</b> {{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.SEQUENCE' | translate}}</p>
+  </span>
   <ol>
-    <li>Начинаешь выполнять задание</li>
-    <li>Снимаешь видео</li>
-    <li>Отправляешь на проверку тренеру</li>
-    <li>Получаешь оценку</li>
-    <li>Выполняешь следующее задание</li>
-    <li>Если тренер отклонил задание, просто потренирую и пересними видео и отправь новое видео на пересдачу</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.ONE' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.TWO' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.THREE' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.FOUR' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.FIVE' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.SIX' | translate}}</li>
   </ol>
-  <h4>Домашние задание</h4>
+  <h4>{{'COMMON.HOMEWORKS' | translate}}</h4>
   <p>
-    Домашние задания будут опубликованны для учеников офлайн школы или по желанию ученика.
+    {{'TEMPLATE.HOW_TO_USE.STUDENT.HOMEWORKS' | translate}}
   </p>
 </div>
 <div class="role" *ngIf="userInfo | userRolePipe:[userRoles.COACH]">
-  <h2>Тренер</h2>
-  <h4>Главная</h4>
+  <h2>{{'COMMON.COACH' | translate}}</h2>
+  <h4>{{'COMMON.MAIN' | translate}}</h4>
   <p>
-    На главной странице вы можете найти информацию про позицию любого ученика в курсе.
+    {{'TEMPLATE.HOW_TO_USE.COACH.MAIN' | translate}}
   </p>
-  <h4>Задания</h4>
+  <h4>{{'COMMON.TASKS' | translate}}</h4>
   <p>
-    <b>Внимание!</b> Все возможности тренера будут доступны после подтверждения администрацией тренерской квалификации.
-  </p>
-  <p>
-    Если еще не созданны курсы, вы должны создать курс, после чего будет доступна возможность создавать задания для выбранного курса.
+    <b>{{'COMMON.ATTENTION' | translate}}!</b> {{'TEMPLATE.HOW_TO_USE.COACH.TASKS.ALLOW_COACH' | translate}}
   </p>
   <p>
-    Вы можете создавать задания, редактировать и удалять их. 
-    <br>
-    <b>"В процессе"</b> - это задания которые выполняют ученики в данный момент.
-    <br>
-    <b>"Ожидают проверки"</b> - задания отправленны вам на проверку.
+    {{'TEMPLATE.HOW_TO_USE.COACH.TASKS.COURSE_INFO' | translate}}
   </p>
   <p>
-    Вы можете отклонить задание и отправить ученика обратно выполнять задания.
+    {{'TEMPLATE.HOW_TO_USE.COACH.TASKS.CRUD_TASK.TITLE' | translate}} 
   </p>
-  <h4>Домашние задание</h4>
-  <p>Вы можете создавать задания для всех учеников или для определенной группы учеников.</p>
+  <p innerHtml="{{'TEMPLATE.HOW_TO_USE.COACH.TASKS.CRUD_TASK.IN_PROGRESS' | translate}}"></p>
+  <p innerHtml="{{'TEMPLATE.HOW_TO_USE.COACH.TASKS.CRUD_TASK.PENDING' | translate}}"></p>
+  <p>{{'TEMPLATE.HOW_TO_USE.COACH.TASKS.CRUD_TASK.REJECT' | translate}}</p>
+  <h4>{{'COMMON.HOMEWORKS' | translate}}</h4>
+  <p>{{'TEMPLATE.HOW_TO_USE.COACH.HOMEWORKS' | translate}}</p>
 </div>
 <div class="role" *ngIf="userInfo | userRolePipe:[userRoles.PARENT]">
-  <h2>Родитель</h2>
-  <h4>Профиль</h4>
+  <h2>{{'COMMON.ROLES.PARENT' | translate}}</h2>
+  <h4>{{'TEMPLATE.PROFILE.PROFILE' | translate}}</h4>
   <p>
-    Обязательно віберите в профиле своего ребенка, после этого будут доступны данные про прогресс вашего ребенка.
+    {{'TEMPLATE.HOW_TO_USE.PARENT.PROFILE' | translate}}
   </p>
-  <h4>Главная</h4>
+  <h4>{{'COMMON.MAIN' | translate}}</h4>
   <p>
-    На главной странице вы можете найти информацию про позицию вашего ребенка курсе, награды, тренера у кого он тренируеться.
+    {{'TEMPLATE.HOW_TO_USE.PARENT.MAIN' | translate}}
   </p>
-  <h4>Домашние задание</h4>
-  <p>Вы можете просматривать домашние задания вашего ребенка.</p>
+  <h4>{{'COMMON.HOMEWORKS' | translate}}</h4>
+  <p>{{'TEMPLATE.HOW_TO_USE.PARENT.HOMEWORKS' | translate}}</p>
 </div>

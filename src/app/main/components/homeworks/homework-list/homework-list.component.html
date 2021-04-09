@@ -1,9 +1,9 @@
 <div class="coach-actions-button">
-  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" routerLink="../create" mat-raised-button color="primary">Создать ДЗ</button>
+  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" routerLink="../create" mat-raised-button color="primary">{{'TEMPLATE.HOMEWORKS.CREATE_HOMEWORK' | translate}}</button>
 </div>
 <div class="homeworks-list">
   <div class="empty" *ngIf="homeworksList && !homeworksList.length">
-    Домашние задания пусты
+    {{'COMMON.EMPTY | translate'}}
   </div>
   <mat-grid-list [cols]="breakpoint" rowHeight="450px" [gutterSize]="'30px'" *ngIf="homeworksList && homeworksList.length" (window:resize)="onResize($event)">
     <mat-grid-tile *ngFor="let homework of homeworksList">
@@ -26,7 +26,7 @@
                matTooltipPosition="above"
                aria-label="Button that shows a red tooltip"
           >
-            <b>Студенты</b>
+            <b>{{'COMMON.STUDENTS' | translate}}</b>
           </span>
         </mat-card-content>
         <mat-card-actions>
@@ -34,8 +34,8 @@
             <button (click)="likeHomework(homework.id)" mat-icon-button [color]="homework.likes.indexOf(userInfo.id) >= 0 ? 'warn' : 'basic'" aria-label="like">
               <mat-icon>favorite</mat-icon> {{homework.likes.length}}
             </button>
-            <button mat-button [routerLink]="['../edit/', homework.id]" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">Редактировать</button>
-            <button mat-button (click)="deleteHomework(homework.id)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">Удалить</button>
+            <button mat-button [routerLink]="['../edit/', homework.id]" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">{{'COMMON.UPDATE' | translate}}</button>
+            <button mat-button (click)="deleteHomework(homework.id)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">{{'COMMON.DELETE' | translate}}</button>
           </div>
         </mat-card-actions>
       </mat-card>

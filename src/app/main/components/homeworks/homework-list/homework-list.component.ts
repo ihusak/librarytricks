@@ -29,6 +29,8 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
     const getAllHomeworks = this.homeworksService.getAllHomeworks().subscribe((hm: HomeworkInterface[]) => {
       if (this.userInfo.role.id === this.userRoles.STUDENT) {
         this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => s.id === this.userInfo.id));
+      } else if (this.userInfo.role.id === this.userRoles.PARENT) {
+        this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => s.id === this.userInfo.myKid.id))
       } else {
         this.homeworksList = hm;
       }

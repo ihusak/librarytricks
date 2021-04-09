@@ -1,15 +1,15 @@
-<h2 mat-dialog-title>Отклонение задания</h2>
+<h2 mat-dialog-title>{{'TEMPLATE.TASK_LIST.COACH.REVIEW_TASKS.REJECT_TASK_MODAL.TITLE' | translate}}</h2>
 <div mat-dialog-content>
-  <h4>Если ты считаешь что ученик не выполнил задание корректно</h4>
-  <p>Опиши ему его ошибки и отправляй его снова тренироваться</p>
-  <p>Статус его зхадачи снова поменяеться на "В ПРОЦЕССЕ"</p>
+  <h4>{{'TEMPLATE.TASK_LIST.COACH.REVIEW_TASKS.REJECT_TASK_MODAL.INFO_REJECTING' | translate}}</h4>
+  <p>{{'TEMPLATE.TASK_LIST.COACH.REVIEW_TASKS.REJECT_TASK_MODAL.DESCRIBE_REJECTION' | translate}}</p>
+  <p>{{'TEMPLATE.TASK_LIST.COACH.REVIEW_TASKS.REJECT_TASK_MODAL.REJECTING_RESULT' | translate}}</p>
   <mat-form-field class="full-width">
-    <mat-label>Причина отклонения</mat-label>
+    <mat-label>{{'TEMPLATE.TASK_LIST.COACH.REVIEW_TASKS.REJECT_TASK_MODAL.REJECT_GROUND' | translate}}</mat-label>
     <input matInput value="rejectReason" [(ngModel)]="rejectReason">
   </mat-form-field>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-stroked-button class="cancel" (click)="onNoClick()">Отмена</button>
-  <button mat-raised-button color="primary" [disabled]="!rejectReason" (click)="reject(rejectReason)" cdkFocusInitial>Отправить на тренировку</button>
+  <button mat-stroked-button class="cancel" (click)="onNoClick()">{{'COMMON.CLOSE' | translate}}</button>
+  <button mat-raised-button color="primary" [disabled]="!rejectReason" (click)="reject(rejectReason)" cdkFocusInitial>{{'TEMPLATE.TASK_LIST.COACH.REVIEW_TASKS.REJECT_TASK_MODAL.SEND_TO_TRAINING' | translate}}</button>
 </div>
 

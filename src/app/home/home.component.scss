@@ -22,9 +22,19 @@
             li {
                 display: inline-block;
                 margin-left: 25px;
+                app-language {
+                  ::ng-deep {
+                    .mat-button-wrapper {
+                      mat-icon {
+                        color: #fff;
+                      }
+                    }
+                  }
+                }
                 a {
                     color: #fff;
                     text-decoration: none;
+                    font-size: 12px;
                 }
             }
         }
