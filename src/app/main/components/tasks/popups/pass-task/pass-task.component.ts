@@ -6,6 +6,7 @@ import { ProfileService } from '../../../profile/profile.service';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 const YOUTUBE_REGEXP = new RegExp('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$');
 
@@ -26,7 +27,8 @@ export class PassTaskComponent implements OnInit, OnDestroy {
     public dialogRef: MatDialogRef<PassTaskComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {task: TaskModel, userInfo: StudentInfoInterface},
     private profileService: ProfileService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private translateService: TranslateService
     ) {
       this.task = data.task;
       this.userInfo = data.userInfo;
@@ -43,7 +45,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
     this.task.reviewExample = this.reviewExample;
     const changeCurrentTask = this.profileService.changeCurrentTask(this.task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
       this.userInfo = updatedUserInfo;
-      this.snackBar.open('Ты сдал задание на проверку, ожидай результат', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_SENT_TO_REVIEW'), '', {
         duration: 2000,
         panelClass: ['success']
       });

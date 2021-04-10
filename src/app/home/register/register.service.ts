@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import {map} from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 import { UserRole } from '../interface/userRole.interface';
 import { AppService } from 'src/app/app.service';
 import { UserFormInterface } from './register.component';
@@ -23,6 +23,9 @@ export class RegisterService extends AppService {
           name: role.name,
           status: role.status
       }));
+    }),
+    catchError((err) => {
+      return throwError(err);
     }));
   }
 }

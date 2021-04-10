@@ -9,6 +9,7 @@ import { MainService } from 'src/app/main/main.service';
 import { ActivatedRoute } from '@angular/router';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-task',
@@ -33,6 +34,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
+    private translateService: TranslateService
     ) {
       this.courseId = this.route.snapshot.queryParamMap.get('courseId');
     }
@@ -74,7 +76,6 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   private getAllTasks(courseId?: string) {
     const getAllTasks = this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks.filter((task: TaskModel) => task.course.id === courseId);
-      console.log(this.tasksList);
       if (!this.tasksList.length) {
         this.taskForm.removeControl('nextTask');
       } else {
@@ -90,7 +91,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
       taskModel.allow = true;
     }
     const createTask = this.taskService.createTask(taskModel).subscribe(result => {
-      this.snackBar.open('Задание успешно созданно', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_CREATED'), '', {
         duration: 2000,
         panelClass: ['success']
       });
@@ -99,7 +100,6 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
     this.subscription.add(createTask);
   }
   public changeCourse(courseId: string) {
-    console.log(this.taskForm);
     this.getAllTasks(courseId);
   }
   ngOnDestroy() {

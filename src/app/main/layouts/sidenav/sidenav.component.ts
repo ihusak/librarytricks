@@ -42,7 +42,6 @@ export class SidenavComponent implements OnInit {
     });
   }
   public isActive(url: string): boolean {
-    console.log(this.router.url);
     return !!this.router.url.indexOf(url);
   }
 }

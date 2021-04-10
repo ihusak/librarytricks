@@ -5,6 +5,7 @@ import {MainService} from '../../../main.service';
 import { HomeworksModel } from '../homeworks.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-homework-list',
@@ -21,7 +22,8 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   constructor(
     private homeworksService: HomeworksService,
     private mainService: MainService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private translateService: TranslateService
   ) { }
 
   ngOnInit() {
@@ -63,7 +65,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
     const deleteHomework = this.homeworksService.deleteHomework(homeworkId).subscribe((response: any) => {
       if(response.result === 'ok') {
         this.homeworksList = this.homeworksList.filter((homework: HomeworksModel) => homework.id !== homeworkId);
-        this.snackBar.open('Домашнее задание успешно удалено', '', {
+        this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.HOMEWORK_CREATED'), '', {
           duration: 4000,
           panelClass: ['success']
         })

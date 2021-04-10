@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 export interface UserFormInterface {
   name: string;
@@ -42,6 +43,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     private registerService: RegisterService,
     private snackBar: MatSnackBar,
+    private translateService: TranslateService,
     private router: Router
     ) { }
 
@@ -57,10 +59,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
     this.subscription.add(registerRoles);
   }
   registerUser() {
-    const userForm: UserFormInterface = this.registerUserFrom.value;
+    const userForm: UserFormInterface = this.registerUserFrom.value;  
     const registerUser = this.registerService.registerUser(userForm).subscribe((result) => {
       if (result._id) {
-        this.snackBar.open(`Письмо для подтверждения о регистрации отправленно на ${userForm.email}`, '', {
+        this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.REGISTER', {email: userForm.email}), '', {
           duration: 10000,
           panelClass: ['success']
         });
@@ -70,8 +72,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     },
     (error) => {
       const err = error.error;
-      const errorMessage = err.errorMessage;
-      this.snackBar.open(errorMessage, '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey), '', {
         duration: 10000,
         panelClass: ['error']
       });

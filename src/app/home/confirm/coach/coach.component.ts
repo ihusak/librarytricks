@@ -14,7 +14,6 @@ export class CoachComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const token = this.route.snapshot.paramMap.get('token');
-    console.log(token);
     const confirmCoach = this.confirmService.confirmCoach(token).subscribe(result => {
       if (result) {
         this.router.navigate(['/main']);

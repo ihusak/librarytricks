@@ -10,7 +10,8 @@ import { TranslateLocalService } from './shared/translate/translate.service';
 export class AppComponent {
   constructor(private cookieService: CookieService, private translateService: TranslateLocalService) {
     if (!cookieService.get('lang')) {
-      cookieService.set('lang', 'ru');
+      cookieService.set('lang', 'ua');
+      translateService.setLang('ua');
     } else {
       const cookieLang = cookieService.get('lang');
       translateService.setLang(cookieLang);

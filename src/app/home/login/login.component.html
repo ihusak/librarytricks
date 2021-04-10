@@ -17,9 +17,6 @@
                         <input type="password" required matInput [(ngModel)]="pass">
                     </mat-form-field>
                 </div>
-                <div class="message">
-                    <p>{{loginMessage}}</p>
-                </div>
                 <div class="line-block">
                     <button [disabled]="!pass || !email" mat-flat-button color="primary" (click)="loginUser(email, pass)">{{'COMMON.SIGN_IN' | translate}}</button>
                 </div>

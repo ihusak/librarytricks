@@ -10,6 +10,7 @@ import { HomeworksModel } from '../homeworks.model';
 import { HomeworksService } from '../homeworks.service';
 import {Location} from '@angular/common';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-update-homework',
@@ -33,7 +34,8 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
     private homeworksService: HomeworksService,
     private snackBar: MatSnackBar,
     private location: Location,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private translateService: TranslateService
   ) {
     activateRoute.params.subscribe(params => {
       this.hmId = params.id;
@@ -69,7 +71,7 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
     HOMEWORK.students = HOMEWORK.students.map((st: StudentInfoInterface) => ({id: st.id, name: st.userName}));
     const updateHomework = this.homeworksService.updateHomework(this.hmId, HOMEWORK).subscribe((res: any) => {
       if (res.result === 'ok') {
-        this.snackBar.open('Задание успешно обновленно', '', {
+        this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_UPDATED'), '', {
           duration: 2000,
           panelClass: ['success']
         });

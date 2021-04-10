@@ -81,7 +81,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.subscription.add(allCoursesAdmin);
         break;
     }
-    console.log(this);
   }
 
   compareObjectsStudents(o1: any, o2: any): boolean {

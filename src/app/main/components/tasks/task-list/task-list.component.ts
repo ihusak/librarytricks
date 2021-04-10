@@ -15,6 +15,7 @@ import {CourseInterface} from '../../../../shared/interface/course.interface';
 import { Checkout, PaymentsService } from '../../payments/payments.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-task-list',
@@ -55,6 +56,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private router: Router,
     private route: ActivatedRoute,
+    private translateService: TranslateService,
     public dialog: MatDialog
     ) {
       this.userInfo = this.mainService.userInfo;
@@ -68,7 +70,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
     task.status = TaskStatuses.PROCESSING;
     const changeCurrentTask = this.profileService.changeCurrentTask(task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
       this.userInfo = updatedUserInfo;
-      this.snackBar.open('Вы начали выполнение задания', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.START_PROCESSING_TASK'), '', {
         duration: 2000,
         panelClass: ['success']
       });
@@ -227,7 +229,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   }
   public deleteTask(taskId: string) {
     this.taskService.deleteTask(taskId).subscribe(deletedTask => {
-      this.snackBar.open('Задание успешно удалено', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.DELETE_SUCCESSFULLY'), '', {
         duration: 2000,
         panelClass: ['success']
       });

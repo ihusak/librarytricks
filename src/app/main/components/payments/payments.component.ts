@@ -7,6 +7,7 @@ import { DOCUMENT } from '@angular/common';
 import { Checkout, PaymentsService } from './payments.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 interface WindowPayment extends Window {
   LiqPayCheckout: any;
@@ -35,6 +36,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     private mainService: MainService,
     private renderer2: Renderer2,
     private paymentsService: PaymentsService,
+    private translateService: TranslateService,
     private snackBar: MatSnackBar
   ) {
     this.userInfo = mainService.userInfo;
@@ -87,8 +89,6 @@ export class PaymentsComponent implements OnInit, OnDestroy {
       embedTo: "#liqpay_checkout",
       mode: "embed" // embed || popup,
         }).on("liqpay.callback", function(data){
-      console.log(data.status);
-      console.log(data);
       if(data.status === (environment.production ? 'wait_accept' : 'success')) {
         const CHECKOUT = {
           course: {
@@ -106,7 +106,7 @@ export class PaymentsComponent implements OnInit, OnDestroy {
         };
         const checkout = self.paymentsService.checkout(CHECKOUT).subscribe(res => {
           this.ngOnInit();
-          this.snackBar.open('Курс успешно оплачен', '', {
+          this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.COURSE_SUCCESSFULLY_PAID'), '', {
             duration: 2000,
             panelClass: ['success']
           });

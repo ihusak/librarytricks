@@ -7,6 +7,7 @@ import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interfa
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { RejectTaskComponent } from './reject-task/reject-task.component';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 interface marksInterface {
   value: number;
@@ -38,6 +39,7 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
     private mainService: MainService,
     private profileService: ProfileService,
     private snackBar: MatSnackBar,
+    private translateService: TranslateService,
     public dialog: MatDialog) {
       this.userInfo = mainService.userInfo;
     }
@@ -69,7 +71,7 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
     }
     const acceptStudentTask = this.profileService.acceptStudentTask(userInfo.id, task).subscribe(res => {
       this.ngOnInit();
-      this.snackBar.open(`Вы приняли задания ученика: ${userInfo.userName}`, '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.ACCEPT_STUDENT_TASK', {student: userInfo.userName}), '', {
         duration: 2000,
         panelClass: ['success']
       });

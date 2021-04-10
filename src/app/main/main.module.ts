@@ -25,6 +25,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { VersionsComponent } from './components/versions/versions.component';
 import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
 import { LanguageComponent } from './layouts/language/language.component';
+import { ErrorPageComponent } from './layouts/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { LanguageComponent } from './layouts/language/language.component';
     PaymentsComponent,
     AboutUsComponent,
     VersionsComponent,
-    HowToUseComponent
+    HowToUseComponent,
+    ErrorPageComponent
   ],
   imports: [
     CommonModule,

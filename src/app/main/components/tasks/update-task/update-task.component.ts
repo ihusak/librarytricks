@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-update-task',
@@ -27,6 +28,7 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
     private taskService: TaskService,
     private formBuilder: FormBuilder,
     private activateRoute: ActivatedRoute,
+    private translateService: TranslateService,
     private snackBar: MatSnackBar,
     private location: Location) {
       activateRoute.params.subscribe(params => {
@@ -48,18 +50,13 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (this.taskForm.valid) {
      const updateTask = this.taskService.updateTask(this.taskId, updatedTask).subscribe(result => {
-        this.snackBar.open('Задание успешно обновленно', '', {
+        this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_UPDATED'), '', {
           duration: 2000,
           panelClass: ['success']
         });
         this.location.back();
       });
       this.subscription.add(updateTask);
-    } else {
-      this.snackBar.open('Все поля должны быть заполнены', '', {
-        duration: 2000,
-        panelClass: ['error']
-      });
     }
   }
 

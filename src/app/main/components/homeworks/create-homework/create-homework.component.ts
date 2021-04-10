@@ -9,6 +9,7 @@ import { ProfileService } from '../../profile/profile.service';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { HomeworksService } from '../homeworks.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-homework',
@@ -29,7 +30,7 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
     private homeworksService: HomeworksService,
     private snackBar: MatSnackBar,
     private location: Location,
-    private route: ActivatedRoute,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit() {
@@ -51,7 +52,7 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
     HOMEWORK.students = HOMEWORK.students.map((st: StudentInfoInterface) => ({id: st.id, name: st.userName}));
     const createHomework = this.homeworksService.createHomework(HOMEWORK).subscribe(res => {
       if (res) {
-        this.snackBar.open('Задание успешно созданно', '', {
+        this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_CREATED'), '', {
           duration: 2000,
           panelClass: ['success']
         });

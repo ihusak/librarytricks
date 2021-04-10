@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { ProfileService } from './profile.service';
@@ -10,13 +10,14 @@ import { UserParentModel } from 'src/app/shared/models/user-parent.model';
 import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 import { TaskService } from '../tasks/tasks.service';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   public previewUrl: any = '../../assets/user-default.png';
   public previewUrlChange: boolean = false;
   public coachCourses: any[] = [];
@@ -40,13 +41,10 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     protected appService: AppService,
     private snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
   ) {
       this.dateAdapter.setLocale('ru');
-  }
-  ngAfterViewInit() {
-    console.log(this.userInfo);
-
   }
 
   ngOnInit() {
@@ -80,11 +78,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
-    console.log(userInfo, this.userInfo.value);
     const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
       this.appService.userInfoSubject.next(updateUser);
-      console.log(updateUser);
-      this.snackBar.open('Сохранено', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
         duration: 2000,
         panelClass: ['success']
       })
@@ -136,7 +132,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           aboutMe: [data.aboutMe || ''],
           instagram: [data.socialNetworks.instagram || ''],
           facebook: [data.socialNetworks.facebook || ''],
-          bestTrick: [data.bestTrick || '', [Validators.required]]
+          bestTrick: [data.bestTrick || '']
         });
         this.initForm = true;
         break;
@@ -158,7 +154,6 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.subscription.add(getAllStudents);
       break;
     }
-    console.log(this);
   }
 
   public changeCoach(value: any, op?: boolean) {
@@ -174,7 +169,6 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public changeCourse(course: any) {
-    console.log(this);
     const coach = this.coachsList.find(coach => course.coachId === coach.id)
     this.userInfo.controls.coach.setValue({
       id: coach.id,
@@ -194,14 +188,12 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.preview();
   }
   preview() {
-    console.log(this.formImgHidden);
     let mimeType = this.fileData.type;
     if (mimeType.match(/image\/*/) == null) {
-      this.snackBar.open('Не првельный формат файла, должен быть (PNG, JPG, JPEG, GIF)', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.WRONG_FILE_FORMAT'), '', {
         duration: 4000,
         panelClass: ['error']
       })
-      console.log('FORMAT NOT IMG');
       this.previewUrl = '../../assets/user-default.png';
       this.previewUrlChange = false;
       return;
@@ -215,7 +207,6 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
   ngOnDestroy() {
-    console.log('profile destroy');
     this.subscription.unsubscribe();
   }
 }

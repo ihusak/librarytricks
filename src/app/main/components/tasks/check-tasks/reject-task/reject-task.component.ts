@@ -5,6 +5,7 @@ import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { ProfileService } from '../../../profile/profile.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reject-task',
@@ -20,6 +21,7 @@ export class RejectTaskComponent implements OnDestroy {
     public dialogRef: MatDialogRef<RejectTaskComponent>,
     @Inject(MAT_DIALOG_DATA) public student: StudentInfoInterface,
     private snackBar: MatSnackBar,
+    private translateService: TranslateService,
     private profileService: ProfileService) {
       this.stundetInfo = student;
     }
@@ -32,7 +34,7 @@ export class RejectTaskComponent implements OnDestroy {
     userCurrentTask.status = TaskStatuses.PROCESSING;
     userCurrentTask.rejectReason = reason;
     const changeCurrentTask = this.profileService.changeCurrentTask(userCurrentTask, this.stundetInfo.id).subscribe(() => {
-      this.snackBar.open(`Вы отправили назад на тренировку ${this.stundetInfo.userName}`, '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.STUDENT_MOVED_IN_PROGRESS', {student: this.stundetInfo.userName}), '', {
         duration: 2000,
         panelClass: ['error']
       });

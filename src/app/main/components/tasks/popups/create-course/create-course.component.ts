@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ProfileService } from 'src/app/main/components/profile/profile.service';
 import { MainService } from 'src/app/main/main.service';
@@ -26,6 +27,7 @@ export class CreateCourseComponent implements OnDestroy {
     private taskService: TaskService,
     private mainService: MainService,
     private snackBar: MatSnackBar,
+    private translateService: TranslateService,
     private formBuilder: FormBuilder) {
       this.userInfo = this.mainService.userInfo;
       if(this.userInfo.role.id === this.userRoles.ADMIN) {
@@ -56,10 +58,9 @@ export class CreateCourseComponent implements OnDestroy {
     }
 
   public create() {
-    console.log(this.createCourseFrom);
     const createCourse = this.taskService.createCourse(this.createCourseFrom.value).subscribe((course: object) => {
       this.dialogRef.close(course);
-      this.snackBar.open('Курс создан', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.COURSE_CREATED'), '', {
         duration: 2000,
         panelClass: ['success']
       });
