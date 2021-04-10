@@ -18,14 +18,12 @@
                     width: 100%;
                 }
                 a {
-                    &.sign-up {
-                        text-decoration: none;
-                        color: grey;
-                        text-align: center;
-                        display: block;
-                        font-size: 14px;
-                    }
-                    &.sign-up:hover {
+                  text-decoration: none;
+                  color: grey;
+                  text-align: center;
+                  display: block;
+                  font-size: 14px;
+                    &:hover {
                         color: #000;
                     }
                 }

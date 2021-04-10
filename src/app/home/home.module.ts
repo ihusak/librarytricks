@@ -15,6 +15,7 @@ import { LoginServiceModule } from './login/login.service.module';
 import { CoachComponent } from './confirm/coach/coach.component';
 import { MainHomeComponent } from './main-home/main-home.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { TranslateModule } from '@ngx-translate/core';
     RegisterComponent,
     ConfirmComponent,
     CoachComponent,
-    MainHomeComponent
+    MainHomeComponent,
+    ForgotPasswordComponent
   ],
   imports: [
     CommonModule,

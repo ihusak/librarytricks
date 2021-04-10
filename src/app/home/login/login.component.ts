@@ -13,8 +13,9 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit, OnDestroy {
-  email = '';
-  pass = '';
+  public email = '';
+  public pass = '';
+  public forgotPass: boolean = false;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -46,6 +47,9 @@ export class LoginComponent implements OnInit, OnDestroy {
         duration: 2000,
         panelClass: ['error']
       });
+      if(err.code === 400) {
+        this.forgotPass = true;
+      }
     });
     this.subscription.add(login);
   }
