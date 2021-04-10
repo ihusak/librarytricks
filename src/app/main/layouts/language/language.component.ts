@@ -18,7 +18,7 @@ export class LanguageComponent implements OnInit {
     private translateService: TranslateLocalService,
     private appService: AppService
   ) {
-    const cookieLang = cookieService.get('lang');
+    const cookieLang = cookieService.get('lb_lang');
     if(cookieLang) {
       this.selectedLang = cookieLang;
     } else {

@@ -3,7 +3,7 @@
 </div>
 <div class="homeworks-list">
   <div class="empty" *ngIf="homeworksList && !homeworksList.length">
-    {{'COMMON.EMPTY | translate'}}
+    {{'COMMON.EMPTY' | translate}}
   </div>
   <mat-grid-list [cols]="breakpoint" rowHeight="450px" [gutterSize]="'30px'" *ngIf="homeworksList && homeworksList.length" (window:resize)="onResize($event)">
     <mat-grid-tile *ngFor="let homework of homeworksList">

@@ -18,7 +18,7 @@ export class AppService {
     protected cookieService: CookieService
     ) {
       if(environment.production) {
-        this.domain = 'afreestylers.com'
+        this.domain = 'lb.afreestylers.com'
       } else {
         this.domain = 'localhost'
       }
@@ -34,7 +34,7 @@ export class AppService {
   }
 
   public setLangToStorage(lang: string) {
-    this.cookieService.set('lang', lang, 9999, '/', this.domain);
+    this.cookieService.set('lb_lang', lang, 9999, '/', this.domain);
   }
 
   public getTokens(): Tokens {
