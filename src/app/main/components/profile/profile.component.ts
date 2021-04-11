@@ -110,6 +110,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           userName: [data.userName || '', [Validators.required]],
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           startTraining: [data.startTraining ? new Date(data.startTraining) : '', [Validators.required]],
+          birthDay: [data.birthDay ? new Date(data.birthDay) : '', [Validators.required]],
           aboutMe: [data.aboutMe || ''],
           course: [data.course, [Validators.required]],
           coach: [data.coach || '', [Validators.required]],
