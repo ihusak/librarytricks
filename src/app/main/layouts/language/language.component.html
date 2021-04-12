@@ -1,0 +1,17 @@
+<button mat-icon-button [matMenuTriggerFor]="langMenu" aria-label="Select language">
+  <span *ngIf="selectedLang" class="selected-flag {{selectedLang}}"></span><mat-icon *ngIf="!selectedLang">translate</mat-icon>
+</button>
+<mat-menu class="mat-menu-custom-lang" #langMenu="matMenu">
+  <button (click)="setLang('ua')" mat-menu-item class="lang ua">
+    <span class="flag ua"></span>
+    <span>UA</span>
+  </button>
+  <button (click)="setLang('en')" mat-menu-item  class="lang en">
+    <span class="flag en"></span>
+    <span>EN</span>
+  </button>
+  <button (click)="setLang('ru')" mat-menu-item  class="lang ru">
+    <span class="flag ru"></span>
+    <span>RU</span>
+  </button>
+</mat-menu>

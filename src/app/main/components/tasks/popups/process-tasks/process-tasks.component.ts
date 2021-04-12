@@ -13,7 +13,6 @@ export class ProcessTasksComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ProcessTasksComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any[]) {
-      console.log(data);
       this.processingUsers = data;
     }
 

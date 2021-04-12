@@ -1,0 +1,71 @@
+<h1>{{'TEMPLATE.HOW_TO_USE.TITLE' | translate}}</h1>
+<div class="common">
+  <h4>{{'COMMON.SIGN_UP' | translate}}</h4>
+  <p>{{'TEMPLATE.HOW_TO_USE.COMMON.AFTER_SIGN_UP' | translate}}</p>
+  <p innerHtml="{{'TEMPLATE.HOW_TO_USE.COMMON.FILL_PROFILE' | translate}}"></p>
+</div>
+<div class="role" *ngIf="userInfo | userRolePipe:[userRoles.STUDENT]">
+  <h2>{{'COMMON.STUDENT' | translate}}</h2>
+  <h4>{{'COMMON.MAIN' | translate}}</h4>
+  <p>
+    {{'TEMPLATE.HOW_TO_USE.STUDENT.MAIN' | translate}}
+  </p>
+  <h4>{{'COMMON.TASKS' | translate}}</h4>
+  <span>
+    <p>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.TO_START' | translate}}</p>
+    <p><b>{{'COMMON.ATTENTION' | translate}}!</b> {{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.SEQUENCE' | translate}}</p>
+  </span>
+  <ol>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.ONE' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.TWO' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.THREE' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.FOUR' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.FIVE' | translate}}</li>
+    <li>{{'TEMPLATE.HOW_TO_USE.STUDENT.TASK.LIST.SIX' | translate}}</li>
+  </ol>
+  <h4>{{'COMMON.HOMEWORKS' | translate}}</h4>
+  <p>
+    {{'TEMPLATE.HOW_TO_USE.STUDENT.HOMEWORKS' | translate}}
+  </p>
+</div>
+<div class="role" *ngIf="userInfo | userRolePipe:[userRoles.COACH]">
+  <h2>{{'COMMON.COACH' | translate}}</h2>
+  <h4>{{'COMMON.MAIN' | translate}}</h4>
+  <p>
+    {{'TEMPLATE.HOW_TO_USE.COACH.MAIN' | translate}}
+  </p>
+  <h4>{{'COMMON.TASKS' | translate}}</h4>
+  <p>
+    <b>{{'COMMON.ATTENTION' | translate}}!</b> {{'TEMPLATE.HOW_TO_USE.COACH.TASKS.ALLOW_COACH' | translate}}
+  </p>
+  <p>
+    {{'TEMPLATE.HOW_TO_USE.COACH.TASKS.COURSE_INFO' | translate}}
+  </p>
+  <p>
+    {{'TEMPLATE.HOW_TO_USE.COACH.TASKS.CRUD_TASK.TITLE' | translate}} 
+  </p>
+  <p innerHtml="{{'TEMPLATE.HOW_TO_USE.COACH.TASKS.CRUD_TASK.IN_PROGRESS' | translate}}"></p>
+  <p innerHtml="{{'TEMPLATE.HOW_TO_USE.COACH.TASKS.CRUD_TASK.PENDING' | translate}}"></p>
+  <p>{{'TEMPLATE.HOW_TO_USE.COACH.TASKS.CRUD_TASK.REJECT' | translate}}</p>
+  <h4>{{'COMMON.HOMEWORKS' | translate}}</h4>
+  <p>{{'TEMPLATE.HOW_TO_USE.COACH.HOMEWORKS' | translate}}</p>
+</div>
+<div class="role" *ngIf="userInfo | userRolePipe:[userRoles.PARENT]">
+  <h2>{{'COMMON.ROLES.PARENT' | translate}}</h2>
+  <h4>{{'TEMPLATE.PROFILE.PROFILE' | translate}}</h4>
+  <p>
+    {{'TEMPLATE.HOW_TO_USE.PARENT.PROFILE' | translate}}
+  </p>
+  <h4>{{'COMMON.MAIN' | translate}}</h4>
+  <p>
+    {{'TEMPLATE.HOW_TO_USE.PARENT.MAIN' | translate}}
+  </p>
+  <h4>{{'COMMON.HOMEWORKS' | translate}}</h4>
+  <p>{{'TEMPLATE.HOW_TO_USE.PARENT.HOMEWORKS' | translate}}</p>
+</div>
+<div class="contact">
+  <p>{{'COMMON.CONTACT_FOR_ANY_QUESTION' | translate}}</p>
+  <a href="https://t.me/IlliaHusak" target="_blank">
+    <img src="assets/img/telegram.svg" alt="">
+  </a>
+</div>

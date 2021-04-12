@@ -20,7 +20,6 @@ export class RatingsComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log('rating', this.mainService.userInfo);
     this.userInfo = this.mainService.userInfo;
     this.userInfo.progress = Math.round(this.userInfo.progress);
   }

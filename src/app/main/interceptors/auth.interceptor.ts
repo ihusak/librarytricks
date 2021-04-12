@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -21,6 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     private cookieService: CookieService,
     private router: Router,
     private snackBar: MatSnackBar,
+    private translateService: TranslateService
     ){}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -33,13 +35,13 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req)
         .pipe(catchError((err) => {
           if (err.status === 403) {
-            this.snackBar.open('User session expired and recover', '', {
+            this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_RECOVERED'), '', {
               duration: 2000,
               panelClass: ['error']
             });
             return this.handleExpireToken(req, next);
           } else if (err.status === 401) {
-            this.snackBar.open('User session expired', '', {
+            this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_LOGOUT'), '', {
               duration: 2000,
               panelClass: ['error']
             });

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { ProfileService } from './profile.service';
@@ -9,13 +9,15 @@ import { UserStudentModel } from 'src/app/shared/models/user-student.model';
 import { UserParentModel } from 'src/app/shared/models/user-parent.model';
 import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 import { TaskService } from '../tasks/tasks.service';
+import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   public previewUrl: any = '../../assets/user-default.png';
   public previewUrlChange: boolean = false;
   public coachCourses: any[] = [];
@@ -29,6 +31,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   public userInfoData: any;
   public kidsList;
   public coach: any = null;
+  private subscription: Subscription = new Subscription();
 
   @ViewChild('formImgHidden',  {static: false}) formImgHidden: ElementRef;
 
@@ -38,17 +41,14 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     protected appService: AppService,
     private snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private translateService: TranslateService
   ) {
       this.dateAdapter.setLocale('ru');
   }
-  ngAfterViewInit() {
-    console.log(this.userInfo);
-
-  }
 
   ngOnInit() {
-    this.appService.userInfoSubject.subscribe((data: any) => {
+    const userInfoSubject = this.appService.userInfoSubject.subscribe((data: any) => {
       this.userInfoData = data;
       this.switchValidatorsOnRole(this.userInfoData.role.id, data);
       if (data.userImg) {
@@ -58,12 +58,8 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     }, err => {
       console.log('userInfo err', err);
     });
+    this.subscription.add(userInfoSubject);
   }
-  ngOnDestroy() {
-    console.log('profile destroy');
-    // this.appService.userInfoSubject.unsubscribe();
-  }
-
   public addInfo() {
     let userInfo;
     switch(this.userInfoData.role.id) {
@@ -82,31 +78,32 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
-    console.log(userInfo, this.userInfo.value);
-    this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
+    const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
       this.appService.userInfoSubject.next(updateUser);
-      console.log(updateUser);
-      this.snackBar.open('Сохранено', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
         duration: 2000,
         panelClass: ['success']
       })
     });
+    this.subscription.add(updateUserInfo);
   }
 
   private switchValidatorsOnRole(userRole: number, data) {
     switch (userRole) {
       case this.userRoles.STUDENT:
         this.userCourse = data.course;
-        this.taskService.getAllCourses().subscribe((allCourses: any[]) => {
+        const getAllCourses = this.taskService.getAllCourses().subscribe((allCourses: any[]) => {
           this.coachCourseList = allCourses;
           this.coach = data.coach.id ? data.coach : null;
           if(this.coach) {
             this.changeCoach(data.coach);
           }
         });
-        this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
+        this.subscription.add(getAllCourses);
+        const getAllCoaches = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
           this.coachsList = coaches;
         });
+        this.subscription.add(getAllCoaches);
         this.userInfo = this.formBuilder.group({
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
@@ -118,7 +115,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           coach: [data.coach || '', [Validators.required]],
           instagram: [data.socialNetworks.instagram || ''],
           facebook: [data.socialNetworks.facebook || ''],
-          bestTrick: [data.bestTrick || '', [Validators.required]],
+          bestTrick: [data.bestTrick || ''],
           parentName: [data.parent.name || '', [Validators.required]],
           parentPhone: [data.parent.phone || '', [Validators.required]],
           parentEmail: [data.parent.email || '', [Validators.required, Validators.email]],
@@ -135,12 +132,12 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
           aboutMe: [data.aboutMe || ''],
           instagram: [data.socialNetworks.instagram || ''],
           facebook: [data.socialNetworks.facebook || ''],
-          bestTrick: [data.bestTrick || '', [Validators.required]]
+          bestTrick: [data.bestTrick || '']
         });
         this.initForm = true;
         break;
       case this.userRoles.PARENT:
-      this.profileService.getAllStudents().subscribe(result => {
+      const getAllStudents = this.profileService.getAllStudents().subscribe(result => {
         this.userInfo = this.formBuilder.group({
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
@@ -154,9 +151,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
         this.kidsList = result;
         this.initForm = true;
       });
+      this.subscription.add(getAllStudents);
       break;
     }
-    console.log(this);
   }
 
   public changeCoach(value: any, op?: boolean) {
@@ -172,7 +169,6 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public changeCourse(course: any) {
-    console.log(this);
     const coach = this.coachsList.find(coach => course.coachId === coach.id)
     this.userInfo.controls.coach.setValue({
       id: coach.id,
@@ -192,14 +188,12 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     this.preview();
   }
   preview() {
-    console.log(this.formImgHidden);
     let mimeType = this.fileData.type;
     if (mimeType.match(/image\/*/) == null) {
-      this.snackBar.open('Не првельный формат файла, должен быть (PNG, JPG, JPEG, GIF)', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.WRONG_FILE_FORMAT'), '', {
         duration: 4000,
         panelClass: ['error']
       })
-      console.log('FORMAT NOT IMG');
       this.previewUrl = '../../assets/user-default.png';
       this.previewUrlChange = false;
       return;
@@ -211,5 +205,8 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
       this.userInfo.controls['userImg'].markAsDirty();
       this.previewUrl = reader.result;
     }
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -18,6 +18,7 @@ import { PipesModule } from './shared/pipes/pipes.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppService } from './app.service';
+import { ErrorHandlerIntercaptor } from './main/interceptors/error.handler.intercaptor';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -40,7 +41,6 @@ export function HttpLoaderFactory(http: HttpClient) {
   MainModule,
   PipesModule,
   TranslateModule.forRoot({
-    defaultLanguage: 'ru',
     loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
@@ -60,7 +60,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     provide: HTTP_INTERCEPTORS,
     useClass: LoaderInterceptorService,
     multi: true
-  }],
+  },
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: ErrorHandlerIntercaptor,
+    multi: true
+  }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

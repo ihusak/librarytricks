@@ -1,10 +1,10 @@
-<h1>Оплата</h1>
+<h1>{{'COMMON.PAYMENT' | translate}}</h1>
 
 <div class="payments-form">
   <form action="">
-    <p>Выберите курс который хотите оплатить</p>
+    <p>{{'TEMPLATE.PAYMENT.SLECT_COURSE' | translate}}</p>
     <mat-form-field *ngIf="coursesList && coursesList.length">
-      <mat-label>Курс</mat-label>
+      <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
       <mat-select #selectedvalue (valueChange)="changeCourse(selectedvalue.value)">
         <mat-option *ngFor="let course of coursesList" [value]="course">{{course.name}}</mat-option>
       </mat-select>
@@ -38,7 +38,7 @@
 </div>
 <div class="bought-courses" *ngIf="paidCourses.length">
   <p>
-    <b>Купленные курсы</b>
+    <b>{{'TEMPLATE.PAYMENT.PAID_COURSES' | translate}}</b>
   </p>
     <ul>
       <li *ngFor="let paid of paidCourses">

@@ -1,14 +1,14 @@
-<h3>Создание курса</h3>
-<p>Здесь ты можешь создать любой курс для учеников</p>
-<p>Внимание! Созданный курс будет доступен лишь вашим ученикам</p>
+<h3>{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.TITLE' | translate}}</h3>
+<p>{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.INFO' | translate}}</p>
+<p>{{'COMMON.ATTENTION' | translate}}! {{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.ATTENTION_MESSAGE' | translate}}</p>
 <form class="form" [formGroup]="createCourseFrom">
 <mat-form-field class="group-name-field">
-  <mat-label>Название курса</mat-label>
+  <mat-label>{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.NAME' | translate}}</mat-label>
   <input matInput type="text" formControlName="name">
 </mat-form-field>
 
 <mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createCourseFrom.value.forAll">
-  <mat-label>Тренер</mat-label>
+  <mat-label>{{'COMMON.COACH' | translate}}</mat-label>
   <mat-select formControlName="coachId">
     <mat-option *ngFor="let coach of coachList" [value]="coach.id">{{coach.userName}}</mat-option>
   </mat-select>
@@ -16,12 +16,12 @@
 
 <div class="description">
   <div class="describe-course">
-    <h3>Описание курса</h3>
-    <quill-editor formControlName="text" placeholder="Детали" required="true"></quill-editor>
+    <h3>{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.DESCRIPTION' | translate}}</h3>
+    <quill-editor formControlName="text" placeholder="{{'COMMON.DETAILS' | translate}}" required="true"></quill-editor>
   </div>
 
   <mat-form-field>
-    <mat-label>Короткое видео курса</mat-label>
+    <mat-label>{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.SHORT_VIDEO' | translate}}</mat-label>
       <input formControlName="video" matInput type="text">
   </mat-form-field>
 </div>
@@ -29,15 +29,15 @@
 <div class="price">
   <div class="text">
     <mat-form-field>
-      <mat-label>Цена за курс(грн)</mat-label>
+      <mat-label>{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.PRICE' | translate: {price: 'uah'} }}</mat-label>
       <input formControlName="price" matInput type="number">
     </mat-form-field>
   </div>
 </div>
 
 <section class="for-all-coaches" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createCourseFrom.value.coachId">
-  <mat-checkbox formControlName="forAll" (change)="forAllCoaches()">Для все тренеров</mat-checkbox>
+  <mat-checkbox formControlName="forAll" (change)="forAllCoaches()">{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.FOR_ALL_COACHES' | translate}}</mat-checkbox>
 </section>
 
-<button mat-flat-button color="primary" [disabled]="!createCourseFrom.valid" (click)="create()">Создать курс</button>
+<button mat-flat-button color="primary" [disabled]="!createCourseFrom.valid" (click)="create()">{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.CREATE_COURSE' | translate}}</button>
 </form>

@@ -3,9 +3,12 @@
     <mat-icon>menu</mat-icon>
 </button>
 <div class="logo">
-        <img src="assets/img/logo-single.png" alt="">
+        <img src="assets/img/logo-lb.svg" alt="">
     </div>
     <span class="spacer"></span>
-    <button  (click)="requestAdminPermission()" mat-stroked-button *ngIf="userInfo.role.id === userRole.COACH && !userInfo.role.status">Запрос на тренера</button>
+    <app-language></app-language>
+    <button (click)="requestAdminPermission()" mat-stroked-button *ngIf="userInfo.role.id === userRole.COACH && !userInfo.role.status">{{'TEMPLATE.DASHBOARD.COACH_REQUEST.REQUEST_FOR_COACH' | translate}}</button>
+    <a class="help-info" [routerLink]="['./how-to-use']"><mat-icon>
+      help_outline</mat-icon></a>
     <mat-icon (click)="logout()">exit_to_app</mat-icon>
 </mat-toolbar>

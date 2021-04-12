@@ -1,45 +1,45 @@
-<h1>Обновление задания</h1>
+<h1>{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.UPDATE_TITLE' | translate}}</h1>
 <form [formGroup]="taskForm" (ngSubmit)="uptadeTask()" *ngIf='initForm'>
   <div class="form-view">
     <div class="item">
-      <h3>Описание задания</h3>
       <mat-form-field>
-        <input formControlName="title" matInput placeholder="Название задания" required>
+        <input formControlName="title" matInput placeholder="{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.NAME' | translate}}" required>
       </mat-form-field>
-      <h3>Детальное описание задания</h3>
-      <quill-editor formControlName="description" placeholder="Детали" required="true"></quill-editor>
+      <h3>{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.DETAILS_DESCRIPTION' | translate}}</h3>
+      <quill-editor formControlName="description" placeholder="{{'COMMON.DETAILS' | translate}}" required="true"></quill-editor>
     </div>
     <div class="item">
-      <h3>Видео пример задания (YouTube)</h3>
+      <h3>{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.VIDEO_EXAMPLE' | translate: {examples: 'YouTube'} }}</h3>
       <mat-form-field>
-        <input formControlName="example" matInput placeholder="URL на видео" required>
+        <input formControlName="example" matInput placeholder="{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.VIDEO_URL' | translate}}" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="reward" matInput placeholder="Оценка задания" required type='number' min="0" 
+        <input formControlName="reward" matInput placeholder="Skillz" required type='number' min="0" 
         max="100" >
       </mat-form-field>
+      <label for="reward">{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.MAX_REWARD' | translate: {number: '100'} }}</label>
     </div>
     <div class="item">
-      <h3>Курс заданий</h3>
+      <h3>{{'COMMON.COURSE' | translate}}</h3>
       <mat-form-field>
-        <mat-label>Курс</mat-label>
+        <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
         <mat-select [compareWith]="compareObjects" formControlName="course" #selectedvalue (valueChange)="changeCourse(selectedvalue.value)">
           <mat-option *ngFor="let courseItem of coursesList" [value]="courseItem">{{courseItem.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
     <div class="item" *ngIf="tasksList && tasksList.length > 0">
-      <h3>Ссылка на задание после которого задание "{{taskForm.value.title}}" будет доступно</h3>
+      <h3>{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.ALLOW_TASK_LINK' | translate: {taskName: taskForm.value.title} }}</h3>
       <mat-form-field>
-        <mat-label>Задание для доступа текущего задания</mat-label>
-        <mat-select [compareWith]="compareNextTask" [(ngModel)]="nextTask"  formControlName="nextTask">
+        <mat-label>{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.PREVIOUS_TASK' | translate}}</mat-label>
+        <mat-select [compareWith]="compareNextTask" [(ngModel)]="nextTask" formControlName="nextTask">
           <mat-option *ngFor="let task of tasksList" [value]="task.id">{{task.title}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
   </div>
   <div class="actions">
-    <button mat-raised-button color="primary" [disabled]="!taskForm.dirty">Обновить задание</button>
-    <button mat-raised-button color="primary" routerLink="../../task-list">Назад</button>
+    <button mat-raised-button color="primary" [disabled]="!taskForm.dirty">{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.UPDATE_TASK' | translate}}</button>
+    <button mat-raised-button color="primary" routerLink="../../task-list">{{'COMMON.BACK' | translate}}</button>
   </div>
 </form>

@@ -35,7 +35,6 @@ export class PaymentsService extends AppService {
 
     public getPaidCourses(userId: string) {
       return this.http.get(`${this.apiUrl()}/payments/user/${userId}/payments`).pipe(map((data: any) => {
-        console.log(data);
         return data;
       }));
     }
@@ -47,7 +46,6 @@ export class PaymentsService extends AppService {
     }
 
     public checkout(checkout: Checkout) {
-      console.log(checkout);
       return this.http.post(`${this.apiUrl()}/payments/checkout`, {checkout}).pipe(map((data: any) => {
         return data;
       }));
