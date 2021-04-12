@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import {
   AdminInfoInterface,
@@ -17,17 +18,18 @@ import { TaskService } from '../tasks/tasks.service';
   styleUrls: ['./dashboard.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   public userRoles = UserRolesEnum;
   public userInfo: any;
   public coachInfo: CoachInfoInterface;
   public studentsList: StudentInfoInterface[];
-  public studentTableColumns = ['Позиция', 'Имя', 'Группа', 'Рейтинг', 'Прогресс'];
+  public studentTableColumns = ['Позиция', 'Имя', 'Курс', 'Рейтинг', 'Прогресс'];
   public studentTasks: TaskModel[] = [];
   public doneTasks;
   public selectCourses;
   public currentCourse;
   public currentStudent;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private mainService: MainService,
@@ -47,7 +49,7 @@ export class DashboardComponent implements OnInit {
         }
         break;
       case this.userRoles.COACH:
-        this.taskService.getAllCourses().subscribe((courses: any[]) => {
+        const allCourses = this.taskService.getAllCourses().subscribe((courses: any[]) => {
           this.selectCourses = courses.filter(course => course.coachId === this.userInfo.id);
           if(this.selectCourses.length) {
             this.currentCourse = this.selectCourses[0];
@@ -55,28 +57,30 @@ export class DashboardComponent implements OnInit {
             this.getTaskByCourse(this.selectCourses[0].id);
           }
         });
+        this.subscription.add(allCourses);
         break;
       case this.userRoles.PARENT:
         const kidRole = this.userRoles.STUDENT;
         if(this.userInfo.myKid) {
-          this.profileService.getUserInfoWithParams(this.userInfo.myKid.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
+          const userInfoWithParams = this.profileService.getUserInfoWithParams(this.userInfo.myKid.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
             this.currentStudent = studentInfo;
             this.getTaskByCourse(studentInfo.course.id);
             this.getStudentsInfo(studentInfo.course.id);
             this.getCoachInfo(studentInfo.coach.id);
-          })
+          });
+          this.subscription.add(userInfoWithParams);
         }
       break;
       case this.userRoles.ADMIN:
-        this.taskService.getAllCourses().subscribe((courses) => {
+        const allCoursesAdmin = this.taskService.getAllCourses().subscribe((courses) => {
           this.selectCourses = courses;
           this.currentCourse = courses[0];
           this.getStudentsInfo(courses[0].id);
           this.getTaskByCourse(courses[0].id);
         });
+        this.subscription.add(allCoursesAdmin);
         break;
     }
-    console.log(this);
   }
 
   compareObjectsStudents(o1: any, o2: any): boolean {
@@ -104,12 +108,13 @@ export class DashboardComponent implements OnInit {
 
   private getCoachInfo(id: string) {
     const coachRole = this.userRoles.COACH;
-    this.profileService.getUserInfoWithParams(id, coachRole).subscribe((coachInfo: CoachInfoInterface) => {
+    const getUserInfoWithParams = this.profileService.getUserInfoWithParams(id, coachRole).subscribe((coachInfo: CoachInfoInterface) => {
       this.coachInfo = coachInfo;
     });
+    this.subscription.add(getUserInfoWithParams);
   }
   private getStudentsInfo(courseId: string) {
-    this.profileService.getUsersInfoByCourseId(courseId).subscribe((studentsList: StudentInfoInterface[]) => {
+    const getUsersInfoByCourseId = this.profileService.getUsersInfoByCourseId(courseId).subscribe((studentsList: StudentInfoInterface[]) => {
       this.studentsList = studentsList.sort((a, b) => a.rating > b.rating ? -1 : 1);
       if ((this.userInfo.role.id === this.userRoles.COACH) &&
           !this.currentStudent || (this.userInfo.role.id === this.userRoles.ADMIN)) {
@@ -119,12 +124,14 @@ export class DashboardComponent implements OnInit {
       }
       this.checkStatusTask();
     });
+    this.subscription.add(getUsersInfoByCourseId);
   }
   private getTaskByCourse(courseId: string) {
-    this.taskService.getTasksByCourse(courseId).subscribe(tasks => {
+    const getTasksByCourse = this.taskService.getTasksByCourse(courseId).subscribe(tasks => {
       this.studentTasks = tasks;
       this.checkStatusTask();
     });
+    this.subscription.add(getTasksByCourse);
   }
   private checkStatusTask() {
       const student = this.currentStudent ? this.currentStudent : this.userInfo;
@@ -152,5 +159,8 @@ export class DashboardComponent implements OnInit {
       return Math.round((doneLength * 100) / this.studentTasks.length);
     }
     return 0;
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

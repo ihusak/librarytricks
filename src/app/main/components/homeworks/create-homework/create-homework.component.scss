@@ -1,0 +1,17 @@
+.form-view {
+  margin-bottom: 35px;
+  .item {
+    mat-form-field {
+      display: block;
+      margin-top: 10px;
+    }
+    textarea {
+      height: 55px;
+    }
+  }
+}
+form {
+  button {
+    margin-right: 15px;
+  }
+}

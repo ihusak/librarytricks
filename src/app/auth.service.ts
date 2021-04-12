@@ -22,7 +22,6 @@ export class AuthService extends AppService {
     };
     return this.http.delete(`${this.apiUrl()}/users/logout`, options).pipe(
       catchError(err => {
-        console.log('ERROR LOGOUT');
         return throwError(err);
       })
     );

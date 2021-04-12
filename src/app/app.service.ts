@@ -18,7 +18,7 @@ export class AppService {
     protected cookieService: CookieService
     ) {
       if(environment.production) {
-        this.domain = 'afreestylers.com'
+        this.domain = 'lb.afreestylers.com'
       } else {
         this.domain = 'localhost'
       }
@@ -31,6 +31,10 @@ export class AppService {
   public setUserDataToLocalStorage(tokens: Tokens, userId: string, role: any) {
     this.cookieService.set('lb_refreshToken', tokens.refreshToken, 9999, '/', this.domain);
     this.cookieService.set('lb_config', tokens.accessToken, 9999, '/', this.domain);
+  }
+
+  public setLangToStorage(lang: string) {
+    this.cookieService.set('lb_lang', lang, 9999, '/', this.domain);
   }
 
   public getTokens(): Tokens {

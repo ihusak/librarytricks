@@ -20,4 +20,12 @@ app-register {
       }
     }
   }
+  .message {
+    &.not-match{
+      font-size: 11px;
+      color: red;
+      position: relative;
+      top: -15px;
+    }
+  }
 }

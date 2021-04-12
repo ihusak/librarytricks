@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
@@ -6,24 +6,26 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { MainService } from 'src/app/main/main.service';
-import { AdminInfoInterface, CoachInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { ActivatedRoute } from '@angular/router';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
+import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-create-task',
   templateUrl: './create-task.component.html',
   styleUrls: ['./create-task.component.scss']
 })
-export class CreateTaskComponent implements OnInit {
+export class CreateTaskComponent implements OnInit, OnDestroy {
   public taskForm: FormGroup;
   public initForm: boolean = false;
   public coursesList;
   public tasksList;
   public userInfo: any;
   private userRoles = UserRolesEnum;
-  private courseId: string;
+  private readonly courseId: string;
   public currentCourse: any;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private mainService: MainService,
@@ -32,9 +34,9 @@ export class CreateTaskComponent implements OnInit {
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
+    private translateService: TranslateService
     ) {
       this.courseId = this.route.snapshot.queryParamMap.get('courseId');
-      
     }
 
   ngOnInit() {
@@ -54,49 +56,53 @@ export class CreateTaskComponent implements OnInit {
   }
 
   private getCourses() {
-    this.taskService.getAllCourses().subscribe((allcourses: any[]) => {
+    const getAllCourses = this.taskService.getAllCourses().subscribe((allcourses: any[]) => {
       let filteredCourses;
-      switch(this.userInfo.role.id) {
-        case this.userRoles.COACH: 
+      switch (this.userInfo.role.id) {
+        case this.userRoles.COACH:
         filteredCourses = allcourses.filter(course => course.coachId === this.userInfo.id);
-          break;
-        case this.userRoles.ADMIN: 
+        break;
+        case this.userRoles.ADMIN:
         filteredCourses = allcourses;
-          break;
+        break;
       }
       this.coursesList = filteredCourses;
       this.currentCourse = this.coursesList.find((course: CourseInterface) => {
         return course.id === this.courseId;
-      })
-    })
+      });
+    });
+    this.subscription.add(getAllCourses);
   }
   private getAllTasks(courseId?: string) {
-    this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
+    const getAllTasks = this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
       this.tasksList = tasks.filter((task: TaskModel) => task.course.id === courseId);
-      console.log(this.tasksList);
-      if(!this.tasksList.length) {
+      if (!this.tasksList.length) {
         this.taskForm.removeControl('nextTask');
       } else {
         this.taskForm.setControl('nextTask', new FormControl('', Validators.required));
       }
     });
+    this.subscription.add(getAllTasks);
   }
   public createTask() {
     const taskModel = new TaskModel(this.taskForm.value);
     delete taskModel.id;
-    if(taskModel.nextTask.id === 'initial') {
+    if (taskModel.nextTask.id === 'initial') {
       taskModel.allow = true;
     }
-    this.taskService.createTask(taskModel).subscribe(result => {
-      this.snackBar.open('Задание успешно созданно', '', {
+    const createTask = this.taskService.createTask(taskModel).subscribe(result => {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_CREATED'), '', {
         duration: 2000,
         panelClass: ['success']
       });
       this.location.back();
     });
+    this.subscription.add(createTask);
   }
   public changeCourse(courseId: string) {
-    console.log(this.taskForm);
     this.getAllTasks(courseId);
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

@@ -1,5 +1,5 @@
 <div class="process-tasks-popup">
-  <h3 mat-dialog-title>Задания сейчас выполняют</h3>
+  <h3 mat-dialog-title>{{'TEMPLATE.TASK_LIST.COACH.TASKS_IN_PROGRESS' | translate}}</h3>
   <div mat-dialog-content class="process-tasks-wrap">
    <div class="item" *ngFor="let user of processingUsers; let i = index">
     <h6>{{user.userName}}</h6>
@@ -9,5 +9,5 @@
   </div>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-stroked-button class="cancel" (click)="onNoClick()">Закрыть</button>
+  <button mat-stroked-button class="cancel" (click)="onNoClick()">{{'COMMON.CLOSE' | translate}}</button>
 </div>

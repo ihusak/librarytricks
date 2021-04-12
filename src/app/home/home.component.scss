@@ -3,7 +3,8 @@
 .main {
     background-image: url('./../../assets/img/bg.jpg');
     background-size: cover;
-    height: 100%;
+    height: auto;
+    min-height: 100%;
     .logo {
         max-width: 40px;
         max-height: 45px;
@@ -15,15 +16,37 @@
         position: absolute;
         top: 0;
         &.mat-toolbar-single-row {
-            background-color: $white !important;
+            background-color: transparent !important;
         }
         .nav {
             li {
                 display: inline-block;
                 margin-left: 25px;
+                app-language {
+                  ::ng-deep {
+                    .mat-button-wrapper {
+                      mat-icon {
+                        color: #fff;
+                      }
+                    }
+                  }
+                }
+                &.contact {
+                  a {
+                    width: 30px;
+                    height: 40px;
+                    position: relative;
+                    top: 5px;
+                    img {
+                      width: 25px;
+                      filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(327deg) brightness(104%) contrast(102%);
+                    }
+                  }
+                }
                 a {
-                    color: #000;
+                    color: #fff;
                     text-decoration: none;
+                    font-size: 12px;
                 }
             }
         }
@@ -31,10 +54,7 @@
     .spacer {
         flex: 1 1 auto;
       }
-      .view {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
+    .view {
+      padding: 100px 50px;
+    }
 }

@@ -1,7 +1,6 @@
 .logo {
-    margin-left: 15px;
-    max-width: 40px;
-    max-height: 45px;
+    max-width: 29px;
+    max-height: 29px;
     img {
         width: 100%;
     }
@@ -20,6 +19,14 @@
 }
 button {
   margin-right: 15px;
+}
+app-language {
+  margin-right: 20px;
+}
+.help-info {
+  line-height: 10px;
+  margin-right: 10px;
+  color: #000;
 }
 .spacer {
     flex: 1 1 auto;

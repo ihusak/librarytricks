@@ -7,7 +7,6 @@ import { SharedModule } from '../shared/shared.module';
 import { RegisterService } from './register/register.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './login/login.service';
-import { AuthGuardService } from '../main/guards/login.guard';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ConfirmComponent } from './confirm/register/confirm.component';
@@ -38,6 +37,6 @@ import { TranslateModule } from '@ngx-translate/core';
   exports: [
     HomeRoutingModule
   ],
-  providers: [RegisterService, LoginService, AuthGuardService, ConfirmService]
+  providers: [RegisterService, LoginService, ConfirmService]
 })
 export class HomeModule { }

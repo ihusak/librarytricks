@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AppService } from 'src/app/app.service';
 import { User } from 'src/app/shared/interface/user.interface';
 import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -14,27 +15,26 @@ import { Subscription } from 'rxjs';
 export class LoginComponent implements OnInit, OnDestroy {
   email = '';
   pass = '';
-  loginMessage: string;
-  private subscription: Subscription;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private loginService: LoginService,
     private appService: AppService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private translateService: TranslateService
     ) { }
 
   ngOnInit() {
   }
   loginUser(email: string, pass: string) {
-    this.subscription = this.loginService.loginUser(email, pass).subscribe((user: User) => {
+    const login = this.loginService.loginUser(email, pass).subscribe((user: User) => {
      this.appService.setUserDataToLocalStorage(user.tokens, user.id, user.role);
-     console.log('CALLED', user);
      this.loginService.userId = user.id;
      if (user.id && user.confirmed) {
       this.router.navigate(['main/dashboard']);
       localStorage.setItem('userId', user.id);
-      this.snackBar.open('Success', '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.LOGIN'), '', {
         duration: 2000,
         panelClass: ['success']
       });
@@ -42,18 +42,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     },
     (error) => {
       const err = error.error;
-      const errorMessage = err.errorMessage;
-      this.loginMessage = errorMessage;
-      this.snackBar.open(errorMessage, '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey), '', {
         duration: 2000,
         panelClass: ['error']
       });
-      console.log(error);
     });
+    this.subscription.add(login);
   }
  ngOnDestroy() {
-   if (this.subscription) {
-     this.subscription.unsubscribe();
-   }
+  this.subscription.unsubscribe();
  }
 }

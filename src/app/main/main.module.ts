@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { MainRoutingModule } from './main-routing.module';
 import { CommonModule } from '@angular/common';
 import { MainComponent } from './main.component';
-import { AppMaterialModule } from '../shared/material.module';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HeaderComponent } from './layouts/header/header.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,8 +21,11 @@ import {TranslateModule} from '@ngx-translate/core';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { YouTubePlayerModule } from '@angular/youtube-player';
 import { AboutUsComponent } from './components/about-us/about-us.component';
-import { PrivacyPolicyComponent } from './components/privacy-policy/privacy-policy.component';
 import { NgxMaskModule } from 'ngx-mask';
+import { VersionsComponent } from './components/versions/versions.component';
+import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
+import { LanguageComponent } from './layouts/language/language.component';
+import { ErrorPageComponent } from './layouts/error-page/error-page.component';
 
 @NgModule({
   declarations: [
@@ -37,12 +39,13 @@ import { NgxMaskModule } from 'ngx-mask';
     AdminRequestPermissionPopupComponent,
     PaymentsComponent,
     AboutUsComponent,
-    PrivacyPolicyComponent
+    VersionsComponent,
+    HowToUseComponent,
+    ErrorPageComponent
   ],
   imports: [
     CommonModule,
     MainRoutingModule,
-    AppMaterialModule,
     MatSidenavModule,
     MatIconModule,
     MatMenuModule,
@@ -50,7 +53,7 @@ import { NgxMaskModule } from 'ngx-mask';
     PipesModule,
     TranslateModule,
     YouTubePlayerModule,
-    NgxMaskModule.forRoot(),
+    NgxMaskModule.forRoot()
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent],

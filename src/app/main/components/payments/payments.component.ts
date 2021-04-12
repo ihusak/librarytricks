@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
 import { environment } from 'src/environments/environment';
 import { MainService } from '../../main.service';
@@ -6,6 +6,8 @@ import { TaskService } from '../tasks/tasks.service';
 import { DOCUMENT } from '@angular/common';
 import { Checkout, PaymentsService } from './payments.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 interface WindowPayment extends Window {
   LiqPayCheckout: any;
@@ -18,13 +20,14 @@ interface WindowPayment extends Window {
   encapsulation: ViewEncapsulation.None,
   providers: [PaymentsService, { provide: 'Window',  useValue: window }]
 })
-export class PaymentsComponent implements OnInit {
+export class PaymentsComponent implements OnInit, OnDestroy {
   public coursesList: CourseInterface[] = [];
   public paidCourses: Checkout[] = [];
   public selectedCourse: CourseInterface = null;
   public userInfo;
   public sign_string: string = '';
   public signature: string = '';
+  private subscription: Subscription = new Subscription();
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -33,6 +36,7 @@ export class PaymentsComponent implements OnInit {
     private mainService: MainService,
     private renderer2: Renderer2,
     private paymentsService: PaymentsService,
+    private translateService: TranslateService,
     private snackBar: MatSnackBar
   ) {
     this.userInfo = mainService.userInfo;
@@ -40,18 +44,19 @@ export class PaymentsComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.taskService.getAllCourses().subscribe((courses: CourseInterface[]) => {
+    const getAllCourses = this.taskService.getAllCourses().subscribe((courses: CourseInterface[]) => {
       this.coursesList = courses.filter((course: CourseInterface) => {
         return course.coachId === this.userInfo.coach.id || course.forAll && course.price;
       });
-      this.paymentsService.getPaidCourses(this.userInfo.id).subscribe((paid: Checkout[]) => {
+      const getPaidCourses = this.paymentsService.getPaidCourses(this.userInfo.id).subscribe((paid: Checkout[]) => {
         this.paidCourses = paid;
         this.coursesList = this.coursesList.filter(course => {
           return paid.find((paid: Checkout) => paid.course.id === course.id || course.price > 0) || course.price > 0;
         });
       });
+      this.subscription.add(getPaidCourses);
     });
-    console.log(this);
+    this.subscription.add(getAllCourses);
   }
 
   public changeCourse(course: CourseInterface) {
@@ -69,10 +74,11 @@ export class PaymentsComponent implements OnInit {
       description: `Оплата курса ${course.name.toUpperCase()}`,
       order_id: this.userInfo.id + course.id
     };
-    this.paymentsService.preparePayment(PAYMENT).subscribe((res: any) => {
+    const preparePayment = this.paymentsService.preparePayment(PAYMENT).subscribe((res: any) => {
       this.sign_string = res.data;
       this.signature = res.signature;
     });
+    this.subscription.add(preparePayment);
   }
 
   public pay() {
@@ -83,8 +89,6 @@ export class PaymentsComponent implements OnInit {
       embedTo: "#liqpay_checkout",
       mode: "embed" // embed || popup,
         }).on("liqpay.callback", function(data){
-      console.log(data.status);
-      console.log(data);
       if(data.status === (environment.production ? 'wait_accept' : 'success')) {
         const CHECKOUT = {
           course: {
@@ -100,13 +104,14 @@ export class PaymentsComponent implements OnInit {
             roleName: self.userInfo.role.name
           },
         };
-        self.paymentsService.checkout(CHECKOUT).subscribe(res => {
+        const checkout = self.paymentsService.checkout(CHECKOUT).subscribe(res => {
           this.ngOnInit();
-          this.snackBar.open('Курс успешно оплачен', '', {
+          this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.COURSE_SUCCESSFULLY_PAID'), '', {
             duration: 2000,
             panelClass: ['success']
           });
-        })
+        });
+        this.subscription.add(checkout);
       }
       }).on("liqpay.ready", function(data){
         console.log('ready', data);
@@ -134,5 +139,8 @@ export class PaymentsComponent implements OnInit {
   public youTubeGetID(url: any): string {
     url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
     return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

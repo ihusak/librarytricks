@@ -8,11 +8,17 @@ import { QuillModule } from 'ngx-quill';
 import { HomeworksRoutingModule } from './homeworks-routing.module';
 import { HomeworkListComponent } from './homework-list/homework-list.component';
 import { HomeworksComponent } from './homeworks.component';
+import { CreateHomeworkComponent } from './create-homework/create-homework.component';
+import { HomeworksService } from './homeworks.service';
+import { UpdateHomeworkComponent } from './update-homework/update-homework.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
     HomeworksComponent,
-    HomeworkListComponent
+    HomeworkListComponent,
+    CreateHomeworkComponent,
+    UpdateHomeworkComponent
   ],
   imports: [
     CommonModule,
@@ -21,9 +27,11 @@ import { HomeworksComponent } from './homeworks.component';
     HomeworksRoutingModule,
     ReactiveFormsModule,
     YouTubePlayerModule,
+    TranslateModule,
     QuillModule.forRoot()
   ],
-  entryComponents: [HomeworkListComponent]
+  entryComponents: [HomeworkListComponent],
+  providers: [HomeworksService]
 })
 export class HomeworksModule {
 

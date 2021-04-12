@@ -1,17 +1,17 @@
 <div class="pass-task-popup">
-  <h3 mat-dialog-title>Сдать задачу <b>"{{task.title}}"</b></h3>
+  <h3 mat-dialog-title>{{'TEMPLATE.TASK_LIST.STUDENT.PASS_TASK_MODAL.TITLE'| translate: {name: task.title} }}</h3>
   <div mat-dialog-content class="pass-task-wrap">
-    <p>Для того что бы сдать задание, тебе нужно снять видео и выложить его у себя в социальной сети <b>(instagram, YouTube, facebook, vimeo, TikTok)</b>.</p>
-    <p>Твой профиль должен быть открыт, или у тренера ({{userInfo.coach.name}}) должен быть доступ к твоему аккаунту</p>
+    <p innerHtml="{{'TEMPLATE.TASK_LIST.STUDENT.PASS_TASK_MODAL.INFO_VIDEO'| translate: {network: 'YouTube'} }}"></p>
+    <p innerHtml="{{'TEMPLATE.TASK_LIST.STUDENT.PASS_TASK_MODAL.NETWORK_SETTING'| translate: {coach: userInfo.coach.name} }}"></p>
     <div class="item">
-      <h3>Ссылка на твое задание</h3>
+      <h3>{{'TEMPLATE.TASK_LIST.STUDENT.PASS_TASK_MODAL.LINK_TO_YOUR_VIDEO'| translate}}</h3>
       <mat-form-field>
-        <input matInput placeholder="URL на видео" required [(ngModel)]="reviewExample">
+        <input matInput placeholder="{{'TEMPLATE.TASK_LIST.STUDENT.PASS_TASK_MODAL.VIDEO_URL'| translate}}" required [(ngModel)]="reviewExample" (ngModelChange)="validUrl(reviewExample)">
       </mat-form-field>
     </div>
   </div>
 </div>
 <div mat-dialog-actions align="end">
-  <button mat-stroked-button class="cancel" (click)="onNoClick()">Отмена</button>
-  <button mat-raised-button color="primary" [disabled]="!reviewExample" (click)="request()" cdkFocusInitial>Сдать</button>
+  <button mat-stroked-button class="cancel" (click)="onNoClick()">{{'COMMON.CLOSE'| translate}}</button>
+  <button mat-raised-button color="primary" [disabled]="!valid" (click)="request()" cdkFocusInitial>{{'TEMPLATE.TASK_LIST.STUDENT.PASS_TASK'| translate}}</button>
 </div>

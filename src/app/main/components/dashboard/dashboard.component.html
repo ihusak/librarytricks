@@ -3,19 +3,19 @@
     <div class="card-icon green">
       <i class="material-icons">follow_the_signs</i>
     </div>
-    <h5>Прогресс <span *ngIf="currentStudent && (userInfo | userRolePipe:[userRoles.PARENT])">{{currentStudent.userName}}</span></h5>
-    <div class="no-student" *ngIf="!currentStudent">Нет данных</div>
+    <h5>{{'COMMON.PROGRESS' | translate}} <span *ngIf="currentStudent && (userInfo | userRolePipe:[userRoles.PARENT])">{{currentStudent.userName}}</span></h5>
+    <div class="no-student" *ngIf="!currentStudent">{{'COMMON.EMPTY' | translate}}</div>
     <div class="content" *ngIf="currentStudent">
       <div class="select-student" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
         <mat-form-field>
-          <mat-label>Выбор ученика</mat-label>
+          <mat-label>{{'TEMPLATE.DASHBOARD.SELECT_STUDENT' | translate}}</mat-label>
           <mat-select [compareWith]="compareObjectsStudents" [(ngModel)]="currentStudent" #selectedValue (valueChange)="changeStudent(selectedValue.value)">
             <mat-option *ngFor="let student of studentsList" [value]="student">{{student.userName}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
       <div class="group" *ngIf="userInfo.course">
-        Группа: {{userInfo.course.name}}
+        {{'COMMON.COURSE' | translate}}: {{userInfo.course.name}}
       </div>
       <div class="result">
         <span class="number">{{currentStudent ? calculateProgress(currentStudent) : calculateProgress(userInfo)}}%</span>
@@ -24,8 +24,7 @@
         'orange': currentStudent ? currentStudent.progress > 20 : userInfo.progress > 20 && currentStudent ? currentStudent.progress <= 70 : userInfo.progress <= 70,
         'green': currentStudent ? currentStudent.progress > 70 : userInfo.progress > 70 && currentStudent ? currentStudent.progress <= 100 : userInfo.progress <= 100}" mode="determinate" [value]="currentStudent ? currentStudent.progress : userInfo.progress"></mat-progress-bar>
       </div>
-      <div class="done-tasks" *ngIf="studentTasks && doneTasks">
-        Заданий выполнено: <b>{{doneTasks.length}} из {{studentTasks.length}}</b>
+      <div class="done-tasks" *ngIf="studentTasks && doneTasks" [innerHtml]="'TEMPLATE.DASHBOARD.DONE_TASKS' | translate: {done: doneTasks.length, count: studentTasks.length} ">
       </div>
       <div class="tasks">
         <ul>
@@ -41,11 +40,11 @@
     <div class="card-icon orange">
       <i class="material-icons">leaderboard</i>
     </div>
-    <h5>Рейтинг в группе</h5>
+    <h5>{{'TEMPLATE.DASHBOARD.COURSE_RATING' | translate}}</h5>
     <div class="content">
       <div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
         <mat-form-field>
-          <mat-label>Выбор группы</mat-label>
+          <mat-label>{{'COMMON.SELECT_COURSE' | translate}}</mat-label>
           <mat-select [compareWith]="compareObjectsCourses" [(ngModel)]="currentCourse" #selectedValue (valueChange)="changeCourse(selectedValue.value)">
             <mat-option *ngFor="let course of selectCourses" [value]="course">{{course.name}}</mat-option>
           </mat-select>
@@ -59,30 +58,30 @@
 
           <!-- Position Column -->
           <ng-container matColumnDef="Позиция">
-            <th mat-header-cell *matHeaderCellDef> Позиция </th>
+            <th mat-header-cell *matHeaderCellDef> {{'COMMON.POSITION' | translate}} </th>
             <td mat-cell *matCellDef="let student, let index = index"> {{index + 1}} </td>
           </ng-container>
 
           <!-- Name Column -->
           <ng-container matColumnDef="Имя">
-            <th mat-header-cell *matHeaderCellDef> Имя </th>
+            <th mat-header-cell *matHeaderCellDef> {{'COMMON.NAME' | translate}} </th>
             <td mat-cell *matCellDef="let student"> {{student.userName}} </td>
           </ng-container>
 
           <!-- Weight Column -->
-          <ng-container matColumnDef="Группа">
-            <th mat-header-cell *matHeaderCellDef> Группа </th>
+          <ng-container matColumnDef="Курс">
+            <th mat-header-cell *matHeaderCellDef> {{'COMMON.COURSE' | translate}} </th>
             <td mat-cell *matCellDef="let student"> {{student.course ? student.course.name : ''}} </td>
           </ng-container>
 
           <!-- Symbol Column -->
           <ng-container matColumnDef="Рейтинг">
-            <th mat-header-cell *matHeaderCellDef> Рейтинг </th>
+            <th mat-header-cell *matHeaderCellDef> {{'COMMON.RATING' | translate}} </th>
             <td mat-cell *matCellDef="let student"> {{student.rating}} </td>
           </ng-container>
 
           <ng-container matColumnDef="Прогресс">
-            <th mat-header-cell *matHeaderCellDef> Прогресс </th>
+            <th mat-header-cell *matHeaderCellDef> {{'COMMON.PROGRESS' | translate}} </th>
             <td mat-cell *matCellDef="let student"> {{calculateProgress(student)}}% </td>
           </ng-container>
 
@@ -90,7 +89,7 @@
           <tr mat-row *matRowDef="let row; columns: studentTableColumns;"></tr>
         </table>
         <div class="empty" *ngIf="studentsList && studentsList.length <= 0">
-          Список пуст
+          {{'COMMON.EMPTY' | translate}}
         </div>
       </div>
     </div>
@@ -99,31 +98,31 @@
     <div class="card-icon red">
       <i class="material-icons">school</i>
     </div>
-      <h5>Текущая задача</h5>
+      <h5>{{'COMMON.CURRENT_TASK' | translate}}</h5>
       <div class="content">
-        <p>Название задания: {{userInfo.currentTask.title}}</p>
-        <span>Описание задачи: </span><span [innerHtml]="userInfo.currentTask.description"></span>
-        <p>Текущий статус: <b>{{userInfo.currentTask.status}}</b></p>
+        <p>{{'COMMON.TASK_NAME' | translate}}: {{userInfo.currentTask.title}}</p>
+        <span>{{'COMMON.TASK_DESCRIPTION' | translate}}: </span><span [innerHtml]="userInfo.currentTask.description"></span>
+        <p>{{'COMMON.CURRENT_STATUS' | translate}}: <b>{{userInfo.currentTask.status}}</b></p>
       </div>
   </div>
   <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.PARENT]) && coachInfo">
     <div class="card-icon blue">
       <i class="material-icons">record_voice_over</i>
     </div>
-    <h5>Тренер</h5>
+    <h5>{{'COMMON.COACH' | translate}}</h5>
     <div class="content">
       <p><b>{{coachInfo.userName}}</b></p>
-      <p>Телефон: {{coachInfo.phone}}</p>
-      <p>Инстаграм: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'Нету'}}</p>
-      <p>Фейсбук: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'Нету'}}</p>
-      <p>БИО: {{coachInfo.aboutMe ? coachInfo.aboutMe : 'Пусто'}}</p>
+      <p>{{'COMMON.PHONE' | translate}}: {{coachInfo.phone ? coachInfo.phone :  'COMMON.EMPTY' | translate}}</p>
+      <p>{{'COMMON.SOCIAL_NETWORKS.INSTAGRAM' | translate}}: {{coachInfo.socialNetworks.instagram ? coachInfo.socialNetworks.instagram : 'COMMON.EMPTY' | translate}}</p>
+      <p>{{'COMMON.SOCIAL_NETWORKS.FACEBOOK' | translate}}: {{coachInfo.socialNetworks.facebook ? coachInfo.socialNetworks.facebook : 'COMMON.EMPTY' | translate}}</p>
+      <p>{{'COMMON.BRIEF' | translate}}: {{coachInfo.aboutMe ? coachInfo.aboutMe : 'COMMON.EMPTY' | translate}}</p>
     </div>
   </div>
   <div class="item rewards" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.coach">
     <div class="card-icon purple">
       <i class="material-icons">plus_one</i>
     </div>
-    <h5>Мои награды</h5>
+    <h5>{{'COMMON.REWARDS' | translate}}</h5>
     <div class="content">
       <span class="rating">{{userInfo.rating}}</span>
       <p>skillz</p>
@@ -131,7 +130,7 @@
   </div>
 </div>
 <div class="messages">
-  <h4 *ngIf="(userInfo | userRolePipe:[userRoles.PARENT]) && !userInfo.myKid">Что бы увидеть прогресс своего ребенка вам нужно его закрепить в настройках своего профиля (<a routerLink="../profile">Перейти в настройки профиля</a>)</h4>
+  <h4 *ngIf="(userInfo | userRolePipe:[userRoles.PARENT]) && !userInfo.myKid" [innerHtml]="'TEMPLATE.DASHBOARD.PARENT_SHOULD_SELECT_KID' | translate"></h4>
 </div>
 <!-- <h1>Librarytricks online school</h1>
 <h3>ШОКЛА ОБУЧЕНИЯ ФУТБОЛЬНОМУ МАСТЕРСТВУ</h3>

@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { MainService } from './main.service';
 import { AppService } from '../app.service';
 import { ProfileService } from './components/profile/profile.service';
 import { StudentInfoInterface, CoachInfoInterface, ParentInfoInterface, AdminInfoInterface } from '../shared/interface/user-info.interface';
 import * as moment from 'moment';
 import { User } from '../shared/interface/user.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-main',
@@ -12,12 +13,13 @@ import { User } from '../shared/interface/user.interface';
   styleUrls: ['./main.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, OnDestroy {
   toggleSideNav: boolean;
   userInfo: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface;
   user: User;
   sidenavCollapsed;
   public alwaysOpenedSidenav = true;
+  private subscription: Subscription = new Subscription();
 
   constructor(
     private mainService: MainService,
@@ -35,14 +37,15 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.getUserInfo();
-    this.appService.userInfoSubject.subscribe((userInfo: any) => {
+    const userSubject = this.appService.userInfoSubject.subscribe((userInfo: any) => {
       this.userInfo = userInfo;
       this.mainService.userInfo = userInfo;
     });
+    this.subscription.add(userSubject);
   }
 
   private getUserInfo() {
-    this.profileService.getUserInfo().subscribe(
+    const userInfo = this.profileService.getUserInfo().subscribe(
       (userInfoData: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface) =>
       {
       if(userInfoData.startTraining) {
@@ -52,8 +55,12 @@ export class MainComponent implements OnInit {
       // this.userInfo = userInfoData;
       // this.mainService.userInfo = userInfoData;
     });
+    this.subscription.add(userInfo);
   }
   public toggleCollapsed() {
     this.toggleSideNav = !this.toggleSideNav;
+  }
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }
