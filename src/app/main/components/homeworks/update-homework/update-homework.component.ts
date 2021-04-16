@@ -63,7 +63,7 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
   }
 
   compareStudents(o1: any, o2: any): boolean {
-    return o1 && o2 ? o1.userName === o2.name : o2 === o2;
+    return o1 && o2 ? o1.id === o2.id : o2 === o2;
     // return o1.userName === o2.name && o1._id === o2.id;
   }
   public updateHomework() {
