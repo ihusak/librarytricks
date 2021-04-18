@@ -17,6 +17,7 @@ import { MainHomeComponent } from './main-home/main-home.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ForgotPasswordService } from './forgot-password/forgot-password.service';
+import { RecoverPasswordComponent } from './forgot-password/recover-password/recover-password.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ForgotPasswordService } from './forgot-password/forgot-password.service
     ConfirmComponent,
     CoachComponent,
     MainHomeComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    RecoverPasswordComponent
   ],
   imports: [
     CommonModule,
