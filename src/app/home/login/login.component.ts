@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { LoginService } from './login.service';
+import {LoginErrorMessage, LoginService} from './login.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AppService } from 'src/app/app.service';
+import {AppService, ServerErrorMessage} from 'src/app/app.service';
 import { User } from 'src/app/shared/interface/user.interface';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -42,12 +42,12 @@ export class LoginComponent implements OnInit, OnDestroy {
      }
     },
     (error) => {
-      const err = error.error;
+      const err: ServerErrorMessage = error.error;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey), '', {
         duration: 2000,
         panelClass: ['error']
       });
-      if(err.code === 400) {
+      if (err.code === 400 && err.errorMessage === LoginErrorMessage.WRONG_PASSWORD) {
         this.forgotPass = true;
       }
     });

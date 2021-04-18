@@ -1,19 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AppService } from 'src/app/app.service';
+import {map} from 'rxjs/operators';
 
 export interface RecoveryPasswordInterface {
-  email: string;
-  newPassword: string;
-};
+  token: string;
+  code: string;
+}
 
 @Injectable()
 export class ForgotPasswordService extends AppService {
+  private token: string;
 
-  public recoveryPassword(recoveryPasswordData: RecoveryPasswordInterface): Observable<any> {
-    return this.http.post(`${this.apiUrl()}/users/recovery`, {
-      email: recoveryPasswordData.email,
-      newPassword: recoveryPasswordData.newPassword
-    });
+  get remindToken(): string {
+    return this.token;
+  }
+
+  set remindToken(value: string) {
+    this.token = value;
+  }
+
+  public recoveryPassword(password: string, token: string): Observable<any> {
+    return this.http.post(`${this.apiUrl()}/recovery`, {password, token}).pipe(map((response) => {
+      return response;
+    }));
+  }
+  public remind(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl()}/recovery/remind`, {email}).pipe(map((response) => {
+      return response;
+    }));
+  }
+  public confirmResetPassword(token: string, code: number): Observable<any> {
+    return this.http.post(`${this.apiUrl()}/recovery/confirm`, {token, code}).pipe(map((response) => {
+      return response;
+    }));
   }
 }
