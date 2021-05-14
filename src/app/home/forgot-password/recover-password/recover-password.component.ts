@@ -37,14 +37,14 @@ export class RecoverPasswordComponent implements OnInit, OnDestroy {
     const password = this.resetPassFrom.get('password').value;
     const token = this.forgotPasswordService.remindToken;
     const recoveryPassword = this.forgotPasswordService.recoveryPassword(password, token).subscribe(res => {
-      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.PASSWORD_RECOVERED', {email: this.resetPassFrom.get('email').value}), '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.PASSWORD_RECOVERED'), '', {
         duration: 10000,
         panelClass: ['success']
       });
       this.router.navigate(['/login']);
     }, (error) => {
       const err = error.error;
-      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey, {email: this.resetPassFrom.get('email').value}), '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey), '', {
         duration: 10000,
         panelClass: ['error']
       });
