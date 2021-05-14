@@ -27,6 +27,7 @@ export class ForgotPasswordComponent implements OnDestroy {
     this.forgotPasswordService.remind(email).subscribe(res => {
       console.log(res);
       this.token = res.token;
+      this.forgotPasswordService.remindToken = res.token;
     }, (error) => {
       const err = error.error;
       this.snackBar.open(this.translateService.instant('COMMON.' + err.errKey), '', {
@@ -34,6 +35,14 @@ export class ForgotPasswordComponent implements OnDestroy {
         panelClass: ['error']
       });
     });
+  }
+  public confirmResetPassword(code: number) {
+    this.forgotPasswordService.confirmResetPassword(this.token, code).subscribe(res => {
+      console.log(res);
+      if(res.success) {
+        this.router.navigate(['/recovery']);
+      }
+    })
   }
 
   ngOnDestroy() {
