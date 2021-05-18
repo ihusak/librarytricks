@@ -3,11 +3,6 @@ import { Observable } from 'rxjs';
 import { AppService } from 'src/app/app.service';
 import {map} from 'rxjs/operators';
 
-export interface RecoveryPasswordInterface {
-  token: string;
-  code: string;
-}
-
 @Injectable()
 export class ForgotPasswordService extends AppService {
   private token: string;

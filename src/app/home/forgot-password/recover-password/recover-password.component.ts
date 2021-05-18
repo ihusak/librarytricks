@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ForgotPasswordService, RecoveryPasswordInterface} from '../forgot-password.service';
+import {ForgotPasswordService} from '../forgot-password.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {Router} from '@angular/router';
@@ -26,6 +26,11 @@ export class RecoverPasswordComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
+    const token = this.forgotPasswordService.remindToken;
+    if(!token) {
+      this.router.navigate(['/']);
+      return
+    }
   }
   private matchPassword(group: any) {
     const password = group.get('password').value;
@@ -36,6 +41,10 @@ export class RecoverPasswordComponent implements OnInit, OnDestroy {
   public recoveryPassword() {
     const password = this.resetPassFrom.get('password').value;
     const token = this.forgotPasswordService.remindToken;
+    if(!token) {
+      this.router.navigate(['/']);
+      return
+    }
     const recoveryPassword = this.forgotPasswordService.recoveryPassword(password, token).subscribe(res => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.PASSWORD_RECOVERED'), '', {
         duration: 10000,
