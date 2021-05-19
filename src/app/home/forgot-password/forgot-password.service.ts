@@ -25,6 +25,11 @@ export class ForgotPasswordService extends AppService {
       return response;
     }));
   }
+  public resendCode(token: string): Observable<any> {
+    return this.http.post(`${this.apiUrl()}/recovery/resend`, {token}).pipe(map((response) => {
+      return response;
+    }));
+  }
   public confirmResetPassword(token: string, code: number): Observable<any> {
     return this.http.post(`${this.apiUrl()}/recovery/confirm`, {token, code}).pipe(map((response) => {
       return response;
