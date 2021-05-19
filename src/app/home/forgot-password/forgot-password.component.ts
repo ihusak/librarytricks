@@ -33,6 +33,7 @@ export class ForgotPasswordComponent implements OnDestroy {
     this.forgotPasswordService.remind(email).subscribe(res => {
       this.token = res.token;
       this.forgotPasswordService.remindToken = res.token;
+      this._countDown();
     }, (error) => {
       const err = error.error;
       this.snackBar.open(this.translateService.instant('COMMON.' + err.errKey), '', {
@@ -40,32 +41,48 @@ export class ForgotPasswordComponent implements OnDestroy {
         panelClass: ['error']
       });
     });
-    setTimeout(() => {
-      this.disabledRequest = false;
-      clearInterval(setCountDown);
-    }, REQUEST_INTERVAL);
-    const setCountDown = setInterval(() => {
-      if(this.countDown > 0) {
-        this.countDown = this.countDown - 1000;
-      }
-    }, 1000);
+  }
+  public resendCode() {
+    this.disabledRequest = true;
+    this.countDown = REQUEST_INTERVAL;
+    if (this.token) {
+      this._countDown();
+      this.forgotPasswordService.resendCode(this.token).subscribe(res => {
+        this.token = res.token;
+        this.forgotPasswordService.remindToken = res.token;
+        this.snackBar.open(this.translateService.instant('TEMPLATE.FORGOT_PASSWORD.CODE_SUCCESSFULLY_RESEND'), '', {
+          duration: 2000,
+          panelClass: ['success']
+        });
+      });
+    }
   }
   public confirmResetPassword(code: number) {
     this.forgotPasswordService.confirmResetPassword(this.token, code).subscribe(res => {
-      if(res.success) {
+      if (res.success) {
         this.router.navigate(['/recovery']);
       }
     }, (error) => {
       const err = error.error;
-      if(err.code === 400) {
+      if (err.code === 400) {
         this.snackBar.open(this.translateService.instant('TEMPLATE.FORGOT_PASSWORD.' + err.errKey), '', {
           duration: 2000,
           panelClass: ['error']
         });
       }
-    })
+    });
   }
-
+  private _countDown() {
+    setTimeout(() => {
+      this.disabledRequest = false;
+      clearInterval(setCountDown);
+    }, REQUEST_INTERVAL);
+    const setCountDown = setInterval(() => {
+      if (this.countDown >= 0) {
+        this.countDown = this.countDown - 1000;
+      }
+    }, 1000);
+  }
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
