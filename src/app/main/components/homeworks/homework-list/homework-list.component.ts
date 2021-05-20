@@ -36,6 +36,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
       } else {
         this.homeworksList = hm;
       }
+      this.sortHomeworks(this.homeworksList);
     });
     this.breakpoint = (window.innerWidth <= 1200) ? 1 : 4;
     this.subscription.add(getAllHomeworks);
@@ -75,6 +76,13 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   }
   public onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 1200) ? 1 : 4;
+  }
+  private sortHomeworks(homeworks: HomeworkInterface[]) {
+    homeworks = homeworks.sort((a, b) => {
+      let aDate = new Date(a.createdDate).getTime();
+      let bDate = new Date(b.createdDate).getTime();
+      return bDate - aDate;
+    })
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
