@@ -31,6 +31,7 @@
             </div> -->
         </div>
         <div class="line-block"><a class="sign-up" routerLink="/register">{{'TEMPLATE.LOGIN.DONT_HAVE_ACCOUNT' | translate}}</a></div>
+        <div *ngIf="forgotPass" class="line-block"><a class="forgot-password" routerLink="/forgot-password">{{'TEMPLATE.FORGOT_PASSWORD.TITLE' | translate}}</a></div>
       </div>
     </div>
   </div>

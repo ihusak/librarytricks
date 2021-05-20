@@ -37,7 +37,7 @@ export class AuthInterceptor implements HttpInterceptor {
           if (err.status === 403) {
             this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_RECOVERED'), '', {
               duration: 2000,
-              panelClass: ['error']
+              panelClass: ['success']
             });
             return this.handleExpireToken(req, next);
           } else if (err.status === 401) {

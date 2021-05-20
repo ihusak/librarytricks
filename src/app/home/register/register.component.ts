@@ -61,24 +61,24 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
   registerUser() {
     const userForm: UserFormInterface = this.registerUserFrom.value;  
-    // const registerUser = this.registerService.registerUser(userForm).subscribe((result) => {
-    //   if (result._id) {
-    //     this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.REGISTER', {email: userForm.email}), '', {
-    //       duration: 10000,
-    //       panelClass: ['success']
-    //     });
-    //     this.registerUserFrom.reset();
-    //     this.router.navigate(['/login']);
-    //   }
-    // },
-    // (error) => {
-    //   const err = error.error;
-    //   this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey), '', {
-    //     duration: 10000,
-    //     panelClass: ['error']
-    //   });
-    // });
-    // this.subscription.add(registerUser);
+    const registerUser = this.registerService.registerUser(userForm).subscribe((result) => {
+      if (result._id) {
+        this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.REGISTER', {email: userForm.email}), '', {
+          duration: 10000,
+          panelClass: ['success']
+        });
+        this.registerUserFrom.reset();
+        this.router.navigate(['/login']);
+      }
+    },
+    (error) => {
+      const err = error.error;
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey), '', {
+        duration: 10000,
+        panelClass: ['error']
+      });
+    });
+    this.subscription.add(registerUser);
   }
   private mathcPassword(group: any) {
     const password = group.get('password').value;
