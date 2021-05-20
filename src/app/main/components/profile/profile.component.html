@@ -27,6 +27,11 @@
            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
            <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
+        <mat-form-field *ngIf="userInfoData | userRolePipe:[userRoles.STUDENT]">
+          <input formControlName="birthDay" matInput [matDatepicker]="picker" placeholder="{{'COMMON.BIRTHDAY' | translate}}" required>
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+       </mat-form-field>
         <mat-form-field *ngIf="!(userInfoData | userRolePipe:[userRoles.ADMIN])">
            <textarea formControlName="aboutMe" matInput placeholder="{{'TEMPLATE.PROFILE.ABOUT_ME' | translate}}"></textarea>
         </mat-form-field>

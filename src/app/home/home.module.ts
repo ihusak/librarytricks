@@ -15,6 +15,9 @@ import { LoginServiceModule } from './login/login.service.module';
 import { CoachComponent } from './confirm/coach/coach.component';
 import { MainHomeComponent } from './main-home/main-home.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { ForgotPasswordService } from './forgot-password/forgot-password.service';
+import { RecoverPasswordComponent } from './forgot-password/recover-password/recover-password.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { TranslateModule } from '@ngx-translate/core';
     RegisterComponent,
     ConfirmComponent,
     CoachComponent,
-    MainHomeComponent
+    MainHomeComponent,
+    ForgotPasswordComponent,
+    RecoverPasswordComponent
   ],
   imports: [
     CommonModule,
@@ -37,6 +42,6 @@ import { TranslateModule } from '@ngx-translate/core';
   exports: [
     HomeRoutingModule
   ],
-  providers: [RegisterService, LoginService, ConfirmService]
+  providers: [RegisterService, LoginService, ConfirmService, ForgotPasswordService]
 })
 export class HomeModule { }

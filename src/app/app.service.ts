@@ -8,6 +8,12 @@ interface Tokens {
   refreshToken: string;
 }
 
+export interface ServerErrorMessage {
+  code: number;
+  errKey: string;
+  errorMessage: string;
+}
+
 export class AppService {
   private domain: string;
   public userInfoSubject: BehaviorSubject<any> = new BehaviorSubject(null);
