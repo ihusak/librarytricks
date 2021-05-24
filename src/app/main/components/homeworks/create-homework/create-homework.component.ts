@@ -10,6 +10,8 @@ import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interfa
 import { HomeworksService } from '../homeworks.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { NotifyInterface } from 'src/app/shared/interface/notify.interface';
+import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
 
 @Component({
   selector: 'app-create-homework',
@@ -56,6 +58,16 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
           duration: 2000,
           panelClass: ['success']
         });
+        let notification: NotifyInterface = {
+          users: HOMEWORK.students,
+          title: 'Домашнее задание',
+          description: 'У вас новое домашнее задание',
+          type: NotificationTypes.HOMEWORKS,
+          hasNotify: false
+        };
+        this.mainService.setNotification(notification).subscribe(res => {
+          console.log(res);
+        })
         this.location.back();
       }
     });

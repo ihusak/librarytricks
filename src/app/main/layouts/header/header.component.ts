@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MainService } from '../../main.service';
 import { AdminRequestPermissionPopupComponent } from '../popups/admin-request-permission-popup/admin-request-permission-popup.component';
 import { Subscription } from 'rxjs';
+import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
+    this.mainService.getNotification().subscribe(res => {
+      console.log(res);
+    });
   }
   public logout() {
     const refreshToken = this.appService.getTokens().refreshToken;

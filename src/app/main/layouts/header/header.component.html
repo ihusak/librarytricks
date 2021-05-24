@@ -7,6 +7,19 @@
     </div>
     <span class="spacer"></span>
     <app-language></app-language>
+    <mat-icon [matMenuTriggerFor]="notificationHeader" matBadge="8" matBadgePosition="before" matBadgeColor="primary">notifications</mat-icon>
+    <mat-menu #notificationHeader="matMenu">
+      <div class="notify-container">
+        <div class="notify-item">
+          <div class="title">Test</div>
+          <div class="desc"> Lorem ipsum somthing texttexttexttexttexttexttexttexttexttext texttexttexttexttext texttexttexttexttext texttexttexttexttext</div>
+        </div>
+        <div class="notify-item">
+          <div class="title">Test</div>
+          <div class="desc"> Lorem ipsum somthing text</div>
+        </div>
+      </div>
+    </mat-menu>
     <button (click)="requestAdminPermission()" mat-stroked-button *ngIf="userInfo.role.id === userRole.COACH && !userInfo.role.status">{{'TEMPLATE.DASHBOARD.COACH_REQUEST.REQUEST_FOR_COACH' | translate}}</button>
     <a class="help-info" [routerLink]="['./how-to-use']"><mat-icon>
       help_outline</mat-icon></a>
