@@ -13,6 +13,9 @@ export class LoaderInterceptorService implements HttpInterceptor {
   constructor(private loaderService: LoaderService) { }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.showLoader();
+    if (req.url.indexOf('notify') > 0) {
+      this.onEnd();
+    }
     return next.handle(req).pipe(tap((event: HttpEvent<any>) => {
       if (event instanceof HttpResponse) {
         this.onEnd();
