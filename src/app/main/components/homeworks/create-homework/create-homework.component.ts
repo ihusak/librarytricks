@@ -22,6 +22,7 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
   public hmForm: FormGroup;
   public initForm: boolean = false;
   public userInfo: any;
+  private userRoles = UserRolesEnum;
   public studentList: StudentInfoInterface[];
   private subscription: Subscription = new Subscription();
 
@@ -58,12 +59,11 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
           duration: 2000,
           panelClass: ['success']
         });
-        let notification: NotifyInterface = {
+        const notification: NotifyInterface = {
           users: HOMEWORK.students,
-          title: 'Домашнее задание',
+          title: 'COMMON.HOMEWORKS',
           description: 'У вас новое домашнее задание',
-          type: NotificationTypes.HOMEWORKS,
-          hasNotify: false
+          userType: this.userRoles.STUDENT
         };
         this.mainService.setNotification(notification).subscribe(res => {
           console.log(res);

@@ -7,6 +7,5 @@ export interface NotifyInterface {
   ];
   title: string;
   description: string;
-  type: string;
-  hasNotify: boolean;
+  userType: number;
 }

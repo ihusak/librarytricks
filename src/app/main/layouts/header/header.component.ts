@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Input() userInfo;
   public userRole = UserRolesEnum;
   private subscription: Subscription = new Subscription();
+  public notifications = [];
 
 
   constructor(
@@ -30,8 +31,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ) { }
 
   ngOnInit() {
-    this.mainService.getNotification().subscribe(res => {
-      console.log(res);
+    this.sendNotifyReq();
+    this.mainService.getDefaultNotification('homeworks').subscribe((res) => {
+      if (res) {
+        this.notifications = [...this.notifications, ...res];
+      }
     });
   }
   public logout() {
@@ -49,6 +53,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
       data: this.userInfo
     });
 
+  }
+  private sendNotifyReq() {
+    this.mainService.getNotification().subscribe(res => {
+      console.log(res);
+      this.notifications = [...this.notifications, ...res];
+      this.sendNotifyReq();
+    }, (err) => {
+      console.log(err);
+      this.sendNotifyReq();
+      // handle err
+    });
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

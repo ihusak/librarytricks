@@ -7,16 +7,12 @@
     </div>
     <span class="spacer"></span>
     <app-language></app-language>
-    <mat-icon [matMenuTriggerFor]="notificationHeader" matBadge="8" matBadgePosition="before" matBadgeColor="primary">notifications</mat-icon>
+    <mat-icon *ngIf="notifications.length" [matMenuTriggerFor]="notificationHeader" [matBadge]="notifications.length" matBadgePosition="before" matBadgeColor="primary">notifications</mat-icon>
     <mat-menu #notificationHeader="matMenu">
       <div class="notify-container">
-        <div class="notify-item">
-          <div class="title">Test</div>
-          <div class="desc"> Lorem ipsum somthing texttexttexttexttexttexttexttexttexttext texttexttexttexttext texttexttexttexttext texttexttexttexttext</div>
-        </div>
-        <div class="notify-item">
-          <div class="title">Test</div>
-          <div class="desc"> Lorem ipsum somthing text</div>
+        <div class="notify-item" *ngFor="let notify of notifications">
+          <div class="title">{{notify.title}}</div>
+          <div class="desc">{{notify.description}}</div>
         </div>
       </div>
     </mat-menu>
