@@ -16,6 +16,7 @@ import { Checkout, PaymentsService } from '../../payments/payments.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 
 @Component({
   selector: 'app-task-list',
@@ -196,6 +197,15 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(course => {
       if (course) {
+        const notification: NotifyInterface = {
+          users: [{id: null}],
+          title: 'COMMON.COURSES',
+          description: 'COMMON.NOTIFY.NEW_COURSE',
+          userType: null
+        };
+        this.mainService.setNotification(notification).subscribe((res: any) => {
+          console.log(res);
+        })
         this.coursesList.push(course);
         course.id = course._id;
         delete course._id;

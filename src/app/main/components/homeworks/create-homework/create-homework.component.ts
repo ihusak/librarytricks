@@ -62,10 +62,10 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
         const notification: NotifyInterface = {
           users: HOMEWORK.students,
           title: 'COMMON.HOMEWORKS',
-          description: 'У вас новое домашнее задание',
+          description: 'COMMON.NOTIFY.NEW_HOMEWORK',
           userType: this.userRoles.STUDENT
         };
-        this.mainService.setNotification(notification).subscribe(res => {
+        this.mainService.setNotification(notification).subscribe((res: any) => {
           console.log(res);
         })
         this.location.back();
