@@ -11,8 +11,11 @@
     <mat-menu #notificationHeader="matMenu">
       <div class="notify-container">
         <div class="notify-item" *ngFor="let notify of notifications">
-          <div class="title">{{notify.title}}</div>
-          <div class="desc">{{notify.description}}</div>
+          <div class="title">{{notify.title | translate}}</div>
+          <div class="desc" [ngSwitch]="notify.type">
+            <span *ngSwitchCase="notifyTypes.HOMEWORK">{{ 'COMMON.NOTIFY.NEW_HOMEWORK' | translate: {coach: notify.author.name} }}</span>
+            <span *ngSwitchCase="notifyTypes.COURSE">{{ 'COMMON.NOTIFY.NEW_COURSE' | translate: {coach: notify.author.name} }}</span>
+          </div>
         </div>
       </div>
     </mat-menu>

@@ -20,6 +20,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   public userRole = UserRolesEnum;
   private subscription: Subscription = new Subscription();
   public notifications = [];
+  public notifyTypes = NotificationTypes;
 
 
   constructor(

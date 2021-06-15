@@ -17,6 +17,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
+import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
 
 @Component({
   selector: 'app-task-list',
@@ -47,6 +48,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   public doneTasks: number = 0;
   public taskStatuses = TaskStatuses;
   public processingTasksData: any[] = [];
+  private notifyTypes = NotificationTypes;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -58,7 +60,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private translateService: TranslateService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
     ) {
       this.userInfo = this.mainService.userInfo;
     }
@@ -199,8 +201,12 @@ export class TaskListComponent implements OnInit, OnDestroy {
       if (course) {
         const notification: NotifyInterface = {
           users: [{id: null}],
-          title: 'COMMON.COURSES',
-          description: 'COMMON.NOTIFY.NEW_COURSE',
+          author: {
+            id: this.userInfo.id,
+            name: this.userInfo.userName
+          },
+          title: 'COMMON.COURSE',
+          type: this.notifyTypes.COURSE,
           userType: null
         };
         this.mainService.setNotification(notification).subscribe((res: any) => {

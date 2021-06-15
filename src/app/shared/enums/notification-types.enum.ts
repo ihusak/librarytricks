@@ -1,5 +1,5 @@
 export enum NotificationTypes {
-  HOMEWORKS = 'homeworks',
+  HOMEWORK = 'homeworks',
   INFO = 'info',
   COURSE = 'course'
 }

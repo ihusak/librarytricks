@@ -4,7 +4,6 @@ import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {MainService} from '../../../main.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
 import { ProfileService } from '../../profile/profile.service';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { HomeworksService } from '../homeworks.service';
@@ -24,6 +23,7 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
   public userInfo: any;
   private userRoles = UserRolesEnum;
   public studentList: StudentInfoInterface[];
+  private notifyTypes = NotificationTypes;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -61,8 +61,12 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
         });
         const notification: NotifyInterface = {
           users: HOMEWORK.students,
+          author: {
+            id: this.userInfo.id,
+            name: this.userInfo.userName
+          },
           title: 'COMMON.HOMEWORKS',
-          description: 'COMMON.NOTIFY.NEW_HOMEWORK',
+          type: this.notifyTypes.HOMEWORK,
           userType: this.userRoles.STUDENT
         };
         this.mainService.setNotification(notification).subscribe((res: any) => {

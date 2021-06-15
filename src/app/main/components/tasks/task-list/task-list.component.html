@@ -1,4 +1,4 @@
-<h1>{{'TEMPLATE.TASK_LIST.TITLE' | translate}}</h1>
+<h1>{{'COMMON.COURSE' | translate}}</h1>
 <!-- Only coach and admin role -->
 <h4 *ngIf="(userInfo | userRolePipe:[userRoles.COACH]) && !userInfo.role.status ">{{'TEMPLATE.TASK_LIST.COACH.WARNING_MESSAGE' | translate}}</h4>
 <div class="nav" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && userInfo.role.status">
