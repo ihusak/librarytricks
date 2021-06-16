@@ -18,4 +18,8 @@ export interface NotifyInterface {
     id: string;
     name: string;
   };
+  homework?: {
+    id: string;
+    name: string;
+  };
 }

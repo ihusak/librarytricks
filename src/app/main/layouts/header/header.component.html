@@ -10,7 +10,7 @@
     <mat-icon *ngIf="notifications.length" [matMenuTriggerFor]="notificationHeader" [matBadge]="notifications.length" matBadgePosition="before" matBadgeColor="primary">notifications</mat-icon>
     <mat-menu #notificationHeader="matMenu">
       <div class="notify-container">
-        <div class="notify-item" *ngFor="let notify of notifications" (click)="readNotify(notify._id, notify.type)">
+        <div class="notify-item" *ngFor="let notify of notifications" (click)="readNotify(notify)">
           <div class="title">{{notify.title | translate}}</div>
           <div class="desc" [ngSwitch]="notify.type">
             <span *ngSwitchCase="notifyTypes.HOMEWORK" [innerHTML]="'COMMON.NOTIFY.NEW_HOMEWORK' | translate: {coach: notify.author.name}"></span>

@@ -43,6 +43,10 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
       description: ['', [Validators.required, Validators.maxLength(250)]],
       example: ['', [Validators.required, Validators.pattern('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$')]],
       students: [[], [Validators.required]],
+      author: [{
+        id: this.userInfo.id,
+        name: this.userInfo.userName
+      }, Validators.required]
     });
     this.initForm = true;
     const getAllStudents = this.profileService.getAllStudents().subscribe((allStudents: StudentInfoInterface[]) => {
@@ -67,7 +71,11 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
           },
           title: 'COMMON.HOMEWORKS',
           type: this.notifyTypes.HOMEWORK,
-          userType: [this.userRoles.STUDENT, this.userRoles.PARENT]
+          userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+          homework: {
+            id: res[0]._id,
+            name: res[0].title
+          }
         };
         this.mainService.setNotification(notification).subscribe((res: any) => {
           console.log(res);

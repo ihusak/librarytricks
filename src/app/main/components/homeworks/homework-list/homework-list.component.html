@@ -7,7 +7,7 @@
   </div>
   <mat-grid-list [cols]="breakpoint" rowHeight="450px" [gutterSize]="'30px'" *ngIf="homeworksList && homeworksList.length" (window:resize)="onResize($event)">
     <mat-grid-tile *ngFor="let homework of homeworksList">
-      <mat-card class="example-card">
+      <mat-card class="example-card" [ngClass]="{'new-homework': newHomeworkNotifyId === homework.id}">
         <div mat-card-image>
           <youtube-player
           [videoId]="youTubeGetID(homework.example)"
