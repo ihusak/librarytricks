@@ -67,7 +67,7 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
           },
           title: 'COMMON.HOMEWORKS',
           type: this.notifyTypes.HOMEWORK,
-          userType: this.userRoles.STUDENT
+          userType: [this.userRoles.STUDENT, this.userRoles.PARENT]
         };
         this.mainService.setNotification(notification).subscribe((res: any) => {
           console.log(res);
