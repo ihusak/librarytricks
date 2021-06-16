@@ -8,6 +8,9 @@
       .mat-card-content {
         min-height: 170px;
       }
+      &.new-homework {
+        background-color: #00ff141f;
+      }
     }
     mat-grid-tile {
       overflow: visible;

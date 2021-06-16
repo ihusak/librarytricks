@@ -68,12 +68,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.sendNotifyReq();
     });
   }
-  public readNotify(notifyId: string, type: string) {
-    this.mainService.readNotification(this.userInfo.id, notifyId).subscribe(res => {
-      this.notifications = this.notifications.filter((notify: NotifyInterface) => notify._id !== notifyId);
-      switch (type) {
+  public readNotify(notificationData: NotifyInterface) {
+    this.mainService.readNotification(this.userInfo.id, notificationData._id).subscribe(res => {
+      this.notifications = this.notifications.filter((notify: NotifyInterface) => notify._id !== notificationData._id);
+      switch (notificationData.type) {
         case NotificationTypes.HOMEWORK:
-          this.router.navigate(['main/homeworks']);
+          this.router.navigate(['main/homeworks'], {queryParams: {newHomework: notificationData.homework.id}});
           break;
         case NotificationTypes.COURSE:
           if (!this.userRolePipe.transform(this.userInfo, [this.userRole.PARENT])) {

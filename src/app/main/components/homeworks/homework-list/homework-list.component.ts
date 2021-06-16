@@ -6,7 +6,7 @@ import { HomeworksModel } from '../homeworks.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-
+import { ActivatedRoute, Params } from '@angular/router';
 @Component({
   selector: 'app-homework-list',
   templateUrl: './homework-list.component.html',
@@ -18,12 +18,14 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   public userRoles = UserRolesEnum;
   private subscription: Subscription = new Subscription();
   public breakpoint: number = 4;
+  public newHomeworkNotifyId: string;
 
   constructor(
     private homeworksService: HomeworksService,
     private mainService: MainService,
     private snackBar: MatSnackBar,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -39,6 +41,10 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
       this.sortHomeworks(this.homeworksList);
     });
     this.breakpoint = (window.innerWidth <= 1200) ? 1 : 4;
+    this.router.queryParams.subscribe((params: Params) => {
+      console.log('params', params);
+      this.newHomeworkNotifyId = params.newHomework;
+    })
     this.subscription.add(getAllHomeworks);
   }
   public studentNames(homework: HomeworkInterface): string {
