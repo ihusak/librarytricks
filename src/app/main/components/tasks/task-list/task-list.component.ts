@@ -200,14 +200,14 @@ export class TaskListComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe(course => {
       if (course) {
         const notification: NotifyInterface = {
-          users: [{id: null}],
+          users: null,
           author: {
             id: this.userInfo.id,
             name: this.userInfo.userName
           },
           title: 'COMMON.COURSE',
           type: this.notifyTypes.COURSE,
-          userType: null
+          userType: [this.userRoles.STUDENT, this.userRoles.PARENT]
         };
         this.mainService.setNotification(notification).subscribe((res: any) => {
           console.log(res);

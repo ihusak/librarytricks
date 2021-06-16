@@ -1,15 +1,21 @@
+import {UserRolesEnum} from '../enums/user-roles.enum';
+
 export interface NotifyInterface {
-  id?: string;
+  _id?: string;
   author: {
     id: string;
     name: string;
-  },
+  };
   users: [
     {
       id: string
     }
-  ];
+  ] | null;
   title: string;
   type: string;
-  userType: number;
+  userType: UserRolesEnum[];
+  course?: {
+    id: string;
+    name: string;
+  };
 }

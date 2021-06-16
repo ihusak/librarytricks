@@ -16,16 +16,16 @@ export class MainService extends AppService {
       phone
     });
   }
-  public getDefaultNotification(type: string): Observable<any> {
-    return this.http.get(`${this.apiUrl()}/notify/default/${type}`).pipe(map(res => res));
+  public getDefaultNotification(): Observable<any> {
+    return this.http.get(`${this.apiUrl()}/notify/default`).pipe(map(res => res));
   }
-  public getNotification(type?: string): Observable<any> {
-    if (!type) {
-      type = 'all';
-    }
-    return this.http.get(`${this.apiUrl()}/notify/${type}`).pipe(map(res => res));
+  public getNotification(): Observable<any> {
+    return this.http.get(`${this.apiUrl()}/notify/pending`).pipe(map(res => res));
   }
   public setNotification(notify: NotifyInterface): Observable<any> {
-    return this.http.post(`${this.apiUrl()}/notify`, {notify})
+    return this.http.post(`${this.apiUrl()}/notify/post`, {notify});
+  }
+  public readNotification(userId: string, notifyId: string): Observable<any> {
+    return this.http.put(`${this.apiUrl()}/notify/read`, {userId, notifyId});
   }
 }
