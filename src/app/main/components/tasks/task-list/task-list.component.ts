@@ -243,12 +243,31 @@ export class TaskListComponent implements OnInit, OnDestroy {
     url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
     return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
   }
-  public deleteTask(taskId: string) {
-    this.taskService.deleteTask(taskId).subscribe(deletedTask => {
+  public deleteTask(task: TaskModel) {
+    this.taskService.deleteTask(task.id).subscribe(deletedTask => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.DELETE_SUCCESSFULLY'), '', {
         duration: 2000,
         panelClass: ['success']
       });
+      const notification: NotifyInterface = {
+        users: null,
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.COURSE',
+        type: this.notifyTypes.DELETE_COURSE_TASK,
+        userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+        task: {
+          id: task.id,
+          name: task.title
+        },
+        course: {
+          id: this.currentCourse.id,
+          name: this.currentCourse.name
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
       this.ngOnInit();
     });
   }

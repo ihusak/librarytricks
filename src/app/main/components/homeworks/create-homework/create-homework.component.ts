@@ -77,9 +77,7 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
             name: res[0].title
           }
         };
-        this.mainService.setNotification(notification).subscribe((res: any) => {
-          console.log(res);
-        })
+        this.mainService.setNotification(notification).subscribe((res: any) => {})
         this.location.back();
       }
     });

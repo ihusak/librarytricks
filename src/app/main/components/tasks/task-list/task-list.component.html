@@ -105,7 +105,7 @@
       <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id !== userInfo.currentTask.id && task.allow" (click)="assignTask(task)" mat-raised-button color="primary">{{'TEMPLATE.TASK_LIST.STUDENT.START_TASK' | translate}}</button>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && task.id === userInfo.currentTask.id && userInfo.currentTask.status === taskStatuses.PROCESSING" mat-raised-button color="primary" (click)="passTask(task)">{{'TEMPLATE.TASK_LIST.STUDENT.PASS_TASK' | translate}}</button>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="primary" [routerLink]="['../update-task/', task.id]">{{'COMMON.UPDATE' | translate}}</button>
-      <button *ngIf="task.nextTask.id !== 'initial' && (userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="warn" (click)="deleteTask(task.id)">{{'COMMON.DELETE' | translate}}</button>
+      <button *ngIf="task.nextTask.id !== 'initial' && (userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" mat-raised-button color="warn" (click)="deleteTask(task)">{{'COMMON.DELETE' | translate}}</button>
     </mat-expansion-panel>
   </mat-accordion>
 </div>

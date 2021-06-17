@@ -112,9 +112,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
           name: this.currentCourse.name
         }
       };
-      this.mainService.setNotification(notification).subscribe((res: any) => {
-        console.log(res);
-      })
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
       this.location.back();
     });
     this.subscription.add(createTask);

@@ -22,4 +22,8 @@ export interface NotifyInterface {
     id: string;
     name: string;
   };
+  task?: {
+    id: string;
+    name: string;
+  };
 }
