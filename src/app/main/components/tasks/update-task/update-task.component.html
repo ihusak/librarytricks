@@ -1,5 +1,5 @@
 <h1>{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.UPDATE_TITLE' | translate}}</h1>
-<form [formGroup]="taskForm" (ngSubmit)="uptadeTask()" *ngIf='initForm'>
+<form [formGroup]="taskForm" (ngSubmit)="updateTask()" *ngIf='initForm'>
   <div class="form-view">
     <div class="item">
       <mat-form-field>
@@ -14,7 +14,7 @@
         <input formControlName="example" matInput placeholder="{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.VIDEO_URL' | translate}}" required>
       </mat-form-field>
       <mat-form-field>
-        <input formControlName="reward" matInput placeholder="Skillz" required type='number' min="0" 
+        <input formControlName="reward" matInput placeholder="Skillz" required type='number' min="0"
         max="100" >
       </mat-form-field>
       <label for="reward">{{'TEMPLATE.TASK_LIST.COACH.CREATE_TASK.MAX_REWARD' | translate: {number: '100'} }}</label>

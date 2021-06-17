@@ -60,11 +60,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
   private sendNotifyReq() {
     this.mainService.getNotification().subscribe(res => {
-      console.log(res);
       this.notifications = [...this.notifications, ...res];
       this.sendNotifyReq();
     }, (err) => {
-      console.log(err);
       this.sendNotifyReq();
     });
   }
@@ -73,7 +71,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.notifications = this.notifications.filter((notify: NotifyInterface) => notify._id !== notificationData._id);
       switch (notificationData.type) {
         case NotificationTypes.HOMEWORK:
-          this.router.navigate(['main/homeworks'], {queryParams: {newHomework: notificationData.homework.id}});
+          this.router.navigate(['main/homeworks'], {queryParams: {hmId: notificationData.homework.id}});
+          break;
+        case NotificationTypes.HOMEWORK_UPDATE:
+          this.router.navigate(['main/homeworks'], {queryParams: {hmId: notificationData.homework.id}});
           break;
         case NotificationTypes.COURSE:
           if (!this.userRolePipe.transform(this.userInfo, [this.userRole.PARENT])) {

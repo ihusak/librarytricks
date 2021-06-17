@@ -13,9 +13,14 @@
         <div class="notify-item" *ngFor="let notify of notifications" (click)="readNotify(notify)">
           <div class="title">{{notify.title | translate}}</div>
           <div class="desc" [ngSwitch]="notify.type">
-            <span *ngSwitchCase="notifyTypes.HOMEWORK" [innerHTML]="'COMMON.NOTIFY.NEW_HOMEWORK' | translate: {coach: notify.author.name}"></span>
-            <span *ngSwitchCase="notifyTypes.COURSE" [innerHTML]="'COMMON.NOTIFY.NEW_COURSE' | translate: {coach: notify.author.name}"></span>
-            <span *ngSwitchCase="notifyTypes.NEW_COURSE_TASK" [innerHTML]="'COMMON.NOTIFY.NEW_TASK' | translate: {coach: notify.author.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.HOMEWORK" [innerHTML]="'COMMON.NOTIFY.NEW_HOMEWORK' | translate: {author: notify.author.name}"></span>
+            <span *ngSwitchCase="notifyTypes.COURSE" [innerHTML]="'COMMON.NOTIFY.NEW_COURSE' | translate: {author: notify.author.name}"></span>
+            <span *ngSwitchCase="notifyTypes.NEW_COURSE_TASK" [innerHTML]="'COMMON.NOTIFY.NEW_TASK' | translate: {author: notify.author.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.HOMEWORK_UPDATE" [innerHTML]="'COMMON.NOTIFY.HOMEWORK_UPDATE' | translate: {author: notify.author.name, homeWorkName: notify.homework.name}"></span>
+            <span *ngSwitchCase="notifyTypes.HOMEWORK_DELETE" [innerHTML]="'COMMON.NOTIFY.HOMEWORK_DELETE' | translate: {author: notify.author.name, homeWorkName: notify.homework.name}"></span>
+            <span *ngSwitchCase="notifyTypes.UPDATE_COURSE_TASK" [innerHTML]="'COMMON.NOTIFY.UPDATE_COURSE_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.DELETE_COURSE_TASK" [innerHTML]="'COMMON.NOTIFY.DELETE_COURSE_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.UPDATE_PROFILE" [innerHTML]="'COMMON.NOTIFY.UPDATE_PROFILE' | translate: {author: notify.author.name}"></span>
           </div>
         </div>
       </div>

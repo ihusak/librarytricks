@@ -35,7 +35,7 @@
               <mat-icon>favorite</mat-icon> {{homework.likes.length}}
             </button>
             <button mat-button [routerLink]="['../edit/', homework.id]" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">{{'COMMON.UPDATE' | translate}}</button>
-            <button mat-button (click)="deleteHomework(homework.id)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">{{'COMMON.DELETE' | translate}}</button>
+            <button mat-button (click)="deleteHomework(homework)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">{{'COMMON.DELETE' | translate}}</button>
           </div>
         </mat-card-actions>
       </mat-card>
