@@ -70,7 +70,7 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
             name: this.userInfo.userName
           },
           title: 'COMMON.HOMEWORKS',
-          type: this.notifyTypes.HOMEWORK,
+          type: this.notifyTypes.NEW_HOMEWORK,
           userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
           homework: {
             id: res[0]._id,
