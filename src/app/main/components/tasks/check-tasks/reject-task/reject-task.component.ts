@@ -6,6 +6,10 @@ import { ProfileService } from '../../../profile/profile.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {NotifyInterface} from '../../../../../shared/interface/notify.interface';
+import {MainService} from '../../../../main.service';
+import {NotificationTypes} from '../../../../../shared/enums/notification-types.enum';
+import {UserRolesEnum} from '../../../../../shared/enums/user-roles.enum';
 
 @Component({
   selector: 'app-reject-task',
@@ -13,8 +17,11 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./reject-task.component.scss']
 })
 export class RejectTaskComponent implements OnDestroy {
-  public stundetInfo: StudentInfoInterface;
+  public userInfo: any;
+  public studentInfo: StudentInfoInterface;
   public rejectReason: string = '';
+  private notifyTypes = NotificationTypes;
+  private userRoles = UserRolesEnum;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -22,22 +29,40 @@ export class RejectTaskComponent implements OnDestroy {
     @Inject(MAT_DIALOG_DATA) public student: StudentInfoInterface,
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
+    private mainService: MainService,
     private profileService: ProfileService) {
-      this.stundetInfo = student;
+      this.studentInfo = student;
+      this.userInfo = this.mainService.userInfo;
     }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
   reject(reason: string) {
-    const userCurrentTask = this.stundetInfo.currentTask;
+    const userCurrentTask = this.studentInfo.currentTask;
     userCurrentTask.status = TaskStatuses.PROCESSING;
     userCurrentTask.rejectReason = reason;
-    const changeCurrentTask = this.profileService.changeCurrentTask(userCurrentTask, this.stundetInfo.id).subscribe(() => {
-      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.STUDENT_MOVED_IN_PROGRESS', {student: this.stundetInfo.userName}), '', {
+    const changeCurrentTask = this.profileService.changeCurrentTask(userCurrentTask, this.studentInfo.id).subscribe(() => {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.STUDENT_MOVED_IN_PROGRESS',
+        {student: this.studentInfo.userName}), '', {
         duration: 2000,
         panelClass: ['error']
       });
+      const notification: NotifyInterface = {
+        users: [{id: this.studentInfo.id}],
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.COURSE',
+        type: this.notifyTypes.REJECT_TASK,
+        userType: [this.userRoles.STUDENT],
+        task: {
+          id: userCurrentTask.id,
+          name: userCurrentTask.title
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
       this.dialogRef.close();
     });
     this.subscription.add(changeCurrentTask);

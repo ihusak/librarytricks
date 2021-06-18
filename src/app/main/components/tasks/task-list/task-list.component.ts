@@ -77,6 +77,25 @@ export class TaskListComponent implements OnInit, OnDestroy {
         duration: 2000,
         panelClass: ['success']
       });
+      const notification: NotifyInterface = {
+        users: [{id: this.userInfo.coach.id}],
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.UPDATES',
+        type: this.notifyTypes.TASK_IN_PROGRESS,
+        userType: [this.userRoles.COACH, this.userRoles.ADMIN],
+        task: {
+          id: task.id,
+          name: task.title
+        },
+        course: {
+          id: this.currentCourse.id,
+          name: this.currentCourse.name
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
     });
     this.subscription.add(changeCurrentTask);
   }
@@ -102,10 +121,10 @@ export class TaskListComponent implements OnInit, OnDestroy {
             } else if (!task.done) {
               task.done = false;
             }
-            if (this.userInfo.currentTask.id === task.id) {
-              task.status = this.userInfo.currentTask.status;
-            }
           });
+          if (this.userInfo.currentTask.id === task.id) {
+            task.status = this.userInfo.currentTask.status;
+          }
           return task;
         });
       }
@@ -187,6 +206,25 @@ export class TaskListComponent implements OnInit, OnDestroy {
       data: {task, userInfo: this.userInfo}
     });
     dialogRef.afterClosed().subscribe((param) => {
+      const notification: NotifyInterface = {
+        users: [{id: this.userInfo.coach.id}],
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.UPDATES',
+        type: this.notifyTypes.PASS_TASK,
+        userType: [this.userRoles.COACH, this.userRoles.ADMIN],
+        task: {
+          id: task.id,
+          name: task.title
+        },
+        course: {
+          id: this.currentCourse.id,
+          name: this.currentCourse.name
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
       if(!param) {
         window.location.reload();
       }
@@ -206,7 +244,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
             name: this.userInfo.userName
           },
           title: 'COMMON.COURSE',
-          type: this.notifyTypes.COURSE,
+          type: this.notifyTypes.NEW_COURSE,
           userType: [this.userRoles.STUDENT, this.userRoles.PARENT]
         };
         this.mainService.setNotification(notification).subscribe((res: any) => {
