@@ -17,7 +17,8 @@
         </youtube-player>
         </div>
         <mat-card-content>
-          <h4>{{homework.title}}</h4>
+          <h4>{{homework.title}}<span class="created-date">{{homework.createdDate | date: 'dd.MM.yyyy'}}</span>
+          </h4>
           <p [innerHtml]="homework.description"></p>
           <span *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])"
                class="students"
