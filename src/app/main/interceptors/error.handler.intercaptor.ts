@@ -16,8 +16,10 @@ export class ErrorHandlerIntercaptor implements HttpInterceptor {
           return event;
         }),
         (err) => {
-          if(!err.status || err.status >= 500) {
-            this.router.navigate(['/error']);
+          if (!err.status || err.status >= 500) {
+            if (req.url.indexOf('notify') < 0) {
+              this.router.navigate(['/error']);
+            }
           }
         })
     )};

@@ -11,6 +11,8 @@ import { HomeworksService } from '../homeworks.service';
 import {Location} from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {NotifyInterface} from '../../../../shared/interface/notify.interface';
+import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 
 @Component({
   selector: 'app-update-homework',
@@ -24,6 +26,7 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
   public studentList: StudentInfoInterface[];
   public selectedStudents: {id: string, name: string}[];
   private userRoles = UserRolesEnum;
+  private notifyTypes = NotificationTypes;
   private hmId: string;
   private subscription: Subscription = new Subscription();
 
@@ -50,6 +53,7 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
       description: [homework.description, [Validators.required, Validators.maxLength(250)]],
       example: [homework.example, [Validators.required, Validators.pattern('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$')]],
       students: [homework.students, [Validators.required]],
+      id: [homework.id]
     });
     this.selectedStudents = homework.students;
     this.hmForm.controls.students.setValue(this.selectedStudents );
@@ -78,6 +82,21 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
         this.location.back();
       }
     });
+    const notification: NotifyInterface = {
+      users: HOMEWORK.students,
+      author: {
+        id: this.userInfo.id,
+        name: this.userInfo.userName
+      },
+      title: 'COMMON.HOMEWORKS',
+      type: this.notifyTypes.HOMEWORK_UPDATE,
+      userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+      homework: {
+        id: HOMEWORK.id,
+        name: HOMEWORK.title
+      }
+    };
+    this.mainService.setNotification(notification).subscribe((res: any) => {})
     this.subscription.add(updateHomework);
   }
   ngOnDestroy() {

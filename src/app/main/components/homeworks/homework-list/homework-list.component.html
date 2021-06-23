@@ -7,7 +7,7 @@
   </div>
   <mat-grid-list [cols]="breakpoint" rowHeight="450px" [gutterSize]="'30px'" *ngIf="homeworksList && homeworksList.length" (window:resize)="onResize($event)">
     <mat-grid-tile *ngFor="let homework of homeworksList">
-      <mat-card class="example-card">
+      <mat-card class="example-card" [ngClass]="{'new-homework': newHomeworkNotifyId === homework.id}">
         <div mat-card-image>
           <youtube-player
           [videoId]="youTubeGetID(homework.example)"
@@ -17,7 +17,8 @@
         </youtube-player>
         </div>
         <mat-card-content>
-          <h4>{{homework.title}}</h4>
+          <h4>{{homework.title}}<span class="created-date">{{homework.createdDate | date: 'dd.MM.yyyy'}}</span>
+          </h4>
           <p [innerHtml]="homework.description"></p>
           <span *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])"
                class="students"
@@ -35,7 +36,7 @@
               <mat-icon>favorite</mat-icon> {{homework.likes.length}}
             </button>
             <button mat-button [routerLink]="['../edit/', homework.id]" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">{{'COMMON.UPDATE' | translate}}</button>
-            <button mat-button (click)="deleteHomework(homework.id)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">{{'COMMON.DELETE' | translate}}</button>
+            <button mat-button (click)="deleteHomework(homework)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">{{'COMMON.DELETE' | translate}}</button>
           </div>
         </mat-card-actions>
       </mat-card>

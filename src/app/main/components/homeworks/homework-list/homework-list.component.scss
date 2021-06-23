@@ -8,6 +8,16 @@
       .mat-card-content {
         min-height: 170px;
       }
+      &.new-homework {
+        background-color: #00ff141f;
+      }
+      h4 {
+        display: flex;
+        justify-content: space-between;
+      }
+      .created-date {
+        font-size: 12px;
+      }
     }
     mat-grid-tile {
       overflow: visible;

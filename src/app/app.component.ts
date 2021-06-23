@@ -10,7 +10,7 @@ import { TranslateLocalService } from './shared/translate/translate.service';
 })
 export class AppComponent {
   constructor(
-    private cookieService: CookieService, 
+    private cookieService: CookieService,
     private translateService: TranslateLocalService,
     private appService: AppService
     ) {

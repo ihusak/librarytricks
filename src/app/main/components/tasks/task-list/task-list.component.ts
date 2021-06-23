@@ -16,6 +16,8 @@ import { Checkout, PaymentsService } from '../../payments/payments.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {NotifyInterface} from '../../../../shared/interface/notify.interface';
+import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
 
 @Component({
   selector: 'app-task-list',
@@ -46,6 +48,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   public doneTasks: number = 0;
   public taskStatuses = TaskStatuses;
   public processingTasksData: any[] = [];
+  private notifyTypes = NotificationTypes;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -57,7 +60,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private translateService: TranslateService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
     ) {
       this.userInfo = this.mainService.userInfo;
     }
@@ -74,6 +77,25 @@ export class TaskListComponent implements OnInit, OnDestroy {
         duration: 2000,
         panelClass: ['success']
       });
+      const notification: NotifyInterface = {
+        users: [{id: this.userInfo.coach.id}],
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.UPDATES',
+        type: this.notifyTypes.TASK_IN_PROGRESS,
+        userType: [this.userRoles.COACH, this.userRoles.ADMIN],
+        task: {
+          id: task.id,
+          name: task.title
+        },
+        course: {
+          id: this.currentCourse.id,
+          name: this.currentCourse.name
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
     });
     this.subscription.add(changeCurrentTask);
   }
@@ -99,10 +121,10 @@ export class TaskListComponent implements OnInit, OnDestroy {
             } else if (!task.done) {
               task.done = false;
             }
-            if (this.userInfo.currentTask.id === task.id) {
-              task.status = this.userInfo.currentTask.status;
-            }
           });
+          if (this.userInfo.currentTask.id === task.id) {
+            task.status = this.userInfo.currentTask.status;
+          }
           return task;
         });
       }
@@ -184,6 +206,25 @@ export class TaskListComponent implements OnInit, OnDestroy {
       data: {task, userInfo: this.userInfo}
     });
     dialogRef.afterClosed().subscribe((param) => {
+      const notification: NotifyInterface = {
+        users: [{id: this.userInfo.coach.id}],
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.UPDATES',
+        type: this.notifyTypes.PASS_TASK,
+        userType: [this.userRoles.COACH, this.userRoles.ADMIN],
+        task: {
+          id: task.id,
+          name: task.title
+        },
+        course: {
+          id: this.currentCourse.id,
+          name: this.currentCourse.name
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
       if(!param) {
         window.location.reload();
       }
@@ -196,6 +237,19 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(course => {
       if (course) {
+        const notification: NotifyInterface = {
+          users: null,
+          author: {
+            id: this.userInfo.id,
+            name: this.userInfo.userName
+          },
+          title: 'COMMON.COURSE',
+          type: this.notifyTypes.NEW_COURSE,
+          userType: [this.userRoles.STUDENT, this.userRoles.PARENT]
+        };
+        this.mainService.setNotification(notification).subscribe((res: any) => {
+          console.log(res);
+        })
         this.coursesList.push(course);
         course.id = course._id;
         delete course._id;
@@ -227,12 +281,31 @@ export class TaskListComponent implements OnInit, OnDestroy {
     url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
     return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
   }
-  public deleteTask(taskId: string) {
-    this.taskService.deleteTask(taskId).subscribe(deletedTask => {
+  public deleteTask(task: TaskModel) {
+    this.taskService.deleteTask(task.id).subscribe(deletedTask => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.DELETE_SUCCESSFULLY'), '', {
         duration: 2000,
         panelClass: ['success']
       });
+      const notification: NotifyInterface = {
+        users: null,
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.COURSE',
+        type: this.notifyTypes.DELETE_COURSE_TASK,
+        userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+        task: {
+          id: task.id,
+          name: task.title
+        },
+        course: {
+          id: this.currentCourse.id,
+          name: this.currentCourse.name
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
       this.ngOnInit();
     });
   }

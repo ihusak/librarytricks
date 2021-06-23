@@ -7,6 +7,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Location } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {NotifyInterface} from '../../../../shared/interface/notify.interface';
+import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
+import {MainService} from '../../../main.service';
+import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 
 @Component({
   selector: 'app-update-task',
@@ -19,12 +23,17 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
   public taskForm: FormGroup;
   public initForm: boolean = false;
   public coursesList;
+  public userInfo: any;
   public nextTask: string;
   private taskId: string;
+  public currentCourse: any;
+  private notifyTypes = NotificationTypes;
   private currentTask: TaskModel;
+  private userRoles = UserRolesEnum;
   private subscription: Subscription = new Subscription();
 
   constructor(
+    private mainService: MainService,
     private taskService: TaskService,
     private formBuilder: FormBuilder,
     private activateRoute: ActivatedRoute,
@@ -38,12 +47,13 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.getCurrentTasks(this.taskId);
+    this.userInfo = this.mainService.userInfo;
   }
   ngAfterViewInit() {
 
   }
 
-  public uptadeTask() {
+  public updateTask() {
     const updatedTask = new TaskModel(this.taskForm.value);
     if (!this.tasksList.length) {
       updatedTask.allow = true;
@@ -54,6 +64,25 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
           duration: 2000,
           panelClass: ['success']
         });
+        const notification: NotifyInterface = {
+         users: null,
+         author: {
+           id: this.userInfo.id,
+           name: this.userInfo.userName
+         },
+         title: 'COMMON.COURSE',
+         type: this.notifyTypes.UPDATE_COURSE_TASK,
+         userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+         task: {
+           id: this.currentTask.id,
+           name: this.currentTask.title
+         },
+          course: {
+            id: this.currentTask.course.id,
+            name: this.currentTask.course.name
+          }
+        };
+        this.mainService.setNotification(notification).subscribe((res: any) => {});
         this.location.back();
       });
       this.subscription.add(updateTask);

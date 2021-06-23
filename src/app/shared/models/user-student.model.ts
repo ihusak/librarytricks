@@ -5,6 +5,7 @@ export class UserStudentModel {
   email: string;
   aboutMe: string;
   bestTrick: string;
+  birthDay: string;
   socialNetworks: {
     facebook: string,
     instagram: string
@@ -41,6 +42,7 @@ export class UserStudentModel {
     this.email = responseObj.email;
     this.aboutMe = responseObj.aboutMe;
     this.bestTrick = responseObj.bestTrick;
+    this.birthDay = responseObj.birthDay;
     this.socialNetworks = {
       facebook: responseObj.facebook,
       instagram: responseObj.instagram
