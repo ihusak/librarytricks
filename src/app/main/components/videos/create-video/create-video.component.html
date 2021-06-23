@@ -1,0 +1,13 @@
+<form [formGroup]="videoForm" (ngSubmit)="create()" *ngIf='initForm'>
+  <div class="form-view">
+    <div class="item">
+      <h3>{{'TEMPLATE.VIDEOS.CREATE.TITLE' | translate}}</h3>
+      <p>{{'TEMPLATE.VIDEOS.CREATE.DESCRIPTION' | translate}}</p>
+      <mat-form-field>
+        <input formControlName="url" matInput placeholder="{{'TEMPLATE.VIDEOS.CREATE.VIDEO_EXAMPLE' | translate}}" required>
+      </mat-form-field>
+    </div>
+  </div>
+  <button mat-raised-button color="primary" [disabled]="!videoForm.valid">{{'COMMON.CREATE' | translate}}</button>
+  <button mat-raised-button color="primary" (click)="onNoClick()">{{'COMMON.CLOSE' | translate}}</button>
+</form>

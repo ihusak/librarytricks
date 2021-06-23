@@ -26,6 +26,9 @@ import { VersionsComponent } from './components/versions/versions.component';
 import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
 import { LanguageComponent } from './layouts/language/language.component';
 import { ErrorPageComponent } from './layouts/error-page/error-page.component';
+import {VideosService} from './components/videos/videos.service';
+import {CreateVideoComponent} from './components/videos/create-video/create-video.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -41,7 +44,8 @@ import { ErrorPageComponent } from './layouts/error-page/error-page.component';
     AboutUsComponent,
     VersionsComponent,
     HowToUseComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    CreateVideoComponent
   ],
   imports: [
     CommonModule,
@@ -53,11 +57,12 @@ import { ErrorPageComponent } from './layouts/error-page/error-page.component';
     PipesModule,
     TranslateModule,
     YouTubePlayerModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    ReactiveFormsModule
   ],
   exports: [MainComponent],
-  entryComponents: [AdminRequestPermissionPopupComponent],
-  providers: [MainService, TaskService, CookieService]
+  entryComponents: [AdminRequestPermissionPopupComponent, CreateVideoComponent],
+  providers: [MainService, TaskService, CookieService, VideosService]
 })
 export class MainModule {
 
