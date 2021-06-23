@@ -4,12 +4,13 @@ import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {MainService} from '../../../main.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
-import {ActivatedRoute} from '@angular/router';
 import { ProfileService } from '../../profile/profile.service';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { HomeworksService } from '../homeworks.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { NotifyInterface } from 'src/app/shared/interface/notify.interface';
+import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
 
 @Component({
   selector: 'app-create-homework',
@@ -20,7 +21,9 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
   public hmForm: FormGroup;
   public initForm: boolean = false;
   public userInfo: any;
+  private userRoles = UserRolesEnum;
   public studentList: StudentInfoInterface[];
+  private notifyTypes = NotificationTypes;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -40,6 +43,10 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
       description: ['', [Validators.required, Validators.maxLength(250)]],
       example: ['', [Validators.required, Validators.pattern('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$')]],
       students: [[], [Validators.required]],
+      author: [{
+        id: this.userInfo.id,
+        name: this.userInfo.userName
+      }, Validators.required]
     });
     this.initForm = true;
     const getAllStudents = this.profileService.getAllStudents().subscribe((allStudents: StudentInfoInterface[]) => {
@@ -56,6 +63,21 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
           duration: 2000,
           panelClass: ['success']
         });
+        const notification: NotifyInterface = {
+          users: HOMEWORK.students,
+          author: {
+            id: this.userInfo.id,
+            name: this.userInfo.userName
+          },
+          title: 'COMMON.HOMEWORKS',
+          type: this.notifyTypes.NEW_HOMEWORK,
+          userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+          homework: {
+            id: res[0]._id,
+            name: res[0].title
+          }
+        };
+        this.mainService.setNotification(notification).subscribe((res: any) => {})
         this.location.back();
       }
     });

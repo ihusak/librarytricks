@@ -11,6 +11,9 @@ import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 import { TaskService } from '../tasks/tasks.service';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {NotifyInterface} from '../../../shared/interface/notify.interface';
+import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
+import {MainService} from '../../main.service';
 
 @Component({
   selector: 'app-profile',
@@ -29,6 +32,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userInfo: FormGroup;
   public userRoles = UserRolesEnum;
   public userInfoData: any;
+  private notifyTypes = NotificationTypes;
   public kidsList;
   public coach: any = null;
   private subscription: Subscription = new Subscription();
@@ -36,6 +40,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('formImgHidden',  {static: false}) formImgHidden: ElementRef;
 
   constructor(
+    private mainService: MainService,
     private profileService: ProfileService,
     private taskService: TaskService,
     protected appService: AppService,
@@ -83,7 +88,18 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
         duration: 2000,
         panelClass: ['success']
-      })
+      });
+      const notification: NotifyInterface = {
+        users: null,
+        author: {
+          id: this.userInfo.value.id,
+          name: this.userInfo.value.userName
+        },
+        title: 'COMMON.UPDATES',
+        type: this.notifyTypes.UPDATE_PROFILE,
+        userType: [this.userRoles.COACH, this.userRoles.ADMIN]
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
     });
     this.subscription.add(updateUserInfo);
   }

@@ -8,6 +8,9 @@ import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { RejectTaskComponent } from './reject-task/reject-task.component';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {NotifyInterface} from '../../../../shared/interface/notify.interface';
+import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
+import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 
 interface marksInterface {
   value: number;
@@ -33,6 +36,8 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
   public marks: marksInterface[] = MARKS;
   public coachMark: number = 0;
   public resultMark: number = 0;
+  private notifyTypes = NotificationTypes;
+  private userRoles = UserRolesEnum;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -62,19 +67,38 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
     this.resultMark = userInfo.currentTask.reward * (this.coachMark / 100);
   }
 
-  public acceptTask(userInfo: StudentInfoInterface) {
+  public acceptTask(studentInfo: StudentInfoInterface) {
     const task = {
-      taskId: userInfo.currentTask.id,
-      coachId: userInfo.coach.id,
-      reward: userInfo.currentTask.reward * (this.coachMark / 100),
-      courseId: userInfo.course.id
-    }
-    const acceptStudentTask = this.profileService.acceptStudentTask(userInfo.id, task).subscribe(res => {
+      taskId: studentInfo.currentTask.id,
+      coachId: studentInfo.coach.id,
+      reward: studentInfo.currentTask.reward * (this.coachMark / 100),
+      courseId: studentInfo.course.id
+    };
+    const acceptStudentTask = this.profileService.acceptStudentTask(studentInfo.id, task).subscribe(res => {
       this.ngOnInit();
-      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.ACCEPT_STUDENT_TASK', {student: userInfo.userName}), '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.ACCEPT_STUDENT_TASK', {student: studentInfo.userName}), '', {
         duration: 2000,
         panelClass: ['success']
       });
+      const notification: NotifyInterface = {
+        users: [{id: studentInfo.id}],
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.UPDATES',
+        type: this.notifyTypes.CONFIRM_PASS_TASK,
+        userType: [this.userRoles.STUDENT],
+        task: {
+          id: studentInfo.currentTask.id,
+          name: studentInfo.currentTask.title
+        },
+        course: {
+          id: studentInfo.course.id,
+          name: studentInfo.course.name
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
     });
     this.subscription.add(acceptStudentTask);
   }
@@ -86,7 +110,7 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe(() => {
       this.ngOnInit();
-    })
+    });
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

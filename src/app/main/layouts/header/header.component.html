@@ -7,6 +7,28 @@
     </div>
     <span class="spacer"></span>
     <app-language></app-language>
+    <mat-icon *ngIf="notifications.length" [matMenuTriggerFor]="notificationHeader" [matBadge]="notifications.length" matBadgePosition="before" matBadgeColor="primary">notifications</mat-icon>
+    <mat-menu #notificationHeader="matMenu">
+      <div class="notify-container">
+        <div class="notify-item" *ngFor="let notify of notifications" (click)="readNotify(notify)">
+          <div class="title">{{notify.title | translate}}</div>
+          <div class="desc" [ngSwitch]="notify.type">
+            <span *ngSwitchCase="notifyTypes.NEW_HOMEWORK" [innerHTML]="'COMMON.NOTIFY.NEW_HOMEWORK' | translate: {author: notify.author.name}"></span>
+            <span *ngSwitchCase="notifyTypes.NEW_COURSE" [innerHTML]="'COMMON.NOTIFY.NEW_COURSE' | translate: {author: notify.author.name}"></span>
+            <span *ngSwitchCase="notifyTypes.NEW_COURSE_TASK" [innerHTML]="'COMMON.NOTIFY.NEW_TASK' | translate: {author: notify.author.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.HOMEWORK_UPDATE" [innerHTML]="'COMMON.NOTIFY.HOMEWORK_UPDATE' | translate: {author: notify.author.name, homeWorkName: notify.homework.name}"></span>
+            <span *ngSwitchCase="notifyTypes.HOMEWORK_DELETE" [innerHTML]="'COMMON.NOTIFY.HOMEWORK_DELETE' | translate: {author: notify.author.name, homeWorkName: notify.homework.name}"></span>
+            <span *ngSwitchCase="notifyTypes.UPDATE_COURSE_TASK" [innerHTML]="'COMMON.NOTIFY.UPDATE_COURSE_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.DELETE_COURSE_TASK" [innerHTML]="'COMMON.NOTIFY.DELETE_COURSE_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.UPDATE_PROFILE" [innerHTML]="'COMMON.NOTIFY.UPDATE_PROFILE' | translate: {author: notify.author.name}"></span>
+            <span *ngSwitchCase="notifyTypes.REJECT_TASK" [innerHTML]="'COMMON.NOTIFY.REJECT_TASK' | translate: {author: notify.author.name, taskName: notify.task.name}"></span>
+            <span *ngSwitchCase="notifyTypes.TASK_IN_PROGRESS" [innerHTML]="'COMMON.NOTIFY.TASK_IN_PROGRESS' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.PASS_TASK" [innerHTML]="'COMMON.NOTIFY.PASS_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
+            <span *ngSwitchCase="notifyTypes.CONFIRM_PASS_TASK" [innerHTML]="'COMMON.NOTIFY.CONFIRM_PASS_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
+          </div>
+        </div>
+      </div>
+    </mat-menu>
     <button (click)="requestAdminPermission()" mat-stroked-button *ngIf="userInfo.role.id === userRole.COACH && !userInfo.role.status">{{'TEMPLATE.DASHBOARD.COACH_REQUEST.REQUEST_FOR_COACH' | translate}}</button>
     <a class="help-info" [routerLink]="['./how-to-use']"><mat-icon>
       help_outline</mat-icon></a>

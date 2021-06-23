@@ -10,6 +10,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {NotifyInterface} from '../../../../shared/interface/notify.interface';
+import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 
 @Component({
   selector: 'app-create-task',
@@ -25,6 +27,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   private userRoles = UserRolesEnum;
   private readonly courseId: string;
   public currentCourse: any;
+  private notifyTypes = NotificationTypes;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -95,6 +98,21 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
         duration: 2000,
         panelClass: ['success']
       });
+      const notification: NotifyInterface = {
+        users: null,
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'COMMON.COURSE',
+        type: this.notifyTypes.NEW_COURSE_TASK,
+        userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+        course: {
+          id: this.currentCourse.id,
+          name: this.currentCourse.name
+        }
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
       this.location.back();
     });
     this.subscription.add(createTask);

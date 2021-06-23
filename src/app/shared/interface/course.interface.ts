@@ -3,10 +3,10 @@ export interface CourseInterface {
   name: string;
   forAll: boolean;
   coachId: string;
-  price: number
+  price: number;
   description: {
     text: string;
     video: string;
-  },
+  };
   paid: boolean;
 }

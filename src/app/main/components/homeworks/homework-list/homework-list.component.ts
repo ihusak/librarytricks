@@ -6,7 +6,9 @@ import { HomeworksModel } from '../homeworks.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
-
+import { ActivatedRoute, Params } from '@angular/router';
+import {NotifyInterface} from '../../../../shared/interface/notify.interface';
+import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 @Component({
   selector: 'app-homework-list',
   templateUrl: './homework-list.component.html',
@@ -18,12 +20,15 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   public userRoles = UserRolesEnum;
   private subscription: Subscription = new Subscription();
   public breakpoint: number = 4;
+  private notifyTypes = NotificationTypes;
+  public newHomeworkNotifyId: string;
 
   constructor(
     private homeworksService: HomeworksService,
     private mainService: MainService,
     private snackBar: MatSnackBar,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private router: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -39,6 +44,10 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
       this.sortHomeworks(this.homeworksList);
     });
     this.breakpoint = (window.innerWidth <= 1200) ? 1 : 4;
+    this.router.queryParams.subscribe((params: Params) => {
+      console.log('params', params);
+      this.newHomeworkNotifyId = params.hmId;
+    })
     this.subscription.add(getAllHomeworks);
   }
   public studentNames(homework: HomeworkInterface): string {
@@ -62,14 +71,29 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
     this.subscription.add(like);
   }
 
-  public deleteHomework(homeworkId: string) {
-    const deleteHomework = this.homeworksService.deleteHomework(homeworkId).subscribe((response: any) => {
+  public deleteHomework(homework: HomeworkInterface) {
+    const deleteHomework = this.homeworksService.deleteHomework(homework.id).subscribe((response: any) => {
       if(response.result === 'ok') {
-        this.homeworksList = this.homeworksList.filter((homework: HomeworksModel) => homework.id !== homeworkId);
+        this.homeworksList = this.homeworksList.filter((hm: HomeworksModel) => hm.id !== homework.id);
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.HOMEWORK_CREATED'), '', {
           duration: 4000,
           panelClass: ['success']
-        })
+        });
+        const notification: NotifyInterface = {
+          users: null,
+          author: {
+            id: this.userInfo.id,
+            name: this.userInfo.userName
+          },
+          title: 'COMMON.HOMEWORKS',
+          type: this.notifyTypes.HOMEWORK_DELETE,
+          userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+          homework: {
+            id: homework.id,
+            name: homework.title
+          }
+        };
+        this.mainService.setNotification(notification).subscribe((res: any) => {})
       }
     });
     this.subscription.add(deleteHomework);
