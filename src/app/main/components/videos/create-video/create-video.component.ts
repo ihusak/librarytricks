@@ -38,6 +38,8 @@ export class CreateVideoComponent implements OnInit, OnDestroy {
     this.userInfo = this.mainService.userInfo;
     this.videoForm = this.formBuilder.group({
       url: ['', [Validators.required]],
+      descriptions: [''],
+      tags: [''],
       author: [{
         id: this.userInfo.id,
         name: this.userInfo.userName
@@ -50,6 +52,7 @@ export class CreateVideoComponent implements OnInit, OnDestroy {
   }
   public create() {
     const VIDEO = this.videoForm.value;
+    // VIDEO.tags = VIDEO.tags.
     const createPostSub = this.videosService.createPost(VIDEO).subscribe((createdVideo: any) => {
     this.dialogRef.close(createdVideo);
     if (createdVideo) {

@@ -1,17 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {UserRolesEnum} from '../../../shared/enums/user-roles.enum';
-import {VideosService} from './videos.service';
+import {VideoInterface, VideosService} from './videos.service';
 import {NotifyInterface} from '../../../shared/interface/notify.interface';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateVideoComponent} from './create-video/create-video.component';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
-
-interface VideoListItem {
-  id: string;
-  url: string;
-  createdDate: string;
-}
 
 @Component({
   selector: 'app-videos',
@@ -20,7 +14,7 @@ interface VideoListItem {
 })
 export class VideosComponent implements OnInit {
   public userRoles = UserRolesEnum;
-  public videosList: VideoListItem[] = [];
+  public videosList: VideoInterface[] = [];
   private notifyTypes = NotificationTypes;
   constructor(
     private videosService: VideosService,
@@ -30,7 +24,6 @@ export class VideosComponent implements OnInit {
 
   ngOnInit() {
     this.videosService.getAllVideos().subscribe((res: any) => {
-      console.log(res);
       this.videosList = res;
     });
   }
