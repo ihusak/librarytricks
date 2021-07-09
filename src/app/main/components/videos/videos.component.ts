@@ -7,6 +7,12 @@ import {CreateVideoComponent} from './create-video/create-video.component';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
 
+const SOCIAL_NETWORKS = [
+  'instagram',
+  'youtube',
+  'tiktok'
+];
+
 @Component({
   selector: 'app-videos',
   templateUrl: './videos.component.html',
@@ -16,6 +22,8 @@ export class VideosComponent implements OnInit {
   public userRoles = UserRolesEnum;
   public videosList: VideoInterface[] = [];
   private notifyTypes = NotificationTypes;
+  public userRole = UserRolesEnum;
+  public userInfo: any;
   constructor(
     private videosService: VideosService,
     public dialog: MatDialog,
@@ -23,6 +31,7 @@ export class VideosComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.userInfo = this.mainService.userInfo;
     this.videosService.getAllVideos().subscribe((res: any) => {
       this.videosList = res;
     });
@@ -36,8 +45,8 @@ export class VideosComponent implements OnInit {
         const notification: NotifyInterface = {
           users: null,
           author: {
-            id: video.author.id,
-            name: video.author.userName
+            id: video.createdBy.id,
+            name: video.createdBy.userName
           },
           title: 'TEMPLATE.VIDEOS.TITLE',
           type: this.notifyTypes.NEW_VIDEO,
@@ -49,5 +58,17 @@ export class VideosComponent implements OnInit {
         this.videosList.push(video);
       }
     });
+  }
+  public likeVideo(video: VideoInterface) {}
+  public deleteVideo(video: VideoInterface) {}
+  public getImage(url: string): string {
+    let result;
+    SOCIAL_NETWORKS.map((type: string) => {
+      const regex = new RegExp(type, 'gi');
+      if (regex.exec(url)) {
+        result = type;
+      }
+    });
+    return result;
   }
 }

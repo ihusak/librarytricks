@@ -13,6 +13,7 @@ export interface VideoInterface {
   };
   createdDate: string;
   verified: boolean;
+  url: string;
 }
 
 @Injectable({
@@ -25,12 +26,6 @@ export class VideosService extends AppService  {
     }));
   }
   public createPost(value: any) {
-    return this.http.post(`${this.apiUrl()}/videos/create`, {
-      url: value.url,
-      author: {
-        id: value.author.id,
-        name: value.author.name
-      }
-    });
+    return this.http.post(`${this.apiUrl()}/videos/create`, value);
   }
 }
