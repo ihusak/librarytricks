@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {AppService} from '../../../app.service';
 import {map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import {HttpHeaders} from '@angular/common/http';
 
 export interface VideoInterface {
   id: string;
@@ -27,5 +28,20 @@ export class VideosService extends AppService  {
   }
   public createPost(value: any) {
     return this.http.post(`${this.apiUrl()}/videos/create`, value);
+  }
+  public deletePost(videoId: string) {
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: {videoId}
+    };
+    return this.http.delete(`${this.apiUrl()}/videos/delete`, options);
+  }
+  public likePost(videoId: string) {
+    return this.http.put(`${this.apiUrl()}/videos/like`, {videoId});
+  }
+  public verifyPost(videoId: string) {
+    return this.http.put(`${this.apiUrl()}/videos/verify`, {videoId});
   }
 }

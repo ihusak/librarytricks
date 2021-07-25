@@ -3,14 +3,42 @@
   <button mat-raised-button color="primary" (click)="createPost()">{{'TEMPLATE.VIDEOS.CREATE_POST' | translate}}</button>
 </div>
 <div class="wrap-video">
-  <a [href]="video.url" class="item" *ngFor="let video of videosList">
-    <div class="type">{{getImage(video.url)}}</div>
-    <span class="title">{{video.description}}</span>
-    <div class="actions">
-      <button (click)="likeVideo(videe)" mat-icon-button [color]="video.likes.indexOf(userInfo.id) >= 0 ? 'warn' : 'basic'" aria-label="like">
-        <mat-icon>favorite</mat-icon> {{video.likes.length}}
-      </button>
-      <button mat-button (click)="deleteVideo(video)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" color="warn">{{'COMMON.DELETE' | translate}}</button>
+  <div *ngFor="let video of videosList">
+    <div class="item" *ngIf="video.verified">
+      <a [href]="video.url" class="type" target="_blank">
+        <i class="fab" [ngClass]="getImage(video.url)"></i>
+      </a>
+      <span *ngIf="video.description" class="title">{{video.description}}</span>
+      <div class="actions">
+        <button (click)="likeVideo(video)" mat-icon-button [color]="video.likes.indexOf(userInfo.id) >= 0 ? 'warn' : 'basic'" aria-label="like">
+          <mat-icon>favorite</mat-icon> <span *ngIf="video.likes.length">{{video.likes.length}}</span>
+        </button>
+        <button mat-icon-button (click)="deleteVideo(video)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" color="warn"><mat-icon>delete</mat-icon></button>
+        <button class="verification" [disabled]="video.verified" mat-icon-button (click)="verify(video)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" color="basic"><mat-icon>verified_user</mat-icon></button>
+      </div>
     </div>
-  </a>
+  </div>
+</div>
+{{notApproved}}
+<div class="not-approved" *ngIf="notApproved || (userInfo | userRolePipe:[userRoles.ADMIN])">
+  <div class="section-header-container">
+    <span class="section-header"> {{'COMMON.NOT_APPROVED' | translate}} </span>
+  </div>
+  <div class="wrap-video">
+    <div *ngFor="let video of videosList">
+      <div class="item" *ngIf="!video.verified && ( (userInfo | userRolePipe:[userRoles.STUDENT]) && userInfo.id === video.createdBy.id) || (userInfo | userRolePipe:[userRoles.ADMIN]) ">
+        <a [href]="video.url" class="type" target="_blank">
+          <i class="fab" [ngClass]="getImage(video.url)"></i>
+        </a>
+        <span *ngIf="video.description" class="title">{{video.description}}</span>
+        <div class="actions">
+          <button (click)="likeVideo(video)" mat-icon-button [color]="video.likes.indexOf(userInfo.id) >= 0 ? 'warn' : 'basic'" aria-label="like">
+            <mat-icon>favorite</mat-icon> <span *ngIf="video.likes.length">{{video.likes.length}}</span>
+          </button>
+          <button mat-icon-button (click)="deleteVideo(video)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" color="warn"><mat-icon>delete</mat-icon></button>
+          <button class="verification" [disabled]="video.verified" mat-icon-button (click)="verifyVideo(video)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" color="basic"><mat-icon>verified_user</mat-icon></button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

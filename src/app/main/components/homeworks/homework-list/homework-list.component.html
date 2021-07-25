@@ -33,7 +33,7 @@
         <mat-card-actions>
           <div class="homework-actions">
             <button (click)="likeHomework(homework.id)" mat-icon-button [color]="homework.likes.indexOf(userInfo.id) >= 0 ? 'warn' : 'basic'" aria-label="like">
-              <mat-icon>favorite</mat-icon> {{homework.likes.length}}
+              <mat-icon>favorite</mat-icon> <span *ngIf="homework.likes.length">{{homework.likes.length}}</span>
             </button>
             <button mat-button [routerLink]="['../edit/', homework.id]" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">{{'COMMON.UPDATE' | translate}}</button>
             <button mat-button (click)="deleteHomework(homework)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">{{'COMMON.DELETE' | translate}}</button>
