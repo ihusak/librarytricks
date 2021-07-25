@@ -24,6 +24,7 @@ export class VideosComponent implements OnInit {
   private notifyTypes = NotificationTypes;
   public userRole = UserRolesEnum;
   public userInfo: any;
+  public notApproved: boolean = false;
   constructor(
     private videosService: VideosService,
     public dialog: MatDialog,
@@ -34,7 +35,9 @@ export class VideosComponent implements OnInit {
     this.userInfo = this.mainService.userInfo;
     this.videosService.getAllVideos().subscribe((res: any) => {
       this.videosList = res;
+      this.notApproved = res.find( video => !video.verified && this.userInfo.id === video.createdBy.id);
     });
+    console.log(this);
   }
   public createPost() {
     const dialogRef = this.dialog.open(CreateVideoComponent, {
@@ -59,8 +62,25 @@ export class VideosComponent implements OnInit {
       }
     });
   }
-  public likeVideo(video: VideoInterface) {}
-  public deleteVideo(video: VideoInterface) {}
+  public likeVideo(video: VideoInterface) {
+    this.videosService.likePost(video.id).subscribe((res: VideoInterface) => {
+      if (res) {
+        this.videosList.map((v: VideoInterface) => {
+          if (v.id === res.id) {
+            v.likes = res.likes;
+          }
+          return v;
+        });
+      }
+    })
+  }
+  public deleteVideo(video: VideoInterface) {
+    this.videosService.deletePost(video.id).subscribe((res: any) => {
+      if (res.ok) {
+        this.videosList = this.videosList.filter((v: VideoInterface) => v.id !== video.id);
+      }
+    });
+  }
   public getImage(url: string): string {
     let result;
     SOCIAL_NETWORKS.map((type: string) => {
@@ -69,6 +89,18 @@ export class VideosComponent implements OnInit {
         result = type;
       }
     });
-    return result;
+    return 'fa-' + result;
+  }
+  public verifyVideo(video: VideoInterface) {
+    this.videosService.verifyPost(video.id).subscribe((res: any) => {
+      if (res.ok) {
+        this.videosList.map((v: VideoInterface) => {
+          if (v.id === video.id) {
+            v.verified = true;
+          }
+          return v;
+        });
+      }
+    });
   }
 }
