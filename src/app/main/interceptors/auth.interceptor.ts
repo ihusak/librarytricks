@@ -35,10 +35,10 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req)
         .pipe(catchError((err) => {
           if (err.status === 403) {
-            this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_RECOVERED'), '', {
-              duration: 2000,
-              panelClass: ['success']
-            });
+            // this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_RECOVERED'), '', {
+            //   duration: 2000,
+            //   panelClass: ['success']
+            // });
             return this.handleExpireToken(req, next);
           } else if (err.status === 401) {
             this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_LOGOUT'), '', {

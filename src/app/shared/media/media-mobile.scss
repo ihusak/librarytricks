@@ -81,4 +81,11 @@
         width: 100%;
       }
     }
+    app-videos {
+      .wrap-video {
+        .item {
+          width: calc(100% - 50px) !important;
+        }
+      }
+    }
 }
