@@ -22,9 +22,9 @@ export class VideosComponent implements OnInit {
   public userRoles = UserRolesEnum;
   public videosList: VideoInterface[] = [];
   private notifyTypes = NotificationTypes;
-  public userRole = UserRolesEnum;
   public userInfo: any;
-  public notApproved: boolean = false;
+  public notApproved: VideoInterface[] = [];
+  public mobile: boolean = false;
   constructor(
     private videosService: VideosService,
     public dialog: MatDialog,
@@ -35,9 +35,15 @@ export class VideosComponent implements OnInit {
     this.userInfo = this.mainService.userInfo;
     this.videosService.getAllVideos().subscribe((res: any) => {
       this.videosList = res;
-      this.notApproved = res.find( video => !video.verified && this.userInfo.id === video.createdBy.id);
+      this.notApproved = this.videosList.filter( video => 
+        (!video.verified && (this.userInfo.id === video.createdBy.id) || 
+        (!video.verified && this.userInfo.role.id === this.userRoles.ADMIN)));
     });
-    console.log(this);
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+      this.mobile = true;
+    }else{
+      this.mobile = false;
+    }
   }
   public createPost() {
     const dialogRef = this.dialog.open(CreateVideoComponent, {
@@ -45,28 +51,15 @@ export class VideosComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(video => {
       if (video) {
-        const notification: NotifyInterface = {
-          users: null,
-          author: {
-            id: video.createdBy.id,
-            name: video.createdBy.userName
-          },
-          title: 'TEMPLATE.VIDEOS.TITLE',
-          type: this.notifyTypes.NEW_VIDEO,
-          userType: [this.userRoles.STUDENT, this.userRoles.PARENT, this.userRoles.COACH, this.userRoles.ADMIN]
-        };
-        this.mainService.setNotification(notification).subscribe((res: any) => {});
-        video.id = video._id;
-        delete video._id;
-        this.videosList.push(video);
+        this.notApproved.push(video);
       }
     });
   }
   public likeVideo(video: VideoInterface) {
-    this.videosService.likePost(video.id).subscribe((res: VideoInterface) => {
+    this.videosService.likePost(video.id).subscribe((res: any) => {
       if (res) {
         this.videosList.map((v: VideoInterface) => {
-          if (v.id === res.id) {
+          if (v.id === res._id) {
             v.likes = res.likes;
           }
           return v;
@@ -82,24 +75,33 @@ export class VideosComponent implements OnInit {
     });
   }
   public getImage(url: string): string {
-    let result;
-    SOCIAL_NETWORKS.map((type: string) => {
+    let result = SOCIAL_NETWORKS.find((type: string) => {
       const regex = new RegExp(type, 'gi');
-      if (regex.exec(url)) {
-        result = type;
-      }
+      return !!regex.exec(url);
     });
-    return 'fa-' + result;
+    return result ? `fab fa-${result}` : `fas fa-question`;
   }
   public verifyVideo(video: VideoInterface) {
     this.videosService.verifyPost(video.id).subscribe((res: any) => {
       if (res.ok) {
-        this.videosList.map((v: VideoInterface) => {
+        const notification: NotifyInterface = {
+          users: [{id: video.createdBy.id}],
+          author: {
+            id: video.createdBy.id,
+            name: video.createdBy.name
+          },
+          title: 'TEMPLATE.VIDEOS.TITLE',
+          type: this.notifyTypes.NEW_VIDEO,
+          userType: [this.userRoles.STUDENT, this.userRoles.PARENT, this.userRoles.COACH, this.userRoles.ADMIN]
+        };
+        this.mainService.setNotification(notification).subscribe((res: any) => {});
+        this.videosList = this.videosList.map((v: VideoInterface) => {
           if (v.id === video.id) {
             v.verified = true;
           }
           return v;
         });
+        this.notApproved = this.notApproved.filter((v: VideoInterface) => v.id !== video.id);
       }
     });
   }
