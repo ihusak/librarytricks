@@ -295,7 +295,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         },
         title: 'COMMON.COURSE',
         type: this.notifyTypes.DELETE_COURSE_TASK,
-        userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+        userType: [this.userRoles.ADMIN],
         task: {
           id: task.id,
           name: task.title

@@ -25,7 +25,8 @@
             <span *ngSwitchCase="notifyTypes.TASK_IN_PROGRESS" [innerHTML]="'COMMON.NOTIFY.TASK_IN_PROGRESS' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
             <span *ngSwitchCase="notifyTypes.PASS_TASK" [innerHTML]="'COMMON.NOTIFY.PASS_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
             <span *ngSwitchCase="notifyTypes.CONFIRM_PASS_TASK" [innerHTML]="'COMMON.NOTIFY.CONFIRM_PASS_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
-            <span *ngSwitchCase="notifyTypes.NEW_VIDEO" [innerHTML]="'COMMON.NOTIFY.NEW_VIDEO' | translate: {author: notify.author.name}"></span>
+            <span *ngSwitchCase="notifyTypes.VIDEO_APPROVED" [innerHTML]="'COMMON.NOTIFY.VIDEO_APPROVED' | translate"></span>
+            <span *ngSwitchCase="notifyTypes.VERIFY_VIDEO" [innerHTML]="'COMMON.NOTIFY.VERIFY_VIDEO' | translate: {author: notify.author.name}"></span>
           </div>
         </div>
       </div>

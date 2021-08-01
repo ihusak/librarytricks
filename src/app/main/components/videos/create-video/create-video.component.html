@@ -3,6 +3,7 @@
     <div class="item">
       <h3>{{'TEMPLATE.VIDEOS.CREATE.TITLE' | translate}}</h3>
       <p>{{'TEMPLATE.VIDEOS.CREATE.DESCRIPTION' | translate}}</p>
+      <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])" [innerHtml]="'TEMPLATE.VIDEOS.CREATE.APPROVED_AWARD' | translate"></p>
       <mat-form-field>
         <input formControlName="description" matInput placeholder="{{'COMMON.DESCRIPTION' | translate}}">
       </mat-form-field>
