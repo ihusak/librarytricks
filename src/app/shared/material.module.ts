@@ -20,6 +20,7 @@ import {MatRadioModule, MAT_RADIO_DEFAULT_OPTIONS} from '@angular/material/radio
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatCardModule} from '@angular/material/card';
 import { MatMenuModule} from '@angular/material/menu';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 const material = [
     MatButtonModule,
@@ -44,7 +45,8 @@ const material = [
     MatRadioModule,
     MatAutocompleteModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatPaginatorModule
 ];
 
 @NgModule({

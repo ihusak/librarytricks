@@ -41,7 +41,7 @@ export class VideosService extends AppService  {
   public likePost(videoId: string) {
     return this.http.put(`${this.apiUrl()}/videos/like`, {videoId});
   }
-  public verifyPost(videoId: string) {
-    return this.http.put(`${this.apiUrl()}/videos/verify`, {videoId});
+  public verifyPost(videoId: string, userId: string) {
+    return this.http.put(`${this.apiUrl()}/videos/verify`, {videoId, userId});
   }
 }

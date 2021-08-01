@@ -5,6 +5,9 @@
     display: table;
   }
   margin: 10px 0;
+  .video-box {
+   
+  }
   .item {
     display: flex;
     flex-direction: column;
@@ -19,6 +22,9 @@
     padding: 15px;
     float: left;
     text-decoration: none;
+    .author {
+      font-size: 10px;
+    }
     &:hover {
       .type {
         i {
@@ -119,4 +125,26 @@
       }
     }
   }
+}
+.actions-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .search-input {
+    width: 35%;
+    position: relative;
+    mat-icon {
+      position: absolute;
+      right: 0;
+    }
+  }
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+mat-paginator {
+  margin-bottom: 10px;
+  background-color: transparent;
 }

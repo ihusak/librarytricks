@@ -54,10 +54,21 @@ export class CreateVideoComponent implements OnInit, OnDestroy {
     const createPostSub = this.videosService.createPost(VIDEO).subscribe((createdVideo: any) => {
     this.dialogRef.close(createdVideo);
     if (createdVideo) {
-      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.VIDEO_CREATED'), '', {
-        duration: 2000,
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.VIDEO_MOVED_TO_VERIFICATION'), '', {
+        duration: 5000,
         panelClass: ['success']
       });
+      const notification: NotifyInterface = {
+        users: null,
+        author: {
+          id: createdVideo.createdBy.id,
+          name: createdVideo.createdBy.name
+        },
+        title: 'COMMON.VIDEOS',
+        type: this.notifyTypes.VERIFY_VIDEO,
+        userType: [this.userRoles.ADMIN]
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
      }
     });
     this.subscription.add(createPostSub);

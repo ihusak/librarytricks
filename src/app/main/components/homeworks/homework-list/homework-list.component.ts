@@ -87,7 +87,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
           },
           title: 'COMMON.HOMEWORKS',
           type: this.notifyTypes.HOMEWORK_DELETE,
-          userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+          userType: [this.userRoles.ADMIN],
           homework: {
             id: homework.id,
             name: homework.title

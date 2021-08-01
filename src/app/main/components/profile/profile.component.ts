@@ -97,7 +97,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         },
         title: 'COMMON.UPDATES',
         type: this.notifyTypes.UPDATE_PROFILE,
-        userType: [this.userRoles.COACH, this.userRoles.ADMIN]
+        userType: [this.userRoles.ADMIN]
       };
       this.mainService.setNotification(notification).subscribe((res: any) => {});
     });

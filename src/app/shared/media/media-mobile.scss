@@ -82,6 +82,16 @@
       }
     }
     app-videos {
+      .header {
+        flex-direction: column;
+      }
+      .actions-wrap {
+        margin-top: 35px;
+        flex-direction: column-reverse;
+        .search-input {
+          width: 100% !important;
+        }
+      }
       .wrap-video {
         .item {
           width: calc(100% - 50px) !important;
