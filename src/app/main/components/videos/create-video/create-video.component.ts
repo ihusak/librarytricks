@@ -20,7 +20,7 @@ export class CreateVideoComponent implements OnInit, OnDestroy {
   public videoForm: FormGroup;
   public initForm: boolean = false;
   public userInfo: any;
-  private userRoles = UserRolesEnum;
+  public userRoles = UserRolesEnum;
   private notifyTypes = NotificationTypes;
   private subscription: Subscription = new Subscription();
 

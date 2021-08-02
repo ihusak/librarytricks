@@ -1,6 +1,23 @@
 <div class="coach-actions-button">
   <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" routerLink="../create" mat-raised-button color="primary">{{'TEMPLATE.HOMEWORKS.CREATE_HOMEWORK' | translate}}</button>
 </div>
+<div class="actions-wrap">
+  <mat-form-field class="search-input">
+    <mat-icon>search</mat-icon>
+    <input 
+    [(ngModel)]="sort.query"
+    (ngModelChange)="searchQueryDescription(sort.query)"
+    matInput 
+    placeholder="{{'TEMPLATE.VIDEOS.SEARCH_DESCRIPTION' | translate}}"
+    >
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{'COMMON.SORT.PLACEHOLDER' | translate}}</mat-label>
+    <mat-select [(ngModel)]="sort.currentSort" #selectedvalue (valueChange)="changeSort(selectedvalue.value)">
+      <mat-option *ngFor="let sort of sort.sortList" [value]="sort">{{sort.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <div class="homeworks-list">
   <div class="empty" *ngIf="homeworksList && !homeworksList.length">
     {{'COMMON.EMPTY' | translate}}
@@ -43,3 +60,12 @@
     </mat-grid-tile>
   </mat-grid-list>
 </div>
+<mat-paginator 
+  [length]="sort.length"
+  [pageSize]="paginationOptions.pageSize"
+  [pageSizeOptions]="paginationOptions.pageSizeOptions"
+  (page)="onPageChange($event)"
+  #matPaginator
+  [disabled]="!sort.length || sort.length < 4"
+  aria-label="Select page">
+</mat-paginator>

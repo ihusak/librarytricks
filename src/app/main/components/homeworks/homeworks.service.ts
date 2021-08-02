@@ -12,7 +12,8 @@ export interface HomeworkInterface {
   description: string;
   example: string;
   createdDate: Date;
-  likes: number;
+  createdBy?: {id: string; name: string};
+  likes: [];
 }
 @Injectable({
   providedIn: 'root'

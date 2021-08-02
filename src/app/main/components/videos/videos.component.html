@@ -40,12 +40,14 @@
     </div>
   </div>
 </div>
-<mat-paginator [length]="sort.values.length"
-[pageSize]="10"
-[pageSizeOptions]="[5, 10, 25]"
-(page)="onPageChange($event)"
-#matPaginator
-aria-label="Select page">
+<mat-paginator 
+  [length]="sort.approvedVideos.length"
+  [pageSize]="paginationOptions.pageSize"
+  [pageSizeOptions]="paginationOptions.pageSizeOptions"
+  (page)="onPageChange($event)"
+  #matPaginator
+  [disabled]="!videosList.length || videosList.length < 5"
+  aria-label="Select page">
 </mat-paginator>
 <div class="not-approved" *ngIf="notApproved.length && (userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH, userRoles.STUDENT])">
   <div class="section-header-container">
@@ -70,10 +72,12 @@ aria-label="Select page">
       </div>
     </div>
   </div>
-  <mat-paginator [length]="length"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="pageSizeOptions"
-  (page)="pageEvent = $event"
-  aria-label="Select page">
+  <mat-paginator 
+  [length]="sort.notApprovedVideos.length"
+  [pageSize]="paginationOptions.pageSize"
+  [pageSizeOptions]="paginationOptions.pageSizeOptions"
+  (page)="onPageNotApprovedChange($event)"
+  [disabled]="!sort.notApprovedVideos.length || sort.notApprovedVideos.length < 5"
+  aria-label="Select page not approved">
   </mat-paginator>
 </div>

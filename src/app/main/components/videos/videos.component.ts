@@ -7,7 +7,7 @@ import {CreateVideoComponent} from './create-video/create-video.component';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
 import { TranslateService } from '@ngx-translate/core';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material';
 
 const SOCIAL_NETWORKS = [
   'instagram',
@@ -48,11 +48,17 @@ export class VideosComponent implements OnInit, AfterViewInit {
   public notApproved: VideoInterface[] = [];
   public mobile: boolean = false;
   public sort = {
-    currentSortr: '',
+    currentSort: '',
     sortList: [],
     query: '',
-    values: []
+    allVideos: [],
+    approvedVideos: [],
+    notApprovedVideos: []
   };
+  public paginationOptions = {
+    pageSize: 10,
+    pageSizeOptions: [5, 10, 25]
+  }
   @ViewChild('matPaginator', {static: false}) matPaginator: MatPaginator;
   constructor(
     private videosService: VideosService,
@@ -79,19 +85,23 @@ export class VideosComponent implements OnInit, AfterViewInit {
         id: post.createdBy.id,
         key: sortingValues.AUTHOR
       })).filter((post, index, self) => index === self.findIndex((i) => post.id === i.id));
-      this.videosList = res;
-      this.sort.values = res;
-      this.notApproved = this.videosList.filter( video => 
+      this.sort.allVideos = res;
+      this.sort.approvedVideos = res.filter((video: any) => video.verified);
+      this.notApproved = res.filter((video: any) => 
         (!video.verified && (this.userInfo.id === video.createdBy.id) || 
         (!video.verified && this.userInfo.role.id === this.userRoles.ADMIN)));
       this.sort.sortList = [...this.sort.sortList, ...AUTHORS];
-    console.log(this.matPaginator);
+      this.sort.notApprovedVideos = [...this.notApproved];
+      this.videosList = this.sort.approvedVideos.slice(0*this.paginationOptions.pageSize,
+        0*this.paginationOptions.pageSize + this.paginationOptions.pageSize);
+      this.notApproved = this.sort.notApprovedVideos.slice(0*this.paginationOptions.pageSize,
+        0*this.paginationOptions.pageSize + this.paginationOptions.pageSize);
     });
   }
   ngAfterViewInit() {
-    this.matPaginator.initialized.subscribe((e) => {
-      console.log(e);
-    })
+    const paginate = this.matPaginator;
+    this.videosList =  this.sort.allVideos.slice(paginate.pageIndex*paginate.pageSize,
+      paginate.pageIndex*paginate.pageSize + paginate.pageSize);
   }
   public createPost() {
     const dialogRef = this.dialog.open(CreateVideoComponent, {
@@ -154,36 +164,40 @@ export class VideosComponent implements OnInit, AfterViewInit {
     });
   }
   changeSort(sort: sortItemInterface) {
-    console.log(sort);
     switch(sort.key) {
       case sortingValues.AUTHOR:
-        this.videosList = this.sort.values.filter((video: VideoInterface) => video.createdBy.id === sort.id);
+        this.videosList = this.sort.allVideos.filter((video: VideoInterface) => video.createdBy.id === sort.id);
         break;
       case sortingValues.NEW:
-        this.videosList = this.sort.values.sort((a: VideoInterface, b: VideoInterface) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+        this.videosList = this.sort.allVideos.sort((a: VideoInterface, b: VideoInterface) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
         break;
       case sortingValues.OLD:
-        this.videosList = this.sort.values.sort((a: VideoInterface, b: VideoInterface) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
+        this.videosList = this.sort.allVideos.sort((a: VideoInterface, b: VideoInterface) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
         break;
       case sortingValues.POPULAR:
-        this.videosList = this.sort.values.sort((a: VideoInterface, b: VideoInterface) => b.likes.length - a.likes.length);
+        this.videosList = this.sort.allVideos.sort((a: VideoInterface, b: VideoInterface) => b.likes.length - a.likes.length);
         break;
       case sortingValues.NOT_APPROVED:
-        this.videosList = this.sort.values.filter((video: VideoInterface) => !video.verified);
+        this.videosList = this.sort.allVideos.filter((video: VideoInterface) => !video.verified);
         break;
     }
   }
   searchQueryDescription(query: string) {
     if (!query) {
-      this.videosList = this.sort.values;
+      this.videosList = this.sort.allVideos;
       return;
     }
-    this.videosList = this.sort.values.filter((video: VideoInterface) => {
+    this.videosList = this.sort.allVideos.filter((video: VideoInterface) => {
       return video.description && video.description.toLowerCase().indexOf(query.toLowerCase()) >= 0;
-    });
+    }).slice(this.matPaginator.pageIndex*this.matPaginator.pageSize,
+      this.matPaginator.pageIndex*this.matPaginator.pageSize + this.matPaginator.pageSize);
   }
   onPageChange($event) {
-    this.videosList =  this.sort.values.slice($event.pageIndex*$event.pageSize,
+    this.videosList =  this.sort.allVideos.slice($event.pageIndex*$event.pageSize,
+    $event.pageIndex*$event.pageSize + $event.pageSize);
+  }
+  onPageNotApprovedChange($event) {
+    this.notApproved =  this.sort.notApprovedVideos.slice($event.pageIndex*$event.pageSize,
     $event.pageIndex*$event.pageSize + $event.pageSize);
   }
 }
