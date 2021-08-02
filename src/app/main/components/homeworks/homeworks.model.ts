@@ -5,7 +5,11 @@ export class HomeworksModel {
   description: string;
   example: string;
   createdDate: Date;
-  likes: number;
+  createdBy?: {
+    id: string;
+    name: string;
+  };
+  likes: [];
   constructor(obj) {
     this.id = obj._id;
     this.students = obj.students.map(st => ({id: st.id, name: st.name}));
@@ -13,6 +17,7 @@ export class HomeworksModel {
     this.description = obj.description;
     this.example = obj.example;
     this.createdDate = obj.createdDate;
+    this.createdBy = obj.createdBy;
     this.likes = obj.likes;
   }
 }

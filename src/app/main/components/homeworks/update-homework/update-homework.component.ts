@@ -72,6 +72,11 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
   }
   public updateHomework() {
     const HOMEWORK = this.hmForm.value;
+    if(!HOMEWORK.createdBy && this.userInfo.role.id !== this.userRoles.ADMIN) {
+      HOMEWORK.createdBy = {};
+      HOMEWORK.createdBy.id = this.userInfo.id;
+      HOMEWORK.createdBy.name = this.userInfo.userName;
+    }
     HOMEWORK.students = HOMEWORK.students.map((st: StudentInfoInterface) => ({id: st.id, name: st.userName}));
     const updateHomework = this.homeworksService.updateHomework(this.hmId, HOMEWORK).subscribe((res: any) => {
       if (res.result === 'ok') {

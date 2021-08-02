@@ -15,10 +15,12 @@ import { AuthInterceptor } from './main/interceptors/auth.interceptor';
 import { LoaderInterceptorService } from './shared/loader/loader.interceptor';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { PipesModule } from './shared/pipes/pipes.module';
-import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppService } from './app.service';
 import { ErrorHandlerIntercaptor } from './main/interceptors/error.handler.intercaptor';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { PaginationTranslate } from './shared/translate/pagination-translate';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -65,6 +67,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     provide: HTTP_INTERCEPTORS,
     useClass: ErrorHandlerIntercaptor,
     multi: true
+  },
+  {
+    provide: MatPaginatorIntl, deps: [TranslateService],
+    useFactory: (translateService: TranslateService) => new PaginationTranslate(translateService).getPaginatorIntl()
   }
 ],
   bootstrap: [AppComponent]
