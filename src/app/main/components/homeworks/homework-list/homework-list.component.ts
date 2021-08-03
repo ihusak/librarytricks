@@ -11,7 +11,7 @@ import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 import { MatPaginator } from '@angular/material/paginator';
 
-interface sortItemInterface {
+interface SortItemInterface {
   name: string;
   key: string;
   id?: string;
@@ -21,15 +21,14 @@ enum sortingValues {
   POPULAR = 'popular',
   NEW = 'new',
   OLD = 'old',
-  AUTHOR = 'author',
-  NOT_APPROVED = 'not_approved'
+  AUTHOR = 'author'
 }
 
-const DEFAULT_SORT: sortItemInterface[] = [
+const DEFAULT_SORT: SortItemInterface[] = [
   {name: sortingValues.NEW, key: sortingValues.NEW},
   {name: sortingValues.POPULAR, key: sortingValues.POPULAR},
   {name: sortingValues.OLD, key: sortingValues.OLD}
-]
+];
 
 @Component({
   selector: 'app-homework-list',
@@ -45,10 +44,11 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   private notifyTypes = NotificationTypes;
   public newHomeworkNotifyId: string;
   public sort = {
-    currentSort: {id: '', name: '', key: ''},
+    currentSort: null,
     sortList: [],
     query: '',
     allHomeworks: [],
+    sortedItems: [],
     length: 0
   };
   public paginationOptions = {
@@ -64,7 +64,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private router: ActivatedRoute
   ) {
-    this.sort.sortList = DEFAULT_SORT.map((sortItem: sortItemInterface) => {
+    this.sort.sortList = DEFAULT_SORT.map((sortItem: SortItemInterface) => {
       sortItem.name = translateService.instant('COMMON.SORT.' + sortItem.name.toUpperCase(), '');
       return sortItem;
     });
@@ -80,16 +80,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
       } else {
         this.homeworksList = hm;
       }
-      this.sort.allHomeworks = hm;
-      const AUTHORS = hm.filter((h: HomeworkInterface) => h.createdBy).map((h: HomeworkInterface) => ({
-        name: h.createdBy.name, 
-        id: h.createdBy.id,
-        key: sortingValues.AUTHOR
-      })).filter((homework, index, self) => index === self.findIndex((i) => homework.id === i.id));
-      this.sort.sortList = [...this.sort.sortList, ...AUTHORS];
-      this.sort.length = this.sort.allHomeworks.length;
-      this.homeworksList = this.sort.allHomeworks.slice(0*this.paginationOptions.pageSize,
-        0*this.paginationOptions.pageSize + this.paginationOptions.pageSize);
+      this.prepareSort(hm);
     });
     this.breakpoint = (window.innerWidth <= 1200) ? 1 : 4;
     this.router.queryParams.subscribe((params: Params) => {
@@ -109,7 +100,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   public likeHomework(homeworkId: string) {
     const like = this.homeworksService.like(this.userInfo.id, homeworkId).subscribe((response: HomeworkInterface) => {
       this.homeworksList.filter((homework: HomeworksModel) => {
-        if(homework.id === response.id) {
+        if (homework.id === response.id) {
           homework.likes = response.likes;
         }
         return homework;
@@ -120,7 +111,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
 
   public deleteHomework(homework: HomeworkInterface) {
     const deleteHomework = this.homeworksService.deleteHomework(homework.id).subscribe((response: any) => {
-      if(response.result === 'ok') {
+      if (response.result === 'ok') {
         this.homeworksList = this.homeworksList.filter((hm: HomeworksModel) => hm.id !== homework.id);
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.HOMEWORK_CREATED'), '', {
           duration: 4000,
@@ -148,43 +139,71 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   public onResize(event) {
     this.breakpoint = (event.target.innerWidth <= 1200) ? 1 : 4;
   }
-  public searchQueryDescription(query: string) {
-    if (!query) {
-      this.homeworksList = this.sort.allHomeworks;
+  public searchQueryDescription(query: string): HomeworkInterface[] {
+    const sortingItems = this.sort.allHomeworks;
+    this.sort.currentSort = this.sort.sortList[0];
+    if (!query && this.matPaginator) {
+      this.homeworksList = sortingItems.slice(this.matPaginator.pageIndex * this.matPaginator.pageSize,
+        this.matPaginator.pageIndex * this.matPaginator.pageSize + this.matPaginator.pageSize);
+      this.sort.length = this.homeworksList.length;
       return;
     }
-    // if(this.sort.currentSort) {
-    //   this.changeSort(this.sort.currentSort);
-    // }
-    this.homeworksList = this.sort.allHomeworks.filter((homework: HomeworkInterface) => {
+    this.homeworksList = sortingItems.filter((homework: HomeworkInterface) => {
       return homework.description && homework.description.toLowerCase().indexOf(query.toLowerCase()) >= 0;
-    }).slice(this.matPaginator.pageIndex*this.matPaginator.pageSize,
-      this.matPaginator.pageIndex*this.matPaginator.pageSize + this.matPaginator.pageSize);
+    }).slice(this.matPaginator.pageIndex * this.matPaginator.pageSize,
+      this.matPaginator.pageIndex * this.matPaginator.pageSize + this.matPaginator.pageSize);
     this.sort.length = this.homeworksList.length;
+    return this.homeworksList;
   }
-  public changeSort(sort: sortItemInterface) {
-    switch(sort.key) {
+  public changeSort(sort: SortItemInterface): HomeworkInterface[] {
+    const sortingItems = this.sort.allHomeworks;
+    this.sort.query = '';
+    switch (sort.key) {
       case sortingValues.AUTHOR:
-        this.homeworksList = this.sort.allHomeworks.filter((homework: HomeworkInterface) => homework.createdBy && homework.createdBy.id === sort.id);
+        this.homeworksList = sortingItems.filter((homework: HomeworkInterface) => homework.createdBy && homework.createdBy.id === sort.id);
         this.sort.length = this.homeworksList.length;
         break;
       case sortingValues.NEW:
-        this.homeworksList = this.sort.allHomeworks.sort((a: HomeworkInterface, b: HomeworkInterface) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+        this.homeworksList = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
         this.sort.length = this.homeworksList.length;
         break;
       case sortingValues.OLD:
-        this.homeworksList = this.sort.allHomeworks.sort((a: HomeworkInterface, b: HomeworkInterface) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
+        this.homeworksList = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
         this.sort.length = this.homeworksList.length;
         break;
       case sortingValues.POPULAR:
-        this.homeworksList = this.sort.allHomeworks.sort((a: HomeworkInterface, b: HomeworkInterface) => b.likes.length - a.likes.length);
+        this.homeworksList = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => b.likes.length - a.likes.length);
         this.sort.length = this.homeworksList.length;
         break;
     }
+    return this.homeworksList;
+  }
+  public checkPermission(homework: HomeworkInterface): boolean {
+    if (this.userInfo.role.id !== this.userRoles.ADMIN &&
+        this.userInfo.id === (homework.createdBy && homework.createdBy.id) ||
+        !homework.createdBy) {
+      return true;
+    }
+    return false;
   }
   public onPageChange($event) {
-    this.homeworksList = this.sort.allHomeworks.slice($event.pageIndex*$event.pageSize,
-    $event.pageIndex*$event.pageSize + $event.pageSize);
+    const sortingItems = this.sort.allHomeworks;
+    this.homeworksList = sortingItems.slice($event.pageIndex * $event.pageSize,
+    $event.pageIndex * $event.pageSize + $event.pageSize);
+  }
+  private prepareSort(homework: HomeworkInterface[]) {
+    this.sort.allHomeworks = homework;
+    const AUTHORS = homework.filter((h: HomeworkInterface) => h.createdBy).map((h: HomeworkInterface) => ({
+      name: h.createdBy.name,
+      id: h.createdBy.id,
+      key: sortingValues.AUTHOR
+    })).filter((hm, index, self) => index === self.findIndex((i) => hm.id === i.id));
+    this.sort.sortList = [...this.sort.sortList, ...AUTHORS];
+    this.sort.currentSort = DEFAULT_SORT[0];
+    this.sort.length = this.sort.allHomeworks.length;
+    this.changeSort(this.sort.currentSort);
+    // init page size of available items
+    this.homeworksList = this.sort.allHomeworks.slice(0, this.paginationOptions.pageSize);
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

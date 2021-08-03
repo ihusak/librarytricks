@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {UserRolesEnum} from '../../../shared/enums/user-roles.enum';
 import {VideoInterface, VideosService} from './videos.service';
 import {NotifyInterface} from '../../../shared/interface/notify.interface';
@@ -7,14 +7,14 @@ import {CreateVideoComponent} from './create-video/create-video.component';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
 import { TranslateService } from '@ngx-translate/core';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material';
+import { MatPaginator } from '@angular/material';
 
 const SOCIAL_NETWORKS = [
   'instagram',
   'youtube',
   'tiktok'
 ];
-interface sortItemInterface {
+interface SortItemInterface {
   name: string;
   key: string;
   id?: string;
@@ -28,19 +28,18 @@ enum sortingValues {
   NOT_APPROVED = 'not_approved'
 }
 
-const DEFAULT_SORT: sortItemInterface[] = [
+const DEFAULT_SORT: SortItemInterface[] = [
   {name: sortingValues.NEW, key: sortingValues.NEW},
   {name: sortingValues.POPULAR, key: sortingValues.POPULAR},
-  {name: sortingValues.OLD, key: sortingValues.OLD},
-  {name: sortingValues.NOT_APPROVED, key: sortingValues.NOT_APPROVED}
-]
+  {name: sortingValues.OLD, key: sortingValues.OLD}
+];
 
 @Component({
   selector: 'app-videos',
   templateUrl: './videos.component.html',
   styleUrls: ['./videos.component.scss']
 })
-export class VideosComponent implements OnInit, AfterViewInit {
+export class VideosComponent implements OnInit {
   public userRoles = UserRolesEnum;
   public videosList: VideoInterface[] = [];
   private notifyTypes = NotificationTypes;
@@ -48,7 +47,7 @@ export class VideosComponent implements OnInit, AfterViewInit {
   public notApproved: VideoInterface[] = [];
   public mobile: boolean = false;
   public sort = {
-    currentSort: '',
+    currentSort: null,
     sortList: [],
     query: '',
     allVideos: [],
@@ -58,7 +57,7 @@ export class VideosComponent implements OnInit, AfterViewInit {
   public paginationOptions = {
     pageSize: 10,
     pageSizeOptions: [5, 10, 25]
-  }
+  };
   @ViewChild('matPaginator', {static: false}) matPaginator: MatPaginator;
   constructor(
     private videosService: VideosService,
@@ -66,42 +65,18 @@ export class VideosComponent implements OnInit, AfterViewInit {
     private translateService: TranslateService,
     private mainService: MainService,
   ) {
-    this.sort.sortList = DEFAULT_SORT.map((sortItem: sortItemInterface) => {
+    this.sort.sortList = DEFAULT_SORT.map((sortItem: SortItemInterface) => {
       sortItem.name = translateService.instant('COMMON.SORT.' + sortItem.name.toUpperCase(), '');
       return sortItem;
     });
-    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-      this.mobile = true;
-    }else{
-      this.mobile = false;
-    }
+    this.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   }
 
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
     this.videosService.getAllVideos().subscribe((res: []) => {
-      const AUTHORS = res.map((post: any) => ({
-        name: post.createdBy.name, 
-        id: post.createdBy.id,
-        key: sortingValues.AUTHOR
-      })).filter((post, index, self) => index === self.findIndex((i) => post.id === i.id));
-      this.sort.allVideos = res;
-      this.sort.approvedVideos = res.filter((video: any) => video.verified);
-      this.notApproved = res.filter((video: any) => 
-        (!video.verified && (this.userInfo.id === video.createdBy.id) || 
-        (!video.verified && this.userInfo.role.id === this.userRoles.ADMIN)));
-      this.sort.sortList = [...this.sort.sortList, ...AUTHORS];
-      this.sort.notApprovedVideos = [...this.notApproved];
-      this.videosList = this.sort.approvedVideos.slice(0*this.paginationOptions.pageSize,
-        0*this.paginationOptions.pageSize + this.paginationOptions.pageSize);
-      this.notApproved = this.sort.notApprovedVideos.slice(0*this.paginationOptions.pageSize,
-        0*this.paginationOptions.pageSize + this.paginationOptions.pageSize);
+      this.prepareSort(res);
     });
-  }
-  ngAfterViewInit() {
-    const paginate = this.matPaginator;
-    this.videosList =  this.sort.allVideos.slice(paginate.pageIndex*paginate.pageSize,
-      paginate.pageIndex*paginate.pageSize + paginate.pageSize);
   }
   public createPost() {
     const dialogRef = this.dialog.open(CreateVideoComponent, {
@@ -123,7 +98,7 @@ export class VideosComponent implements OnInit, AfterViewInit {
           return v;
         });
       }
-    })
+    });
   }
   public deleteVideo(video: VideoInterface) {
     this.videosService.deletePost(video.id).subscribe((res: any) => {
@@ -133,7 +108,7 @@ export class VideosComponent implements OnInit, AfterViewInit {
     });
   }
   public getImage(url: string): string {
-    let result = SOCIAL_NETWORKS.find((type: string) => {
+    const result = SOCIAL_NETWORKS.find((type: string) => {
       const regex = new RegExp(type, 'gi');
       return !!regex.exec(url);
     });
@@ -163,8 +138,9 @@ export class VideosComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  changeSort(sort: sortItemInterface) {
-    switch(sort.key) {
+  changeSort(sort: SortItemInterface) {
+    this.sort.query = '';
+    switch (sort.key) {
       case sortingValues.AUTHOR:
         this.videosList = this.sort.allVideos.filter((video: VideoInterface) => video.createdBy.id === sort.id);
         break;
@@ -183,21 +159,42 @@ export class VideosComponent implements OnInit, AfterViewInit {
     }
   }
   searchQueryDescription(query: string) {
+    this.sort.currentSort = this.sort.sortList[0];
     if (!query) {
-      this.videosList = this.sort.allVideos;
+      this.videosList = this.sort.approvedVideos.slice(this.matPaginator.pageIndex * this.matPaginator.pageSize,
+        this.matPaginator.pageIndex * this.matPaginator.pageSize + this.matPaginator.pageSize);;
       return;
     }
-    this.videosList = this.sort.allVideos.filter((video: VideoInterface) => {
+    this.videosList = this.sort.approvedVideos.filter((video: VideoInterface) => {
       return video.description && video.description.toLowerCase().indexOf(query.toLowerCase()) >= 0;
-    }).slice(this.matPaginator.pageIndex*this.matPaginator.pageSize,
-      this.matPaginator.pageIndex*this.matPaginator.pageSize + this.matPaginator.pageSize);
+    }).slice(this.matPaginator.pageIndex * this.matPaginator.pageSize,
+      this.matPaginator.pageIndex * this.matPaginator.pageSize + this.matPaginator.pageSize);
   }
   onPageChange($event) {
-    this.videosList =  this.sort.allVideos.slice($event.pageIndex*$event.pageSize,
-    $event.pageIndex*$event.pageSize + $event.pageSize);
+    this.videosList = this.sort.approvedVideos.slice($event.pageIndex * $event.pageSize,
+    $event.pageIndex * $event.pageSize + $event.pageSize);
   }
   onPageNotApprovedChange($event) {
-    this.notApproved =  this.sort.notApprovedVideos.slice($event.pageIndex*$event.pageSize,
-    $event.pageIndex*$event.pageSize + $event.pageSize);
+    this.notApproved = this.sort.notApprovedVideos.slice($event.pageIndex * $event.pageSize,
+    $event.pageIndex * $event.pageSize + $event.pageSize);
+  }
+  private prepareSort(videos: []) {
+    const AUTHORS = videos.map((post: any) => ({
+      name: post.createdBy.name,
+      id: post.createdBy.id,
+      key: sortingValues.AUTHOR
+    })).filter((post, index, self) => index === self.findIndex((i) => post.id === i.id));
+    this.sort.allVideos = videos;
+    this.sort.approvedVideos = videos.filter((video: any) => video.verified);
+    this.notApproved = videos.filter((video: any) =>
+      (!video.verified && (this.userInfo.id === video.createdBy.id) ||
+        (!video.verified && this.userInfo.role.id === this.userRoles.ADMIN)));
+    this.sort.sortList = [...this.sort.sortList, ...AUTHORS];
+    this.sort.notApprovedVideos = [...this.notApproved];
+    this.sort.currentSort = DEFAULT_SORT[0];
+    this.changeSort(this.sort.currentSort);
+    // init page size of available items
+    this.videosList = this.sort.approvedVideos.slice(0, this.paginationOptions.pageSize);
+    this.notApproved = this.sort.notApprovedVideos.slice(0, this.paginationOptions.pageSize);
   }
 }
