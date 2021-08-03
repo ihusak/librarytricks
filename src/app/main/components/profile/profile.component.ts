@@ -83,6 +83,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
+    console.log(userInfo);
     const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
       this.appService.userInfoSubject.next(updateUser);
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
@@ -193,8 +194,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     })
   }
 
-  compareObjects(o1: any, o2: any): boolean {
+  compareObjectsCourse(o1: any, o2: any): boolean {
     return o1.name === o2.name && o1.id === o2.id;
+  }
+  compareObjectsKids(o1: any, o2: any): boolean {
+    return o1 && o2 ? o1.id === o2.id : o2 === o2;
   }
 
   compareObjectsCoach(o1: any, o2: any): boolean {
@@ -222,6 +226,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.userInfo.controls['userImg'].markAsDirty();
       this.previewUrl = reader.result;
     }
+  }
+  public selectedKid(kid) {
+    console.log(kid);
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
