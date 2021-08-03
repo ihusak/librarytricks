@@ -27,7 +27,7 @@
       <mat-form-field appearance="fill">
         <mat-label>{{'COMMON.STUDENTS' | translate}}</mat-label>
         <mat-select [compareWith]="compareStudents" [(ngModel)]="selectedStudents" formControlName="students" multiple>
-          <mat-option *ngFor="let student of studentList" [value]="student">{{student.userName}}</mat-option>
+          <mat-option *ngFor="let student of studentList" [value]="student">{{student.name}}</mat-option>
         </mat-select>
       </mat-form-field>
       <label>{{'TEMPLATE.HOMEWORKS.STUDENTS_WHO_RECEIVE_HOMEWORK' | translate}}</label>

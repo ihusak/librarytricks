@@ -21,8 +21,24 @@
     }
     mat-grid-tile {
       overflow: visible;
-      //min-height: 600px;
-      //padding-top: 0 !important;
     }
   }
+}
+.actions-wrap {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .search-input {
+    width: 35%;
+    position: relative;
+    mat-icon {
+      position: absolute;
+      right: 0;
+    }
+  }
+}
+mat-paginator {
+  margin-bottom: 10px;
+  background-color: transparent;
 }

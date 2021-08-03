@@ -5,7 +5,7 @@
   <p innerHtml="{{'TEMPLATE.HOW_TO_USE.COMMON.FILL_PROFILE' | translate}}"></p>
 </div>
 <div class="role" *ngIf="userInfo | userRolePipe:[userRoles.STUDENT]">
-  <h2>{{'COMMON.STUDENT' | translate}}</h2>
+  <h2>{{'COMMON.ROLES.STUDENT' | translate}}</h2>
   <h4>{{'COMMON.MAIN' | translate}}</h4>
   <p>
     {{'TEMPLATE.HOW_TO_USE.STUDENT.MAIN' | translate}}
@@ -29,7 +29,7 @@
   </p>
 </div>
 <div class="role" *ngIf="userInfo | userRolePipe:[userRoles.COACH]">
-  <h2>{{'COMMON.COACH' | translate}}</h2>
+  <h2>{{'COMMON.ROLES.COACH' | translate}}</h2>
   <h4>{{'COMMON.MAIN' | translate}}</h4>
   <p>
     {{'TEMPLATE.HOW_TO_USE.COACH.MAIN' | translate}}

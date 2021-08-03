@@ -11,5 +11,7 @@ export enum NotificationTypes {
   REJECT_TASK = 'reject_task',
   TASK_IN_PROGRESS = 'task_in_progress',
   PASS_TASK = 'pass_task',
-  CONFIRM_PASS_TASK = 'confirm_pass_task'
+  CONFIRM_PASS_TASK = 'confirm_pass_task',
+  VIDEO_APPROVED = 'video_approved',
+  VERIFY_VIDEO = 'verify_video'
 }
