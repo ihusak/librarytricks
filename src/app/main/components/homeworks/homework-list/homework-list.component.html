@@ -4,10 +4,10 @@
 <div class="actions-wrap">
   <mat-form-field class="search-input">
     <mat-icon>search</mat-icon>
-    <input 
+    <input
     [(ngModel)]="sort.query"
     (ngModelChange)="searchQueryDescription(sort.query)"
-    matInput 
+    matInput
     placeholder="{{'TEMPLATE.VIDEOS.SEARCH_DESCRIPTION' | translate}}"
     >
   </mat-form-field>
@@ -52,15 +52,15 @@
             <button (click)="likeHomework(homework.id)" mat-icon-button [color]="homework.likes.indexOf(userInfo.id) >= 0 ? 'warn' : 'basic'" aria-label="like">
               <mat-icon>favorite</mat-icon> <span *ngIf="homework.likes.length">{{homework.likes.length}}</span>
             </button>
-            <button mat-button [routerLink]="['../edit/', homework.id]" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])">{{'COMMON.UPDATE' | translate}}</button>
-            <button mat-button (click)="deleteHomework(homework)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" color="warn">{{'COMMON.DELETE' | translate}}</button>
+            <button mat-button [routerLink]="['../edit/', homework.id]" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && checkPermission(homework)">{{'COMMON.UPDATE' | translate}}</button>
+            <button mat-button (click)="deleteHomework(homework)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH]) && checkPermission(homework)" color="warn">{{'COMMON.DELETE' | translate}}</button>
           </div>
         </mat-card-actions>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
 </div>
-<mat-paginator 
+<mat-paginator
   [length]="sort.length"
   [pageSize]="paginationOptions.pageSize"
   [pageSizeOptions]="paginationOptions.pageSizeOptions"

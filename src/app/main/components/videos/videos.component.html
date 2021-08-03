@@ -5,10 +5,10 @@
 <div class="actions-wrap" *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])">
   <mat-form-field class="search-input">
     <mat-icon>search</mat-icon>
-    <input 
+    <input
     [(ngModel)]="sort.query"
     (ngModelChange)="searchQueryDescription(sort.query)"
-    matInput 
+    matInput
     placeholder="{{'TEMPLATE.VIDEOS.SEARCH_DESCRIPTION' | translate}}"
     >
   </mat-form-field>
@@ -20,6 +20,9 @@
   </mat-form-field>
 </div>
 <div class="wrap-video" [ngClass]="{'mobile': mobile}">
+  <div class="empty" *ngIf="videosList && !videosList.length">
+    {{'COMMON.EMPTY' | translate}}
+  </div>
   <div class="video-box" *ngFor="let video of videosList">
     <div class="item" *ngIf="video.verified">
       <a [href]="video.url" class="type" target="_blank">
@@ -40,7 +43,7 @@
     </div>
   </div>
 </div>
-<mat-paginator 
+<mat-paginator
   [length]="sort.approvedVideos.length"
   [pageSize]="paginationOptions.pageSize"
   [pageSizeOptions]="paginationOptions.pageSizeOptions"
@@ -72,7 +75,7 @@
       </div>
     </div>
   </div>
-  <mat-paginator 
+  <mat-paginator
   [length]="sort.notApprovedVideos.length"
   [pageSize]="paginationOptions.pageSize"
   [pageSizeOptions]="paginationOptions.pageSizeOptions"
