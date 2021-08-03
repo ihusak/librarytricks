@@ -76,7 +76,7 @@
         <div class="form-group">
            <mat-form-field>
               <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
-              <mat-select [compareWith]="compareObjects" formControlName="course" (selectionChange)="changeCourse($event.value)">
+              <mat-select [compareWith]="compareObjectsCourse" formControlName="course" (selectionChange)="changeCourse($event.value)">
               <mat-option *ngFor="let course of coachCourses" [value]="course">{{course.name}}</mat-option>
               </mat-select>
            </mat-form-field>
@@ -88,7 +88,7 @@
         <div class="form-group">
            <mat-form-field>
               <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
-              <mat-select [compareWith]="compareObjects" formControlName="myKid">
+              <mat-select [compareWith]="compareObjectsKids" formControlName="myKid" multiple #selectedValue (valueChange)="selectedKid(selectedValue.value)">
                  <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
               </mat-select>
            </mat-form-field>
