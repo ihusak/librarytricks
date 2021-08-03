@@ -1,1 +1,86 @@
-<p>videos works!</p>
+<div class="header">
+  <h1>{{'TEMPLATE.VIDEOS.TITLE' | translate}}</h1>
+  <button mat-raised-button color="primary" (click)="createPost()">{{'TEMPLATE.VIDEOS.CREATE_POST' | translate}}</button>
+</div>
+<div class="actions-wrap" *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])">
+  <mat-form-field class="search-input">
+    <mat-icon>search</mat-icon>
+    <input
+    [(ngModel)]="sort.query"
+    (ngModelChange)="searchQueryDescription(sort.query)"
+    matInput
+    placeholder="{{'TEMPLATE.VIDEOS.SEARCH_DESCRIPTION' | translate}}"
+    >
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>{{'COMMON.SORT.PLACEHOLDER' | translate}}</mat-label>
+    <mat-select [(ngModel)]="sort.currentSort" #selectedvalue (valueChange)="changeSort(selectedvalue.value)">
+      <mat-option *ngFor="let sort of sort.sortList" [value]="sort">{{sort.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="wrap-video" [ngClass]="{'mobile': mobile}">
+  <div class="empty" *ngIf="videosList && !videosList.length">
+    {{'COMMON.EMPTY' | translate}}
+  </div>
+  <div class="video-box" *ngFor="let video of videosList">
+    <div class="item" *ngIf="video.verified">
+      <a [href]="video.url" class="type" target="_blank">
+        <i [ngClass]="getImage(video.url)"></i>
+      </a>
+      <div class="description">
+        <span *ngIf="video.description" class="title">{{video.description}}</span>
+      <div class="actions">
+        <button (click)="likeVideo(video)" mat-icon-button [color]="video.likes.indexOf(userInfo.id) >= 0 ? 'warn' : 'basic'" aria-label="like">
+          <mat-icon>favorite</mat-icon> <span *ngIf="video.likes.length">{{video.likes.length}}</span>
+        </button>
+        <button mat-icon-button (click)="deleteVideo(video)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" color="warn"><mat-icon>delete</mat-icon></button>
+      </div>
+      <span class="author">
+        {{video.createdBy.name}} | {{video.createdDate | date: 'dd.MM.yyyy'}}
+      </span>
+      </div>
+    </div>
+  </div>
+</div>
+<mat-paginator
+  [length]="sort.approvedVideos.length"
+  [pageSize]="paginationOptions.pageSize"
+  [pageSizeOptions]="paginationOptions.pageSizeOptions"
+  (page)="onPageChange($event)"
+  #matPaginator
+  [disabled]="!videosList.length || videosList.length < 5"
+  aria-label="Select page">
+</mat-paginator>
+<div class="not-approved" *ngIf="notApproved.length && (userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH, userRoles.STUDENT])">
+  <div class="section-header-container">
+    <span class="section-header"> {{'COMMON.NOT_APPROVED' | translate}} </span>
+  </div>
+  <div class="wrap-video" [ngClass]="{'mobile': mobile}" *ngIf="notApproved">
+    <div class="video-box" *ngFor="let video of notApproved">
+      <div class="item" *ngIf="!video.verified && ( (userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH]) && userInfo.id === video.createdBy.id) || (userInfo | userRolePipe:[userRoles.ADMIN]) ">
+        <a [href]="video.url" class="type" target="_blank">
+          <i [ngClass]="getImage(video.url)"></i>
+        </a>
+        <div class="description">
+          <span *ngIf="video.description" class="title">{{video.description}}</span>
+        <div class="actions">
+          <button mat-icon-button (click)="deleteVideo(video)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" color="warn"><mat-icon>delete</mat-icon></button>
+          <button class="verification" [disabled]="video.verified" mat-icon-button (click)="verifyVideo(video)" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" color="basic"><mat-icon>verified_user</mat-icon></button>
+        </div>
+        <span class="author">
+          {{video.createdBy.name}} | {{video.createdDate | date: 'dd.MM.yyyy'}}
+        </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-paginator
+  [length]="sort.notApprovedVideos.length"
+  [pageSize]="paginationOptions.pageSize"
+  [pageSizeOptions]="paginationOptions.pageSizeOptions"
+  (page)="onPageNotApprovedChange($event)"
+  [disabled]="!sort.notApprovedVideos.length || sort.notApprovedVideos.length < 5"
+  aria-label="Select page not approved">
+  </mat-paginator>
+</div>

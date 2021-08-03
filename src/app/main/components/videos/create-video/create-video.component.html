@@ -1,0 +1,17 @@
+<form [formGroup]="videoForm" *ngIf='initForm'>
+  <div class="form-view">
+    <div class="item">
+      <h3>{{'TEMPLATE.VIDEOS.CREATE.TITLE' | translate}}</h3>
+      <p>{{'TEMPLATE.VIDEOS.CREATE.DESCRIPTION' | translate}}</p>
+      <p *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])" [innerHtml]="'TEMPLATE.VIDEOS.CREATE.APPROVED_AWARD' | translate"></p>
+      <mat-form-field>
+        <input formControlName="description" matInput placeholder="{{'COMMON.DESCRIPTION' | translate}}">
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="url" matInput placeholder="{{'TEMPLATE.VIDEOS.CREATE.VIDEO_EXAMPLE' | translate}}" required>
+      </mat-form-field>
+    </div>
+  </div>
+  <button mat-raised-button color="primary" (click)="create()" [disabled]="!videoForm.valid">{{'COMMON.CREATE' | translate}}</button>
+  <button mat-raised-button color="primary" (click)="onNoClick()">{{'COMMON.CLOSE' | translate}}</button>
+</form>

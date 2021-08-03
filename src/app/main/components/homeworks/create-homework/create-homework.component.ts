@@ -43,7 +43,7 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
       description: ['', [Validators.required, Validators.maxLength(250)]],
       example: ['', [Validators.required, Validators.pattern('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$')]],
       students: [[], [Validators.required]],
-      author: [{
+      createdBy: [{
         id: this.userInfo.id,
         name: this.userInfo.userName
       }, Validators.required]

@@ -14,6 +14,11 @@ import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 
+interface StudentListSelect {
+  id: string;
+  name: string;
+}
+
 @Component({
   selector: 'app-update-homework',
   templateUrl: './update-homework.component.html',
@@ -23,7 +28,7 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
   public hmForm: FormGroup;
   public initForm: boolean = false;
   public userInfo: any;
-  public studentList: StudentInfoInterface[];
+  public studentList: StudentListSelect[];
   public selectedStudents: {id: string, name: string}[];
   private userRoles = UserRolesEnum;
   private notifyTypes = NotificationTypes;
@@ -56,10 +61,10 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
       id: [homework.id]
     });
     this.selectedStudents = homework.students;
-    this.hmForm.controls.students.setValue(this.selectedStudents );
+    this.hmForm.controls.students.setValue(this.selectedStudents);
     this.initForm = true;
     const getAllStudents = this.profileService.getAllStudents().subscribe((allStudents: StudentInfoInterface[]) => {
-      this.studentList = allStudents;
+      this.studentList = allStudents.map((st) => ({id: st.id, name: st.userName}));
     });
     this.subscription.add(getAllStudents);
     });
@@ -72,7 +77,14 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
   }
   public updateHomework() {
     const HOMEWORK = this.hmForm.value;
-    HOMEWORK.students = HOMEWORK.students.map((st: StudentInfoInterface) => ({id: st.id, name: st.userName}));
+    if ((this.userInfo.role.id !== this.userRoles.ADMIN &&
+        HOMEWORK.createdBy && HOMEWORK.createdBy.id === this.userInfo.id)
+      || !HOMEWORK.createdBy
+    ) {
+      HOMEWORK.createdBy = {};
+      HOMEWORK.createdBy.id = this.userInfo.id;
+      HOMEWORK.createdBy.name = this.userInfo.userName;
+    }
     const updateHomework = this.homeworksService.updateHomework(this.hmId, HOMEWORK).subscribe((res: any) => {
       if (res.result === 'ok') {
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_UPDATED'), '', {
