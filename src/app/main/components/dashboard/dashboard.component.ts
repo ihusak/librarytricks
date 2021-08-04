@@ -62,9 +62,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.subscription.add(allCourses);
         break;
       case this.userRoles.PARENT:
-        const kidRole = this.userRoles.STUDENT;
-        if(this.userInfo.myKid.length) {
-          const userInfoWithParams = this.profileService.getUserInfoWithParams(this.userInfo.myKid[0].id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
+        const KID_ROLE = this.userRoles.STUDENT;
+        this.userInfo.myKid = Array.isArray(this.userInfo.myKid) ? this.userInfo.myKid : [this.userInfo.myKid];
+        if (this.userInfo.myKid.length) {
+          const userInfoWithParams = this.profileService.getUserInfoWithParams(this.userInfo.myKid[0].id, KID_ROLE).subscribe((studentInfo: StudentInfoInterface) => {
             this.currentStudent = studentInfo;
             this.getTaskByCourse(studentInfo.course.id);
             this.getStudentsInfo(studentInfo.course.id);
@@ -114,9 +115,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   public changeChild(child) {
-    const kidRole = this.userRoles.STUDENT;
+    const KID_ROLE = this.userRoles.STUDENT;
     this.studentTasks = [];
-    const userInfoWithParams = this.profileService.getUserInfoWithParams(child.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
+    const userInfoWithParams = this.profileService.getUserInfoWithParams(child.id, KID_ROLE).subscribe((studentInfo: StudentInfoInterface) => {
       this.currentStudent = studentInfo;
       if(studentInfo.course.id && studentInfo.coach.id) {
         this.getTaskByCourse(studentInfo.course.id);

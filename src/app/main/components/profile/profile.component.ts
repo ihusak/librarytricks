@@ -122,6 +122,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         });
         this.subscription.add(getAllCoaches);
         this.userInfo = this.formBuilder.group({
+          nickName: data.nickName || '',
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
           userName: [data.userName || '', [Validators.required]],
@@ -142,6 +143,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         break;
       case this.userRoles.COACH:
         this.userInfo = this.formBuilder.group({
+          nickName: data.nickName || '',
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
           userName: [data.userName || '', [Validators.required]],
@@ -157,6 +159,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       case this.userRoles.PARENT:
       const getAllStudents = this.profileService.getAllStudents().subscribe(result => {
         this.userInfo = this.formBuilder.group({
+          nickName: data.nickName || '',
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
           userName: [data.userName || '', [Validators.required]],
@@ -164,7 +167,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           aboutMe: [data.aboutMe || ''],
           instagram: [data.socialNetworks.instagram || ''],
           facebook: [data.socialNetworks.facebook || ''],
-          myKid: [data.myKid || '', [Validators.required]],
+          myKid: [Array.isArray(data.myKid) ? data.myKid : [data.myKid] || '', [Validators.required]],
         });
         this.kidsList = result;
         this.initForm = true;
@@ -225,10 +228,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.previewUrlChange = true;
       this.userInfo.controls['userImg'].markAsDirty();
       this.previewUrl = reader.result;
-    }
-  }
-  public selectedKid(kid) {
-    console.log(kid);
+    };
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

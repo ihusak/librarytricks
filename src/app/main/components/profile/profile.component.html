@@ -13,6 +13,9 @@
   <div class="form-view">
      <div class="item">
         <h2>{{'TEMPLATE.PROFILE.PROFILE' | translate}}</h2>
+       <mat-form-field>
+         <input formControlName="nickName" matInput placeholder="{{'TEMPLATE.PROFILE.NICK_NAME' | translate}}" name="nickname">
+       </mat-form-field>
         <mat-form-field>
            <input formControlName="userName" matInput placeholder="{{'TEMPLATE.PROFILE.FULL_NAME' | translate}}" name="fio" required>
         </mat-form-field>
@@ -88,7 +91,7 @@
         <div class="form-group">
            <mat-form-field>
               <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
-              <mat-select [compareWith]="compareObjectsKids" formControlName="myKid" multiple #selectedValue (valueChange)="selectedKid(selectedValue.value)">
+              <mat-select [compareWith]="compareObjectsKids" formControlName="myKid" multiple>
                  <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
               </mat-select>
            </mat-form-field>
