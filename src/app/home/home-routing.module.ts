@@ -14,6 +14,7 @@ const routes: Routes = [
         {path: '', component: MainHomeComponent},
         {path: 'login', component: LoginComponent},
         {path: 'register', component: RegisterComponent},
+        {path: 'register/:token/:roleId', component: RegisterComponent},
         {path: 'forgot-password', component: ForgotPasswordComponent},
         {path: 'recovery', component: RecoverPasswordComponent},
         {path: 'confirm/:token', component: ConfirmComponent},

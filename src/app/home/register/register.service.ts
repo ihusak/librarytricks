@@ -8,12 +8,14 @@ import { UserFormInterface } from './register.component';
 @Injectable()
 export class RegisterService extends AppService {
 
-  registerUser(userForm: UserFormInterface): Observable<any> {
+  registerUser(userForm: UserFormInterface, registerToken?: string): Observable<any> {
     return this.http.post(`${this.apiUrl()}/users/create`, {
       email: userForm.email,
       userPassword: userForm.password,
       userName: userForm.name,
-      userRole: userForm.type
+      userRole: userForm.type,
+      invited: userForm.invited,
+      registerToken
     });
   }
   public getRoles(): Observable<UserRole[]> {
