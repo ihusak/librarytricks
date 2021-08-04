@@ -54,6 +54,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const userInfoSubject = this.appService.userInfoSubject.subscribe((data: any) => {
+      if(!data) return;
       this.userInfoData = data;
       this.switchValidatorsOnRole(this.userInfoData.role.id, data);
       if (data.userImg) {
