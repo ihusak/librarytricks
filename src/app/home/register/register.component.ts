@@ -51,8 +51,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute
     ) {
-    this.registerToken = this.route.snapshot.paramMap.get('token');
-    this.invitedRoleId = parseInt(this.route.snapshot.paramMap.get('roleId'), 10);
+    this.registerToken = this.route.snapshot.queryParamMap.get('token');
+    this.invitedRoleId = parseInt(this.route.snapshot.queryParamMap.get('roleId'));
   }
 
   ngOnInit() {
@@ -73,7 +73,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   }
   registerUser() {
-    const userForm: UserFormInterface = this.registerUserFrom.value;
+    const userForm: UserFormInterface = this.registerUserFrom.getRawValue();
     const registerUser = this.registerService.registerUser(userForm, this.registerToken).subscribe((result) => {
       if (result._id) {
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.REGISTER', {email: userForm.email}), '', {
