@@ -201,7 +201,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return o1.name === o2.name && o1.id === o2.id;
   }
   compareObjectsKids(o1: any, o2: any): boolean {
-    return o1 && o2 ? o1.id === o2.id : o2 === o2;
+    return o1 && o2 ? o1.email === o2.email : o2 === o2;
   }
 
   compareObjectsCoach(o1: any, o2: any): boolean {
