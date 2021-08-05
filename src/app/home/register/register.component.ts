@@ -43,6 +43,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   private subscription: Subscription = new Subscription();
   public registerToken: string;
   public invitedRoleId: number;
+  public invitedEmail: string
 
   constructor(
     private registerService: RegisterService,
@@ -53,6 +54,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ) {
     this.registerToken = this.route.snapshot.queryParamMap.get('token');
     this.invitedRoleId = parseInt(this.route.snapshot.queryParamMap.get('roleId'));
+    this.invitedEmail = this.route.snapshot.queryParamMap.get('email');
   }
 
   ngOnInit() {
@@ -63,9 +65,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
       } else {
         this.userRoles = roles.filter(role => role.id !== this.userRolesEnum.ADMIN);
       }
-      if (this.invitedRoleId) {
+      if (this.registerToken) {
         this.registerUserFrom.controls.type.disable();
+        this.registerUserFrom.controls.email.disable();
         this.registerUserFrom.controls.type.setValue(this.userRoles.filter(role => role.id === this.invitedRoleId)[0]);
+        this.registerUserFrom.controls.email.setValue(this.invitedEmail);
       }
       console.log(this);
     });
@@ -101,7 +105,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
   public changeRole(role: UserRole) {
     if ((role.id === this.userRolesEnum.PARENT || role.id === this.userRolesEnum.STUDENT) && !this.registerToken) {
-      this.registerUserFrom.addControl('invited', new FormControl('', [Validators.required, Validators.email]));
+      if(role.id === this.userRolesEnum.PARENT) {
+        this.registerUserFrom.addControl('invited', new FormControl('', [Validators.required, Validators.email]));
+      } else if(role.id === this.userRolesEnum.STUDENT) {
+        this.registerUserFrom.addControl('invited', new FormControl('', [Validators.email]));
+      }
     } else {
       this.registerUserFrom.removeControl('invited');
     }

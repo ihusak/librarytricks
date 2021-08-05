@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2} from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { ProfileService } from './profile.service';
@@ -34,10 +34,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public userInfoData: any;
   private notifyTypes = NotificationTypes;
   public kidsList;
+  public kidsListToAdd;
   public coach: any = null;
+  public messages: any = {
+    noFoo: { heading: 'No Foo', message: 'Please do foo to continue.' },
+    noBar: { heading: 'No Bar', message: 'Please do bar to continue.' }
+  }
   private subscription: Subscription = new Subscription();
 
   @ViewChild('formImgHidden',  {static: false}) formImgHidden: ElementRef;
+  @ViewChild('kidSelector',  {static: false}) kidSelector: ElementRef;
 
   constructor(
     private mainService: MainService,
@@ -47,7 +53,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private renderer: Renderer2,
+    private elementRef: ElementRef
   ) {
       this.dateAdapter.setLocale('ru');
   }
@@ -70,13 +78,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
     let userInfo;
     switch(this.userInfoData.role.id) {
       case this.userRoles.STUDENT:
-        userInfo = new UserStudentModel(this.userInfo.value);
+        userInfo = new UserStudentModel(this.userInfo.getRawValue());
         break;
       case this.userRoles.PARENT:
-        userInfo = new UserParentModel(this.userInfo.value);
+        userInfo = new UserParentModel(this.userInfo.getRawValue());
         break;
       case this.userRoles.COACH:
-      userInfo = new UserCoachModel(this.userInfo.value);
+      userInfo = new UserCoachModel(this.userInfo.getRawValue());
       break;
     }
     const formData = new FormData();
@@ -85,25 +93,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
     formData.append('userInfo', JSON.stringify(userInfo));
     console.log(userInfo);
-    const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
-      this.appService.userInfoSubject.next(updateUser);
-      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
-        duration: 2000,
-        panelClass: ['success']
-      });
-      const notification: NotifyInterface = {
-        users: null,
-        author: {
-          id: this.userInfo.value.id,
-          name: this.userInfo.value.userName
-        },
-        title: 'COMMON.UPDATES',
-        type: this.notifyTypes.UPDATE_PROFILE,
-        userType: [this.userRoles.ADMIN]
-      };
-      this.mainService.setNotification(notification).subscribe((res: any) => {});
-    });
-    this.subscription.add(updateUserInfo);
+    // const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
+    //   this.appService.userInfoSubject.next(updateUser);
+    //   this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
+    //     duration: 2000,
+    //     panelClass: ['success']
+    //   });
+    //   const notification: NotifyInterface = {
+    //     users: null,
+    //     author: {
+    //       id: this.userInfo.value.id,
+    //       name: this.userInfo.value.userName
+    //     },
+    //     title: 'COMMON.UPDATES',
+    //     type: this.notifyTypes.UPDATE_PROFILE,
+    //     userType: [this.userRoles.ADMIN]
+    //   };
+    //   this.mainService.setNotification(notification).subscribe((res: any) => {});
+    // });
+    // this.subscription.add(updateUserInfo);
   }
 
   private switchValidatorsOnRole(userRole: number, data) {
@@ -126,7 +134,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           nickName: data.nickName || '',
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
-          userName: [data.userName || '', [Validators.required]],
+          userName: [{value: data.userName || '', disabled: true}, [Validators.required]],
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           startTraining: [data.startTraining ? new Date(data.startTraining) : '', [Validators.required]],
           birthDay: [data.birthDay ? new Date(data.birthDay) : '', [Validators.required]],
@@ -147,7 +155,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           nickName: data.nickName || '',
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
-          userName: [data.userName || '', [Validators.required]],
+          userName: [{value: data.userName || '', disabled: true}, [Validators.required]],
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           startTraining: [data.startTraining ? new Date(data.startTraining) : '', [Validators.required]],
           aboutMe: [data.aboutMe || ''],
@@ -159,23 +167,26 @@ export class ProfileComponent implements OnInit, OnDestroy {
         break;
       case this.userRoles.PARENT:
       const getAllStudents = this.profileService.getAllStudents().subscribe(result => {
+        const kids = Array.isArray(data.myKid) ? data.myKid : [data.myKid]
         this.userInfo = this.formBuilder.group({
           nickName: data.nickName || '',
           userImg: data.userImg || '',
           phone: [data.phone || '', [Validators.required]],
-          userName: [data.userName || '', [Validators.required]],
+          userName: [{value: data.userName || '', disabled: true}, [Validators.required]],
           email: [{value: data.email || '', disabled: true}, [Validators.required, Validators.email]],
           aboutMe: [data.aboutMe || ''],
           instagram: [data.socialNetworks.instagram || ''],
           facebook: [data.socialNetworks.facebook || ''],
-          myKid: [Array.isArray(data.myKid) ? data.myKid : [data.myKid] || '', [Validators.required]],
+          myKid: [kids, [Validators.required]],
         });
         this.kidsList = result;
+        this.kidsListToAdd = result.filter((student: any) => !kids.find(kid => kid.id === student.id))
         this.initForm = true;
       });
       this.subscription.add(getAllStudents);
       break;
     }
+    console.log(this);
   }
 
   public changeCoach(value: any, op?: boolean) {
@@ -202,7 +213,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     return o1.name === o2.name && o1.id === o2.id;
   }
   compareObjectsKids(o1: any, o2: any): boolean {
-    return o1 && o2 ? o1.email === o2.email : o2 === o2;
+    return o1.id === o2.id;
   }
 
   compareObjectsCoach(o1: any, o2: any): boolean {
@@ -231,6 +242,30 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.previewUrl = reader.result;
     };
   }
+  public addKidToParent(kid, option) {
+    const kitToAdd = {
+      name: kid.userName,
+      email: kid.email,
+      id: kid._id
+    };
+    const updateValue = [...this.userInfo.controls.myKid.value, ...[kitToAdd]]
+    this.userInfo.controls.myKid.setValue(updateValue);
+    console.log(kid, option);
+  }
+  // public addKid() {
+  //   const template = `<mat-form-field>
+  //   <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
+  //   <mat-select>
+  //     <mat-option *ngFor="let kid of kidsListToAdd" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
+  //   </mat-select>
+  // </mat-form-field>`;
+  // console.log(this.kidSelector);
+  // const kidWrap = this.kidSelector.nativeElement;
+  // const div = this.renderer.createElement('div');
+  // div.innerHtml = '123';
+  // console.log(div);
+  // this.renderer.appendChild(kidWrap, div);
+  // }
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

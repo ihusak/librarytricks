@@ -88,14 +88,28 @@
      </div>
      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.PARENT]">
         <h2>{{'TEMPLATE.PROFILE.MY_KID' | translate}}</h2>
-        <div class="form-group">
+        <div class="form-group" id="kid-selectors" #kidSelector>
            <mat-form-field>
-              <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
+              <mat-label>{{'TEMPLATE.PROFILE.MY_KID' | translate}}</mat-label>
               <mat-select [compareWith]="compareObjectsKids" formControlName="myKid" multiple>
-                 <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
+                 <mat-option disabled *ngFor="let kid of kidsList" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
               </mat-select>
            </mat-form-field>
+           <mat-form-field>
+             {{optionValue}}
+            <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
+            <mat-select [compareWith]="compareObjectsKids" [disabled]="secondKid.value" #secondKid (valueChange)="addKidToParent(secondKid.value, optionValue)">
+              <mat-option [disabled]="kid === thirdKid.value"  *ngFor="let kid of kidsListToAdd" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
+            <mat-select [disabled]="thirdKid.value || !secondKid.value" #thirdKid (valueChange)="addKidToParent(thirdKid.value)">
+              <mat-option [disabled]="kid === secondKid.value" *ngFor="let kid of kidsListToAdd" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
+        <!-- <mat-icon (click)="addKid()">add_circle_outline</mat-icon> -->
      </div>
   </div>
   <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">{{'COMMON.SAVE' | translate}}</button>
