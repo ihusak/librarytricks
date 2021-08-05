@@ -28,6 +28,6 @@ export class UserParentModel {
       instagram: responseObj.instagram
     };
     this.phone = responseObj.phone;
-    this.myKid = responseObj.myKid.map((kid: any) => ({id: kid.id, name: kid.userName, email: kid.email}));
+    this.myKid = responseObj.myKid.map((kid: any) => ({id: kid.id, name: kid.name, email: kid.email}));
   }
 };
