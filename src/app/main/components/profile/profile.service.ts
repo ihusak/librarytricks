@@ -58,4 +58,10 @@ export class ProfileService extends AppService {
       });
     }));
   }
+  public sendInvite(emails: string[], user: {id: string, name: string, email: string, roleId: number}): Observable<any> {
+    return this.http.post(`${this.apiUrl()}/users/invite`, {
+      emails,
+      inviter: user
+    });
+  }
 }
