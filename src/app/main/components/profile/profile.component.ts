@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Renderer2} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { ProfileService } from './profile.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DateAdapter } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { UserStudentModel } from 'src/app/shared/models/user-student.model';
 import { UserParentModel } from 'src/app/shared/models/user-parent.model';
 import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
@@ -14,6 +14,16 @@ import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
+
+interface KidInterface {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface DynamicChildEmailInterface {
+  id: string;
+}
 
 @Component({
   selector: 'app-profile',
@@ -28,22 +38,20 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public fileData: File = null;
   public initForm: boolean = false;
   public userCourse;
-  public coachsList: any;
+  public coachList: any;
   public userInfo: FormGroup;
   public userRoles = UserRolesEnum;
   public userInfoData: any;
   private notifyTypes = NotificationTypes;
-  public kidsList;
-  public kidsListToAdd;
   public coach: any = null;
-  public messages: any = {
-    noFoo: { heading: 'No Foo', message: 'Please do foo to continue.' },
-    noBar: { heading: 'No Bar', message: 'Please do bar to continue.' }
-  }
+  public parentKids: KidInterface[];
+  public kidEmailsInput: DynamicChildEmailInterface[] = [];
+  public addKidForm: FormGroup = new FormGroup({});
+  private sessionInfo: any;
+  private allKids: any;
   private subscription: Subscription = new Subscription();
 
   @ViewChild('formImgHidden',  {static: false}) formImgHidden: ElementRef;
-  @ViewChild('kidSelector',  {static: false}) kidSelector: ElementRef;
 
   constructor(
     private mainService: MainService,
@@ -53,16 +61,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService,
-    private renderer: Renderer2,
-    private elementRef: ElementRef
+    private translateService: TranslateService
   ) {
       this.dateAdapter.setLocale('ru');
   }
 
   ngOnInit() {
+    this.sessionInfo = this.mainService.userInfo;
     const userInfoSubject = this.appService.userInfoSubject.subscribe((data: any) => {
-      if(!data) return;
+      if (!data) return;
       this.userInfoData = data;
       this.switchValidatorsOnRole(this.userInfoData.role.id, data);
       if (data.userImg) {
@@ -76,7 +83,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
   public addInfo() {
     let userInfo;
-    switch(this.userInfoData.role.id) {
+    switch (this.userInfoData.role.id) {
       case this.userRoles.STUDENT:
         userInfo = new UserStudentModel(this.userInfo.getRawValue());
         break;
@@ -121,13 +128,13 @@ export class ProfileComponent implements OnInit, OnDestroy {
         const getAllCourses = this.taskService.getAllCourses().subscribe((allCourses: any[]) => {
           this.coachCourseList = allCourses;
           this.coach = data.coach.id ? data.coach : null;
-          if(this.coach) {
+          if (this.coach) {
             this.changeCoach(data.coach);
           }
         });
         this.subscription.add(getAllCourses);
         const getAllCoaches = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
-          this.coachsList = coaches;
+          this.coachList = coaches;
         });
         this.subscription.add(getAllCoaches);
         this.userInfo = this.formBuilder.group({
@@ -167,7 +174,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         break;
       case this.userRoles.PARENT:
       const getAllStudents = this.profileService.getAllStudents().subscribe(result => {
-        const kids = Array.isArray(data.myKid) ? data.myKid : [data.myKid]
+        const kids = Array.isArray(data.myKid) ? data.myKid : [data.myKid];
         this.userInfo = this.formBuilder.group({
           nickName: data.nickName || '',
           userImg: data.userImg || '',
@@ -179,8 +186,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
           facebook: [data.socialNetworks.facebook || ''],
           myKid: [kids, [Validators.required]],
         });
-        this.kidsList = result;
-        this.kidsListToAdd = result.filter((student: any) => !kids.find(kid => kid.id === student.id))
+        this.parentKids = kids;
+        this.allKids = result
         this.initForm = true;
       });
       this.subscription.add(getAllStudents);
@@ -192,7 +199,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public changeCoach(value: any, op?: boolean) {
     this.coach = value;
     this.coachCourses = [...this.coachCourseList];
-    if(op) {
+    if (op) {
       this.userInfo.controls.course.setValue('');
     }
     this.coachCourses = this.coachCourses.filter((course: any) => {
@@ -202,18 +209,15 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public changeCourse(course: any) {
-    const coach = this.coachsList.find(coach => course.coachId === coach.id)
+    const coach = this.coachList.find((c: any) => course.coachId === c.id);
     this.userInfo.controls.coach.setValue({
       id: coach.id,
       userName: coach.userName
-    })
+    });
   }
 
   compareObjectsCourse(o1: any, o2: any): boolean {
     return o1.name === o2.name && o1.id === o2.id;
-  }
-  compareObjectsKids(o1: any, o2: any): boolean {
-    return o1.id === o2.id;
   }
 
   compareObjectsCoach(o1: any, o2: any): boolean {
@@ -224,17 +228,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.preview();
   }
   preview() {
-    let mimeType = this.fileData.type;
+    const mimeType = this.fileData.type;
     if (mimeType.match(/image\/*/) == null) {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.WRONG_FILE_FORMAT'), '', {
         duration: 4000,
         panelClass: ['error']
-      })
+      });
       this.previewUrl = '../../assets/user-default.png';
       this.previewUrlChange = false;
       return;
     }
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.readAsDataURL(this.fileData);
     reader.onload = (_event) => {
       this.previewUrlChange = true;
@@ -242,30 +246,39 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.previewUrl = reader.result;
     };
   }
-  public addKidToParent(kid, option) {
-    const kitToAdd = {
-      name: kid.userName,
-      email: kid.email,
-      id: kid._id
-    };
-    const updateValue = [...this.userInfo.controls.myKid.value, ...[kitToAdd]]
-    this.userInfo.controls.myKid.setValue(updateValue);
-    console.log(kid, option);
+  public addKid() {
+    const arr = this.kidEmailsInput;
+    const controlName = 'kid' + arr.length;
+    console.log(this.kidEmailsInput);
+    this.addKidForm.addControl('kid' + (arr.length ? arr.length : '0'), new FormControl('', [Validators.required, Validators.email]));
+    this.kidEmailsInput.push({id: controlName});
   }
-  // public addKid() {
-  //   const template = `<mat-form-field>
-  //   <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
-  //   <mat-select>
-  //     <mat-option *ngFor="let kid of kidsListToAdd" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
-  //   </mat-select>
-  // </mat-form-field>`;
-  // console.log(this.kidSelector);
-  // const kidWrap = this.kidSelector.nativeElement;
-  // const div = this.renderer.createElement('div');
-  // div.innerHtml = '123';
-  // console.log(div);
-  // this.renderer.appendChild(kidWrap, div);
-  // }
+  public sendInvitation() {
+    const emailsToInvite: string[] = Object.values(this.addKidForm.value);
+    const checkRepeated = this.allKids.find((kid: any) => !!emailsToInvite.find((email: string) => kid.email === email));
+    const user = {
+      id: this.sessionInfo.id,
+      name: this.sessionInfo.userName,
+      email: this.sessionInfo.email,
+      roleId: this.sessionInfo.role.id
+    };
+    if (!checkRepeated) {
+      this.profileService.sendInvite(emailsToInvite, user).subscribe(() => {
+          this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.INVITATIONS_SENT', {users: emailsToInvite.join(', ')}), '', {
+            duration: 5000,
+            panelClass: ['success']
+          });
+          this.addKidForm.reset();
+          this.kidEmailsInput = [];
+      });
+    } else {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.EMAIL_EXIST', {userEmail: checkRepeated.email}), '', {
+        duration: 5000,
+        panelClass: ['error']
+      });
+    }
+    console.log(this, checkRepeated);
+  }
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
