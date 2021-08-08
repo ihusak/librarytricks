@@ -1,5 +1,6 @@
 export class UserParentModel {
   id: string;
+  nickName: string;
   userImg: string | File;
   userName: string;
   email: string;
@@ -19,6 +20,7 @@ export class UserParentModel {
 
   constructor(responseObj: any) {
     this.id = responseObj.id;
+    this.nickName = responseObj.nickName;
     this.userImg = responseObj.userImg;
     this.userName = responseObj.userName;
     this.email = responseObj.email;

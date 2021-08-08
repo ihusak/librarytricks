@@ -100,25 +100,25 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
     formData.append('userInfo', JSON.stringify(userInfo));
     console.log(userInfo);
-    // const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
-    //   this.appService.userInfoSubject.next(updateUser);
-    //   this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
-    //     duration: 2000,
-    //     panelClass: ['success']
-    //   });
-    //   const notification: NotifyInterface = {
-    //     users: null,
-    //     author: {
-    //       id: this.userInfo.value.id,
-    //       name: this.userInfo.value.userName
-    //     },
-    //     title: 'COMMON.UPDATES',
-    //     type: this.notifyTypes.UPDATE_PROFILE,
-    //     userType: [this.userRoles.ADMIN]
-    //   };
-    //   this.mainService.setNotification(notification).subscribe((res: any) => {});
-    // });
-    // this.subscription.add(updateUserInfo);
+    const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
+      this.appService.userInfoSubject.next(updateUser);
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
+        duration: 2000,
+        panelClass: ['success']
+      });
+      const notification: NotifyInterface = {
+        users: null,
+        author: {
+          id: this.userInfo.value.id,
+          name: this.userInfo.value.userName
+        },
+        title: 'COMMON.UPDATES',
+        type: this.notifyTypes.UPDATE_PROFILE,
+        userType: [this.userRoles.ADMIN]
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
+    });
+    this.subscription.add(updateUserInfo);
   }
 
   private switchValidatorsOnRole(userRole: number, data) {
@@ -151,9 +151,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
           instagram: [data.socialNetworks.instagram || ''],
           facebook: [data.socialNetworks.facebook || ''],
           bestTrick: [data.bestTrick || ''],
-          parentName: [data.parent.name || '', [Validators.required]],
-          parentPhone: [data.parent.phone || '', [Validators.required]],
-          parentEmail: [data.parent.email || '', [Validators.required, Validators.email]],
+          parentName: [{value: data.parent.name || '', disabled: !!data.parent.name}, [Validators.required]],
+          parentPhone: [{value: data.parent.phone || '', disabled: !!data.parent.phone}, [Validators.required]],
+          parentEmail: [{value: data.parent.email || '', disabled: !!data.parent.email}, [Validators.required, Validators.email]],
         });
         this.initForm = true;
         break;
@@ -247,6 +247,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     };
   }
   public addKid() {
+    if (this.kidEmailsInput.length >= 10) {
+      return
+    }
     const arr = this.kidEmailsInput;
     const controlName = 'kid' + arr.length;
     console.log(this.kidEmailsInput);
