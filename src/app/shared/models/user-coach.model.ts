@@ -2,6 +2,7 @@ import { CoachInfoInterface } from '../interface/user-info.interface';
 
 export class UserCoachModel {
   id: string;
+  nickName: string;
   userImg: string | File;
   userName: string;
   email: string;
@@ -16,6 +17,7 @@ export class UserCoachModel {
 
   constructor(responseObj: any) {
     this.id = responseObj.id;
+    this.nickName = responseObj.nickName;
     this.userImg = responseObj.userImg;
     this.userName = responseObj.userName;
     this.email = responseObj.email;
