@@ -49,6 +49,10 @@ export class TaskListComponent implements OnInit, OnDestroy {
   public taskStatuses = TaskStatuses;
   public processingTasksData: any[] = [];
   private notifyTypes = NotificationTypes;
+  public coachList: any;
+  public coachCourses: any[] = [];
+  public coachCourseList: any[] = [];
+  public coach: any = null;
   private subscription: Subscription = new Subscription();
 
   constructor(
@@ -67,6 +71,16 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getCourses();
+    const getAllCoaches = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe(coaches => {
+      this.coachList = coaches;
+    });
+    if (this.userInfo.role.id === this.userRoles.STUDENT) {
+      const getCoursesByCoachId = this.taskService.getCoachCourses(this.userInfo.coach.id).subscribe((courses) => {
+        console.log(courses);
+      });
+      this.subscription.add(getCoursesByCoachId);
+    }
+    this.subscription.add(getAllCoaches);
   }
 
   public assignTask(task: TaskModel) {
@@ -172,7 +186,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
           return course.id === this.userInfo.course.id;
         })[0];
         const getPaidCourses = this.paymentsService.getPaidCourses(this.userInfo.id).subscribe((paid: Checkout[]) => {
-          if(paid.find((item: Checkout) => this.currentCourse.id === item.course.id || item.price === 0)) {
+          if (paid.find((item: Checkout) => this.currentCourse.id === item.course.id || item.price === 0)) {
             this.currentCourse.paid = true;
           } else {
             this.currentCourse.paid = false;
@@ -249,12 +263,12 @@ export class TaskListComponent implements OnInit, OnDestroy {
         };
         this.mainService.setNotification(notification).subscribe((res: any) => {
           console.log(res);
-        })
+        });
         this.coursesList.push(course);
         course.id = course._id;
         delete course._id;
         this.currentCourse = course;
-        this.changeCourse(course.id);
+        this.changeCourse(course.id, this.userInfo.id);
       }
     });
   }
@@ -266,15 +280,36 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public changeCourse(courseId) {
+  public changeCourse(courseId: string, coachId: string) {
     this.getAllTasks(courseId);
     this.getTasksStatuses(courseId);
-    this.changeCourseIdQuery(courseId);
+    this.changeCourseIdQuery(courseId, coachId);
     // this.getPendingTasks(groupId);
   }
 
   compareObjects(o1: any, o2: any): boolean {
     return o1.name === o2.name && o1.id === o2.id;
+  }
+
+  compareObjectsCourse(o1: any, o2: any): boolean {
+    return o1.name === o2.name && o1.id === o2.id;
+  }
+
+  compareObjectsCoach(o1: any, o2: any): boolean {
+    return o1.id === o2.id;
+  }
+
+  public changeCoach(value: any) {
+    this.coach = value;
+    this.coachCourses = [...this.coursesList];
+    this.coachCourses = this.coachCourses.filter((course: any) => {
+      // return this.coach.id === course.coachId || course.forAll; // include general courses
+      return this.coach.id === course.coachId; // not include general courses
+    });
+  }
+
+  public changeCoachCourse(course: any) {
+    const coach = this.coachList.find((c: any) => course.coachId === c.id);
   }
 
   public youTubeGetID(url: any): string {
@@ -310,8 +345,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private changeCourseIdQuery(courseId: string) {
-    this.router.navigate(['.'], { relativeTo: this.route, queryParams: {courseId}});
+  private changeCourseIdQuery(courseId: string, coachId: string) {
+    this.router.navigate(['.'], { relativeTo: this.route, queryParams: {courseId, coachId}});
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
