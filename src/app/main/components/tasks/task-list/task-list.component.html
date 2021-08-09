@@ -10,7 +10,7 @@
   </div>
   <mat-form-field *ngIf="coursesList && coursesList.length">
     <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
-    <mat-select [compareWith]="compareObjects" [(ngModel)]="currentCourse" #selectedvalue (valueChange)="changeCourse(selectedvalue.value.id)">
+    <mat-select [compareWith]="compareObjects" [(ngModel)]="currentCourse" #selectedvalue (valueChange)="changeCourse(selectedvalue.value.id, userInfo.id)">
       <mat-option *ngFor="let course of coursesList" [value]="course">{{course.name}}</mat-option>
     </mat-select>
   </mat-form-field>
@@ -23,8 +23,25 @@
 </div>
 <div class="header-task" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && currentCourse.id">
   <div class="info-item">
-    <p><b>{{'COMMON.COURSE' | translate}}:</b> {{userInfo.course.name}}</p>
-    <p><b>{{'COMMON.COACH' | translate}}:</b> {{userInfo.coach.name}}</p>
+    <div class="item" *ngIf="userInfo | userRolePipe:[userRoles.STUDENT]">
+      <h2>{{'COMMON.COACH' | translate}}</h2>
+        <mat-form-field>
+          <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_COACH' | translate}}</mat-label>
+          <mat-select [compareWith]="compareObjectsCoach" (selectionChange)="changeCoach($event.value)">
+            <mat-option *ngFor="let coach of coachList" [value]="coach">{{coach.userName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    <div class="item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && coach">
+      <h2>{{'COMMON.COURSE' | translate}}</h2>
+        <mat-form-field>
+          <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
+          <mat-select [compareWith]="compareObjectsCourse" (selectionChange)="changeCoachCourse($event.value)">
+            <mat-option *ngFor="let course of coachCourses" [value]="course">{{course.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="empty" *ngIf="!coachCourses.length">{{'TEMPLATE.PROFILE.EMPTY_COURSE_LIST' | translate}}</div>
+    </div>
   </div>
   <div class="info-item">
     <div class="markers">
