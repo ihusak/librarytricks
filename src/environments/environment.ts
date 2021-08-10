@@ -5,7 +5,8 @@ import {version} from '../../package.json';
 export const environment = {
   production: false,
   api_url: 'http://localhost:3000',
-  version: version
+  version: version,
+  appName: 'Librarytricks'
 };
 
 /*

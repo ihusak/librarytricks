@@ -8,6 +8,7 @@ import { Checkout, PaymentsService } from './payments.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { TitleService } from 'src/app/shared/title.service';
 
 interface WindowPayment extends Window {
   LiqPayCheckout: any;
@@ -37,13 +38,18 @@ export class PaymentsComponent implements OnInit, OnDestroy {
     private renderer2: Renderer2,
     private paymentsService: PaymentsService,
     private translateService: TranslateService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private titleService: TitleService
   ) {
     this.userInfo = mainService.userInfo;
     this.addScript();
    }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('COMMON.PAYMENT').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     const getAllCourses = this.taskService.getAllCourses().subscribe((courses: CourseInterface[]) => {
       this.coursesList = courses.filter((course: CourseInterface) => {
         return course.coachId === this.userInfo.coach.id || course.forAll && course.price;

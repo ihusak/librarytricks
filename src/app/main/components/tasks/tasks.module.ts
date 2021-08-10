@@ -17,6 +17,7 @@ import { RejectTaskComponent } from './check-tasks/reject-task/reject-task.compo
 import { CreateCourseComponent } from './popups/create-course/create-course.component';
 import { QuillModule } from 'ngx-quill';
 import { TranslateModule } from '@ngx-translate/core';
+import { UpdateCourseComponent } from './popups/update-course/update-course.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TranslateModule } from '@ngx-translate/core';
     PassTaskComponent,
     ProcessTasksComponent,
     RejectTaskComponent,
-    CreateCourseComponent
+    CreateCourseComponent,
+    UpdateCourseComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +42,13 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
     QuillModule.forRoot()
   ],
-  entryComponents: [PassTaskComponent, ProcessTasksComponent, RejectTaskComponent, CreateCourseComponent]
+  entryComponents: [
+    PassTaskComponent,
+    ProcessTasksComponent,
+    RejectTaskComponent,
+    CreateCourseComponent,
+    UpdateCourseComponent
+    ]
 })
 export class TasksModule {
 

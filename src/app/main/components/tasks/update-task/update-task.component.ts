@@ -11,6 +11,7 @@ import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 import {MainService} from '../../../main.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
+import { TitleService } from 'src/app/shared/title.service';
 
 @Component({
   selector: 'app-update-task',
@@ -18,7 +19,7 @@ import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
   styleUrls: ['./update-task.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
+export class UpdateTaskComponent implements OnInit, OnDestroy {
   public tasksList: TaskModel[];
   public taskForm: FormGroup;
   public initForm: boolean = false;
@@ -39,7 +40,9 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
     private activateRoute: ActivatedRoute,
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
-    private location: Location) {
+    private location: Location,
+    private titleService: TitleService
+    ) {
       activateRoute.params.subscribe(params => {
         this.taskId = params.id;
       });
@@ -48,9 +51,10 @@ export class UpdateTaskComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.getCurrentTasks(this.taskId);
     this.userInfo = this.mainService.userInfo;
-  }
-  ngAfterViewInit() {
-
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.TASK_LIST.COACH.CREATE_TASK.UPDATE_TITLE').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
   }
 
   public updateTask() {

@@ -8,6 +8,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { TitleService } from 'src/app/shared/title.service';
 
 export interface UserFormInterface {
   name: string;
@@ -50,11 +51,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private titleService: TitleService
     ) {
     this.registerToken = this.route.snapshot.queryParamMap.get('token');
     this.invitedRoleId = parseInt(this.route.snapshot.queryParamMap.get('roleId'));
     this.invitedEmail = this.route.snapshot.queryParamMap.get('email');
+    const translateServiceTitleSub = this.translateService.get('COMMON.REGISTER').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
   }
 
   ngOnInit() {

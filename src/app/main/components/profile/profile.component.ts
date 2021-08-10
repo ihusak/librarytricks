@@ -14,6 +14,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
+import { TitleService } from 'src/app/shared/title.service';
 
 interface KidInterface {
   id: string;
@@ -61,12 +62,17 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private dateAdapter: DateAdapter<Date>,
     private formBuilder: FormBuilder,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private titleService: TitleService,
   ) {
       this.dateAdapter.setLocale('ru');
   }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.PROFILE.PROFILE').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     this.sessionInfo = this.mainService.userInfo;
     const userInfoSubject = this.appService.userInfoSubject.subscribe((data: any) => {
       if (!data) return;
@@ -99,7 +105,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       formData.append('avatar', this.fileData)
     }
     formData.append('userInfo', JSON.stringify(userInfo));
-    console.log(userInfo);
     const updateUserInfo = this.profileService.updateUserInfo(formData).subscribe((updateUser: any) => {
       this.appService.userInfoSubject.next(updateUser);
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
@@ -109,8 +114,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       const notification: NotifyInterface = {
         users: null,
         author: {
-          id: this.userInfo.value.id,
-          name: this.userInfo.value.userName
+          id: userInfo.id,
+          name: userInfo.userName
         },
         title: 'COMMON.UPDATES',
         type: this.notifyTypes.UPDATE_PROFILE,
@@ -193,7 +198,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.subscription.add(getAllStudents);
       break;
     }
-    console.log(this);
   }
 
   public changeCoach(value: any, op?: boolean) {
@@ -252,7 +256,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
     const arr = this.kidEmailsInput;
     const controlName = 'kid' + arr.length;
-    console.log(this.kidEmailsInput);
     this.addKidForm.addControl('kid' + (arr.length ? arr.length : '0'), new FormControl('', [Validators.required, Validators.email]));
     this.kidEmailsInput.push({id: controlName});
   }
@@ -280,7 +283,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
         panelClass: ['error']
       });
     }
-    console.log(this, checkRepeated);
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

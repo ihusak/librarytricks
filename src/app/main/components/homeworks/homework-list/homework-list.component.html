@@ -1,3 +1,4 @@
+<h1>{{'COMMON.HOMEWORKS' | translate}}</h1>
 <div class="coach-actions-button">
   <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN, userRoles.COACH])" routerLink="../create" mat-raised-button color="primary">{{'TEMPLATE.HOMEWORKS.CREATE_HOMEWORK' | translate}}</button>
 </div>
@@ -14,7 +15,7 @@
   <mat-form-field>
     <mat-label>{{'COMMON.SORT.PLACEHOLDER' | translate}}</mat-label>
     <mat-select [(ngModel)]="sort.currentSort" #selectedvalue (valueChange)="changeSort(selectedvalue.value)">
-      <mat-option *ngFor="let sort of sort.sortList" [value]="sort">{{sort.name}}</mat-option>
+      <mat-option *ngFor="let sort of sort.sortList" [value]="sort">{{sort.id ? sort.name : ('COMMON.SORT.' + sort.name.toUpperCase() | translate)}}</mat-option>
     </mat-select>
   </mat-form-field>
 </div>

@@ -16,7 +16,7 @@
     <ul>
         <li routerLinkActive="active" [routerLink]="['dashboard']"><mat-icon>home</mat-icon><a (click)="navigate('dashboard')">{{'COMMON.MAIN' | translate}}</a></li>
         <!-- <li routerLinkActive="active"><mat-icon>equalizer</mat-icon><a routerLink="ratings">Рейтинг</a></li> -->
-        <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" [routerLink]="['tasks']" routerLinkActive="active"><mat-icon>done_all</mat-icon><a (click)="navigate('tasks')">{{'COMMON.COURSE' | translate}}</a></li>
+        <li [routerLink]="['tasks']" routerLinkActive="active"><mat-icon>done_all</mat-icon><a (click)="navigate('tasks')">{{'COMMON.COURSE' | translate}}</a></li>
         <li *ngIf="!(userInfo | userRolePipe:[userRoles.COACH, userRoles.PARENT]) && false" [routerLink]="['payments']" routerLinkActive="active"><mat-icon>payment</mat-icon><a (click)="navigate('payments')">{{'COMMON.PAYMENT' | translate}}</a></li>
         <li *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT]) && false" [routerLink]="['videos']" routerLinkActive="active"><mat-icon>subscriptions</mat-icon><a (click)="navigate('videos')">{{'COMMON.USEFULL_VIDEO' | translate}}</a></li>
         <li [routerLink]="['homeworks']" routerLinkActive="active"><mat-icon>home_work</mat-icon><a (click)="navigate('homeworks')">{{'COMMON.HOMEWORKS' | translate}}</a></li>
