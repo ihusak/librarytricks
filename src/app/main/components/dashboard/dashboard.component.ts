@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
@@ -8,6 +9,7 @@ import {
   ParentInfoInterface,
   StudentInfoInterface
 } from 'src/app/shared/interface/user-info.interface';
+import { TitleService } from 'src/app/shared/title.service';
 import { MainService } from '../../main.service';
 import { ProfileService } from '../profile/profile.service';
 import { TaskModel } from '../tasks/task.model';
@@ -36,10 +38,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
     private mainService: MainService,
     private profileService: ProfileService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private titleService: TitleService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('COMMON.DASHBOARD').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     this.userInfo = this.mainService.userInfo;
     switch (this.userInfo.role.id) {
       case this.userRoles.STUDENT:

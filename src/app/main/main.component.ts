@@ -48,9 +48,9 @@ export class MainComponent implements OnInit, OnDestroy {
     const userInfo = this.profileService.getUserInfo().subscribe(
       (userInfoData: StudentInfoInterface | CoachInfoInterface | ParentInfoInterface | AdminInfoInterface) =>
       {
-      if(userInfoData.startTraining) {
-        userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
-      };
+      // if(userInfoData.startTraining) {
+      //   userInfoData.startTraining = moment(userInfoData.startTraining).format('DD.MM.YYYY');
+      // };
       this.appService.userInfoSubject.next(userInfoData);
       // this.userInfo = userInfoData;
       // this.mainService.userInfo = userInfoData;

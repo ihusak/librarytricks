@@ -70,4 +70,8 @@ export class TaskService extends AppService {
     public deleteTask(taskId: string): Observable<any> {
       return this.http.delete(`${this.apiUrl()}/task/delete/${taskId}`);
     }
+
+    public updateCourse(courseId: string, course: CourseCreateInterface): Observable<any> {
+      return this.http.put(`${this.apiUrl()}/courses/update/${courseId}`, {course});
+    }
 }

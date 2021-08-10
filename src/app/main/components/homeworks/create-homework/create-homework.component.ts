@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyInterface } from 'src/app/shared/interface/notify.interface';
 import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
+import { TitleService } from 'src/app/shared/title.service';
 
 @Component({
   selector: 'app-create-homework',
@@ -33,10 +34,15 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
     private homeworksService: HomeworksService,
     private snackBar: MatSnackBar,
     private location: Location,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private titleService: TitleService
   ) {}
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.HOMEWORKS.CREATE_HOMEWORK').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     this.userInfo = this.mainService.userInfo;
     this.hmForm = this.formBuilder.group({
       title: ['', [Validators.required]],
