@@ -5,7 +5,7 @@
   <input matInput type="text" formControlName="name">
 </mat-form-field>
 
-<mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createCourseFrom.value.forAll">
+<mat-form-field *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !updateCourseFrom.value.forAll">
   <mat-label>{{'COMMON.COACH' | translate}}</mat-label>
   <mat-select formControlName="coachId">
     <mat-option *ngFor="let coach of coachList" [value]="coach.id">{{coach.userName}}</mat-option>
@@ -33,7 +33,7 @@
   </div>
 </div>
 
-<section class="for-all-coaches" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !createCourseFrom.value.coachId">
+<section class="for-all-coaches" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && !updateCourseFrom.value.coachId">
   <mat-checkbox formControlName="forAll" (change)="forAllCoaches()">{{'TEMPLATE.TASK_LIST.COACH.CREATE_COURSE.FOR_ALL_COACHES' | translate}}</mat-checkbox>
 </section>
 
