@@ -17,7 +17,7 @@ import {UserRolePipe} from '../../../shared/pipes/user-role/user-role.pipe';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  @Output() toogleCollapsed = new EventEmitter();
+  @Output() toggleCollapsed = new EventEmitter();
   @Input() userInfo;
   public userRole = UserRolesEnum;
   private subscription: Subscription = new Subscription();
@@ -36,11 +36,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sendNotifyReq();
-    this.mainService.getDefaultNotification().subscribe((res) => {
+    const getDefaultNotification = this.mainService.getDefaultNotification().subscribe((res) => {
       if (res) {
         this.notifications = [...this.notifications, ...res];
       }
     });
+    this.subscription.add(getDefaultNotification);
   }
   public logout() {
     const refreshToken = this.appService.getTokens().refreshToken;
@@ -59,15 +60,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   }
   private sendNotifyReq() {
-    this.mainService.getNotification().subscribe(res => {
+    const getNotification = this.mainService.getNotification().subscribe(res => {
       this.notifications = [...this.notifications, ...res];
       this.sendNotifyReq();
     }, (err) => {
       this.sendNotifyReq();
     });
+    this.subscription.add(getNotification);
   }
   public readNotify(notificationData: NotifyInterface) {
-    this.mainService.readNotification(this.userInfo.id, notificationData._id).subscribe(res => {
+    const readNotification = this.mainService.readNotification(this.userInfo.id, notificationData._id).subscribe(res => {
       this.notifications = this.notifications.filter((notify: NotifyInterface) => notify._id !== notificationData._id);
       switch (notificationData.type) {
         case NotificationTypes.NEW_HOMEWORK:
@@ -89,6 +91,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           break;
       }
     });
+    this.subscription.add(readNotification);
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
