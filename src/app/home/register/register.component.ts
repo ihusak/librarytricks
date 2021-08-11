@@ -77,7 +77,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.registerUserFrom.controls.type.setValue(this.userRoles.filter(role => role.id === this.invitedRoleId)[0]);
         this.registerUserFrom.controls.email.setValue(this.invitedEmail);
       }
-      console.log(this);
     });
     this.subscription.add(registerRoles);
 

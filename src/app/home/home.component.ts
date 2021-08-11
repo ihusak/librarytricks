@@ -13,8 +13,8 @@ import { TitleService } from '../shared/title.service';
 export class HomeComponent implements OnInit {
   private subscription: Subscription = new Subscription();
   constructor(
-    private route: Router, 
-    private appService: AppService, 
+    private route: Router,
+    private appService: AppService,
     private titleService: TitleService,
     private translateService: TranslateService,
     ) { }
