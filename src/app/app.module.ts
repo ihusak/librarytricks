@@ -1,4 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
+import {BrowserModule, Meta} from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
@@ -71,7 +71,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   {
     provide: MatPaginatorIntl, deps: [TranslateService],
     useFactory: (translateService: TranslateService) => new PaginationTranslate(translateService).getPaginatorIntl()
-  }
+  },
+    Meta
 ],
   bootstrap: [AppComponent]
 })

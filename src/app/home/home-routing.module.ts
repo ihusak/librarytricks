@@ -11,9 +11,9 @@ import {RecoverPasswordComponent} from './forgot-password/recover-password/recov
 
 const routes: Routes = [
     {path: '', component: HomeComponent, children: [
-        {path: '', component: MainHomeComponent},
-        {path: 'login', component: LoginComponent},
-        {path: 'register', component: RegisterComponent},
+        {path: '', component: MainHomeComponent, data: {title: 'COMMON.MAIN', description: 'TEMPLATE.META_TAGS.MAIN_DESCRIPTION'}},
+        {path: 'login', component: LoginComponent, data: {title: 'TEMPLATE.LOGIN.ENTER_SYSTEM', description: 'TEMPLATE.META_TAGS.LOGIN_DESCRIPTION'}},
+        {path: 'register', component: RegisterComponent, data: {title: 'COMMON.SIGN_UP', description: 'TEMPLATE.META_TAGS.REGISTER_DESCRIPTION'}},
         {path: 'register/:token/:roleId', component: RegisterComponent},
         {path: 'forgot-password', component: ForgotPasswordComponent},
         {path: 'recovery', component: RecoverPasswordComponent},
