@@ -13,6 +13,7 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
+import {TitleService} from '../../../../shared/title.service';
 let STUDENTS_GOT_NOTIFY;
 interface StudentListSelect {
   id: string;
@@ -43,7 +44,8 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private location: Location,
     private activateRoute: ActivatedRoute,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private titleService: TitleService
   ) {
     activateRoute.params.subscribe(params => {
       this.hmId = params.id;
@@ -52,6 +54,10 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.HOMEWORKS.UPDATE_HOMEWORK').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     const getHomeworkById = this.homeworksService.getHomeworkById(this.hmId).subscribe((homework: HomeworksModel) => {
     this.hmForm = this.formBuilder.group({
       title: [homework.title, [Validators.required]],

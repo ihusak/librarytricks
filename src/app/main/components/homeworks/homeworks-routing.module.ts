@@ -11,9 +11,9 @@ const routes: Routes = [
         component: HomeworksComponent,
         children: [
             {path: '', redirectTo: 'list', pathMatch: 'full'},
-            {path: 'list', component: HomeworkListComponent},
-            {path: 'create', component: CreateHomeworkComponent},
-            {path: 'edit/:id', component: UpdateHomeworkComponent}
+            {path: 'list', component: HomeworkListComponent, data: {title: 'COMMON.HOMEWORKS', description: 'TEMPLATE.META_TAGS.HOMEWORKS_DESC'}},
+            {path: 'create', component: CreateHomeworkComponent, data: {title: 'TEMPLATE.HOMEWORKS.CREATE_HOMEWORK', description: 'TEMPLATE.META_TAGS.CREATE_HM_DESC'}},
+            {path: 'edit/:id', component: UpdateHomeworkComponent, data: {title: 'TEMPLATE.HOMEWORKS.UPDATE_HOMEWORK', description: 'TEMPLATE.META_TAGS.UPDATE_HM_DESC'}}
         ]
     }
 ];
