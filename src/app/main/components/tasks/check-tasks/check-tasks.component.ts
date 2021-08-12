@@ -11,6 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
+import {TitleService} from '../../../../shared/title.service';
 
 interface marksInterface {
   value: number;
@@ -45,6 +46,7 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
+    private titleService: TitleService,
     public dialog: MatDialog) {
       this.userInfo = mainService.userInfo;
     }
@@ -53,6 +55,10 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
     this.getPendingTasks();
   }
   private getPendingTasks() {
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.TASK_LIST.COACH.REVIEW_TASKS.TITLE').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     const getUserInfoByCoach = this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
       this.pendingTasksData = [];
       usersInfo.map((info: StudentInfoInterface) => {
