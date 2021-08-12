@@ -42,23 +42,28 @@ export class AppComponent implements OnInit {
 
         const dataSub = rt.data.subscribe(data => {
           this.metaService.updateTag({ property: 'og:image', content: `${environment.siteName}/assets/img/bg.jpg` });
-          this.metaService.updateTag({ property: 'twitter:image', content: `${environment.siteName}/assets/img/bg.jpg` });
+          this.metaService.updateTag({ name: 'twitter:image', content: `${environment.siteName}/assets/img/bg.jpg` });
+          this.metaService.updateTag({ name: 'twitter:image:alt', content: 'Football freestyle academy' });
           this.metaService.updateTag({ property: 'og:image:width', content: '1200' });
           this.metaService.updateTag({ property: 'og:image:height', content: '630' });
-          this.metaService.updateTag({ name: 'og:site_name', content: 'Librarytricks' });
+          this.metaService.updateTag({ property: 'og:site_name', content: 'Librarytricks' });
           if (data.title) {
             this.translateService.get(data.title).subscribe(value => {
               this.metaService.updateTag({ property: 'og:title', content: value + ' - Librarytricks'});
+              this.metaService.updateTag({ name: 'twitter:title', content: value + ' - Librarytricks'});
             });
           } else {
             this.metaService.removeTag('property="og:title"');
+            this.metaService.removeTag('name="twitter:title"');
           }
           if (data.description) {
             this.translateService.get(data.description).subscribe(value => {
-              this.metaService.updateTag({ name: 'og:description', content: value});
+              this.metaService.updateTag({ property: 'og:description', content: value});
+              this.metaService.updateTag({ name: 'twitter:description', content: value});
             });
           } else {
-            this.metaService.removeTag('name="og:description"');
+            this.metaService.removeTag('property="og:description"');
+            this.metaService.removeTag('name="twitter:description"');
           }
           if (data.ogUrl) {
             this.metaService.updateTag({ property: 'og:url', content: data.ogUrl });
