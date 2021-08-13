@@ -8,7 +8,11 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "dev": "ng serve --proxy-config proxy.conf.json"
+    "dev": "ng serve --proxy-config proxy.conf.json",
+    "compile:server": "webpack --config webpack.server.config.js --progress --colors",
+    "serve:ssr": "node dist/server",
+    "build:ssr": "npm run build:client-and-server-bundles && npm run compile:server",
+    "build:client-and-server-bundles": "ng build --prod && ng run librarytricks:server:production --bundleDependencies all"
   },
   "private": true,
   "dependencies": {
@@ -21,11 +25,16 @@
     "@angular/material": "~8.2.3",
     "@angular/platform-browser": "~8.1.3",
     "@angular/platform-browser-dynamic": "~8.1.3",
+    "@angular/platform-server": "~8.1.3",
     "@angular/router": "~8.1.3",
     "@angular/youtube-player": "^8.2.3",
+    "@egjs/hammerjs": "^2.0.17",
+    "@nguniversal/express-engine": "8.1.1",
+    "@nguniversal/module-map-ngfactory-loader": "8.1.1",
     "@ngx-translate/core": "^12.1.1",
     "@ngx-translate/http-loader": "^6.0.0",
     "angular-font-awesome": "^3.1.2",
+    "express": "^4.15.2",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
     "js-sha1": "^0.6.0",
@@ -57,8 +66,10 @@
     "karma-jasmine": "~2.0.1",
     "karma-jasmine-html-reporter": "^1.4.0",
     "protractor": "~5.4.0",
+    "ts-loader": "^5.2.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.4.3"
+    "typescript": "~3.4.3",
+    "webpack-cli": "^3.1.0"
   }
 }
