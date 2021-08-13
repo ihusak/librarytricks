@@ -34,7 +34,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   LoaderComponent
   ],
   imports: [
-  BrowserModule,
+  BrowserModule.withServerTransition({ appId: 'serverApp' }),
   MatProgressSpinnerModule,
   AppRoutingModule,
   BrowserAnimationsModule,
