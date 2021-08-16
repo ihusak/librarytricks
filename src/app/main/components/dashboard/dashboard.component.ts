@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
+import { CourseInterface } from 'src/app/shared/interface/course.interface';
 import {
   AdminInfoInterface,
   CoachInfoInterface,
   ParentInfoInterface,
   StudentInfoInterface
 } from 'src/app/shared/interface/user-info.interface';
+import { TitleService } from 'src/app/shared/title.service';
 import { MainService } from '../../main.service';
 import { ProfileService } from '../profile/profile.service';
 import { TaskModel } from '../tasks/task.model';
@@ -25,19 +28,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public studentsList: StudentInfoInterface[];
   public studentTableColumns = ['Позиция', 'Имя', 'Курс', 'Рейтинг', 'Прогресс'];
   public studentTasks: TaskModel[] = [];
-  public doneTasks;
+  public doneTasks: [];
   public selectCourses;
-  public currentCourse;
-  public currentStudent;
+  public currentCourse: CourseInterface;
+  public currentStudent: StudentInfoInterface;
+  public currentChild: {id: string, name: string, email: string};
   private subscription: Subscription = new Subscription();
 
   constructor(
     private mainService: MainService,
     private profileService: ProfileService,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private titleService: TitleService,
+    private translateService: TranslateService,
   ) { }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('COMMON.DASHBOARD').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     this.userInfo = this.mainService.userInfo;
     switch (this.userInfo.role.id) {
       case this.userRoles.STUDENT:
@@ -60,9 +70,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.subscription.add(allCourses);
         break;
       case this.userRoles.PARENT:
-        const kidRole = this.userRoles.STUDENT;
-        if(this.userInfo.myKid) {
-          const userInfoWithParams = this.profileService.getUserInfoWithParams(this.userInfo.myKid.id, kidRole).subscribe((studentInfo: StudentInfoInterface) => {
+        const KID_ROLE = this.userRoles.STUDENT;
+        this.userInfo.myKid = Array.isArray(this.userInfo.myKid) ? this.userInfo.myKid : [this.userInfo.myKid];
+        if (this.userInfo.myKid.length) {
+          const userInfoWithParams = this.profileService.getUserInfoWithParams(this.userInfo.myKid[0].id, KID_ROLE).subscribe((studentInfo: StudentInfoInterface) => {
             this.currentStudent = studentInfo;
             this.getTaskByCourse(studentInfo.course.id);
             this.getStudentsInfo(studentInfo.course.id);
@@ -92,6 +103,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   compareObjectsCourses(o1: any, o2: any): boolean {
     return o1.name === o2.name && o1.id === o2.id;
   }
+  compareObjectsKids(o1: any, o2: any): boolean {
+    if (o1 && o2) {
+      return o1.id === o2.id;
+    }
+  }
 
   public changeCourse(course) {
     const courseId: string = course.id;
@@ -104,6 +120,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   public changeStudent(student) {
     this.currentStudent = student;
     this.checkStatusTask();
+  }
+
+  public changeChild(child) {
+    const KID_ROLE = this.userRoles.STUDENT;
+    this.studentTasks = [];
+    const userInfoWithParams = this.profileService.getUserInfoWithParams(child.id, KID_ROLE).subscribe((studentInfo: StudentInfoInterface) => {
+      this.currentStudent = studentInfo;
+      if(studentInfo.course.id && studentInfo.coach.id) {
+        this.getTaskByCourse(studentInfo.course.id);
+        this.getStudentsInfo(studentInfo.course.id);
+        this.getCoachInfo(studentInfo.coach.id);
+      } else {
+        this.coachInfo = null;
+      }
+    });
+    this.subscription.add(userInfoWithParams);
   }
 
   private getCoachInfo(id: string) {

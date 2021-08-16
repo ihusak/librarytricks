@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
 import { MainService } from 'src/app/main/main.service';
-import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
+import { AdminInfoInterface, CoachInfoInterface, ParentInfoInterface, StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfileService } from '../../profile/profile.service';
@@ -18,6 +18,10 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
+import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
+import { AppService } from 'src/app/app.service';
+import { UpdateCourseComponent } from '../popups/update-course/update-course.component';
+import { TitleService } from 'src/app/shared/title.service';
 
 @Component({
   selector: 'app-task-list',
@@ -49,9 +53,17 @@ export class TaskListComponent implements OnInit, OnDestroy {
   public taskStatuses = TaskStatuses;
   public processingTasksData: any[] = [];
   private notifyTypes = NotificationTypes;
+  public coachList: UserCoachModel[] = [];
+  public selectedCoach: UserCoachModel;
+  public selectedCourse: CourseInterface;
+  public coachCourses: any[] = [];
+  public coachCourseList: any[] = [];
+  public coach: any = null;
+  private payments: Checkout[] = [];
   private subscription: Subscription = new Subscription();
 
   constructor(
+    private appService: AppService,
     private taskService: TaskService,
     private mainService: MainService,
     private profileService: ProfileService,
@@ -61,12 +73,24 @@ export class TaskListComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private translateService: TranslateService,
     public dialog: MatDialog,
+    private titleService: TitleService
     ) {
       this.userInfo = this.mainService.userInfo;
     }
 
   ngOnInit() {
-    this.getCourses();
+    const translateServiceTitleSub = this.translateService.get('COMMON.COURSE').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
+    const USER = this.userInfo;
+    this.init(USER);
+    if(USER.role.id === this.userRoles.STUDENT) {
+      const getPaidCourses = this.paymentsService.getPaidCourses(USER.id).subscribe((paid: Checkout[]) => {
+        this.payments = paid;
+      });
+      this.subscription.add(getPaidCourses);
+    }
   }
 
   public assignTask(task: TaskModel) {
@@ -157,47 +181,111 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
     this.subscription.add(getUserInfoByCoach);
   }
+  private init(user) {
+    const coachId = this.route.snapshot.queryParamMap.get('coachId');
+    const courseId = this.route.snapshot.queryParamMap.get('courseId');
+    switch (user.role.id) {
+      case this.userRoles.STUDENT:
+        const STUDENT: StudentInfoInterface = this.userInfo;
+        const getAllCoaches = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe((coaches: UserCoachModel[]) => {
+          this.coachList = coaches;
 
-  private getCourses() {
-    const getAllCourses = this.taskService.getAllCourses().subscribe((allCourses: CourseInterface[]) => {
-      if (this.userInfo.role.id === this.userRoles.ADMIN) {
-        this.coursesList = allCourses;
-      } else {
-        this.coursesList = allCourses.filter((course: CourseInterface) => {
-          return course.coachId === this.userInfo.id;
-        });
-      }
-      if (this.userInfo.course && this.userInfo.course.id) {
-        this.currentCourse = allCourses.filter((course: CourseInterface) => {
-          return course.id === this.userInfo.course.id;
-        })[0];
-        const getPaidCourses = this.paymentsService.getPaidCourses(this.userInfo.id).subscribe((paid: Checkout[]) => {
-          if(paid.find((item: Checkout) => this.currentCourse.id === item.course.id || item.price === 0)) {
-            this.currentCourse.paid = true;
+          if(STUDENT.coach.id) {
+            const getCoursesByCoachId = this.taskService.getCoachCourses(STUDENT.coach.id).subscribe((courses: CourseInterface[]) => {
+              this.coursesList = courses;
+              this.selectedCoach = this.coachList.find((coach: UserCoachModel) => coach.id === STUDENT.coach.id);
+              this.selectedCourse = courses.find((course: CourseInterface) => course.id === STUDENT.course.id);
+              this.currentCourse = this.selectedCourse;
+              this.changeCourse(this.currentCourse.id, this.selectedCoach.id);
+            if (courseId && coachId) {
+              const getCoursesByCoachId = this.taskService.getCoachCourses(coachId).subscribe((courses: CourseInterface[]) => {
+                this.coursesList = courses;
+                this.selectedCourse = courses.find((course: CourseInterface) => course.id === courseId);
+                this.selectedCoach = this.coachList.find((coach: UserCoachModel) => coach.id === coachId);
+                this.currentCourse = this.selectedCourse;
+                this.changeCourse(this.currentCourse.id, this.selectedCoach.id);
+              });
+              this.subscription.add(getCoursesByCoachId);
+            }
+            });
+            this.subscription.add(getCoursesByCoachId);
           } else {
-            this.currentCourse.paid = false;
+            this.currentCourse = null;
+            if (courseId && coachId) {
+              const getCoursesByCoachId = this.taskService.getCoachCourses(coachId).subscribe((courses: CourseInterface[]) => {
+                this.coursesList = courses;
+                this.selectedCourse = courses.find((course: CourseInterface) => course.id === courseId);
+                this.selectedCoach = this.coachList.find((coach: UserCoachModel) => coach.id === coachId);
+                this.currentCourse = this.selectedCourse;
+                this.changeCourse(this.currentCourse.id, this.selectedCoach.id);
+              });
+              this.subscription.add(getCoursesByCoachId);
+            }
           }
-          this.currentCourse.paid = this.currentCourse.price <= 0;
         });
-        this.subscription.add(getPaidCourses);
-      } else {
-        // default group for admin and coach
-        const courseIdQuery = this.route.snapshot.queryParamMap.get('courseId');
-        if(courseIdQuery) {
-          this.currentCourse = this.coursesList.filter((course: CourseInterface) => course.id === courseIdQuery)[0];
-        } else if(!courseIdQuery && this.coursesList.length > 0) {
-          this.currentCourse = this.coursesList[0];
-        }
-        if (this.currentCourse) {
-          this.getTasksStatuses(this.currentCourse.id);
-        }
-      }
-      if (this.currentCourse.id) {
-        this.getAllTasks(this.currentCourse.id);
-      }
-      // this.getPendingTasks(this.currentGroup.id);
-    });
-    this.subscription.add(getAllCourses);
+        this.subscription.add(getAllCoaches);
+      break;
+      case this.userRoles.COACH:
+        const COACH: CoachInfoInterface = this.userInfo;
+        const getCoursesByCoachId = this.taskService.getCoachCourses(COACH.id).subscribe((courses: CourseInterface[]) => {
+          this.coursesList = courses;
+          if (courseId) {
+            this.selectedCourse = courses.find((course: CourseInterface) => course.id === courseId);
+            this.currentCourse = this.selectedCourse;
+            this.changeCourse(this.selectedCourse.id, COACH.id);
+          } else {
+            this.currentCourse = courses[0];
+            this.changeCourse(courses[0].id, COACH.id);
+          }
+        });
+        this.subscription.add(getCoursesByCoachId);
+      break;
+      case this.userRoles.PARENT:
+        const PARENT: ParentInfoInterface = this.userInfo;
+        const getAllCoachesForParent = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe((coaches: UserCoachModel[]) => {
+          this.coachList = coaches;
+          if (courseId && coachId) {
+            const getCoursesByCoachId = this.taskService.getCoachCourses(coachId).subscribe((courses: CourseInterface[]) => {
+              this.coursesList = courses;
+              this.selectedCourse = courses.find((course: CourseInterface) => course.id === courseId);
+              this.selectedCoach = this.coachList.find((coach: UserCoachModel) => coach.id === coachId);
+              this.currentCourse = this.selectedCourse;
+              this.changeCourse(this.currentCourse.id, this.selectedCoach.id);
+            });
+            this.subscription.add(getCoursesByCoachId);
+          }
+        })
+        this.subscription.add(getAllCoachesForParent);
+      break;
+      case this.userRoles.ADMIN:
+        const ADMIN: AdminInfoInterface = this.userInfo;
+        const getAllCoachesForAdmin = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe((coaches: UserCoachModel[]) => {
+          this.coachList = coaches;
+          if (courseId && coachId) {
+            const getCoursesByCoachId = this.taskService.getCoachCourses(coachId).subscribe((courses: CourseInterface[]) => {
+              this.coursesList = courses;
+              this.selectedCourse = courses.find((course: CourseInterface) => course.id === courseId);
+              this.selectedCoach = this.coachList.find((coach: UserCoachModel) => coach.id === coachId);
+              this.currentCourse = this.selectedCourse;
+              this.changeCourse(this.currentCourse.id, this.selectedCoach.id);
+            });
+            this.subscription.add(getCoursesByCoachId);
+          }
+        })
+        this.subscription.add(getAllCoachesForAdmin);
+      break;
+    }
+  }
+  private checkPayment() {
+    const payment = this.payments.find((item: Checkout) => this.currentCourse.id === item.course.id || item.price === 0)
+    if (payment) {
+      this.currentCourse.paid = true;
+    } else {
+      this.currentCourse.paid = false;
+    }
+    if(this.currentCourse.price <= 0) {
+      this.currentCourse.paid = true;
+    }
   }
 
   public passTask(task: TaskModel) {
@@ -247,17 +335,48 @@ export class TaskListComponent implements OnInit, OnDestroy {
           type: this.notifyTypes.NEW_COURSE,
           userType: [this.userRoles.STUDENT, this.userRoles.PARENT]
         };
-        this.mainService.setNotification(notification).subscribe((res: any) => {
-          console.log(res);
-        })
+        this.mainService.setNotification(notification).subscribe((res: any) => {});
         this.coursesList.push(course);
         course.id = course._id;
         delete course._id;
         this.currentCourse = course;
-        this.changeCourse(course.id);
+        this.changeCourse(course.id, this.userInfo.id);
       }
     });
   }
+
+  public updateCourse() {
+    const dialogRef = this.dialog.open(UpdateCourseComponent, {
+      width: '650px',
+      data: this.selectedCourse
+    });
+    dialogRef.afterClosed().subscribe(updatedCourse => {
+      if (updatedCourse) {
+        // const notification: NotifyInterface = {
+        //   users: null,
+        //   author: {
+        //     id: this.userInfo.id,
+        //     name: this.userInfo.userName
+        //   },
+        //   title: 'COMMON.COURSE',
+        //   type: this.notifyTypes.NEW_COURSE,
+        //   userType: [this.userRoles.STUDENT, this.userRoles.PARENT]
+        // };
+        // this.mainService.setNotification(notification).subscribe((res: any) => {
+        //   console.log(res);
+        // });
+        this.coursesList = this.coursesList.map((course: CourseInterface) => {
+          if (updatedCourse.id === course.id) {
+            course = updatedCourse;
+          }
+          return course;
+        });
+        window.location.reload();
+      }
+    });
+  }
+
+
 
   public viewProcessingTasks() {
     const dialogRef = this.dialog.open(ProcessTasksComponent, {
@@ -266,15 +385,37 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
   }
 
-  public changeCourse(courseId) {
+  public changeCourse(courseId: string, coachId: string) {
     this.getAllTasks(courseId);
     this.getTasksStatuses(courseId);
-    this.changeCourseIdQuery(courseId);
-    // this.getPendingTasks(groupId);
+    this.changeCourseIdQuery(courseId, coachId);
+    this.selectedCourse = this.coursesList.find((course: CourseInterface) => course.id === courseId);
+    this.currentCourse = this.selectedCourse;
+    if (this.userInfo.role.id === this.userRoles.STUDENT) {
+      this.checkPayment();
+    }
   }
 
   compareObjects(o1: any, o2: any): boolean {
-    return o1.name === o2.name && o1.id === o2.id;
+    return o2 && o1.name === o2.name && o1.id === o2.id;
+  }
+
+  compareObjectsCourse(o1: any, o2: any): boolean {
+    return o2 && o1.name === o2.name && o1.id === o2.id;
+  }
+
+  compareObjectsCoach(o1: any, o2: any): boolean {
+    return o2 && o1.id === o2.id;
+  }
+
+  public changeCoach(coachId: string) {
+    this.selectedCoach = this.coachList.find((coach: UserCoachModel) => coach.id === coachId);
+    const getCoursesByCoachId = this.taskService.getCoachCourses(this.selectedCoach.id).subscribe((courses: CourseInterface[]) => {
+      this.coursesList = courses;
+    });
+    this.currentCourse = null;
+    this.selectedCourse = null;
+    this.subscription.add(getCoursesByCoachId);
   }
 
   public youTubeGetID(url: any): string {
@@ -310,8 +451,30 @@ export class TaskListComponent implements OnInit, OnDestroy {
     });
   }
 
-  private changeCourseIdQuery(courseId: string) {
-    this.router.navigate(['.'], { relativeTo: this.route, queryParams: {courseId}});
+  public assignCourseToUser() {
+    const DATA_TO_UPDATE = {
+      course: {
+        id: this.selectedCourse.id,
+        name: this.selectedCourse.name
+      },
+      coach: {
+        id: this.selectedCoach.id,
+        name: this.selectedCoach.userName
+      }
+    };
+    const formData = new FormData();
+    formData.append('userInfo', JSON.stringify(DATA_TO_UPDATE));
+    this.profileService.updateUserInfo(formData).subscribe((updatedUserInfo: any) => {
+      this.appService.userInfoSubject.next(updatedUserInfo);
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
+        duration: 2000,
+        panelClass: ['success']
+      });
+    })
+  }
+
+  private changeCourseIdQuery(courseId: string, coachId: string) {
+    this.router.navigate(['.'], { relativeTo: this.route, queryParams: {courseId, coachId}});
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();

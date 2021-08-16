@@ -49,14 +49,18 @@
     }
     app-tasks {
       .header-task {
-        display: inline-block;
+        display: block;
+        mat-form-field {
+          width: 100%;
+          display: block;
+        }
         .info-item {
           margin-bottom: 25px;
           width: 100%;
           display: block;
         }
       }
-      .video {
+      .video, .selected-course {
         youtube-player {
           iframe {
             width: 100%;
@@ -95,6 +99,15 @@
       .wrap-video {
         .item {
           width: calc(100% - 50px) !important;
+        }
+      }
+    }
+    app-homeworks {
+      .actions-wrap {
+        display: initial !important;
+        mat-form-field {
+          width: 100% !important;
+          display: block;
         }
       }
     }

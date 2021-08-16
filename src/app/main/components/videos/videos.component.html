@@ -1,6 +1,6 @@
 <div class="header">
   <h1>{{'TEMPLATE.VIDEOS.TITLE' | translate}}</h1>
-  <button mat-raised-button color="primary" (click)="createPost()">{{'TEMPLATE.VIDEOS.CREATE_POST' | translate}}</button>
+  <button *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])" mat-raised-button color="primary" (click)="createPost()">{{'TEMPLATE.VIDEOS.CREATE_POST' | translate}}</button>
 </div>
 <div class="actions-wrap" *ngIf="!(userInfo | userRolePipe:[userRoles.PARENT])">
   <mat-form-field class="search-input">
@@ -15,7 +15,7 @@
   <mat-form-field>
     <mat-label>{{'COMMON.SORT.PLACEHOLDER' | translate}}</mat-label>
     <mat-select [(ngModel)]="sort.currentSort" #selectedvalue (valueChange)="changeSort(selectedvalue.value)">
-      <mat-option *ngFor="let sort of sort.sortList" [value]="sort">{{sort.name}}</mat-option>
+      <mat-option *ngFor="let sort of sort.sortList" [value]="sort">{{sort.id ? sort.name : ('COMMON.SORT.' + sort.name.toUpperCase() | translate)}}</mat-option>
     </mat-select>
   </mat-form-field>
 </div>

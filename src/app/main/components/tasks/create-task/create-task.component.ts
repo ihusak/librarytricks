@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
+import { TitleService } from 'src/app/shared/title.service';
 
 @Component({
   selector: 'app-create-task',
@@ -37,12 +38,17 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private location: Location,
     private route: ActivatedRoute,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private titleService: TitleService
     ) {
       this.courseId = this.route.snapshot.queryParamMap.get('courseId');
     }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.TASK_LIST.COACH.CREATE_TASK.TITLE').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     this.userInfo = this.mainService.userInfo;
     this.taskForm = this.formBuilder.group({
       title: ['', [Validators.required]],

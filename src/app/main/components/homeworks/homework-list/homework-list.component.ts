@@ -10,6 +10,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 import { MatPaginator } from '@angular/material/paginator';
+import { TitleService } from 'src/app/shared/title.service';
 
 interface SortItemInterface {
   name: string;
@@ -24,12 +25,6 @@ enum sortingValues {
   AUTHOR = 'author'
 }
 
-const DEFAULT_SORT: SortItemInterface[] = [
-  {name: sortingValues.NEW, key: sortingValues.NEW},
-  {name: sortingValues.POPULAR, key: sortingValues.POPULAR},
-  {name: sortingValues.OLD, key: sortingValues.OLD}
-];
-
 @Component({
   selector: 'app-homework-list',
   templateUrl: './homework-list.component.html',
@@ -37,6 +32,11 @@ const DEFAULT_SORT: SortItemInterface[] = [
 })
 export class HomeworkListComponent implements OnInit, OnDestroy {
   public homeworksList: HomeworkInterface[];
+  private defaultSort = [
+    {name: sortingValues.NEW, key: sortingValues.NEW},
+    {name: sortingValues.POPULAR, key: sortingValues.POPULAR},
+    {name: sortingValues.OLD, key: sortingValues.OLD}
+  ];
   public userInfo: any;
   public userRoles = UserRolesEnum;
   private subscription: Subscription = new Subscription();
@@ -62,15 +62,16 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
     private mainService: MainService,
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
-    private router: ActivatedRoute
+    private router: ActivatedRoute,
+    private titleService: TitleService
   ) {
-    this.sort.sortList = DEFAULT_SORT.map((sortItem: SortItemInterface) => {
-      sortItem.name = translateService.instant('COMMON.SORT.' + sortItem.name.toUpperCase(), '');
-      return sortItem;
-    });
   }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('COMMON.HOMEWORKS').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     this.userInfo = this.mainService.userInfo;
     const getAllHomeworks = this.homeworksService.getAllHomeworks().subscribe((hm: HomeworkInterface[]) => {
       if (this.userInfo.role.id === this.userRoles.STUDENT) {
@@ -198,8 +199,8 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
       id: h.createdBy.id,
       key: sortingValues.AUTHOR
     })).filter((hm, index, self) => index === self.findIndex((i) => hm.id === i.id));
-    this.sort.sortList = [...this.sort.sortList, ...AUTHORS];
-    this.sort.currentSort = DEFAULT_SORT[0];
+    this.sort.sortList = [...this.defaultSort, ...AUTHORS];
+    this.sort.currentSort = this.defaultSort[0];
     this.sort.length = this.sort.allHomeworks.length;
     this.changeSort(this.sort.currentSort);
     // init page size of available items

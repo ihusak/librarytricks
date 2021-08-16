@@ -1,3 +1,11 @@
+<div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
+  <mat-form-field>
+    <mat-label>{{'COMMON.SELECT_COURSE' | translate}}</mat-label>
+    <mat-select [compareWith]="compareObjectsCourses" [(ngModel)]="currentCourse" #selectedValue (valueChange)="changeCourse(selectedValue.value)">
+      <mat-option *ngFor="let course of selectCourses" [value]="course">{{course.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <div class="wrap">
   <div class="item student-progress" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH, userRoles.PARENT, userRoles.ADMIN])">
     <div class="card-icon green">
@@ -14,6 +22,14 @@
           </mat-select>
         </mat-form-field>
       </div>
+      <div class="select-child" *ngIf="(userInfo | userRolePipe:[userRoles.PARENT])">
+        <mat-form-field>
+          <mat-label>{{'TEMPLATE.DASHBOARD.SELECT_CHILD' | translate}}</mat-label>
+          <mat-select [compareWith]="compareObjectsKids" [(ngModel)]="currentStudent" #selectedValue (valueChange)="changeChild(selectedValue.value)">
+            <mat-option *ngFor="let kid of userInfo.myKid" [value]="kid">{{kid.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div class="group" *ngIf="userInfo.course">
         {{'COMMON.COURSE' | translate}}: {{userInfo.course.name}}
       </div>
@@ -24,7 +40,7 @@
         'orange': currentStudent ? currentStudent.progress > 20 : userInfo.progress > 20 && currentStudent ? currentStudent.progress <= 70 : userInfo.progress <= 70,
         'green': currentStudent ? currentStudent.progress > 70 : userInfo.progress > 70 && currentStudent ? currentStudent.progress <= 100 : userInfo.progress <= 100}" mode="determinate" [value]="currentStudent ? currentStudent.progress : userInfo.progress"></mat-progress-bar>
       </div>
-      <div class="done-tasks" *ngIf="studentTasks && doneTasks" [innerHtml]="'TEMPLATE.DASHBOARD.DONE_TASKS' | translate: {done: doneTasks.length, count: studentTasks.length} ">
+      <div class="done-tasks" *ngIf="studentTasks.length && doneTasks.length" [innerHtml]="'TEMPLATE.DASHBOARD.DONE_TASKS' | translate: {done: doneTasks.length, count: studentTasks.length} ">
       </div>
       <div class="tasks">
         <ul>
@@ -36,20 +52,12 @@
       </div>
     </div>
   </div>
-  <div class="item student-rating" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH, userRoles.PARENT, userRoles.ADMIN])">
+  <div class="item student-rating" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT, userRoles.COACH, userRoles.PARENT, userRoles.ADMIN]) && (currentStudent &&currentStudent.course && currentStudent.course.id)">
     <div class="card-icon orange">
       <i class="material-icons">leaderboard</i>
     </div>
     <h5>{{'TEMPLATE.DASHBOARD.COURSE_RATING' | translate}}</h5>
     <div class="content">
-      <div class="select-group" *ngIf="(userInfo | userRolePipe:[userRoles.COACH, userRoles.ADMIN])">
-        <mat-form-field>
-          <mat-label>{{'COMMON.SELECT_COURSE' | translate}}</mat-label>
-          <mat-select [compareWith]="compareObjectsCourses" [(ngModel)]="currentCourse" #selectedValue (valueChange)="changeCourse(selectedValue.value)">
-            <mat-option *ngFor="let course of selectCourses" [value]="course">{{course.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
       <div class="table">
         <table mat-table [dataSource]="studentsList" class="mat-elevation-z8" *ngIf="studentsList && studentsList.length > 0">
 

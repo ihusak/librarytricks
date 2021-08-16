@@ -1,21 +1,26 @@
 export class UserParentModel {
   id: string;
+  nickName: string;
   userImg: string | File;
   userName: string;
   email: string;
   aboutMe: string;
   socialNetworks: {
-    facebook: string,
-    instagram: string
+    facebook: string;
+    instagram: string;
   };
   phone: string;
-  myKid: {
-    id: string,
-    name: string
-  }
+  myKid: [
+    {
+      id: string;
+      name: string;
+      email: string;
+    }
+  ];
 
   constructor(responseObj: any) {
     this.id = responseObj.id;
+    this.nickName = responseObj.nickName;
     this.userImg = responseObj.userImg;
     this.userName = responseObj.userName;
     this.email = responseObj.email;
@@ -25,9 +30,6 @@ export class UserParentModel {
       instagram: responseObj.instagram
     };
     this.phone = responseObj.phone;
-    this.myKid = {
-      id: responseObj.myKid.id,
-      name: responseObj.myKid.name
-    }
+    this.myKid = responseObj.myKid.map((kid: any) => ({id: kid.id, name: kid.name, email: kid.email}));
   }
-}
+};

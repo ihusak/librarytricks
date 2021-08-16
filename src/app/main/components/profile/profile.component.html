@@ -8,11 +8,14 @@
         <input type="file" name="avatar" #fileInput (change)="fileProgress($event)" class="avatarAddImage">
      </div>
   </form>
-  <form [formGroup]="userInfo" (ngSubmit)="addInfo()" *ngIf="initForm">
+  <form [formGroup]="userInfo" *ngIf="initForm">
   <input type="text" formControlName="userImg" #formImgHidden hidden>
   <div class="form-view">
      <div class="item">
         <h2>{{'TEMPLATE.PROFILE.PROFILE' | translate}}</h2>
+       <mat-form-field>
+         <input formControlName="nickName" matInput placeholder="{{'TEMPLATE.PROFILE.NICK_NAME' | translate}}" name="nickname">
+       </mat-form-field>
         <mat-form-field>
            <input formControlName="userName" matInput placeholder="{{'TEMPLATE.PROFILE.FULL_NAME' | translate}}" name="fio" required>
         </mat-form-field>
@@ -66,7 +69,7 @@
            <mat-form-field>
               <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_COACH' | translate}}</mat-label>
               <mat-select [compareWith]="compareObjectsCoach" formControlName="coach" (selectionChange)="changeCoach($event.value, true)">
-              <mat-option *ngFor="let coach of coachsList" [value]="coach">{{coach.userName}}</mat-option>
+              <mat-option *ngFor="let coach of coachList" [value]="coach">{{coach.userName}}</mat-option>
               </mat-select>
            </mat-form-field>
         </div>
@@ -76,7 +79,7 @@
         <div class="form-group">
            <mat-form-field>
               <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
-              <mat-select [compareWith]="compareObjects" formControlName="course" (selectionChange)="changeCourse($event.value)">
+              <mat-select [compareWith]="compareObjectsCourse" formControlName="course" (selectionChange)="changeCourse($event.value)">
               <mat-option *ngFor="let course of coachCourses" [value]="course">{{course.name}}</mat-option>
               </mat-select>
            </mat-form-field>
@@ -85,16 +88,26 @@
      </div>
      <div class="item" *ngIf="userInfoData | userRolePipe:[userRoles.PARENT]">
         <h2>{{'TEMPLATE.PROFILE.MY_KID' | translate}}</h2>
-        <div class="form-group">
-           <mat-form-field>
-              <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_KID' | translate}}</mat-label>
-              <mat-select [compareWith]="compareObjects" formControlName="myKid">
-                 <mat-option *ngFor="let kid of kidsList" [value]="kid">{{kid.userName}} ({{kid.email}})</mat-option>
-              </mat-select>
-           </mat-form-field>
+        <div class="form-group" id="kid-selectors" #kidSelector>
+           <div class="parent-kids" *ngIf="parentKids.length">
+             <div *ngFor="let kid of parentKids">
+                <span *ngIf="kid.id">{{kid.name}} ({{kid.email}})</span>
+             </div>
+           </div>
+          <div class="add-kids-wrap">
+            <form [formGroup]="addKidForm" *ngIf="addKidForm.value">
+              <div class="email-input" *ngFor="let input of kidEmailsInput;">
+                <mat-form-field>
+                  <input [formControlName]="input.id" matInput placeholder="{{'COMMON.EMAIL_CHILD' | translate}}">
+                </mat-form-field>
+              </div>
+            </form>
+          </div>
         </div>
+        <mat-icon (click)="addKid()">add_circle_outline</mat-icon>
+        <button (click)="sendInvitation()" mat-raised-button color="primary" *ngIf="kidEmailsInput.length && addKidForm.valid" [disabled]="!addKidForm.valid || !addKidForm.dirty">{{'COMMON.SEND_INVITATION' | translate}}</button>
      </div>
   </div>
-  <button mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">{{'COMMON.SAVE' | translate}}</button>
+  <button (click)="addInfo()" mat-raised-button color="primary" [disabled]="!userInfo.valid || !userInfo.dirty">{{'COMMON.SAVE' | translate}}</button>
   </form>
 </div>
