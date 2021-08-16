@@ -4,7 +4,7 @@
     <app-sidenav [userInfo]='userInfo' [sideNav]="sidenav"></app-sidenav>
   </mat-sidenav>
   <mat-sidenav-content class="content-wrap" #content [class.opened]="sidenav.opened">
-    <app-header [userInfo]='userInfo' #header class="main-header" (toogleCollapsed)="sidenav.toggle()"></app-header>
+    <app-header [userInfo]='userInfo' #header class="main-header" (toggleCollapsed)="sidenav.toggle()"></app-header>
     <div class="main">
     <router-outlet></router-outlet>
     </div>

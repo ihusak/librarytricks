@@ -13,7 +13,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
-
+import {TitleService} from '../../../../shared/title.service';
+let STUDENTS_GOT_NOTIFY;
 interface StudentListSelect {
   id: string;
   name: string;
@@ -29,7 +30,7 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
   public initForm: boolean = false;
   public userInfo: any;
   public studentList: StudentListSelect[];
-  public selectedStudents: {id: string, name: string}[];
+  public selectedStudents: StudentListSelect[];
   private userRoles = UserRolesEnum;
   private notifyTypes = NotificationTypes;
   private hmId: string;
@@ -43,7 +44,8 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private location: Location,
     private activateRoute: ActivatedRoute,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private titleService: TitleService
   ) {
     activateRoute.params.subscribe(params => {
       this.hmId = params.id;
@@ -52,6 +54,10 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.userInfo = this.mainService.userInfo;
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.HOMEWORKS.UPDATE_HOMEWORK').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     const getHomeworkById = this.homeworksService.getHomeworkById(this.hmId).subscribe((homework: HomeworksModel) => {
     this.hmForm = this.formBuilder.group({
       title: [homework.title, [Validators.required]],
@@ -60,6 +66,7 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
       students: [homework.students, [Validators.required]],
       id: [homework.id]
     });
+    STUDENTS_GOT_NOTIFY = homework.students;
     this.selectedStudents = homework.students;
     this.hmForm.controls.students.setValue(this.selectedStudents);
     this.initForm = true;
@@ -73,7 +80,6 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
 
   compareStudents(o1: any, o2: any): boolean {
     return o1 && o2 ? o1.id === o2.id : o2 === o2;
-    // return o1.userName === o2.name && o1._id === o2.id;
   }
   public updateHomework() {
     const HOMEWORK = this.hmForm.value;
@@ -95,14 +101,16 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
       }
     });
     const notification: NotifyInterface = {
-      users: HOMEWORK.students,
+      users: HOMEWORK.students.filter((student: StudentListSelect) =>
+        !STUDENTS_GOT_NOTIFY
+          .find((s: StudentListSelect) => student.id === s.id)),
       author: {
         id: this.userInfo.id,
         name: this.userInfo.userName
       },
       title: 'COMMON.HOMEWORKS',
       type: this.notifyTypes.HOMEWORK_UPDATE,
-      userType: [this.userRoles.STUDENT, this.userRoles.PARENT],
+      userType: [this.userRoles.STUDENT],
       homework: {
         id: HOMEWORK.id,
         name: HOMEWORK.title

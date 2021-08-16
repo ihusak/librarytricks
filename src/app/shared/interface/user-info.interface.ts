@@ -68,10 +68,13 @@ export interface ParentInfoInterface {
     instagram: string;
   };
   phone: string;
-  myChild: {
-    id: string;
-    name: string;
-  };
+  myKid: [
+    {
+      id: string;
+      name: string;
+      email: string;
+    }
+  ];
   role: {
     id: number;
     name: string;

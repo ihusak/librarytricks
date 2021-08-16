@@ -1,13 +1,15 @@
-import { Component, Inject, OnDestroy, OnInit, Renderer2, ViewEncapsulation } from '@angular/core';
+import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID, Renderer2, ViewEncapsulation} from '@angular/core';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
 import { environment } from 'src/environments/environment';
 import { MainService } from '../../main.service';
 import { TaskService } from '../tasks/tasks.service';
-import { DOCUMENT } from '@angular/common';
+import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import { Checkout, PaymentsService } from './payments.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { TitleService } from 'src/app/shared/title.service';
+import {WindowRef} from '../../../shared/services/window.ref.service';
 
 interface WindowPayment extends Window {
   LiqPayCheckout: any;
@@ -18,7 +20,7 @@ interface WindowPayment extends Window {
   templateUrl: './payments.component.html',
   styleUrls: ['./payments.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [PaymentsService, { provide: 'Window',  useValue: window }]
+  providers: [PaymentsService, { provide: 'WindowRef',  useValue: WindowRef }]
 })
 export class PaymentsComponent implements OnInit, OnDestroy {
   public coursesList: CourseInterface[] = [];
@@ -31,19 +33,25 @@ export class PaymentsComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
-    @Inject('Window') private window: WindowPayment,
+    @Inject(PLATFORM_ID) private platformId: any,
+    private window: WindowRef,
     private taskService: TaskService,
     private mainService: MainService,
     private renderer2: Renderer2,
     private paymentsService: PaymentsService,
     private translateService: TranslateService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private titleService: TitleService
   ) {
     this.userInfo = mainService.userInfo;
     this.addScript();
    }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('COMMON.PAYMENT').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     const getAllCourses = this.taskService.getAllCourses().subscribe((courses: CourseInterface[]) => {
       this.coursesList = courses.filter((course: CourseInterface) => {
         return course.coachId === this.userInfo.coach.id || course.forAll && course.price;
@@ -82,45 +90,48 @@ export class PaymentsComponent implements OnInit, OnDestroy {
   }
 
   public pay() {
-    let self = this;
-    this.window.LiqPayCheckout.init({
-      data:this.sign_string,
-      signature: this.signature,
-      embedTo: "#liqpay_checkout",
-      mode: "embed" // embed || popup,
-        }).on("liqpay.callback", function(data){
-      if(data.status === (environment.production ? 'wait_accept' : 'success')) {
-        const CHECKOUT = {
-          course: {
-            id: self.selectedCourse.id,
-            name: self.selectedCourse.name,
-            description: self.selectedCourse.description.text
-          },
-          paid: true,
-          price: self.selectedCourse.price,
-          user: {
-            id: self.userInfo.id,
-            name: self.userInfo.userName,
-            roleName: self.userInfo.role.name
-          },
-        };
-        const checkout = self.paymentsService.checkout(CHECKOUT).subscribe(res => {
-          this.ngOnInit();
-          this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.COURSE_SUCCESSFULLY_PAID'), '', {
-            duration: 2000,
-            panelClass: ['success']
+    if (isPlatformBrowser(this.platformId)) {
+      let self = this;
+      const window = this.window.nativeWindow;
+      window.LiqPayCheckout.init({
+        data:this.sign_string,
+        signature: this.signature,
+        embedTo: "#liqpay_checkout",
+        mode: "embed" // embed || popup,
+      }).on("liqpay.callback", function(data){
+        if(data.status === (environment.production ? 'wait_accept' : 'success')) {
+          const CHECKOUT = {
+            course: {
+              id: self.selectedCourse.id,
+              name: self.selectedCourse.name,
+              description: self.selectedCourse.description.text
+            },
+            paid: true,
+            price: self.selectedCourse.price,
+            user: {
+              id: self.userInfo.id,
+              name: self.userInfo.userName,
+              roleName: self.userInfo.role.name
+            },
+          };
+          const checkout = self.paymentsService.checkout(CHECKOUT).subscribe(res => {
+            this.ngOnInit();
+            this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.COURSE_SUCCESSFULLY_PAID'), '', {
+              duration: 2000,
+              panelClass: ['success']
+            });
           });
-        });
-        this.subscription.add(checkout);
-      }
+          this.subscription.add(checkout);
+        }
       }).on("liqpay.ready", function(data){
         console.log('ready', data);
         // ready
       }).on("liqpay.close", function(data){
         console.log('close', data);
         // close
-    });
-    // window.open(`https://www.liqpay.ua/api/3/checkout?data=${this.sign_string}&signature=${this.signature}`, "_blank");
+      });
+      // window.open(`https://www.liqpay.ua/api/3/checkout?data=${this.sign_string}&signature=${this.signature}`, "_blank");
+    }
   }
 
   private addScript() {

@@ -6,6 +6,7 @@ import {AppService, ServerErrorMessage} from 'src/app/app.service';
 import { User } from 'src/app/shared/interface/user.interface';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { TitleService } from 'src/app/shared/title.service';
 
 @Component({
   selector: 'app-login',
@@ -23,10 +24,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     private appService: AppService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private titleService: TitleService
     ) { }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.LOGIN.ENTER_SYSTEM').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
   }
   loginUser(email: string, pass: string) {
     const login = this.loginService.loginUser(email, pass).subscribe((user: User) => {

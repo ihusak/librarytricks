@@ -8,6 +8,8 @@ import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatPaginator } from '@angular/material';
+import { Subscription } from 'rxjs';
+import { TitleService } from 'src/app/shared/title.service';
 
 const SOCIAL_NETWORKS = [
   'instagram',
@@ -28,12 +30,6 @@ enum sortingValues {
   NOT_APPROVED = 'not_approved'
 }
 
-const DEFAULT_SORT: SortItemInterface[] = [
-  {name: sortingValues.NEW, key: sortingValues.NEW},
-  {name: sortingValues.POPULAR, key: sortingValues.POPULAR},
-  {name: sortingValues.OLD, key: sortingValues.OLD}
-];
-
 @Component({
   selector: 'app-videos',
   templateUrl: './videos.component.html',
@@ -41,6 +37,11 @@ const DEFAULT_SORT: SortItemInterface[] = [
 })
 export class VideosComponent implements OnInit {
   public userRoles = UserRolesEnum;
+  private defaultSort =  [
+    {name: sortingValues.NEW, key: sortingValues.NEW},
+    {name: sortingValues.POPULAR, key: sortingValues.POPULAR},
+    {name: sortingValues.OLD, key: sortingValues.OLD}
+  ];
   public videosList: VideoInterface[] = [];
   private notifyTypes = NotificationTypes;
   public userInfo: any;
@@ -58,25 +59,28 @@ export class VideosComponent implements OnInit {
     pageSize: 10,
     pageSizeOptions: [5, 10, 25]
   };
+  private subscription: Subscription = new Subscription();
   @ViewChild('matPaginator', {static: false}) matPaginator: MatPaginator;
   constructor(
     private videosService: VideosService,
     public dialog: MatDialog,
     private translateService: TranslateService,
     private mainService: MainService,
+    private titleService: TitleService
   ) {
-    this.sort.sortList = DEFAULT_SORT.map((sortItem: SortItemInterface) => {
-      sortItem.name = translateService.instant('COMMON.SORT.' + sortItem.name.toUpperCase(), '');
-      return sortItem;
-    });
     this.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   }
 
   ngOnInit() {
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.VIDEOS.TITLE').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
     this.userInfo = this.mainService.userInfo;
-    this.videosService.getAllVideos().subscribe((res: []) => {
+    const getAllVideos = this.videosService.getAllVideos().subscribe((res: []) => {
       this.prepareSort(res);
     });
+    this.subscription.add(getAllVideos);
   }
   public createPost() {
     const dialogRef = this.dialog.open(CreateVideoComponent, {
@@ -89,7 +93,7 @@ export class VideosComponent implements OnInit {
     });
   }
   public likeVideo(video: VideoInterface) {
-    this.videosService.likePost(video.id).subscribe((res: any) => {
+    const likePost = this.videosService.likePost(video.id).subscribe((res: any) => {
       if (res) {
         this.videosList.map((v: VideoInterface) => {
           if (v.id === res._id) {
@@ -99,13 +103,15 @@ export class VideosComponent implements OnInit {
         });
       }
     });
+    this.subscription.add(likePost);
   }
   public deleteVideo(video: VideoInterface) {
-    this.videosService.deletePost(video.id).subscribe((res: any) => {
+    const deletePost = this.videosService.deletePost(video.id).subscribe((res: any) => {
       if (res.ok) {
         this.videosList = this.videosList.filter((v: VideoInterface) => v.id !== video.id);
       }
     });
+    this.subscription.add(deletePost);
   }
   public getImage(url: string): string {
     const result = SOCIAL_NETWORKS.find((type: string) => {
@@ -115,7 +121,7 @@ export class VideosComponent implements OnInit {
     return result ? `fab fa-${result}` : `fas fa-question`;
   }
   public verifyVideo(video: VideoInterface) {
-    this.videosService.verifyPost(video.id, video.createdBy.id).subscribe((res: any) => {
+    const verifyPost = this.videosService.verifyPost(video.id, video.createdBy.id).subscribe((res: any) => {
       if (res.ok) {
         const notification: NotifyInterface = {
           users: [{id: video.createdBy.id}],
@@ -137,6 +143,7 @@ export class VideosComponent implements OnInit {
         this.notApproved = this.notApproved.filter((v: VideoInterface) => v.id !== video.id);
       }
     });
+    this.subscription.add(verifyPost);
   }
   changeSort(sort: SortItemInterface) {
     this.sort.query = '';
@@ -189,9 +196,9 @@ export class VideosComponent implements OnInit {
     this.notApproved = videos.filter((video: any) =>
       (!video.verified && (this.userInfo.id === video.createdBy.id) ||
         (!video.verified && this.userInfo.role.id === this.userRoles.ADMIN)));
-    this.sort.sortList = [...this.sort.sortList, ...AUTHORS];
+    this.sort.sortList = [...this.defaultSort, ...AUTHORS];
     this.sort.notApprovedVideos = [...this.notApproved];
-    this.sort.currentSort = DEFAULT_SORT[0];
+    this.sort.currentSort = this.defaultSort[0];
     this.changeSort(this.sort.currentSort);
     // init page size of available items
     this.videosList = this.sort.approvedVideos.slice(0, this.paginationOptions.pageSize);
