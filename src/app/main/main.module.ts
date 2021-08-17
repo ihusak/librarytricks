@@ -29,6 +29,9 @@ import { ErrorPageComponent } from './layouts/error-page/error-page.component';
 import {VideosService} from './components/videos/videos.service';
 import {CreateVideoComponent} from './components/videos/create-video/create-video.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import { ShopComponent } from './components/shop/shop.component';
+import { ShopCardComponent } from './components/shop/shop-card/shop-card.component';
+import { ShopService } from './components/shop/shop.service';
 
 @NgModule({
   declarations: [
@@ -45,7 +48,9 @@ import {ReactiveFormsModule} from '@angular/forms';
     VersionsComponent,
     HowToUseComponent,
     ErrorPageComponent,
-    CreateVideoComponent
+    CreateVideoComponent,
+    ShopComponent,
+    ShopCardComponent
   ],
   imports: [
     CommonModule,
@@ -62,7 +67,7 @@ import {ReactiveFormsModule} from '@angular/forms';
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent, CreateVideoComponent],
-  providers: [MainService, TaskService, CookieService, VideosService]
+  providers: [MainService, TaskService, CookieService, VideosService, ShopService]
 })
 export class MainModule {
 
