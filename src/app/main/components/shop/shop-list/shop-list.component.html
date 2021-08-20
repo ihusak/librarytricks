@@ -1,0 +1,3 @@
+<div class="admin-navigation" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])">
+  <button mat-raised-button color="primary" [routerLink]="'../create'">{{'TEMPLATE.SHOP.CREATE_PRODUCT' | translate}}</button>
+</div>
