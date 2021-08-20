@@ -10,6 +10,7 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { VersionsComponent } from './components/versions/versions.component';
 import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
 import { ShopComponent } from './components/shop/shop.component';
+import {CreateProductComponent} from './components/shop/product/create-product/create-product.component';
 
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
@@ -22,7 +23,7 @@ const routes: Routes = [
     {path: 'homeworks', loadChildren: () => import('./components/homeworks/homeworks.module').then(m => m.HomeworksModule)},
     {path: 'versions', component: VersionsComponent, data: {title: 'TEMPLATE.VERSIONS.TITLE', description: 'TEMPLATE.META_TAGS.VERSIONS_DESC'}},
     {path: 'how-to-use', component: HowToUseComponent, data: {title: 'TEMPLATE.HOW_TO_USE.TITLE', description: 'TEMPLATE.META_TAGS.HOW_TO_USE_DESC'}},
-    {path: 'shop', component: ShopComponent, data: {title: 'TEMPLATE.SHOP.TITLE', description: 'TEMPLATE.META_TAGS.SHOP_DESC'}}
+    {path: 'shop', loadChildren: () => import('./components/shop/shop.module').then(m => m.ShopModule), data: {title: 'TEMPLATE.SHOP.TITLE', description: 'TEMPLATE.META_TAGS.SHOP_DESC'}}
   ]},
   {path: 'not-found', component: NotFoundComponent},
   {path: '**', redirectTo: 'not-found'}

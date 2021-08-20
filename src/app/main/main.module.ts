@@ -24,14 +24,10 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { VersionsComponent } from './components/versions/versions.component';
 import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
-import { LanguageComponent } from './layouts/language/language.component';
 import { ErrorPageComponent } from './layouts/error-page/error-page.component';
 import {VideosService} from './components/videos/videos.service';
 import {CreateVideoComponent} from './components/videos/create-video/create-video.component';
 import {ReactiveFormsModule} from '@angular/forms';
-import { ShopComponent } from './components/shop/shop.component';
-import { ShopCardComponent } from './components/shop/shop-card/shop-card.component';
-import { ShopService } from './components/shop/shop.service';
 
 @NgModule({
   declarations: [
@@ -48,9 +44,7 @@ import { ShopService } from './components/shop/shop.service';
     VersionsComponent,
     HowToUseComponent,
     ErrorPageComponent,
-    CreateVideoComponent,
-    ShopComponent,
-    ShopCardComponent
+    CreateVideoComponent
   ],
   imports: [
     CommonModule,
@@ -67,7 +61,7 @@ import { ShopService } from './components/shop/shop.service';
   ],
   exports: [MainComponent],
   entryComponents: [AdminRequestPermissionPopupComponent, CreateVideoComponent],
-  providers: [MainService, TaskService, CookieService, VideosService, ShopService]
+  providers: [MainService, TaskService, CookieService, VideosService]
 })
 export class MainModule {
 
