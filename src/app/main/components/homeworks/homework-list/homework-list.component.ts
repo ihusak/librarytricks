@@ -163,20 +163,28 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
     this.sort.query = '';
     switch (sort.key) {
       case sortingValues.AUTHOR:
-        this.homeworksList = sortingItems.filter((homework: HomeworkInterface) => homework.createdBy && homework.createdBy.id === sort.id);
-        this.sort.length = this.homeworksList.length;
+        const SORTED_AUTHOR = sortingItems.filter((homework: HomeworkInterface) => homework.createdBy && homework.createdBy.id === sort.id);
+        this.homeworksList = SORTED_AUTHOR.slice(this.matPaginator.pageIndex * this.matPaginator.pageSize,
+          this.matPaginator.pageIndex * this.matPaginator.pageSize + this.matPaginator.pageSize);
+        this.sort.length = SORTED_AUTHOR.length;
         break;
       case sortingValues.NEW:
-        this.homeworksList = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
-        this.sort.length = this.homeworksList.length;
+        const SORTED_NEW = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime());
+        this.homeworksList = SORTED_NEW.slice(this.matPaginator.pageIndex * this.matPaginator.pageSize,
+          this.matPaginator.pageIndex * this.matPaginator.pageSize + this.matPaginator.pageSize);
+        this.sort.length = SORTED_NEW.length;
         break;
       case sortingValues.OLD:
-        this.homeworksList = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
-        this.sort.length = this.homeworksList.length;
+        const SORTED_OLD = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime());
+        this.homeworksList = SORTED_OLD.slice(this.matPaginator.pageIndex * this.matPaginator.pageSize,
+          this.matPaginator.pageIndex * this.matPaginator.pageSize + this.matPaginator.pageSize);
+        this.sort.length = SORTED_OLD.length;
         break;
       case sortingValues.POPULAR:
-        this.homeworksList = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => b.likes.length - a.likes.length);
-        this.sort.length = this.homeworksList.length;
+        const SORTED_POPULAR = sortingItems.sort((a: HomeworkInterface, b: HomeworkInterface) => b.likes.length - a.likes.length);
+        this.homeworksList = SORTED_POPULAR.slice(this.matPaginator.pageIndex * this.matPaginator.pageSize,
+          this.matPaginator.pageIndex * this.matPaginator.pageSize + this.matPaginator.pageSize);
+        this.sort.length = SORTED_POPULAR.length;
         break;
     }
     return this.homeworksList;
@@ -193,6 +201,9 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
     const sortingItems = this.sort.allHomeworks;
     this.homeworksList = sortingItems.slice($event.pageIndex * $event.pageSize,
     $event.pageIndex * $event.pageSize + $event.pageSize);
+    if(this.sort.currentSort) {
+      this.changeSort(this.sort.currentSort);
+    }
   }
   private prepareSort(homework: HomeworkInterface[]) {
     this.sort.allHomeworks = homework;
