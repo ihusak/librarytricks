@@ -74,13 +74,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
     this.subscription.add(translateServiceTitleSub);
     this.userInfo = this.mainService.userInfo;
     const getAllHomeworks = this.homeworksService.getAllHomeworks().subscribe((hm: HomeworkInterface[]) => {
-      if (this.userInfo.role.id === this.userRoles.STUDENT) {
-        this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => s.id === this.userInfo.id));
-      } else if (this.userInfo.role.id === this.userRoles.PARENT) {
-        this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => s.id === this.userInfo.myKid.id))
-      } else {
-        this.homeworksList = hm;
-      }
+      this.prepareHomeworks(hm);
       this.prepareSort(hm);
     });
     this.breakpoint = (window.innerWidth <= 1200) ? 1 : 4;
@@ -88,6 +82,24 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
       this.newHomeworkNotifyId = params.hmId;
     });
     this.subscription.add(getAllHomeworks);
+  }
+  private prepareHomeworks(hm: HomeworkInterface[]) {
+    switch(this.userInfo.role.id) {
+      case this.userRoles.STUDENT: 
+        this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => s.id === this.userInfo.id));
+      break;
+      case this.userRoles.PARENT:
+        this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => {
+          return this.userInfo.myKid.find(k => k.id === s.id);
+        }))
+      break;
+      case this.userRoles.COACH:
+        this.homeworksList = hm.filter((h: HomeworkInterface) => h.createdBy.id === this.userInfo.id)
+      break;
+      case this.userRoles.ADMIN: 
+        this.homeworksList = hm
+      break;
+    }
   }
   public studentNames(homework: HomeworkInterface): string {
     return homework.students.map(s => s.name).join(', ');
