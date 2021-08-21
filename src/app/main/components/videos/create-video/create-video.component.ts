@@ -56,7 +56,9 @@ export class CreateVideoComponent implements OnInit, OnDestroy {
     if (createdVideo) {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.VIDEO_MOVED_TO_VERIFICATION'), '', {
         duration: 5000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       const notification: NotifyInterface = {
         users: null,

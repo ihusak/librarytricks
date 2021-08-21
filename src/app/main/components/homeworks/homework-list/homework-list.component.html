@@ -14,7 +14,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>{{'COMMON.SORT.PLACEHOLDER' | translate}}</mat-label>
-    <mat-select [(ngModel)]="sort.currentSort" #selectedvalue (valueChange)="changeSort(selectedvalue.value)">
+    <mat-select [disabled]="sort.query.length > 0" [(ngModel)]="sort.currentSort" #selectedvalue (valueChange)="changeSort(selectedvalue.value)">
       <mat-option *ngFor="let sort of sort.sortList" [value]="sort">{{sort.id ? sort.name : ('COMMON.SORT.' + sort.name.toUpperCase() | translate)}}</mat-option>
     </mat-select>
   </mat-form-field>

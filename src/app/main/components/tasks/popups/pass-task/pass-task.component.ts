@@ -38,7 +38,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
   }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
   request() {
     this.task.status = TaskStatuses.PENDING;
@@ -47,11 +47,14 @@ export class PassTaskComponent implements OnInit, OnDestroy {
       this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_SENT_TO_REVIEW'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
     this.dialogRef.close(true);
     });
     this.subscription.add(changeCurrentTask);
+    this.dialogRef.close(true);
   }
   public validUrl(url: string) {
     if(url && YOUTUBE_REGEXP.exec(url)) {

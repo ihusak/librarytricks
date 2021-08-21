@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscription.add(translateServiceTitleSub);
   }
   loginUser(email: string, pass: string) {
-    const login = this.loginService.loginUser(email, pass).subscribe((user: User) => {
+    const EMAIL = email.toLowerCase();
+    const login = this.loginService.loginUser(EMAIL, pass).subscribe((user: User) => {
      this.appService.setUserDataToLocalStorage(user.tokens, user.id, user.role);
      this.loginService.userId = user.id;
      if (user.id && user.confirmed) {
@@ -43,7 +44,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       localStorage.setItem('userId', user.id);
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.LOGIN'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
      }
     },
@@ -51,7 +54,9 @@ export class LoginComponent implements OnInit, OnDestroy {
       const err: ServerErrorMessage = error.error;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey), '', {
         duration: 2000,
-        panelClass: ['error']
+        panelClass: ['error'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       if (err.code === 400 && err.errorMessage === LoginErrorMessage.WRONG_PASSWORD) {
         this.forgotPass = true;

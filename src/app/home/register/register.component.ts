@@ -87,7 +87,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
       if (result._id) {
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.REGISTER', {email: userForm.email}), '', {
           duration: 10000,
-          panelClass: ['success']
+          panelClass: ['success'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
         });
         this.registerUserFrom.reset();
         this.router.navigate(['/login']);
@@ -97,7 +99,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
       const err = error.error;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.' + err.errKey), '', {
         duration: 10000,
-        panelClass: ['error']
+        panelClass: ['error'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
     });
     this.subscription.add(registerUser);

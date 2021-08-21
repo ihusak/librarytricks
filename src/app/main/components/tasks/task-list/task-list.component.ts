@@ -99,7 +99,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
       this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.START_PROCESSING_TASK'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       const notification: NotifyInterface = {
         users: [{id: this.userInfo.coach.id}],
@@ -427,7 +429,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
     this.taskService.deleteTask(task.id).subscribe(deletedTask => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.DELETE_SUCCESSFULLY'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       const notification: NotifyInterface = {
         users: null,
@@ -469,8 +473,11 @@ export class TaskListComponent implements OnInit, OnDestroy {
       this.appService.userInfoSubject.next(updatedUserInfo);
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
+      window.location.reload();
     })
   }
 

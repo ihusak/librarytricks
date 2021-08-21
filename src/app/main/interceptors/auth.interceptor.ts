@@ -43,7 +43,9 @@ export class AuthInterceptor implements HttpInterceptor {
           } else if (err.status === 401) {
             this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_LOGOUT'), '', {
               duration: 2000,
-              panelClass: ['error']
+              panelClass: ['error'],
+              verticalPosition: 'top',
+              horizontalPosition: 'right'
             });
             this.router.navigate(['/']);
             this.appService.clearStorage();
