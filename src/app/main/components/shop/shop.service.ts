@@ -2,6 +2,14 @@ import { Observable } from 'rxjs/internal/Observable';
 import { AppService } from 'src/app/app.service';
 import {ProductModel} from './product.model';
 import {map} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+
+export const CATEGORIES = [
+ {title: 'BALL', sizes: null},
+ {title: 'CLOTHES', sizes: ['XS', 'S', 'M', 'L', 'XL']},
+ {title: 'FOOTWEAR', sizes: ['36', '37', '38', '39', '40', '41', '42', '43', '44']},
+ {title: 'ACCESSORIES', sizes: null}
+];
 
 export interface ProductInterface {
   id: string;
@@ -18,7 +26,7 @@ export interface ProductInterface {
   sale: number;
   manufacturer: string;
 }
-
+@Injectable()
 export class ShopService extends AppService {
   public createProduct(product: ProductModel): Observable<ProductModel> {
     return this.http.post(`${this.apiUrl()}/shop/create`, product).pipe(map((responseProduct: ProductInterface) => {

@@ -9,6 +9,8 @@ import {TranslateModule} from '@ngx-translate/core';
 import {SharedModule} from '../../../shared/shared.module';
 import {ShopService} from './shop.service';
 import {ShopComponent} from './shop.component';
+import { QuillModule } from 'ngx-quill';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -17,10 +19,15 @@ import {ShopComponent} from './shop.component';
   imports: [
     CommonModule,
     ShopRoutingModule,
+    ReactiveFormsModule,
     PipesModule,
     TranslateModule,
-    SharedModule
+    SharedModule,
+    QuillModule.forRoot()
   ],
-  providers: [ShopService]
+  providers: [ShopService],
+  entryComponents: [
+    CreateProductComponent
+  ]
 })
 export class ShopModule { }
