@@ -36,7 +36,7 @@ export class RejectTaskComponent implements OnDestroy {
     }
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
   reject(reason: string) {
     const userCurrentTask = this.studentInfo.currentTask;
@@ -65,7 +65,7 @@ export class RejectTaskComponent implements OnDestroy {
         }
       };
       this.mainService.setNotification(notification).subscribe((res: any) => {});
-      this.dialogRef.close();
+      this.dialogRef.close(true);
     });
     this.subscription.add(changeCurrentTask);
   }
