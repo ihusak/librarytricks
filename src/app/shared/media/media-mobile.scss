@@ -78,6 +78,14 @@
             }
           }
         }
+        mat-expansion-panel {
+          mat-expansion-panel-header {
+            min-height: 80px;
+            mat-panel-title, mat-panel-description {
+              font-size: 14px !important;
+            }
+          }
+        }
       }
     }
     app-payments {
