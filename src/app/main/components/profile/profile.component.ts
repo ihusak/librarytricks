@@ -15,6 +15,7 @@ import {NotifyInterface} from '../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
 import { TitleService } from 'src/app/shared/title.service';
+import { mainModule } from 'process';
 
 interface KidInterface {
   id: string;
@@ -269,7 +270,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       roleId: this.sessionInfo.role.id
     };
     if (!checkRepeated) {
-      this.profileService.sendInvite(emailsToInvite, user).subscribe(() => {
+      const EMAILS = emailsToInvite.map(email => email.toLowerCase());
+      this.profileService.sendInvite(EMAILS, user).subscribe(() => {
           this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.INVITATIONS_SENT', {users: emailsToInvite.join(', ')}), '', {
             duration: 5000,
             panelClass: ['success']
