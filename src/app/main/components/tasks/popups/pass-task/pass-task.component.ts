@@ -47,7 +47,9 @@ export class PassTaskComponent implements OnInit, OnDestroy {
       this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_SENT_TO_REVIEW'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
     });
     this.subscription.add(changeCurrentTask);

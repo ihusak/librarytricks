@@ -38,7 +38,9 @@ export class ForgotPasswordComponent implements OnDestroy {
       const err = error.error;
       this.snackBar.open(this.translateService.instant('COMMON.' + err.errKey), '', {
         duration: 2000,
-        panelClass: ['error']
+        panelClass: ['error'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
     });
   }
@@ -52,7 +54,9 @@ export class ForgotPasswordComponent implements OnDestroy {
         this.forgotPasswordService.remindToken = res.token;
         this.snackBar.open(this.translateService.instant('TEMPLATE.FORGOT_PASSWORD.CODE_SUCCESSFULLY_RESEND'), '', {
           duration: 2000,
-          panelClass: ['success']
+          panelClass: ['success'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
         });
       });
     }
@@ -67,7 +71,9 @@ export class ForgotPasswordComponent implements OnDestroy {
       if (err.code === 400) {
         this.snackBar.open(this.translateService.instant('TEMPLATE.FORGOT_PASSWORD.' + err.errKey), '', {
           duration: 2000,
-          panelClass: ['error']
+          panelClass: ['error'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
         });
       }
     });

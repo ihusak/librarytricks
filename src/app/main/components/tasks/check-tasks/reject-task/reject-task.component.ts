@@ -46,7 +46,9 @@ export class RejectTaskComponent implements OnDestroy {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.STUDENT_MOVED_IN_PROGRESS',
         {student: this.studentInfo.userName}), '', {
         duration: 2000,
-        panelClass: ['error']
+        panelClass: ['error'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       const notification: NotifyInterface = {
         users: [{id: this.studentInfo.id}],

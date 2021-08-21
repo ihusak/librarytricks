@@ -110,7 +110,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.appService.userInfoSubject.next(updateUser);
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USERINFO_UPDATED'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       const notification: NotifyInterface = {
         users: null,
@@ -237,7 +239,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     if (mimeType.match(/image\/*/) == null) {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.WRONG_FILE_FORMAT'), '', {
         duration: 4000,
-        panelClass: ['error']
+        panelClass: ['error'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       this.previewUrl = '../../assets/user-default.png';
       this.previewUrlChange = false;
@@ -274,7 +278,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       this.profileService.sendInvite(EMAILS, user).subscribe(() => {
           this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.INVITATIONS_SENT', {users: emailsToInvite.join(', ')}), '', {
             duration: 5000,
-            panelClass: ['success']
+            panelClass: ['success'],
+            verticalPosition: 'top',
+            horizontalPosition: 'right'
           });
           this.addKidForm.reset();
           this.kidEmailsInput = [];
@@ -282,7 +288,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     } else {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.EMAIL_EXIST', {userEmail: checkRepeated.email}), '', {
         duration: 5000,
-        panelClass: ['error']
+        panelClass: ['error'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
     }
   }

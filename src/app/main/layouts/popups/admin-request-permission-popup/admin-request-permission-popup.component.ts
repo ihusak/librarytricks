@@ -32,7 +32,9 @@ export class AdminRequestPermissionPopupComponent implements OnDestroy {
     const requestCoachPermission = this.mainService.requestCoachPermission(this.user.id, this.phone).subscribe((res) => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.REQUEST_SENT'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
     });
     this.subscription.add(requestCoachPermission);

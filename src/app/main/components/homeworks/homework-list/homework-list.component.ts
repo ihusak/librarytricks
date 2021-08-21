@@ -116,7 +116,9 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
         this.homeworksList = this.homeworksList.filter((hm: HomeworksModel) => hm.id !== homework.id);
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.HOMEWORK_CREATED'), '', {
           duration: 4000,
-          panelClass: ['success']
+          panelClass: ['success'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
         });
         const notification: NotifyInterface = {
           users: null,
