@@ -118,7 +118,9 @@ export class PaymentsComponent implements OnInit, OnDestroy {
             this.ngOnInit();
             this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.COURSE_SUCCESSFULLY_PAID'), '', {
               duration: 2000,
-              panelClass: ['success']
+              panelClass: ['success'],
+              verticalPosition: 'top',
+              horizontalPosition: 'right'
             });
           });
           this.subscription.add(checkout);

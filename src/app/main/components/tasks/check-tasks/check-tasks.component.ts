@@ -84,7 +84,9 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
       this.ngOnInit();
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.ACCEPT_STUDENT_TASK', {student: studentInfo.userName}), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       const notification: NotifyInterface = {
         users: [{id: studentInfo.id}],
@@ -114,8 +116,10 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
       width: '650px',
       data: studentInfo
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.ngOnInit();
+    dialogRef.afterClosed().subscribe((flag) => {
+      if(flag) {
+        this.ngOnInit();
+      }
     });
   }
   ngOnDestroy() {

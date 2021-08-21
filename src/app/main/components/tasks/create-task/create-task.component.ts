@@ -102,7 +102,9 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
     const createTask = this.taskService.createTask(taskModel).subscribe(result => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_CREATED'), '', {
         duration: 2000,
-        panelClass: ['success']
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
       });
       const notification: NotifyInterface = {
         users: null,

@@ -64,7 +64,9 @@ export class UpdateCourseComponent implements OnDestroy {
         this.dialogRef.close(course);
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.COURSE_UPDATED'), '', {
           duration: 4000,
-          panelClass: ['success']
+          panelClass: ['success'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
         });
       });
       this.subscription.add(updateCourse);
