@@ -116,8 +116,10 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
       width: '650px',
       data: studentInfo
     });
-    dialogRef.afterClosed().subscribe(() => {
-      this.ngOnInit();
+    dialogRef.afterClosed().subscribe((flag) => {
+      if(flag) {
+        this.ngOnInit();
+      }
     });
   }
   ngOnDestroy() {
