@@ -294,26 +294,26 @@ export class TaskListComponent implements OnInit, OnDestroy {
       data: {task, userInfo: this.userInfo}
     });
     dialogRef.afterClosed().subscribe((param) => {
-      const notification: NotifyInterface = {
-        users: [{id: this.userInfo.coach.id}],
-        author: {
-          id: this.userInfo.id,
-          name: this.userInfo.userName
-        },
-        title: 'COMMON.UPDATES',
-        type: this.notifyTypes.PASS_TASK,
-        userType: [this.userRoles.COACH, this.userRoles.ADMIN],
-        task: {
-          id: task.id,
-          name: task.title
-        },
-        course: {
-          id: this.currentCourse.id,
-          name: this.currentCourse.name
-        }
-      };
-      this.mainService.setNotification(notification).subscribe((res: any) => {});
-      if(!param) {
+      if(param) {
+        const notification: NotifyInterface = {
+          users: [{id: this.userInfo.coach.id}],
+          author: {
+            id: this.userInfo.id,
+            name: this.userInfo.userName
+          },
+          title: 'COMMON.UPDATES',
+          type: this.notifyTypes.PASS_TASK,
+          userType: [this.userRoles.COACH, this.userRoles.ADMIN],
+          task: {
+            id: task.id,
+            name: task.title
+          },
+          course: {
+            id: this.currentCourse.id,
+            name: this.currentCourse.name
+          }
+        };
+        this.mainService.setNotification(notification).subscribe((res: any) => {});
         window.location.reload();
       }
     });
@@ -470,6 +470,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         duration: 2000,
         panelClass: ['success']
       });
+      window.location.reload();
     })
   }
 

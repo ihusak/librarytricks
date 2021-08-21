@@ -35,7 +35,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.subscription.add(translateServiceTitleSub);
   }
   loginUser(email: string, pass: string) {
-    const login = this.loginService.loginUser(email, pass).subscribe((user: User) => {
+    const EMAIL = email.toLowerCase();
+    const login = this.loginService.loginUser(EMAIL, pass).subscribe((user: User) => {
      this.appService.setUserDataToLocalStorage(user.tokens, user.id, user.role);
      this.loginService.userId = user.id;
      if (user.id && user.confirmed) {

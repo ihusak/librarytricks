@@ -38,7 +38,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
   }
 
   onNoClick(): void {
-    this.dialogRef.close(true);
+    this.dialogRef.close(false);
   }
   request() {
     this.task.status = TaskStatuses.PENDING;
@@ -51,7 +51,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
       });
     });
     this.subscription.add(changeCurrentTask);
-    this.dialogRef.close();
+    this.dialogRef.close(true);
   }
   public validUrl(url: string) {
     if(url && YOUTUBE_REGEXP.exec(url)) {
