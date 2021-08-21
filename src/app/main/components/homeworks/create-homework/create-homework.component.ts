@@ -67,7 +67,9 @@ export class CreateHomeworkComponent implements OnInit, OnDestroy {
       if (res) {
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_CREATED'), '', {
           duration: 2000,
-          panelClass: ['success']
+          panelClass: ['success'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
         });
         const notification: NotifyInterface = {
           users: HOMEWORK.students,

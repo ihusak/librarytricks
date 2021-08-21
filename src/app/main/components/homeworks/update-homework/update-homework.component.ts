@@ -95,7 +95,9 @@ export class UpdateHomeworkComponent implements OnInit, OnDestroy {
       if (res.result === 'ok') {
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_UPDATED'), '', {
           duration: 2000,
-          panelClass: ['success']
+          panelClass: ['success'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
         });
         this.location.back();
       }

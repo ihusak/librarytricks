@@ -66,7 +66,9 @@ export class UpdateTaskComponent implements OnInit, OnDestroy {
      const updateTask = this.taskService.updateTask(this.taskId, updatedTask).subscribe(result => {
         this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_UPDATED'), '', {
           duration: 2000,
-          panelClass: ['success']
+          panelClass: ['success'],
+          verticalPosition: 'top',
+          horizontalPosition: 'right'
         });
         const notification: NotifyInterface = {
          users: null,
