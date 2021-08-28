@@ -16,10 +16,8 @@ export interface ProductInterface {
   title: string;
   description: string;
   images: string[];
-  pricing: {
-    price: number,
-    skillz: number
-  };
+  price: number;
+  skillz: number;
   category: string;
   sizes: object[];
   available: boolean;
@@ -28,8 +26,8 @@ export interface ProductInterface {
 }
 @Injectable()
 export class ShopService extends AppService {
-  public createProduct(product: ProductModel): Observable<ProductModel> {
-    return this.http.post(`${this.apiUrl()}/shop/create`, product).pipe(map((responseProduct: ProductInterface) => {
+  public createProduct(formData): Observable<ProductModel> {
+    return this.http.post(`${this.apiUrl()}/shop/create`, formData).pipe(map((responseProduct: ProductInterface) => {
       return new ProductModel(responseProduct);
     }));
   }
