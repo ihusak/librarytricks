@@ -5,21 +5,22 @@ export class ProductModel implements ProductInterface {
   title: string;
   description: string;
   images: string[];
-  pricing: {
-    price: number,
-    skillz: number
-  };
+  price: number;
+  skillz: number;
   category: string;
   sizes: object[];
   available: boolean;
   sale: number;
   manufacturer: string;
   constructor(response: ProductInterface) {
-    this.id = response.id;
+    if (response.id) {
+      this.id = response.id;
+    }
     this.title = response.title;
     this.description = response.description;
     this.images = response.images;
-    this.pricing = response.pricing;
+    this.price = response.price;
+    this.skillz = response.skillz;
     this.category = response.category;
     this.sizes = response.sizes;
     this.available = response.available;

@@ -1,43 +1,57 @@
-<h3>{{'TEMPALTE.SHOP.PRODUCT.CREATE_TITLE' | translate}}</h3>
+<h3>{{'TEMPLATE.SHOP.PRODUCT.CREATE_TITLE' | translate}}</h3>
 <div class="create-wrap">
+  <form method="post" action="/" enctype="multipart/form-data">
+    <div class="product-files">
+       <div class="previewImg">
+          <img *ngFor="let url of images" [src]="url" alt="avatar">
+       </div>
+       <button mat-raised-button color="primary" (click)="fileInput.click()">{{'TEMPLATE.PROFILE.UPLOAD_PHOTO' | translate}}</button>
+       <input type="file" multiple name="productsImg" #fileInput (change)="fileProgress($event)" class="avatarAddImage">
+    </div>
+ </form>
   <form [formGroup]="productForm" (ngSubmit)="createProduct()">
     <div class="form-view">
       <div class="item">
-        <h3>{{'TEMPALTE.SHOP.PRODUCT.PRODUCT_CATEGORY' | translate}}</h3>
+        <h3>{{'TEMPLATE.SHOP.PRODUCT.PRODUCT_CATEGORY' | translate}}</h3>
         <mat-form-field>
-          <mat-label>{{'TEMPALTE.SHOP.PRODUCT.CATEGORY' | translate}}</mat-label>
+          <mat-label>{{'TEMPLATE.SHOP.PRODUCT.CATEGORY' | translate}}</mat-label>
           <mat-select formControlName="category">
-            <mat-option *ngFor="let category of categoryList" [value]="category">{{category.title}}</mat-option>
+            <mat-option *ngFor="let category of categoryList" [value]="category">{{'TEMPLATE.SHOP.PRODUCT.CATEGORIES.' + category.title | translate}}</mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
-      {{productForm.value.category.sizes}}
-      <div class="item" *ngIf="productForm.value.category && productForm.value.category.sizes">
-        <h3>{{'TEMPALTE.SHOP.PRODUCT.PRODUCT_SIZE' | translate}}</h3>
-        <mat-form-field>
-          <mat-label>{{'TEMPALTE.SHOP.PRODUCT.SIZES' | translate}}</mat-label>
+        <!-- <mat-form-field class="wrap-sizes" *ngIf="productForm.value.category && productForm.value.category.sizes">
+          <mat-label>{{'TEMPLATE.SHOP.PRODUCT.PRODUCT_SIZES' | translate}}</mat-label>
           <mat-select formControlName="sizes" multiple>
             <mat-option *ngFor="let size of productForm.value.category.sizes" [value]="size">{{size}}</mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
       <div class="item">
         <mat-form-field>
-          <input formControlName="title" matInput placeholder="{{'TEMPALTE.SHOP.PRODUCT.TITLE' | translate}}" required>
+          <input formControlName="title" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.TITLE' | translate}}" required>
         </mat-form-field>
-        <h3>{{'TEMPALTE.SHOP.PRODUCT.DETAILS_DESCRIPTION' | translate}}</h3>
-        <quill-editor formControlName="description" placeholder="{{'COMMON.DETAILS' | translate}}" required="true"></quill-editor>
+        <h3>{{'TEMPLATE.SHOP.PRODUCT.DETAILS_DESCRIPTION' | translate}}</h3>
+        <quill-editor class="product-description" formControlName="description" placeholder="{{'COMMON.DETAILS' | translate}}" required="true"></quill-editor>
       </div>
       <div class="item">
         <mat-form-field>
-          <input formControlName="price" matInput placeholder="{{'TEMPALTE.SHOP.PRODUCT.PRICE' | translate}}" required>
+          <input formControlName="price" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.PRICE' | translate}} UAH">
         </mat-form-field>
         <mat-form-field>
-          <input formControlName="skillz" matInput placeholder="{{'TEMPALTE.SHOP.PRODUCT.SKILLZ' | translate}}" required>
+          <input formControlName="skillz" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.SKILLZ' | translate}}" required>
         </mat-form-field>
+        <mat-form-field>
+          <input formControlName="sale" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.SALE' | translate}}, %">
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="manufacturer" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.MANUFACTURER' | translate}}" required>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-checkbox formControlName="available">{{'TEMPLATE.SHOP.PRODUCT.AVAILABLE' | translate}}</mat-checkbox>
       </div>
     </div>
-    <button mat-raised-button color="primary" [disabled]="productForm.valid">{{'TEMPALTE.SHOP.PRODUCT.CREATE' | translate}}</button>
+    <button mat-raised-button color="primary" [disabled]="!productForm.valid">{{'TEMPLATE.SHOP.PRODUCT.CREATE' | translate}}</button>
     <button mat-raised-button color="primary" routerLink="../list">{{'COMMON.BACK' | translate}}</button>
   </form>
 </div>
