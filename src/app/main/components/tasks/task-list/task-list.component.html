@@ -25,17 +25,20 @@
 <div class="header-task" *ngIf="!(userInfo | userRolePipe:[userRoles.COACH])">
   <mat-form-field *ngIf="coachList">
     <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_COACH' | translate}}</mat-label>
-    <mat-select [compareWith]="compareObjectsCoach" [(ngModel)]="selectedCoach" #selectedvalue (valueChange)="changeCoach(selectedvalue.value.id)">
+    <mat-select [disabled]="(userInfo | userRolePipe:[userRoles.STUDENT]) && !!userInfo.currentTask.status && userInfo.currentTask.status !== taskStatuses.DONE" [compareWith]="compareObjectsCoach" [(ngModel)]="selectedCoach" #selectedvalue (valueChange)="changeCoach(selectedvalue.value.id)">
       <mat-option *ngFor="let coach of coachList" [value]="coach">{{coach.userName}}</mat-option>
     </mat-select>
   </mat-form-field>
   <button (click)="assignCourseToUser()" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && (selectedCourse && selectedCourse.id !== userInfo.course.id) && currentCourse.paid" mat-raised-button color="primary">{{'TEMPLATE.TASK_LIST.START_COURSE' | translate}}</button>
   <mat-form-field *ngIf="coursesList && coursesList.length">
     <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
-    <mat-select [compareWith]="compareObjects" [(ngModel)]="selectedCourse" #selectedvalue (valueChange)="changeCourse(selectedvalue.value.id, selectedCoach.id)">
+    <mat-select [disabled]="(userInfo | userRolePipe:[userRoles.STUDENT]) && !!userInfo.currentTask.status && userInfo.currentTask.status !== taskStatuses.DONE" [compareWith]="compareObjects" [(ngModel)]="selectedCourse" #selectedvalue (valueChange)="changeCourse(selectedvalue.value.id, selectedCoach.id)">
       <mat-option *ngFor="let course of coursesList" [value]="course">{{course.name}}</mat-option>
     </mat-select>
   </mat-form-field>
+</div>
+<div class="warning-text" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) && !!userInfo.currentTask.status && userInfo.currentTask.status !== taskStatuses.DONE">
+  {{'COMMON.FINISH_TASK_TO_CONTINUE' | translate: {taskName: userInfo.currentTask.title} }}
 </div>
 <div class="info-item" *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT]) &&  (selectedCourse && selectedCourse.id === userInfo.course.id)">
   <div class="markers">
