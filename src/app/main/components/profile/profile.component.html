@@ -68,7 +68,7 @@
         <div class="form-group">
            <mat-form-field>
               <mat-label>{{'TEMPLATE.PROFILE.SELECT_YOUR_COACH' | translate}}</mat-label>
-              <mat-select [compareWith]="compareObjectsCoach" formControlName="coach" (selectionChange)="changeCoach($event.value, true)">
+              <mat-select [disabled]="(userInfoData | userRolePipe:[userRoles.STUDENT]) && !!userInfoData.currentTask.status && userInfoData.currentTask.status !== taskStatuses.DONE" [compareWith]="compareObjectsCoach" formControlName="coach" (selectionChange)="changeCoach($event.value, true)">
               <mat-option *ngFor="let coach of coachList" [value]="coach">{{coach.userName}}</mat-option>
               </mat-select>
            </mat-form-field>
@@ -79,7 +79,7 @@
         <div class="form-group">
            <mat-form-field>
               <mat-label>{{'COMMON.COURSE' | translate}}</mat-label>
-              <mat-select [compareWith]="compareObjectsCourse" formControlName="course" (selectionChange)="changeCourse($event.value)">
+              <mat-select [disabled]="(userInfoData | userRolePipe:[userRoles.STUDENT]) && !!userInfoData.currentTask.status && userInfoData.currentTask.status !== taskStatuses.DONE" [compareWith]="compareObjectsCourse" formControlName="course" (selectionChange)="changeCourse($event.value)">
               <mat-option *ngFor="let course of coachCourses" [value]="course">{{course.name}}</mat-option>
               </mat-select>
            </mat-form-field>

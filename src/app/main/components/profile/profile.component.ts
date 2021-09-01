@@ -16,6 +16,7 @@ import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
 import { TitleService } from 'src/app/shared/title.service';
 import { mainModule } from 'process';
+import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 
 interface KidInterface {
   id: string;
@@ -35,6 +36,7 @@ interface DynamicChildEmailInterface {
 export class ProfileComponent implements OnInit, OnDestroy {
   public previewUrl: any = '../../assets/user-default.png';
   public previewUrlChange: boolean = false;
+  public taskStatuses = TaskStatuses;
   public coachCourses: any[] = [];
   public coachCourseList: any[] = [];
   public fileData: File = null;
