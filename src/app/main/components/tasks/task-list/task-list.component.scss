@@ -16,21 +16,6 @@
       .mat-icon {
         position: relative;
         margin-right: 10px;
-        //&.done {
-        //  color: #c0dabd;
-        //  border-left: 1px solid #c0dabd;
-        //  border-right: 1px solid #c0dabd;
-        //}
-        //&.processing {
-        //  color: #1E90FF;
-        //  border-left: 1px solid #1E90FF;
-        //  border-right: 1px solid #1E90FF;
-        //}
-        //&.pending {
-        //  color: #FF0000;
-        //  border-left: 1px solid #FF0000;
-        //  border-right: 1px solid #FF0000;
-        //}
       }
     }
     .task-done {
@@ -102,4 +87,15 @@
               0 6px 8px rgba(0,0,0,0.11),
               0 8px 16px rgba(0,0,0,0.11);
   }
+}
+.warning-text {
+  margin: 5px 0 25px 0;
+  border-radius: 5px;
+    padding: 8px;
+    background-color: #ffd4d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.11), 
+              0 2px 2px rgba(0,0,0,0.11), 
+              0 4px 4px rgba(0,0,0,0.11), 
+              0 6px 8px rgba(0,0,0,0.11),
+              0 8px 16px rgba(0,0,0,0.11);
 }
