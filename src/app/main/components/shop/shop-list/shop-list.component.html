@@ -1,3 +1,23 @@
 <div class="admin-navigation" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])">
   <button mat-raised-button color="primary" [routerLink]="'../create'">{{'TEMPLATE.SHOP.CREATE_PRODUCT' | translate}}</button>
 </div>
+<div class="wrap-list">
+  <div class="item" *ngFor="let product of productList">
+    <div class="images">
+      <img src="api/{{product.images[0]}}" alt="product-img">
+    </div>
+    <div class="info">
+      <h5>{{product.title}}</h5>
+      <p class="description" [innerHTML]="product.description"></p>
+      <div class="prices-wrap">
+        <div class="prices">
+          <p class="skillz"><span class="amount">{{product.skillz}}</span> <span class="value-name">skillz</span></p>
+          <p class="price" *ngIf="product.price"><span class="amount">{{product.price}}</span> <span class="value-name">UAH</span></p>
+        </div>
+      </div>
+    </div>
+    <div class="actions">
+      <button mat-raised-button color="primary">BUY</button>
+    </div>
+  </div>
+</div>
