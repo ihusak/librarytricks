@@ -60,7 +60,7 @@ export class CreateProductComponent implements OnInit, OnDestroy {
     const createProductSub = this.shopService.createProduct(formData).subscribe(res => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.SHOP.PRODUCT_CREATED'), '', {
         duration: 4000,
-        panelClass: ['error'],
+        panelClass: ['success'],
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
