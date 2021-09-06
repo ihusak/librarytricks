@@ -1,3 +1,8 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .wrap-list {
   margin: 30px 0;
   .item {
@@ -43,6 +48,10 @@
         }
         .price {
           color: #6d6d6d;
+          visibility: hidden;
+          &.visible {
+            visibility: visible;
+          }
           .amount {
             font-size: 12px;
           }
