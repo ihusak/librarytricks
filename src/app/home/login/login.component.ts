@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit, OnDestroy {
      this.loginService.userId = user.id;
      if (user.id && user.confirmed) {
       this.router.navigate(['main/dashboard']);
-      localStorage.setItem('userId', user.id);
+      // localStorage.setItem('userId', user.id);
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.LOGIN'), '', {
         duration: 2000,
         panelClass: ['success'],

@@ -89,7 +89,7 @@ export class CreateProductComponent implements OnInit, OnDestroy {
         const reader = new FileReader();
         reader.onload = (_event: any) => {
           this.images.push(_event.target.result);
-          this.productForm.controls['images'].patchValue(this.images);
+          this.productForm.controls['images'].patchValue(this.images.length);
           this.productForm.controls['images'].markAsDirty();
         };
         reader.readAsDataURL(file[i]);
