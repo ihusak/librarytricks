@@ -11,11 +11,12 @@ import {ShopService} from './shop.service';
 import {ShopComponent} from './shop.component';
 import { QuillModule } from 'ngx-quill';
 import { ReactiveFormsModule } from '@angular/forms';
+import {ShopCardComponent} from './shop-card/shop-card.component';
 
 
 
 @NgModule({
-  declarations: [ShopComponent, ShopListComponent, CreateProductComponent, UpdateProductComponent],
+  declarations: [ShopComponent, ShopListComponent, CreateProductComponent, UpdateProductComponent, ShopCardComponent],
   imports: [
     CommonModule,
     ShopRoutingModule,
