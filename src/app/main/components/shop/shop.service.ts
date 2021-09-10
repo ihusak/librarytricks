@@ -44,4 +44,9 @@ export class ShopService extends AppService {
   public deleteProduct(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl()}/shop/products/${id}`);
   }
+  public getProductById(id: string): Observable<ProductModel> {
+    return this.http.get(`${this.apiUrl()}/shop/product/${id}`).pipe(map((response: ProductInterface) => {
+      return new ProductModel(response);
+    }));
+  }
 }
