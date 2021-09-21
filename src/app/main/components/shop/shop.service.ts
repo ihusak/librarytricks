@@ -3,6 +3,7 @@ import { AppService } from 'src/app/app.service';
 import {ProductModel} from './product.model';
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 export const CATEGORIES = [
  {title: 'BALL', sizes: null},
@@ -26,6 +27,9 @@ export interface ProductInterface {
 }
 @Injectable()
 export class ShopService extends AppService {
+  public busketObj: Subject<ProductModel[]> = new Subject();
+  public basketData: ProductModel[] = [];
+
   public createProduct(formData): Observable<ProductModel> {
     return this.http.post(`${this.apiUrl()}/shop/create`, formData).pipe(map((responseProduct: ProductInterface) => {
       return new ProductModel(responseProduct);

@@ -15,7 +15,7 @@ export class ShopListComponent implements OnInit {
   public userInfo: any;
   public userRoles = UserRolesEnum;
   public productList: ProductModel[] = [];
-  public basket: ProductModel[] = [];
+  // public basket: ProductModel[] = [];
   constructor(
     private shopService: ShopService,
     private mainService: MainService,
@@ -35,7 +35,7 @@ export class ShopListComponent implements OnInit {
 
   public addToBasket(product: ProductModel) {
     let productsId;
-    if(this.basket.indexOf(product) >= 0) {
+    if(this.shopService.basketData.indexOf(product) >= 0) {
       this.snackBar.open(this.translateService.instant('TEMPLATE.SHOP.PRODUCT_ALREADY_ADDED'), '', {
         duration: 2000,
         panelClass: ['warn'],
@@ -50,8 +50,9 @@ export class ShopListComponent implements OnInit {
       verticalPosition: 'top',
       horizontalPosition: 'right'
     });
-    this.basket.push(product);
-    productsId = this.basket.map((product: ProductModel) => product.id);
+    this.shopService.basketData.push(product);
+    this.shopService.busketObj.next(this.shopService.basketData);
+    productsId = this.shopService.basketData.map((product: ProductModel) => product.id);
     localStorage.setItem('addedProducts', productsId);
   }
   private restoreBasket() {
@@ -59,18 +60,19 @@ export class ShopListComponent implements OnInit {
     if(!selectedProducts.length) {
       return;
     }
-    this.basket = this.productList.filter((product: ProductModel) => selectedProducts.find(id => id === product.id));
+    const restoredProducts = this.productList.filter((product: ProductModel) => selectedProducts.find(id => id === product.id));
+    this.shopService.busketObj.next(restoredProducts);
   }
-  public priceSum(products: ProductModel[], type: string): number {
-    return products.reduce((sum, current) => {
-      return sum + current[type];
-    }, 0)
-  }
-  public removeProduct(id: string) {
-    const selectedProducts = localStorage.getItem('addedProducts').split(',');
-    let result;
-    this.basket = this.basket.filter((product: ProductModel) => product.id !== id);
-    result = selectedProducts.filter(sid => sid !== id);
-    localStorage.setItem('addedProducts', result);
-  }
+  // public priceSum(products: ProductModel[], type: string): number {
+  //   return products.reduce((sum, current) => {
+  //     return sum + current[type];
+  //   }, 0)
+  // }
+  // public removeProduct(id: string) {
+  //   const selectedProducts = localStorage.getItem('addedProducts').split(',');
+  //   let result;
+  //   this.basket = this.basket.filter((product: ProductModel) => product.id !== id);
+  //   result = selectedProducts.filter(sid => sid !== id);
+  //   localStorage.setItem('addedProducts', result);
+  // }
 }

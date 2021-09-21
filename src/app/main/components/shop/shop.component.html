@@ -1,2 +1,18 @@
 <h1>Shop</h1>
+<mat-icon *ngIf="basket.length" [matMenuTriggerFor]="basketMenu" class="basket" [matBadge]="basket.length" matBadgePosition="before" matBadgeColor="primary">shopping_basket</mat-icon>
+  <mat-menu #basketMenu="matMenu">
+    <div class="items-wrap">
+      <div class="basket-item" *ngFor="let basketItem of basket">
+        <div class="item-desc">
+          <div class="title">{{basketItem.title}}</div>
+          <mat-icon class="remove" (click)="removeProduct(basketItem.id)">close</mat-icon>
+        </div>
+      </div>
+      <div class="sum">
+        <div class="skillz"><b>{{priceSum(basket, 'skillz')}}</b> skillz</div>
+        <div class="price"><b>{{priceSum(basket, 'price')}}</b> UAH</div>
+      </div>
+      <button mat-raised-button color="primary">PAY</button>
+    </div>
+  </mat-menu>
 <router-outlet></router-outlet>

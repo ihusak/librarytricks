@@ -12,6 +12,7 @@ import {ShopComponent} from './shop.component';
 import { QuillModule } from 'ngx-quill';
 import { ReactiveFormsModule } from '@angular/forms';
 import {ShopCardComponent} from './shop-card/shop-card.component';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 
 
@@ -24,7 +25,8 @@ import {ShopCardComponent} from './shop-card/shop-card.component';
     PipesModule,
     TranslateModule,
     SharedModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    NgImageSliderModule
   ],
   providers: [ShopService],
   entryComponents: [
