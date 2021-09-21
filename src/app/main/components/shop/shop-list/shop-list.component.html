@@ -1,6 +1,6 @@
 <div class="navigation">
   <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" mat-raised-button color="primary" [routerLink]="'../create'">{{'TEMPLATE.SHOP.CREATE_PRODUCT' | translate}}</button>
-  <mat-icon *ngIf="basket.length" [matMenuTriggerFor]="basketMenu" class="basket" [matBadge]="basket.length" matBadgePosition="before" matBadgeColor="primary">shopping_basket</mat-icon>
+  <!-- <mat-icon *ngIf="basket.length" [matMenuTriggerFor]="basketMenu" class="basket" [matBadge]="basket.length" matBadgePosition="before" matBadgeColor="primary">shopping_basket</mat-icon>
   <mat-menu #basketMenu="matMenu">
     <div class="items-wrap">
       <div class="basket-item" *ngFor="let basketItem of basket">
@@ -15,10 +15,10 @@
       </div>
       <button mat-raised-button color="primary">PAY</button>
     </div>
-  </mat-menu>
+  </mat-menu> -->
 </div>
 <div class="wrap-list">
-  <div class="item" *ngFor="let product of productList">
+  <div class="item" *ngFor="let product of productList" [ngClass]="{'not-available': !product.available}">
     <div class="images">
       <img src="api/{{product.images[0]}}" alt="product-img">
     </div>
@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="actions">
-      <button (click)="addToBasket(product)" mat-raised-button color="primary">BUY</button>
+      <button [disabled]="!product.available" (click)="addToBasket(product)" mat-raised-button color="primary">BUY</button>
       <button [routerLink]="['../card/', product.id]" mat-raised-button color="primary">VIEW</button>
     </div>
   </div>
