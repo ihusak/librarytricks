@@ -4,6 +4,7 @@ import {ShopListComponent} from './shop-list/shop-list.component';
 import {CreateProductComponent} from './product/create-product/create-product.component';
 import {ShopComponent} from './shop.component';
 import {ShopCardComponent} from './shop-card/shop-card.component';
+import {UpdateProductComponent} from './product/update-product/update-product.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
       {path: 'list', component: ShopListComponent},
       {path: 'create', component: CreateProductComponent},
       {path: 'card/:id', component: ShopCardComponent},
+      {path: 'card/edit/:id', component: UpdateProductComponent},
     ]
   }
 ];

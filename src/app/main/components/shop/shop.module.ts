@@ -13,11 +13,13 @@ import { QuillModule } from 'ngx-quill';
 import { ReactiveFormsModule } from '@angular/forms';
 import {ShopCardComponent} from './shop-card/shop-card.component';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { BasketComponent } from './basket/basket.component';
+import {BasketService} from './basket/basket.service';
 
 
 
 @NgModule({
-  declarations: [ShopComponent, ShopListComponent, CreateProductComponent, UpdateProductComponent, ShopCardComponent],
+  declarations: [ShopComponent, ShopListComponent, CreateProductComponent, UpdateProductComponent, ShopCardComponent, BasketComponent],
   imports: [
     CommonModule,
     ShopRoutingModule,
@@ -28,7 +30,7 @@ import { NgImageSliderModule } from 'ng-image-slider';
     QuillModule.forRoot(),
     NgImageSliderModule
   ],
-  providers: [ShopService],
+  providers: [ShopService, BasketService],
   entryComponents: [
     CreateProductComponent
   ]

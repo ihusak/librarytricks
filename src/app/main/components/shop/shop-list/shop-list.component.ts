@@ -3,8 +3,7 @@ import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {ShopService} from '../shop.service';
 import {MainService} from '../../../main.service';
 import {ProductModel} from '../product.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { TranslateService } from '@ngx-translate/core';
+import {BasketService} from '../basket/basket.service';
 
 @Component({
   selector: 'app-shop-list',
@@ -15,64 +14,21 @@ export class ShopListComponent implements OnInit {
   public userInfo: any;
   public userRoles = UserRolesEnum;
   public productList: ProductModel[] = [];
-  // public basket: ProductModel[] = [];
   constructor(
     private shopService: ShopService,
     private mainService: MainService,
-    private snackBar: MatSnackBar,
-    private translateService: TranslateService
+    private basketService: BasketService,
   ) {
     this.userInfo = mainService.userInfo;
   }
 
   ngOnInit() {
-    this.shopService.getAllProducts().subscribe((response: ProductModel[]) => {
-      console.log(response);
-      this.productList = response;
-      this.restoreBasket();
+    this.shopService.allProducts.subscribe((products: ProductModel[]) => {
+      this.productList = products;
     });
   }
 
   public addToBasket(product: ProductModel) {
-    let productsId;
-    if(this.shopService.basketData.indexOf(product) >= 0) {
-      this.snackBar.open(this.translateService.instant('TEMPLATE.SHOP.PRODUCT_ALREADY_ADDED'), '', {
-        duration: 2000,
-        panelClass: ['warn'],
-        verticalPosition: 'top',
-        horizontalPosition: 'right'
-      });
-      return;
-    }
-    this.snackBar.open(this.translateService.instant('TEMPLATE.SHOP.PRODUCT_ADDED'), '', {
-      duration: 2000,
-      panelClass: ['success'],
-      verticalPosition: 'top',
-      horizontalPosition: 'right'
-    });
-    this.shopService.basketData.push(product);
-    this.shopService.busketObj.next(this.shopService.basketData);
-    productsId = this.shopService.basketData.map((product: ProductModel) => product.id);
-    localStorage.setItem('addedProducts', productsId);
+    this.basketService.addToBasket(product);
   }
-  private restoreBasket() {
-    const selectedProducts = localStorage.getItem('addedProducts').split(',');
-    if(!selectedProducts.length) {
-      return;
-    }
-    const restoredProducts = this.productList.filter((product: ProductModel) => selectedProducts.find(id => id === product.id));
-    this.shopService.busketObj.next(restoredProducts);
-  }
-  // public priceSum(products: ProductModel[], type: string): number {
-  //   return products.reduce((sum, current) => {
-  //     return sum + current[type];
-  //   }, 0)
-  // }
-  // public removeProduct(id: string) {
-  //   const selectedProducts = localStorage.getItem('addedProducts').split(',');
-  //   let result;
-  //   this.basket = this.basket.filter((product: ProductModel) => product.id !== id);
-  //   result = selectedProducts.filter(sid => sid !== id);
-  //   localStorage.setItem('addedProducts', result);
-  // }
 }
