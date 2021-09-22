@@ -42,6 +42,7 @@
     <div class="actions">
       <button [disabled]="!product.available" (click)="addToBasket(product)" mat-raised-button color="primary">BUY</button>
       <button [routerLink]="['../card/', product.id]" mat-raised-button color="primary">VIEW</button>
+      <button [routerLink]="['../card/edit/', product.id]" mat-raised-button color="primary">UPDATE</button>
     </div>
   </div>
 </div>
