@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {CATEGORIES, ProductInterface, ShopService} from '../../shop.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {TitleService} from '../../../../../shared/title.service';
 import {ProductModel} from '../../product.model';
@@ -13,9 +13,9 @@ import {ProductModel} from '../../product.model';
   templateUrl: './update-product.component.html',
   styleUrls: ['./update-product.component.scss']
 })
-export class UpdateProductComponent implements OnInit {
+export class UpdateProductComponent implements OnInit, OnDestroy {
   public productForm: FormGroup;
-  private subscription: Subscription = new Subscription();
+  private subscriptions: Subscription = new Subscription();
   public categoryList: object[] = CATEGORIES;
   public product: ProductInterface;
 
@@ -26,6 +26,7 @@ export class UpdateProductComponent implements OnInit {
     private shopService: ShopService,
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
+    private router: Router,
     private translateService: TranslateService,
     private titleService: TitleService
   ) { }
@@ -50,7 +51,7 @@ export class UpdateProductComponent implements OnInit {
       const translateServiceTitleSub = this.translateService.get('TEMPLATE.SHOP.PRODUCT.PRODUCT_TITLE', {title: product.title}).subscribe((value: string) => {
         this.titleService.setTitle(value);
       });
-      this.subscription.add(translateServiceTitleSub);
+      this.subscriptions.add(translateServiceTitleSub);
     });
   }
   public fileProgress(fileInput: any) {
@@ -94,7 +95,7 @@ export class UpdateProductComponent implements OnInit {
         formData.append('productsImg', file);
       });
     }
-    const createProductSub = this.shopService.updateProduct(ID, formData).subscribe(res => {
+    const updateProductSub = this.shopService.updateProduct(ID, formData).subscribe(res => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.SHOP.PRODUCT_UPDATED'), '', {
         duration: 4000,
         panelClass: ['success'],
@@ -102,7 +103,8 @@ export class UpdateProductComponent implements OnInit {
         horizontalPosition: 'right'
       });
     });
-    this.subscription.add(createProductSub);
+    this.subscriptions.add(updateProductSub);
+    this.goBack();
   }
   public removeImage(src: string) {
     this.images = this.images.filter((itemSrc: string) => itemSrc !== src);
@@ -111,5 +113,11 @@ export class UpdateProductComponent implements OnInit {
   }
   compareCategories(o1: any, o2: any): boolean {
     return o1.title === o2.title;
+  }
+  public goBack() {
+    this.router.navigate(['main/shop/list']);
+  }
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

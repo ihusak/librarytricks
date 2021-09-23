@@ -11,6 +11,6 @@
       <div class="skillz"><b>{{sum(basket, 'skillz')}}</b> skillz</div>
       <div class="price"><b>{{sum(basket, 'price')}}</b> UAH</div>
     </div>
-    <button mat-raised-button color="primary">PAY</button>
+    <button [routerLink]="['checkout']" mat-raised-button color="primary">PAY</button>
   </div>
 </mat-menu>
