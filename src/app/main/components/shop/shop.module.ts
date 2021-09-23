@@ -11,15 +11,16 @@ import {ShopService} from './shop.service';
 import {ShopComponent} from './shop.component';
 import { QuillModule } from 'ngx-quill';
 import { ReactiveFormsModule } from '@angular/forms';
-import {ShopCardComponent} from './shop-card/shop-card.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { BasketComponent } from './basket/basket.component';
 import {BasketService} from './basket/basket.service';
+import {ProductComponent} from './product/product.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 
 
 @NgModule({
-  declarations: [ShopComponent, ShopListComponent, CreateProductComponent, UpdateProductComponent, ShopCardComponent, BasketComponent],
+  declarations: [ShopComponent, ShopListComponent, CreateProductComponent, UpdateProductComponent, ProductComponent, BasketComponent, CheckoutComponent],
   imports: [
     CommonModule,
     ShopRoutingModule,
