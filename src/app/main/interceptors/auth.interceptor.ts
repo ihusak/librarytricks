@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  private accesToken: string;
+  private accessToken: string;
   private refreshToken: string;
 
   constructor(
@@ -26,19 +26,15 @@ export class AuthInterceptor implements HttpInterceptor {
     ){}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-      this.accesToken = this.cookieService.getAll().lb_config;
+      this.accessToken = this.cookieService.getAll().lb_config;
       this.refreshToken = this.cookieService.getAll().lb_refreshToken;
 
-      if (this.accesToken) {
-        req = this.addToken(req, this.accesToken);
+      if (this.accessToken) {
+        req = this.addToken(req, this.accessToken);
       }
       return next.handle(req)
         .pipe(catchError((err) => {
           if (err.status === 403) {
-            // this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_RECOVERED'), '', {
-            //   duration: 2000,
-            //   panelClass: ['success']
-            // });
             return this.handleExpireToken(req, next);
           } else if (err.status === 401) {
             this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.USER_SESSION_EXPIRED_LOGOUT'), '', {
@@ -52,23 +48,6 @@ export class AuthInterceptor implements HttpInterceptor {
           }
           return throwError(err);
         }));
-      //   .pipe(
-      //   tap((event => {}),
-      //   (err) => {
-      //   if (err.status === 401) {
-      //     // this.authService.logout(this.accesToken).subscribe(() => {
-      //       this.router.navigate(['/']);
-      //       this.cookieService.delete('lb_config', '/');
-      //       this.cookieService.delete('lb_refreshToken', '/');
-      //     // });
-      //   } else if (err.status === 403) {
-      //     // this.router.navigate(['/']);
-      //     this.cookieService.delete('lb_config', '/');
-      //     // this.cookieService.delete('lb_refreshToken', '/');
-      //     return this.handleExpireToken(req, next);
-      //   }
-      //   })
-      // );
     }
     private addToken(req: HttpRequest<any>, token: string) {
       const authReq = req.clone({
