@@ -44,10 +44,7 @@ export class ProductComponent implements OnInit, OnDestroy {
           title: this.removeTags(product.title)
         };
       });
-      const translateServiceTitleSub = this.translateService.get('TEMPLATE.SHOP.PRODUCT.PRODUCT_TITLE', {title: product.title}).subscribe((value: string) => {
-        this.titleService.setTitle(value);
-      });
-      this.subscriptions.add(translateServiceTitleSub);
+      this.titleService.setTitle(product.title);
     });
     this.subscriptions.add(getProductByIdSub);
   }

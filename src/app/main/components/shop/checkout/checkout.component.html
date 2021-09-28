@@ -1,5 +1,80 @@
+<div class="actions">
+  <button routerLink="../list" mat-raised-button color="primary">{{'COMMON.BACK' | translate}}</button>
+</div>
 <div class="checkout-wrap">
-  <div class="actions">
-    <button routerLink="../list" mat-raised-button color="primary">BACK</button>
+  <div class="row">
+    <div class="receive-form">
+        <form [formGroup]="receiverForm">
+          <h3>{{'TEMPLATE.SHOP.CHECKOUT.CONTACT_PERSON' | translate}}</h3>
+          <div class="form-view">
+            <mat-form-field>
+              <mat-label>{{'TEMPLATE.SHOP.CHECKOUT.NAME' | translate}}</mat-label>
+              <input formControlName="name" matInput>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{'TEMPLATE.SHOP.CHECKOUT.SURNAME' | translate}}</mat-label>
+              <input formControlName="surName" matInput>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{'TEMPLATE.SHOP.CHECKOUT.PHONE' | translate}}</mat-label>
+              <input formControlName="phone" matInput>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{'TEMPLATE.SHOP.CHECKOUT.CITY' | translate}}</mat-label>
+              <input formControlName="city" matInput>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{'TEMPLATE.SHOP.CHECKOUT.DELIVERY' | translate}}</mat-label>
+              <mat-select formControlName="delivery" (valueChange)="changeDelivery($event)">
+                <mat-option *ngFor="let type of deliveryTypes" [value]="type">{{'TEMPLATE.SHOP.CHECKOUT.' + type.toUpperCase() | translate}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="receiverForm.get('delivery').value === 'post'">
+              <mat-label>{{'TEMPLATE.SHOP.CHECKOUT.DELIVERY_ADDRESS' | translate}}</mat-label>
+              <input formControlName="address" matInput>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>{{'TEMPLATE.SHOP.CHECKOUT.ADDITION_INFO' | translate}}</mat-label>
+              <textarea class="addition-info" formControlName="additionInfo" matInput></textarea>
+            </mat-form-field>
+            <div class="help-text">
+              <span>{{'TEMPLATE.SHOP.CHECKOUT.ADDITION_INFO_HELP' | translate}}</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    <div class="products-list">
+      <div class="sum-basket">
+        <div class="skillz"><b>{{sum(productListToCheckout, 'skillz')}}</b> skillz</div>
+        <div class="price"><b>{{sum(productListToCheckout, 'price')}}</b> UAH</div>
+      </div>
+      <div class="products-table">
+        <div class="item" *ngFor="let product of productListToCheckout; index as i">
+          <span>{{i+1}}. {{product.title}}</span>
+          <span>
+        <div class="prices-wrap">
+          <div class="prices">
+            <p class="skillz"><span class="amount">{{product.skillz}}</span> <span class="value-name">skillz</span></p>
+            <p class="price" [ngClass]="{'visible': product.price}"><span class="amount">{{product.price}}</span> <span class="value-name">UAH</span></p>
+          </div>
+        </div>
+        </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="result">
+    <div class="payment-method">
+      <h4>{{'TEMPLATE.SHOP.CHECKOUT.PAYMENT_METHOD' | translate}}</h4>
+      <mat-radio-group aria-label="Select an option" [(ngModel)]="paymentMethod" (change)="calculateCheckout(paymentMethod)">
+        <mat-radio-button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])"  value="skillz">Skillz</mat-radio-button>
+        <mat-radio-button value="price">UAH</mat-radio-button>
+      </mat-radio-group>
+      <h4 class="not-enough-skillz" *ngIf="notEnoughMoney">
+        <p>{{'TEMPLATE.SHOP.CHECKOUT.NOT_ENOUGH_SKILLZ' | translate: {skillz: sum(productListToCheckout, paymentMethod) - userInfo.rating} }}</p>
+      </h4>
+    </div>
+    form : {{receiverForm.valid}}
+    <button [disabled]="!receiverForm.valid || notEnoughMoney" class="finish-checkout" routerLink="../list" mat-raised-button color="primary">{{'TEMPLATE.SHOP.ORDER' | translate}}</button>
   </div>
 </div>

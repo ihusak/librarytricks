@@ -28,6 +28,7 @@ export interface ProductInterface {
 @Injectable()
 export class ShopService extends AppService {
   public allProducts: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([]);
+  public products: ProductModel[] = [];
   public createProduct(formData): Observable<ProductModel> {
     return this.http.post(`${this.apiUrl()}/shop/create`, formData).pipe(map((responseProduct: ProductInterface) => {
       return new ProductModel(responseProduct);
@@ -39,12 +40,13 @@ export class ShopService extends AppService {
     }));
   }
   public updateProduct(id: string, formData): Observable<ProductModel> {
-    return this.http.put(`${this.apiUrl()}/shop/products/${id}/update`, formData).pipe(map((responseProduct: ProductInterface) => {
+    return this.http.put(`${this.apiUrl()}/shop/product/${id}/update`, formData).pipe(map((responseProduct: ProductInterface) => {
+      console.log(responseProduct);
       return new ProductModel(responseProduct);
     }));
   }
   public deleteProduct(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl()}/shop/products/${id}/delete`);
+    return this.http.delete(`${this.apiUrl()}/shop/product/${id}/delete`);
   }
   public getProductById(id: string): Observable<ProductModel> {
     return this.http.get(`${this.apiUrl()}/shop/product/${id}`).pipe(map((response: ProductInterface) => {

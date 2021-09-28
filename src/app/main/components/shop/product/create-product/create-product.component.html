@@ -1,4 +1,4 @@
-<h3>{{'TEMPLATE.SHOP.PRODUCT.CREATE_TITLE' | translate}}</h3>
+<h2>{{'TEMPLATE.SHOP.PRODUCT.CREATE_PRODUCT' | translate}}</h2>
 <div class="create-wrap">
   <form method="post" action="/" enctype="multipart/form-data">
     <div class="product-files">
@@ -52,6 +52,6 @@
       </div>
     </div>
     <button mat-raised-button color="primary" [disabled]="!productForm.valid">{{'TEMPLATE.SHOP.PRODUCT.CREATE' | translate}}</button>
-    <button mat-raised-button color="primary" routerLink="../list">{{'COMMON.BACK' | translate}}</button>
+    <button mat-raised-button color="primary" (click)="goToList()">{{'COMMON.BACK' | translate}}</button>
   </form>
 </div>
