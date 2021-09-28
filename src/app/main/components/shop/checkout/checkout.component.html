@@ -41,12 +41,25 @@
               <span>{{'TEMPLATE.SHOP.CHECKOUT.ADDITION_INFO_HELP' | translate}}</span>
             </div>
           </div>
+          <div class="result">
+            <div class="payment-method">
+              <h4>{{'TEMPLATE.SHOP.CHECKOUT.PAYMENT_METHOD' | translate}}</h4>
+              <mat-radio-group formControlName="paymentMethod" aria-label="Select an option" (change)="calculateCheckout($event)">
+                <mat-radio-button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])" value="skillz">Skillz</mat-radio-button>
+                <mat-radio-button value="price">UAH</mat-radio-button>
+              </mat-radio-group>
+              <h4 class="not-enough-skillz" *ngIf="notEnoughMoney">
+                <p>{{'TEMPLATE.SHOP.CHECKOUT.NOT_ENOUGH_SKILLZ' | translate: {skillz: sum(productListToCheckout, receiverForm.get('paymentMethod').value) - userInfo.rating} }}</p>
+              </h4>
+            </div>
+            <button (click)="checkout()" [disabled]="!receiverForm.valid || notEnoughMoney" class="finish-checkout" routerLink="../list" mat-raised-button color="primary">{{'TEMPLATE.SHOP.ORDER' | translate}}</button>
+          </div>
         </form>
       </div>
     <div class="products-list">
       <div class="sum-basket">
-        <div class="skillz"><b>{{sum(productListToCheckout, 'skillz')}}</b> skillz</div>
-        <div class="price"><b>{{sum(productListToCheckout, 'price')}}</b> UAH</div>
+        <div class="skillz"><b>{{sum(productListToCheckout, paymentMethodType.SKILLZ)}}</b> skillz</div>
+        <div class="price"><b>{{sum(productListToCheckout, paymentMethodType.PRICE)}}</b> UAH</div>
       </div>
       <div class="products-table">
         <div class="item" *ngFor="let product of productListToCheckout; index as i">
@@ -62,19 +75,5 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="result">
-    <div class="payment-method">
-      <h4>{{'TEMPLATE.SHOP.CHECKOUT.PAYMENT_METHOD' | translate}}</h4>
-      <mat-radio-group aria-label="Select an option" [(ngModel)]="paymentMethod" (change)="calculateCheckout(paymentMethod)">
-        <mat-radio-button *ngIf="(userInfo | userRolePipe:[userRoles.STUDENT])"  value="skillz">Skillz</mat-radio-button>
-        <mat-radio-button value="price">UAH</mat-radio-button>
-      </mat-radio-group>
-      <h4 class="not-enough-skillz" *ngIf="notEnoughMoney">
-        <p>{{'TEMPLATE.SHOP.CHECKOUT.NOT_ENOUGH_SKILLZ' | translate: {skillz: sum(productListToCheckout, paymentMethod) - userInfo.rating} }}</p>
-      </h4>
-    </div>
-    form : {{receiverForm.valid}}
-    <button [disabled]="!receiverForm.valid || notEnoughMoney" class="finish-checkout" routerLink="../list" mat-raised-button color="primary">{{'TEMPLATE.SHOP.ORDER' | translate}}</button>
   </div>
 </div>

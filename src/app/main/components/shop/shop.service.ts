@@ -29,6 +29,13 @@ export interface ProductInterface {
 export class ShopService extends AppService {
   public allProducts: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([]);
   public products: ProductModel[] = [];
+
+  public checkout(order: any): Observable<any> {
+    return this.http.post(`${this.apiUrl()}/shop/order/checkout`, {order}).pipe(map(res => {
+      return res
+    }))
+  }
+
   public createProduct(formData): Observable<ProductModel> {
     return this.http.post(`${this.apiUrl()}/shop/create`, formData).pipe(map((responseProduct: ProductInterface) => {
       return new ProductModel(responseProduct);
