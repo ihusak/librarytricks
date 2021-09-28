@@ -30,7 +30,7 @@
       <button *ngIf="product.available" (click)="addToBasket(product)" mat-raised-button color="primary">{{'TEMPLATE.SHOP.BUY' | translate}}</button>
       <button [routerLink]="['../product/', product.id]" mat-stroked-button color="primary">{{'TEMPLATE.SHOP.VIEW' | translate}}</button>
       <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" [routerLink]="['../product/edit/', product.id]" mat-button color="primary">{{'TEMPLATE.SHOP.UPDATE' | translate}}</button>
-      <button (click)="deleteProduct(product)"  mat-button color="warn"><mat-icon class="delete-product" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])">delete</mat-icon></button>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" (click)="deleteProduct(product)"  mat-button color="warn"><mat-icon class="delete-product">delete</mat-icon></button>
     </div>
   </div>
 </div>

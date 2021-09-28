@@ -8,6 +8,12 @@ import {TitleService} from '../../../../shared/title.service';
 import {Subscription} from 'rxjs';
 import {MainService} from '../../../main.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
+import { MatRadioChange, MatSnackBar } from '@angular/material';
+
+enum PaymentMethodEnum {
+  SKILLZ = 'skillz',
+  PRICE = 'price'
+}
 
 @Component({
   selector: 'app-checkout',
@@ -22,12 +28,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   public notEnoughMoney: boolean = false;
   public userInfo: any;
   public userRoles = UserRolesEnum;
+  public paymentMethodType = PaymentMethodEnum;
   private subscription: Subscription = new Subscription();
   constructor(
     private shopService: ShopService,
     private basketService: BasketService,
     private formBuilder: FormBuilder,
     private translateService: TranslateService,
+    private snackBar: MatSnackBar,
     private titleService: TitleService,
     private mainService: MainService
   ) {
@@ -42,16 +50,33 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     const selectedProducts = localStorage.getItem('addedProducts').split(',');
     this.shopService.allProducts.subscribe((products: ProductModel[]) => {
       this.productListToCheckout = products.filter((product: ProductModel) => selectedProducts.find(id => id === product.id));
+      this.receiverForm = this.formBuilder.group({
+        name: [this.userInfo.userName.split(' ')[0], [Validators.required]],
+        surName: [this.userInfo.userName.split(' ')[1], [Validators.required]],
+        phone: [this.userInfo.phone, Validators.required],
+        city: ['', [Validators.required]],
+        delivery: ['', Validators.required],
+        address: ['', Validators.required],
+        additionInfo: ['', [Validators.required]],
+        paymentMethod: ['', [Validators.required]],
+        productsId: [this.productListToCheckout.map(p => p.id), [Validators.required]],
+        sum: ['', [Validators.required]]
+      });
     });
-    this.receiverForm = this.formBuilder.group({
-      name: [this.userInfo.userName.split(' ')[0], [Validators.required]],
-      surName: [this.userInfo.userName.split(' ')[1], [Validators.required]],
-      phone: [this.userInfo.phone, Validators.required],
-      city: ['', [Validators.required]],
-      delivery: ['', Validators.required],
-      address: ['', Validators.required],
-      additionInfo: ['', [Validators.required]]
-    });
+  }
+  public checkout() {
+    const CHECKOUT_INFO = this.receiverForm.value;
+    console.log(CHECKOUT_INFO);
+    this.shopService.checkout(CHECKOUT_INFO).subscribe(() => {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.SHOP.ORDERED_SUCCESSFULL'), '', {
+        duration: 4000,
+        panelClass: ['success'],
+        verticalPosition: 'top',
+        horizontalPosition: 'right'
+      });
+      localStorage.removeItem('addedProducts');
+      this.basketService.basketObj.next([]);
+    })
   }
   public changeDelivery(value: string) {
     const ctrl = this.receiverForm.get('address');
@@ -61,13 +86,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       ctrl.disable();
     }
   }
-  public calculateCheckout(method: string) {
-    this.notEnoughMoney = false;
-    if (!method || method === 'price') {
-      return;
+  public calculateCheckout(method: MatRadioChange) {
+    let summary = this.productListToCheckout.map(p => parseFloat(p[method.value])).reduce((item: number, result: number) => result += item, 0);
+    if (method.value === this.paymentMethodType.PRICE) {
+      this.notEnoughMoney = false;
+    } else {
+      this.notEnoughMoney = this.userInfo.rating - summary < 0;
     }
-    const SUM = this.productListToCheckout.map(p => parseFloat(p[method])).reduce((item: number, result: number) => result += item, 0);
-    this.notEnoughMoney = this.userInfo.rating - SUM < 0;
+    this.receiverForm.get('sum').setValue(summary);
   }
   public sum(products: ProductModel[], type: string): number {
     return this.basketService.priceSum(products, type);

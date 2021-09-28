@@ -67,16 +67,16 @@
           min-height: 80px;
         }
       }
-    }
-  }
-  .result {
-    .payment-method {
-      mat-radio-button {
-        margin-right: 15px;
+      .result {
+        .payment-method {
+          mat-radio-button {
+            margin-right: 15px;
+          }
+        }
+        .finish-checkout {
+          margin-top: 15px;
+        }
       }
-    }
-    .finish-checkout {
-      margin-top: 15px;
     }
   }
 }
