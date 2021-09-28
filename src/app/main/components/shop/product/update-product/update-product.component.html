@@ -54,7 +54,7 @@
         <mat-checkbox formControlName="available">{{'TEMPLATE.SHOP.PRODUCT.AVAILABLE' | translate}}</mat-checkbox>
       </div>
     </div>
-    <button mat-raised-button color="primary" [disabled]="!productForm.valid">{{'TEMPLATE.SHOP.PRODUCT.UPDATE' | translate}}</button>
+    <button mat-raised-button color="primary" [disabled]="!productForm.valid || !productForm.dirty">{{'TEMPLATE.SHOP.UPDATE' | translate}}</button>
     <button mat-raised-button color="primary" (click)="goBack()">{{'COMMON.BACK' | translate}}</button>
   </form>
 </div>

@@ -6,6 +6,8 @@
         <img src="assets/img/logo-lb.svg" alt="">
     </div>
     <span class="spacer"></span>
+    <span *ngIf="userInfo.rating" class="skillz">{{userInfo.rating}}</span>
+    <mat-icon class="skillz-count" *ngIf="userInfo.rating" matTooltip="Your skillz">paid</mat-icon>
     <app-language></app-language>
     <mat-icon *ngIf="notifications.length" [matMenuTriggerFor]="notificationHeader" [matBadge]="notifications.length" matBadgePosition="before" matBadgeColor="primary">notifications</mat-icon>
     <mat-menu #notificationHeader="matMenu">

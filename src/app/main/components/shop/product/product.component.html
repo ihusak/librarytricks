@@ -13,7 +13,7 @@
   </div>
   <div class="description" [innerHtml]="product.description"></div>
   <div class="actions">
-    <button [disabled]="!product.available" (click)="addToBasket(product)" mat-raised-button color="primary">BUY</button>
-    <button routerLink="../../list" mat-raised-button color="primary">BACK</button>
+    <button [disabled]="!product.available" (click)="addToBasket(product)" mat-raised-button color="primary">{{'TEMPLATE.SHOP.BUY' | translate}}</button>
+    <button routerLink="../../list" mat-raised-button color="primary">{{'COMMON.BACK' | translate}}</button>
   </div>
 </div>

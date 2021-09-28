@@ -7,6 +7,7 @@ import {BasketService} from '../basket/basket.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
+import {TitleService} from '../../../../shared/title.service';
 
 @Component({
   selector: 'app-shop-list',
@@ -23,16 +24,20 @@ export class ShopListComponent implements OnInit, OnDestroy {
     private mainService: MainService,
     private basketService: BasketService,
     private snackBar: MatSnackBar,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private titleService: TitleService
   ) {
     this.userInfo = mainService.userInfo;
   }
 
   ngOnInit() {
-    const allProductsSub = this.shopService.allProducts.subscribe((products: ProductModel[]) => {
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.SHOP.TITLE').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscriptions.add(translateServiceTitleSub);
+    this.shopService.allProducts.subscribe((products: ProductModel[]) => {
       this.productList = products;
     });
-    this.subscriptions.add(allProductsSub);
   }
 
   public addToBasket(product: ProductModel) {

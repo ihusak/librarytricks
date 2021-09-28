@@ -17,7 +17,7 @@ export class BasketService {
 
   public priceSum(products: ProductModel[], type: string): number {
     return products.reduce((sum, current) => {
-      return sum + current[type];
+      return sum + parseFloat(current[type]);
     }, 0);
   }
   public removeProduct(id: string) {
@@ -32,7 +32,7 @@ export class BasketService {
   public addToBasket(product: ProductModel) {
     let productsId;
     if (this.basketData.find(productItem => productItem.id === product.id)) {
-      this.snackBar.open(this.translateService.instant('TEMPLATE.SHOP.PRODUCT_ALREADY_ADDED'), '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.SHOP.PRODUCT_ALREADY_ADDED'), '', {
         duration: 2000,
         panelClass: ['warn'],
         verticalPosition: 'top',
@@ -40,7 +40,7 @@ export class BasketService {
       });
       return;
     }
-    this.snackBar.open(this.translateService.instant('TEMPLATE.SHOP.PRODUCT_ADDED'), '', {
+    this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.SHOP.PRODUCT_ADDED'), '', {
       duration: 2000,
       panelClass: ['success'],
       verticalPosition: 'top',
@@ -52,10 +52,10 @@ export class BasketService {
     localStorage.setItem('addedProducts', productsId);
   }
   public restoreBasket(list: ProductModel[]) {
-    const selectedProducts = localStorage.getItem('addedProducts').split(',');
-    if (!selectedProducts.length) {
+    if (!localStorage.getItem('addedProducts')) {
       return;
     }
+    const selectedProducts = localStorage.getItem('addedProducts').split(',');
     const restoredProducts = list.filter((product: ProductModel) => selectedProducts.find(id => id === product.id));
     this.basketObj.next(restoredProducts);
   }

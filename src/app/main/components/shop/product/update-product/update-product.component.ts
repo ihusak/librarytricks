@@ -48,10 +48,7 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
         sale: [product.sale, Validators.max(100)],
         manufacturer: [product.manufacturer, Validators.required]
       });
-      const translateServiceTitleSub = this.translateService.get('TEMPLATE.SHOP.PRODUCT.PRODUCT_TITLE', {title: product.title}).subscribe((value: string) => {
-        this.titleService.setTitle(value);
-      });
-      this.subscriptions.add(translateServiceTitleSub);
+      this.titleService.setTitle(product.title);
     });
   }
   public fileProgress(fileInput: any) {
@@ -84,7 +81,6 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
     }
   }
   public updateProduct() {
-    console.log(this.productForm);
     this.productForm.value.images = this.productForm.value.images.filter(img => img.indexOf('base64') < 0);
     const PRODUCT = new ProductModel(this.productForm.value);
     const formData = new FormData();
@@ -104,7 +100,7 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
       });
     });
     this.subscriptions.add(updateProductSub);
-    this.goBack();
+    // this.goBack();
   }
   public removeImage(src: string) {
     this.images = this.images.filter((itemSrc: string) => itemSrc !== src);
@@ -115,7 +111,7 @@ export class UpdateProductComponent implements OnInit, OnDestroy {
     return o1.title === o2.title;
   }
   public goBack() {
-    this.router.navigate(['main/shop/list']);
+    this.router.navigate(['../../../'], {relativeTo: this.route});
   }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
