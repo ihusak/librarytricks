@@ -60,7 +60,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         additionInfo: ['', [Validators.required]],
         paymentMethod: ['', [Validators.required]],
         productsId: [this.productListToCheckout.map(p => p.id), [Validators.required]],
-        sum: ['', [Validators.required]]
+        sum: ['', [Validators.required]],
+        userId: [this.userInfo.id, [Validators.required]]
       });
     });
   }
