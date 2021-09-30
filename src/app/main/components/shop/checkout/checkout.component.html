@@ -4,7 +4,7 @@
 <div class="checkout-wrap">
   <div class="row">
     <div class="receive-form">
-        <form [formGroup]="receiverForm">
+        <form [formGroup]="receiverForm" *ngIf="receiverForm">
           <h3>{{'TEMPLATE.SHOP.CHECKOUT.CONTACT_PERSON' | translate}}</h3>
           <div class="form-view">
             <mat-form-field>
@@ -63,15 +63,19 @@
       </div>
       <div class="products-table">
         <div class="item" *ngFor="let product of productListToCheckout; index as i">
-          <span>{{i+1}}. {{product.title}}</span>
-          <span>
+          <mat-icon class="remove" (click)="removeItem(product.id)">close</mat-icon>
+          <div class="desc">
+            <span>{{i+1}}. {{product.title}}</span>
+            <div class="image">
+              <img [src]="'api/' + product.images[0]" alt="product.title">
+            </div>
+        </div>
         <div class="prices-wrap">
           <div class="prices">
             <p class="skillz"><span class="amount">{{product.skillz}}</span> <span class="value-name">skillz</span></p>
             <p class="price" [ngClass]="{'visible': product.price}"><span class="amount">{{product.price}}</span> <span class="value-name">UAH</span></p>
           </div>
         </div>
-        </span>
         </div>
       </div>
     </div>

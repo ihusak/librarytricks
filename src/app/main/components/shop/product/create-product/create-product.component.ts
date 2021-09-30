@@ -7,6 +7,10 @@ import { Subscription } from 'rxjs';
 import { TitleService } from 'src/app/shared/title.service';
 import { ProductModel } from '../../product.model';
 import {CATEGORIES, ProductInterface, ShopService} from '../../shop.service';
+import {NotifyInterface} from '../../../../../shared/interface/notify.interface';
+import {MainService} from '../../../../main.service';
+import {NotificationTypes} from '../../../../../shared/enums/notification-types.enum';
+import {UserRolesEnum} from '../../../../../shared/enums/user-roles.enum';
 
 @Component({
   selector: 'app-create-product',
@@ -17,6 +21,9 @@ export class CreateProductComponent implements OnInit, OnDestroy {
   public productForm: FormGroup;
   private subscription: Subscription = new Subscription();
   public categoryList: object[] = CATEGORIES;
+  private userInfo: any;
+  private notifyTypes = NotificationTypes;
+  public userRoles = UserRolesEnum;
 
   private fileData: File[] = null;
   public images: string[] = [];
@@ -28,8 +35,11 @@ export class CreateProductComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private translateService: TranslateService,
-    private titleService: TitleService
-  ) { }
+    private titleService: TitleService,
+    private mainService: MainService
+  ) {
+    this.userInfo = mainService.userInfo;
+  }
 
   ngOnInit() {
     const translateServiceTitleSub = this.translateService.get('TEMPLATE.SHOP.PRODUCT.CREATE_PRODUCT').subscribe((value: string) => {
@@ -52,7 +62,7 @@ export class CreateProductComponent implements OnInit, OnDestroy {
   public createProduct() {
     const PRODUCT = new ProductModel(this.productForm.value);
     const formData = new FormData();
-    formData.append('product', JSON.stringify(PRODUCT))
+    formData.append('product', JSON.stringify(PRODUCT));
     if (this.fileData && this.fileData.length) {
       [...this.fileData].forEach((file: File) => {
         formData.append('productsImg', file);
@@ -74,6 +84,18 @@ export class CreateProductComponent implements OnInit, OnDestroy {
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
+      const notification: NotifyInterface = {
+        users: null,
+        author: {
+          id: this.userInfo.id,
+          name: this.userInfo.userName
+        },
+        title: 'TEMPLATE.SHOP.TITLE',
+        type: this.notifyTypes.NEW_PRODUCT,
+        userType: [this.userRoles.STUDENT, this.userRoles.PARENT, this.userRoles.COACH],
+        products: PRODUCT.title
+      };
+      this.mainService.setNotification(notification).subscribe((res: any) => {});
       this.goToList();
     });
     this.subscription.add(createProductSub);

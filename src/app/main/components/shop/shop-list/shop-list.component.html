@@ -1,5 +1,6 @@
 <div class="navigation">
   <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" mat-raised-button color="primary" [routerLink]="'../create'">{{'TEMPLATE.SHOP.PRODUCT.CREATE_PRODUCT' | translate}}</button>
+  <button mat-raised-button color="primary" [routerLink]="'../orders'">{{'TEMPLATE.SHOP.ORDERS.TITLE' | translate}}</button>
 </div>
 <div class="wrap-list">
   <div class="item" *ngFor="let product of productList" [ngClass]="{'not-available': !product.available}">
@@ -15,7 +16,7 @@
 <!--        <i class="far fa-star"></i>-->
 <!--      </div>-->
       <h5>{{product.title}}</h5>
-      <p class="description" [innerHTML]="product.description"></p>
+<!--      <p class="description" [innerHTML]="product.description"></p>-->
       <div class="prices-wrap">
         <div class="prices">
           <p class="skillz"><span class="amount">{{product.skillz}}</span> <span class="value-name">skillz</span></p>

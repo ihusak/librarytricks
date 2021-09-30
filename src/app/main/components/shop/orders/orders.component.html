@@ -1,0 +1,59 @@
+<div class="actions">
+  <button routerLink="../list" mat-raised-button color="primary">{{'COMMON.BACK' | translate}}</button>
+</div>
+<div class="empty" *ngIf="!orders.length">
+  {{'COMMON.EMPTY' | translate}}
+</div>
+<div class="wrapper-table" *ngIf="orders.length">
+  <table mat-table [dataSource]="orders">
+    <ng-container matColumnDef="position">
+      <th mat-header-cell *matHeaderCellDef> No. </th>
+      <td mat-cell *matCellDef="let order; let i = index;"> {{i + 1}} </td>
+    </ng-container>
+    <ng-container matColumnDef="userName">
+      <th mat-header-cell *matHeaderCellDef> {{'COMMON.NAME' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> {{order.name + order.surName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef> {{'COMMON.PHONE' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> {{order.phone}} </td>
+    </ng-container>
+    <ng-container matColumnDef="delivery">
+      <th mat-header-cell *matHeaderCellDef> {{'TEMPLATE.SHOP.CHECKOUT.DELIVERY' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> {{'TEMPLATE.SHOP.CHECKOUT.' + order.delivery.toUpperCase() | translate}}  </td>
+    </ng-container>
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> {{'TEMPLATE.SHOP.CHECKOUT.DELIVERY_ADDRESS' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> {{order.address ? order.address : '---'}}  </td>
+    </ng-container>
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef> {{'TEMPLATE.SHOP.CHECKOUT.CITY' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> {{order.city}} </td>
+    </ng-container>
+    <ng-container matColumnDef="products">
+      <th mat-header-cell *matHeaderCellDef> {{'COMMON.PRODUCTS' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> <span [innerHTML]="renderProductName(order.productsId)"></span> </td>
+    </ng-container>
+    <ng-container matColumnDef="additionInfo">
+      <th mat-header-cell *matHeaderCellDef> {{'TEMPLATE.SHOP.CHECKOUT.ADDITION_INFO' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> {{order.additionInfo}} </td>
+    </ng-container>
+    <ng-container matColumnDef="sum">
+      <th mat-header-cell *matHeaderCellDef> {{'COMMON.SUM' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> {{order.sum}} {{order.paymentMethod === paymentMethods.SKILLZ ? 'skillz' : 'UAH'}}  </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> {{'COMMON.CURRENT_STATUS' | translate}} </th>
+      <td mat-cell *matCellDef="let order"> {{ 'TEMPLATE.SHOP.ORDERS.STATUS.' + order.status.toUpperCase() | translate}} </td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let order">
+        <button mat-raised-button color="primary" *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN]) && (order.status !== orderStatuses.READY)" (click)="orderSent(order)">{{ 'TEMPLATE.SHOP.ORDERS.STATUS.READY' | translate}}</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

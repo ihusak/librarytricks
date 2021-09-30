@@ -17,12 +17,32 @@
     .products-table {
       margin: 15px 0;
       .item {
+        position: relative;
         display: flex;
         justify-content: space-between;
         background-color: #fff;
         border-radius: 10px;
         margin: 10px 0;
         padding: 15px;
+        .desc {
+          .image {
+            img {
+              width: 60px;
+              border-radius: 10px;
+              margin-top: 10px;
+            }
+          }
+        }
+        .remove {
+          position: absolute;
+          right: 5px;
+          top: 5px;
+          cursor: pointer;
+          &:hover {
+            background-color: red;
+            color: #fff;
+          }
+        }
       }
       .prices-wrap {
         font-size: 10px;

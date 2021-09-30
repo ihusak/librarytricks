@@ -38,18 +38,22 @@
       margin-right: 15px;
     }
   }
-  ng-image-slider {
-    .ng-image-slider {
-      .ng-image-slider-container {
-        .main {
-          padding: 0;
-          .main-inner {
-            .caption {
-              display: none;
-            }
-            .img-div {
-              border-radius: 0;
-              box-shadow: none;
+  .preview-images {
+    width: 50%;
+    margin: 0 auto;
+    ng-image-slider {
+      .ng-image-slider {
+        .ng-image-slider-container {
+          .main {
+            padding: 0;
+            .main-inner {
+              .caption {
+                display: none;
+              }
+              .img-div {
+                border-radius: 0;
+                box-shadow: none;
+              }
             }
           }
         }
