@@ -16,11 +16,12 @@ import { BasketComponent } from './basket/basket.component';
 import {BasketService} from './basket/basket.service';
 import {ProductComponent} from './product/product.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { OrdersComponent } from './orders/orders.component';
 
 
 
 @NgModule({
-  declarations: [ShopComponent, ShopListComponent, CreateProductComponent, UpdateProductComponent, ProductComponent, BasketComponent, CheckoutComponent],
+  declarations: [ShopComponent, ShopListComponent, CreateProductComponent, UpdateProductComponent, ProductComponent, BasketComponent, CheckoutComponent, OrdersComponent],
   imports: [
     CommonModule,
     ShopRoutingModule,

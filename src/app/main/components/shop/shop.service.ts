@@ -4,6 +4,7 @@ import {ProductModel} from './product.model';
 import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Subject} from 'rxjs';
+import {OrderInterface, OrderModel} from '../../../shared/models/order.model';
 
 export const CATEGORIES = [
  {title: 'BALL', sizes: null},
@@ -25,6 +26,18 @@ export interface ProductInterface {
   sale: number;
   manufacturer: string;
 }
+
+export enum OrdersStatuses {
+  PENDING = 'pending',
+  READY = 'ready',
+  ALL = 'all'
+}
+
+export enum PaymentMethodEnum {
+  SKILLZ = 'skillz',
+  PRICE = 'price'
+}
+
 @Injectable()
 export class ShopService extends AppService {
   public allProducts: BehaviorSubject<ProductModel[]> = new BehaviorSubject<ProductModel[]>([]);
@@ -32,8 +45,8 @@ export class ShopService extends AppService {
 
   public checkout(order: any): Observable<any> {
     return this.http.post(`${this.apiUrl()}/shop/order/checkout`, {order}).pipe(map(res => {
-      return res
-    }))
+      return res;
+    }));
   }
 
   public createProduct(formData): Observable<ProductModel> {
@@ -46,10 +59,20 @@ export class ShopService extends AppService {
       return response.map((p: ProductInterface) => new ProductModel(p));
     }));
   }
+  public getOrders(status: OrdersStatuses): Observable<OrderModel[]> {
+    return this.http.get(`${this.apiUrl()}/shop/order/${status}`).pipe(map((response: OrderInterface[]) => {
+      return response.map((order: OrderInterface) => new OrderModel(order));
+    }));
+  }
   public updateProduct(id: string, formData): Observable<ProductModel> {
     return this.http.put(`${this.apiUrl()}/shop/product/${id}/update`, formData).pipe(map((responseProduct: ProductInterface) => {
       console.log(responseProduct);
       return new ProductModel(responseProduct);
+    }));
+  }
+  public updateOrder(orderId: string, status: OrdersStatuses): Observable<OrderInterface> {
+    return this.http.put(`${this.apiUrl()}/shop/order/update/${orderId}`, {status}).pipe(map((response: OrderInterface) => {
+      return response;
     }));
   }
   public deleteProduct(id: string): Observable<any> {

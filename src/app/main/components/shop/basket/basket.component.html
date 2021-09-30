@@ -1,10 +1,10 @@
-<mat-icon *ngIf="basket.length" [matMenuTriggerFor]="basketMenu" class="basket" [matBadge]="basket.length" matBadgePosition="before" matBadgeColor="primary">shopping_basket</mat-icon>
+<mat-icon *ngIf="basket.length && !hideBasket" [matMenuTriggerFor]="basketMenu" class="basket" [matBadge]="basket.length" matBadgePosition="before" matBadgeColor="primary">shopping_basket</mat-icon>
 <mat-menu #basketMenu="matMenu">
   <div class="items-wrap">
     <div class="basket-item" *ngFor="let basketItem of basket">
       <div class="item-desc">
         <div class="title">{{basketItem.title}}</div>
-        <mat-icon class="remove" (click)="removeItem(basketItem.id)">close</mat-icon>
+        <mat-icon class="remove" (click)="removeItem(basketItem.id, $event)">close</mat-icon>
       </div>
     </div>
     <div class="sum">

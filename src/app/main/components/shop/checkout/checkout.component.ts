@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductModel} from '../product.model';
-import {ShopService} from '../shop.service';
+import {OrdersStatuses, PaymentMethodEnum, ShopService} from '../shop.service';
 import {BasketService} from '../basket/basket.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {TranslateService} from '@ngx-translate/core';
@@ -9,11 +9,7 @@ import {Subscription} from 'rxjs';
 import {MainService} from '../../../main.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import { MatRadioChange, MatSnackBar } from '@angular/material';
-
-enum PaymentMethodEnum {
-  SKILLZ = 'skillz',
-  PRICE = 'price'
-}
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -37,7 +33,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private snackBar: MatSnackBar,
     private titleService: TitleService,
-    private mainService: MainService
+    private mainService: MainService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.userInfo = mainService.userInfo;
   }
@@ -47,9 +45,12 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       this.titleService.setTitle(value);
     });
     this.subscription.add(translateServiceTitleSub);
-    const selectedProducts = localStorage.getItem('addedProducts').split(',');
-    this.shopService.allProducts.subscribe((products: ProductModel[]) => {
-      this.productListToCheckout = products.filter((product: ProductModel) => selectedProducts.find(id => id === product.id));
+    // const selectedProducts = localStorage.getItem('addedProducts').split(',');
+    const basketObjSub = this.basketService.basketObj.subscribe((products: ProductModel[]) => {
+      this.productListToCheckout = products;
+      if (!products.length) {
+        this.router.navigate(['../list'], {relativeTo: this.route});
+      }
       this.receiverForm = this.formBuilder.group({
         name: [this.userInfo.userName.split(' ')[0], [Validators.required]],
         surName: [this.userInfo.userName.split(' ')[1], [Validators.required]],
@@ -61,15 +62,18 @@ export class CheckoutComponent implements OnInit, OnDestroy {
         paymentMethod: ['', [Validators.required]],
         productsId: [this.productListToCheckout.map(p => p.id), [Validators.required]],
         sum: ['', [Validators.required]],
-        userId: [this.userInfo.id, [Validators.required]]
+        userId: [this.userInfo.id, [Validators.required]],
+        status: [OrdersStatuses.PENDING, [Validators.required]]
       });
     });
+    this.basketService.basketObj.next(this.basketService.basketData);
+    this.subscription.add(basketObjSub);
   }
   public checkout() {
     const CHECKOUT_INFO = this.receiverForm.value;
     console.log(CHECKOUT_INFO);
     this.shopService.checkout(CHECKOUT_INFO).subscribe(() => {
-      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.SHOP.ORDERED_SUCCESSFULL'), '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.SHOP.ORDERED_SUCCESSFUL'), '', {
         duration: 4000,
         panelClass: ['success'],
         verticalPosition: 'top',
@@ -77,7 +81,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       });
       localStorage.removeItem('addedProducts');
       this.basketService.basketObj.next([]);
-    })
+    });
   }
   public changeDelivery(value: string) {
     const ctrl = this.receiverForm.get('address');
@@ -98,6 +102,9 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
   public sum(products: ProductModel[], type: string): number {
     return this.basketService.priceSum(products, type);
+  }
+  public removeItem(id: string) {
+    this.basketService.removeProduct(id);
   }
   ngOnDestroy() {
     this.subscription.unsubscribe();
