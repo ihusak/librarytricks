@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {OrdersStatuses, PaymentMethodEnum, ShopService} from '../shop.service';
 import {OrderModel} from '../../../../shared/models/order.model';
 import {MainService} from '../../../main.service';
@@ -8,13 +8,15 @@ import {MatSnackBar} from '@angular/material/snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
+import {Subscription} from 'rxjs';
+import {TitleService} from '../../../../shared/title.service';
 
 @Component({
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.scss']
 })
-export class OrdersComponent implements OnInit {
+export class OrdersComponent implements OnInit, OnDestroy {
   public userInfo: any;
   public userRoles = UserRolesEnum;
   public orders: OrderModel[] = [];
@@ -23,29 +25,36 @@ export class OrdersComponent implements OnInit {
   public orderStatuses = OrdersStatuses;
   private notifyTypes = NotificationTypes;
   private allProducts: ProductModel[] = [];
+  private subscription: Subscription = new Subscription();
   constructor(
     private shopService: ShopService,
     private mainService: MainService,
     private snackBar: MatSnackBar,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private titleService: TitleService
   ) {
     this.userInfo = mainService.userInfo;
   }
 
   ngOnInit() {
-    this.shopService.allProducts.subscribe((products: ProductModel[]) => {
+    const translateServiceTitleSub = this.translateService.get('TEMPLATE.SHOP.ORDERS.TITLE').subscribe((value: string) => {
+      this.titleService.setTitle(value);
+    });
+    this.subscription.add(translateServiceTitleSub);
+    const allProductsSub = this.shopService.allProducts.subscribe((products: ProductModel[]) => {
       this.allProducts = products;
     });
+    this.subscription.add(allProductsSub);
     if (this.userInfo.role.id === UserRolesEnum.ADMIN) {
-      this.shopService.getOrders(OrdersStatuses.ALL).subscribe((res: OrderModel[]) => {
-        console.log(res);
+      const getOrdersSub = this.shopService.getOrders(OrdersStatuses.ALL).subscribe((res: OrderModel[]) => {
         this.orders = res;
       });
+      this.subscription.add(getOrdersSub);
     } else {
-      this.shopService.getOrders(OrdersStatuses.PENDING).subscribe((res: OrderModel[]) => {
-        console.log(res);
+      const getOrdersSub = this.shopService.getOrders(OrdersStatuses.PENDING).subscribe((res: OrderModel[]) => {
         this.orders = res;
       });
+      this.subscription.add(getOrdersSub);
     }
   }
   public renderProductName(ids: string[]): string {
@@ -55,7 +64,7 @@ export class OrdersComponent implements OnInit {
   }
   public orderSent(order: OrderModel) {
     const PRODUCTS_NAME = this.renderProductName(order.productsId);
-    this.shopService.updateOrder(order.id, OrdersStatuses.READY).subscribe(res => {
+    const updateOrderSub = this.shopService.updateOrder(order.id, OrdersStatuses.READY).subscribe(res => {
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.SHOP.ORDER_SENT', {id: order.id, products: PRODUCTS_NAME, userName: order.name + order.surName}), '', {
         duration: 10000,
         panelClass: ['success'],
@@ -75,8 +84,12 @@ export class OrdersComponent implements OnInit {
         userType: [this.userRoles.STUDENT, this.userRoles.PARENT, this.userRoles.COACH],
         products: PRODUCTS_NAME
       };
-      this.mainService.setNotification(notification).subscribe((res: any) => {});
+      const setNotificationSub = this.mainService.setNotification(notification).subscribe((res: any) => {});
+      this.subscription.add(setNotificationSub)
     });
+    this.subscription.add(updateOrderSub);
   }
-
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }
