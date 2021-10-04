@@ -24,7 +24,6 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { NgxMaskModule } from 'ngx-mask';
 import { VersionsComponent } from './components/versions/versions.component';
 import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
-import { LanguageComponent } from './layouts/language/language.component';
 import { ErrorPageComponent } from './layouts/error-page/error-page.component';
 import {VideosService} from './components/videos/videos.service';
 import {CreateVideoComponent} from './components/videos/create-video/create-video.component';

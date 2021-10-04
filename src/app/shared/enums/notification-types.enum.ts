@@ -13,5 +13,7 @@ export enum NotificationTypes {
   PASS_TASK = 'pass_task',
   CONFIRM_PASS_TASK = 'confirm_pass_task',
   VIDEO_APPROVED = 'video_approved',
-  VERIFY_VIDEO = 'verify_video'
+  VERIFY_VIDEO = 'verify_video',
+  ORDER_SENT = 'order_sent',
+  NEW_PRODUCT = 'new_product'
 }

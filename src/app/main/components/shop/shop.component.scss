@@ -1,0 +1,12 @@
+.shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .basket {
+    margin-left: auto;
+    font-size: 35px;
+    height: auto;
+    width: auto;
+    color: #019bff;
+  }
+}

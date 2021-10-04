@@ -18,7 +18,7 @@ import { PipesModule } from './shared/pipes/pipes.module';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppService } from './app.service';
-import { ErrorHandlerIntercaptor } from './main/interceptors/error.handler.intercaptor';
+import { ErrorHandlerInterceptor } from './main/interceptors/error.handler.intercaptor';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { PaginationTranslate } from './shared/translate/pagination-translate';
 
@@ -65,7 +65,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   },
   {
     provide: HTTP_INTERCEPTORS,
-    useClass: ErrorHandlerIntercaptor,
+    useClass: ErrorHandlerInterceptor,
     multi: true
   },
   {

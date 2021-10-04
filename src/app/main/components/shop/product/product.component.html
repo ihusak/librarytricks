@@ -1,0 +1,19 @@
+<div class="product-details-wrap" *ngIf="product">
+  <div class="header">
+    <h1>{{product.title}}</h1>
+    <div class="prices-wrap">
+      <div class="prices">
+        <p class="skillz"><span class="amount">{{product.skillz}}</span> <span class="value-name">skillz</span></p>
+        <p class="price" [ngClass]="{'visible': product.price}"><span class="amount">{{product.price}}</span> <span class="value-name">UAH</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="preview-images">
+    <ng-image-slider manageImageRatio="true" [images]="productImages" #sliderImages></ng-image-slider>
+  </div>
+  <div class="description" [innerHtml]="product.description"></div>
+  <div class="actions">
+    <button [disabled]="!product.available" (click)="addToBasket(product)" mat-raised-button color="primary">{{'TEMPLATE.SHOP.BUY' | translate}}</button>
+    <button routerLink="../../list" mat-raised-button color="primary">{{'COMMON.BACK' | translate}}</button>
+  </div>
+</div>

@@ -51,6 +51,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
+    this.dialogRef.close(true);
     });
     this.subscription.add(changeCurrentTask);
     this.dialogRef.close(true);
