@@ -1,0 +1,60 @@
+<h3>{{'TEMPLATE.SHOP.PRODUCT.UPDATE_TITLE' | translate}}</h3>
+<div class="update-wrap" *ngIf="productForm">
+  <div class="product-images">
+    <span class="item" *ngFor="let src of images">
+      <img [src]="src.indexOf('base64') > 0 ? src : 'api/' + src">
+      <mat-icon (click)="removeImage(src)">delete</mat-icon>
+    </span>
+  </div>
+  <form method="post" action="/" enctype="multipart/form-data">
+    <div class="product-files">
+      <button mat-raised-button color="primary" (click)="fileInput.click()">{{'TEMPLATE.PROFILE.UPLOAD_PHOTO' | translate}}</button>
+      <input type="file" multiple name="productsImg" #fileInput (change)="fileProgress($event)" class="avatarAddImage">
+    </div>
+  </form>
+  <form [formGroup]="productForm" (ngSubmit)="updateProduct()">
+    <div class="form-view">
+      <div class="item">
+        <h3>{{'TEMPLATE.SHOP.PRODUCT.PRODUCT_CATEGORY' | translate}}</h3>
+        <mat-form-field>
+          <mat-label>{{'TEMPLATE.SHOP.PRODUCT.CATEGORY' | translate}}</mat-label>
+          <mat-select [compareWith]="compareCategories" formControlName="category">
+            <mat-option *ngFor="let category of categoryList" [value]="category">{{'TEMPLATE.SHOP.PRODUCT.CATEGORIES.' + category.title | translate}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- <mat-form-field class="wrap-sizes" *ngIf="productForm.value.category && productForm.value.category.sizes">
+          <mat-label>{{'TEMPLATE.SHOP.PRODUCT.PRODUCT_SIZES' | translate}}</mat-label>
+          <mat-select formControlName="sizes" multiple>
+            <mat-option *ngFor="let size of productForm.value.category.sizes" [value]="size">{{size}}</mat-option>
+          </mat-select>
+        </mat-form-field> -->
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <input formControlName="title" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.TITLE' | translate}}" required>
+        </mat-form-field>
+        <h3>{{'TEMPLATE.SHOP.PRODUCT.DETAILS_DESCRIPTION' | translate}}</h3>
+        <quill-editor class="product-description" formControlName="description" placeholder="{{'COMMON.DETAILS' | translate}}" required="true"></quill-editor>
+      </div>
+      <div class="item">
+        <mat-form-field>
+          <input formControlName="price" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.PRICE' | translate}} UAH">
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="skillz" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.SKILLZ' | translate}}" required>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="sale" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.SALE' | translate}}, %">
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="manufacturer" matInput placeholder="{{'TEMPLATE.SHOP.PRODUCT.MANUFACTURER' | translate}}" required>
+        </mat-form-field>
+      </div>
+      <div class="item">
+        <mat-checkbox formControlName="available">{{'TEMPLATE.SHOP.PRODUCT.AVAILABLE' | translate}}</mat-checkbox>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" [disabled]="!productForm.valid || !productForm.dirty">{{'TEMPLATE.SHOP.UPDATE' | translate}}</button>
+    <button mat-raised-button color="primary" (click)="goBack()">{{'COMMON.BACK' | translate}}</button>
+  </form>
+</div>

@@ -1,0 +1,63 @@
+.product-details-wrap {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    .prices-wrap {
+      font-size: 10px;
+      text-align: center;
+      p {
+        margin: 0;
+      }
+      .prices {
+        position: relative;
+        margin: 25px 0;
+        .amount {
+          font-weight: bold;
+          margin-right: 2px;
+        }
+        .skillz {
+          .amount {
+            font-size: 32px;
+          }
+        }
+        .price {
+          color: #6d6d6d;
+          visibility: hidden;
+          &.visible {
+            visibility: visible;
+          }
+          .amount {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  .actions {
+    button {
+      margin-right: 15px;
+    }
+  }
+  .preview-images {
+    width: 50%;
+    margin: 0 auto;
+    ng-image-slider {
+      .ng-image-slider {
+        .ng-image-slider-container {
+          .main {
+            padding: 0;
+            .main-inner {
+              .caption {
+                display: none;
+              }
+              .img-div {
+                border-radius: 0;
+                box-shadow: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

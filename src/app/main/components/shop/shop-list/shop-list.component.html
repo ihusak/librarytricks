@@ -1,0 +1,37 @@
+<div class="navigation">
+  <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" mat-raised-button color="primary" [routerLink]="'../create'">{{'TEMPLATE.SHOP.PRODUCT.CREATE_PRODUCT' | translate}}</button>
+  <button mat-raised-button color="primary" [routerLink]="'../orders'">{{'TEMPLATE.SHOP.ORDERS.TITLE' | translate}}</button>
+</div>
+<div class="wrap-list">
+  <div class="item" *ngFor="let product of productList" [ngClass]="{'not-available': !product.available}">
+    <div class="images">
+      <img src="api/{{product.images[0]}}" alt="product-img">
+    </div>
+    <div class="info">
+<!--      <div class="rating">-->
+<!--        <i class="far fa-star"></i>-->
+<!--        <i class="far fa-star"></i>-->
+<!--        <i class="far fa-star"></i>-->
+<!--        <i class="far fa-star"></i>-->
+<!--        <i class="far fa-star"></i>-->
+<!--      </div>-->
+      <h5>{{product.title}}</h5>
+<!--      <p class="description" [innerHTML]="product.description"></p>-->
+      <div class="prices-wrap">
+        <div class="prices">
+          <p class="skillz"><span class="amount">{{product.skillz}}</span> <span class="value-name">skillz</span></p>
+          <p class="price" [ngClass]="{'visible': product.price}"><span class="amount">{{product.price}}</span> <span class="value-name">UAH</span></p>
+        </div>
+      </div>
+      <div class="available-info" *ngIf="!product.available">
+        <span>{{'TEMPLATE.SHOP.PRODUCT.UNAVAILABLE' | translate}}</span>
+      </div>
+    </div>
+    <div class="actions">
+      <button *ngIf="product.available" (click)="addToBasket(product)" mat-raised-button color="primary">{{'TEMPLATE.SHOP.BUY' | translate}}</button>
+      <button [routerLink]="['../product/', product.id]" mat-stroked-button color="primary">{{'TEMPLATE.SHOP.VIEW' | translate}}</button>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" [routerLink]="['../product/edit/', product.id]" mat-button color="primary">{{'TEMPLATE.SHOP.UPDATE' | translate}}</button>
+      <button *ngIf="(userInfo | userRolePipe:[userRoles.ADMIN])" (click)="deleteProduct(product)"  mat-button color="warn"><mat-icon class="delete-product">delete</mat-icon></button>
+    </div>
+  </div>
+</div>

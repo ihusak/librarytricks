@@ -315,8 +315,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
             name: this.currentCourse.name
           }
         };
-        this.mainService.setNotification(notification).subscribe((res: any) => {});
+        this.mainService.setNotification(notification).subscribe((res: any) => {
         window.location.reload();
+        });
       }
     });
   }

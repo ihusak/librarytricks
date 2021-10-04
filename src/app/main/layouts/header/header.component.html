@@ -6,6 +6,8 @@
         <img src="assets/img/logo-lb.svg" alt="">
     </div>
     <span class="spacer"></span>
+    <span *ngIf="userInfo.rating" class="skillz">{{userInfo.rating}}</span>
+    <mat-icon class="skillz-count" *ngIf="userInfo.rating" matTooltip="Your skillz">paid</mat-icon>
     <app-language></app-language>
     <mat-icon *ngIf="notifications.length" [matMenuTriggerFor]="notificationHeader" [matBadge]="notifications.length" matBadgePosition="before" matBadgeColor="primary">notifications</mat-icon>
     <mat-menu #notificationHeader="matMenu">
@@ -27,6 +29,8 @@
             <span *ngSwitchCase="notifyTypes.CONFIRM_PASS_TASK" [innerHTML]="'COMMON.NOTIFY.CONFIRM_PASS_TASK' | translate: {author: notify.author.name, taskName: notify.task.name, courseName: notify.course.name}"></span>
             <span *ngSwitchCase="notifyTypes.VIDEO_APPROVED" [innerHTML]="'COMMON.NOTIFY.VIDEO_APPROVED' | translate"></span>
             <span *ngSwitchCase="notifyTypes.VERIFY_VIDEO" [innerHTML]="'COMMON.NOTIFY.VERIFY_VIDEO' | translate: {author: notify.author.name}"></span>
+            <span *ngSwitchCase="notifyTypes.ORDER_SENT" [innerHTML]="'COMMON.NOTIFY.ORDER_SENT' | translate: {products: notify.products}"></span>
+            <span *ngSwitchCase="notifyTypes.NEW_PRODUCT" [innerHTML]="'COMMON.NOTIFY.NEW_PRODUCT' | translate: {products: notify.products}"></span>
           </div>
         </div>
       </div>

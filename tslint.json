@@ -26,6 +26,9 @@
       "rxjs/Rx"
     ],
     "interface-name": false,
+    "max-line-length": [
+      false
+    ],
     "max-classes-per-file": false,
     "member-access": false,
     "member-ordering": [

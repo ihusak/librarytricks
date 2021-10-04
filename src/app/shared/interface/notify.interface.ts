@@ -26,4 +26,5 @@ export interface NotifyInterface {
     id: string;
     name: string;
   };
+  products?: string;
 }
