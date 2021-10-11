@@ -95,6 +95,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   public assignTask(task: TaskModel) {
     task.status = TaskStatuses.PROCESSING;
+    // deprecated
     const changeCurrentTask = this.profileService.changeCurrentTask(task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
       this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.START_PROCESSING_TASK'), '', {

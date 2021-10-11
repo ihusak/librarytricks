@@ -80,6 +80,7 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
       reward: studentInfo.currentTask.reward * (this.coachMark / 100),
       courseId: studentInfo.course.id
     };
+    // deprecated
     const acceptStudentTask = this.profileService.acceptStudentTask(studentInfo.id, task).subscribe(res => {
       this.ngOnInit();
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.ACCEPT_STUDENT_TASK', {student: studentInfo.userName}), '', {
