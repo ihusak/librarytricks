@@ -14,11 +14,11 @@ export class ProfileService extends AppService {
 
   public userInfo;
   private userRoles = UserRolesEnum;
-
+  // deprecated
   public acceptStudentTask(userId: string, task: any) {
     return this.http.put(`${this.apiUrl()}/userInfo/accept-task/${userId}`, {task});
   }
-
+  // deprecated
   public changeCurrentTask(task: TaskModel, userId: string) {
     return this.http.put(`${this.apiUrl()}/userInfo/task-status/${userId}`, {task});
   }

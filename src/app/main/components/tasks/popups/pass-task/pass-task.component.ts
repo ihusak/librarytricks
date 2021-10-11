@@ -43,6 +43,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
   request() {
     this.task.status = TaskStatuses.PENDING;
     this.task.reviewExample = this.reviewExample;
+    // deprecated
     const changeCurrentTask = this.profileService.changeCurrentTask(this.task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
       this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_SENT_TO_REVIEW'), '', {
