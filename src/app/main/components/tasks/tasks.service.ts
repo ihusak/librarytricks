@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators';
 import { AppService } from 'src/app/app.service';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
 import {Observable} from 'rxjs';
+import {TaskStatusInterface} from '../../../shared/interface/task-status.interface';
 
 interface CourseCreateInterface {
   coachId: string;
@@ -57,6 +58,10 @@ export class TaskService extends AppService {
 
     public getStatusTasks(coachId: string, courseId: string, status: string): Observable<any> {
       return this.http.post(`${this.apiUrl()}/task/status/coach/${coachId}/course/${courseId}`, {status});
+    }
+
+    public changeTaskStatus(userId: string, taskStatus: TaskStatusInterface): Observable<any> {
+      return this.http.post(`${this.apiUrl()}/task/status/change`, {taskStatus, userId});
     }
 
     public createTask(task: TaskModel): Observable<any> {

@@ -22,6 +22,7 @@ import { UserCoachModel } from 'src/app/shared/models/user-coach.model';
 import { AppService } from 'src/app/app.service';
 import { UpdateCourseComponent } from '../popups/update-course/update-course.component';
 import { TitleService } from 'src/app/shared/title.service';
+import {TaskStatusInterface} from '../../../../shared/interface/task-status.interface';
 
 @Component({
   selector: 'app-task-list',
@@ -95,9 +96,16 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   public assignTask(task: TaskModel) {
     task.status = TaskStatuses.PROCESSING;
+    const TASK_STATUS: TaskStatusInterface = {
+      status: TaskStatuses.PROCESSING,
+      taskId: task.id,
+      coachId: this.userInfo.coach.id,
+      userId: this.userInfo.id,
+      reject: null
+    };
     // deprecated
-    const changeCurrentTask = this.profileService.changeCurrentTask(task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
-      this.userInfo = updatedUserInfo;
+    const changeCurrentTask = this.taskService.changeTaskStatus(this.userInfo.id, TASK_STATUS).subscribe((updatedUserInfo: StudentInfoInterface) => {
+      // this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.START_PROCESSING_TASK'), '', {
         duration: 2000,
         panelClass: ['success'],
