@@ -2,11 +2,12 @@ import { Component, OnInit, Inject, ViewEncapsulation, OnDestroy } from '@angula
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskModel } from '../../task.model';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
-import { ProfileService } from '../../../profile/profile.service';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { MatSnackBar } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import {TaskService} from '../../tasks.service';
+import {TaskStatusInterface} from '../../../../../shared/interface/task-status.interface';
 
 const YOUTUBE_REGEXP = new RegExp('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$');
 
@@ -26,7 +27,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<PassTaskComponent>,
     @Inject(MAT_DIALOG_DATA) public data: {task: TaskModel, userInfo: StudentInfoInterface},
-    private profileService: ProfileService,
+    private taskService: TaskService,
     private snackBar: MatSnackBar,
     private translateService: TranslateService
     ) {
@@ -41,10 +42,15 @@ export class PassTaskComponent implements OnInit, OnDestroy {
     this.dialogRef.close(false);
   }
   request() {
-    this.task.status = TaskStatuses.PENDING;
-    this.task.reviewExample = this.reviewExample;
-    // deprecated
-    const changeCurrentTask = this.profileService.changeCurrentTask(this.task, this.userInfo.id).subscribe((updatedUserInfo: StudentInfoInterface) => {
+    const taskStatus: TaskStatusInterface = {
+      status: TaskStatuses.PENDING,
+      taskId: this.task.id,
+      coachId: this.userInfo.coach.id,
+      userId: this.userInfo.id,
+      reject: this.task.rejectReason,
+      reviewExample: this.reviewExample
+    };
+    const changeCurrentTask = this.taskService.changeTaskStatus(taskStatus).subscribe((updatedUserInfo: StudentInfoInterface) => {
       this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.TASK_SENT_TO_REVIEW'), '', {
         duration: 2000,
@@ -52,7 +58,7 @@ export class PassTaskComponent implements OnInit, OnDestroy {
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
-    this.dialogRef.close(true);
+      this.dialogRef.close(true);
     });
     this.subscription.add(changeCurrentTask);
     this.dialogRef.close(true);

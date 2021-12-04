@@ -12,6 +12,8 @@ import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {TitleService} from '../../../../shared/title.service';
+import {TaskService} from '../tasks.service';
+import {TaskStatusInterface} from '../../../../shared/interface/task-status.interface';
 
 interface marksInterface {
   value: number;
@@ -33,7 +35,7 @@ const MARKS: marksInterface[] = [
 })
 export class CheckTasksComponent implements OnInit, OnDestroy {
   public userInfo;
-  public pendingTasksData: StudentInfoInterface[];
+  public pendingTasksData: TaskStatusInterface[];
   public marks: marksInterface[] = MARKS;
   public coachMark: number = 0;
   public resultMark: number = 0;
@@ -44,6 +46,7 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
   constructor(
     private mainService: MainService,
     private profileService: ProfileService,
+    private taskService: TaskService,
     private snackBar: MatSnackBar,
     private translateService: TranslateService,
     private titleService: TitleService,
@@ -59,10 +62,10 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
       this.titleService.setTitle(value);
     });
     this.subscription.add(translateServiceTitleSub);
-    const getUserInfoByCoach = this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
+    const getUserInfoByCoach = this.taskService.getTaskStatusesByCoach(this.userInfo.id).subscribe((taskStatuses: TaskStatusInterface[]) => {
       this.pendingTasksData = [];
-      usersInfo.map((info: StudentInfoInterface) => {
-        if (info.currentTask.status === TaskStatuses.PENDING) {
+      taskStatuses.map((info: TaskStatusInterface) => {
+        if (info.status === TaskStatuses.PENDING) {
           this.pendingTasksData.push(info);
         }
       });

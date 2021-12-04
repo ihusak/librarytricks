@@ -4,4 +4,5 @@ export interface TaskStatusInterface {
   coachId: string;
   userId: string;
   reject: string;
+  reviewExample?: string;
 }
