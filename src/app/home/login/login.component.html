@@ -14,11 +14,11 @@
                 <div class="form-group">
                     <mat-form-field appearance="outline">
                         <mat-label>{{'COMMON.PASSWORD' | translate}}</mat-label>
-                        <input type="password" required matInput [(ngModel)]="pass">
+                        <input (keyup.enter)="loginUser(email, pass)" type="password" required matInput [(ngModel)]="pass">
                     </mat-form-field>
                 </div>
                 <div class="line-block">
-                    <button [disabled]="!pass || !email" mat-flat-button color="primary" (click)="loginUser(email, pass)">{{'COMMON.SIGN_IN' | translate}}</button>
+                    <button type="submit" [disabled]="!pass || !email" mat-flat-button color="primary" (click)="loginUser(email, pass)">{{'COMMON.SIGN_IN' | translate}}</button>
                 </div>
             </div>
             <!-- <div class="login-social line-block item-auth">
@@ -35,7 +35,6 @@
       </div>
     </div>
   </div>
-  
-  
-  
-  
+
+
+

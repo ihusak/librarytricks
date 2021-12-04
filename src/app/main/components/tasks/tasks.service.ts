@@ -55,13 +55,17 @@ export class TaskService extends AppService {
         price: values.price,
       });
     }
-
+    // deprecated
     public getStatusTasks(coachId: string, courseId: string, status: string): Observable<any> {
       return this.http.post(`${this.apiUrl()}/task/status/coach/${coachId}/course/${courseId}`, {status});
     }
 
-    public changeTaskStatus(userId: string, taskStatus: TaskStatusInterface): Observable<any> {
-      return this.http.post(`${this.apiUrl()}/task/status/change`, {taskStatus, userId});
+    public changeTaskStatus(taskStatus: TaskStatusInterface): Observable<any> {
+      return this.http.post(`${this.apiUrl()}/task/status/change`, {taskStatus});
+    }
+
+    public getTaskStatusesByCoach(coachId: string): Observable<any> {
+      return this.http.get(`${this.apiUrl()}/task/statuses/${coachId}`);
     }
 
     public createTask(task: TaskModel): Observable<any> {

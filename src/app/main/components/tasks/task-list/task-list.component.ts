@@ -103,8 +103,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
       userId: this.userInfo.id,
       reject: null
     };
-    // deprecated
-    const changeCurrentTask = this.taskService.changeTaskStatus(this.userInfo.id, TASK_STATUS).subscribe((updatedUserInfo: StudentInfoInterface) => {
+    const changeCurrentTask = this.taskService.changeTaskStatus(this.userInfo.id, TASK_STATUS).subscribe((taskStatus: any) => {
       // this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.START_PROCESSING_TASK'), '', {
         duration: 2000,
@@ -112,25 +111,26 @@ export class TaskListComponent implements OnInit, OnDestroy {
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
-      const notification: NotifyInterface = {
-        users: [{id: this.userInfo.coach.id}],
-        author: {
-          id: this.userInfo.id,
-          name: this.userInfo.userName
-        },
-        title: 'COMMON.UPDATES',
-        type: this.notifyTypes.TASK_IN_PROGRESS,
-        userType: [this.userRoles.COACH, this.userRoles.ADMIN],
-        task: {
-          id: task.id,
-          name: task.title
-        },
-        course: {
-          id: this.currentCourse.id,
-          name: this.currentCourse.name
-        }
-      };
-      this.mainService.setNotification(notification).subscribe((res: any) => {});
+      console.log('passedTask', taskStatus);
+      // const notification: NotifyInterface = {
+      //   users: [{id: this.userInfo.coach.id}],
+      //   author: {
+      //     id: this.userInfo.id,
+      //     name: this.userInfo.userName
+      //   },
+      //   title: 'COMMON.UPDATES',
+      //   type: this.notifyTypes.TASK_IN_PROGRESS,
+      //   userType: [this.userRoles.COACH, this.userRoles.ADMIN],
+      //   task: {
+      //     id: task.id,
+      //     name: task.title
+      //   },
+      //   course: {
+      //     id: this.currentCourse.id,
+      //     name: this.currentCourse.name
+      //   }
+      // };
+      // this.mainService.setNotification(notification).subscribe((res: any) => {});
     });
     this.subscription.add(changeCurrentTask);
   }
@@ -167,15 +167,16 @@ export class TaskListComponent implements OnInit, OnDestroy {
     this.subscription.add(getTasksByCourse);
   }
 
-  private getTasksStatuses(courseId: string) {
-    const getUserInfoByCoach = this.profileService.getUserInfoByCoach(this.userInfo.id).subscribe((usersInfo: StudentInfoInterface[]) => {
+  private getTasksStatuses(coachId: string) {
+    const getUserInfoByCoach = this.taskService.getTaskStatusesByCoach(coachId).subscribe((taskStatuses: TaskStatusInterface[]) => {
       this.processingTasks = 0;
       this.pendingTasks = 0;
       this.doneTasks = 0;
       this.processingTasksData = [];
-      usersInfo.map((info: StudentInfoInterface) => {
-        if (info.course.id === courseId) {
-          switch (info.currentTask.status) {
+      console.log('taskStatuses', taskStatuses);
+      taskStatuses.map((info: TaskStatusInterface) => {
+        // if (info.cou === courseId) {
+          switch (info.status) {
             case TaskStatuses.PROCESSING:
               this.processingTasksData.push(info);
               this.processingTasks += 1;
@@ -187,7 +188,8 @@ export class TaskListComponent implements OnInit, OnDestroy {
               this.doneTasks += 1;
               break;
           }
-        }
+        // }
+        console.log(this);
       });
     });
     this.subscription.add(getUserInfoByCoach);
@@ -201,7 +203,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
         const getAllCoaches = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe((coaches: UserCoachModel[]) => {
           this.coachList = coaches;
 
-          if(STUDENT.coach.id) {
+          if (STUDENT.coach.id) {
             const getCoursesByCoachId = this.taskService.getCoachCourses(STUDENT.coach.id).subscribe((courses: CourseInterface[]) => {
               this.coursesList = courses;
               this.selectedCoach = this.coachList.find((coach: UserCoachModel) => coach.id === STUDENT.coach.id);
@@ -235,7 +237,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
           }
         });
         this.subscription.add(getAllCoaches);
-      break;
+        break;
       case this.userRoles.COACH:
         const COACH: CoachInfoInterface = this.userInfo;
         const getCoursesByCoachId = this.taskService.getCoachCourses(COACH.id).subscribe((courses: CourseInterface[]) => {
@@ -250,7 +252,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
           }
         });
         this.subscription.add(getCoursesByCoachId);
-      break;
+        break;
       case this.userRoles.PARENT:
         const PARENT: ParentInfoInterface = this.userInfo;
         const getAllCoachesForParent = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe((coaches: UserCoachModel[]) => {
@@ -265,9 +267,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
             });
             this.subscription.add(getCoursesByCoachId);
           }
-        })
+        });
         this.subscription.add(getAllCoachesForParent);
-      break;
+        break;
       case this.userRoles.ADMIN:
         const ADMIN: AdminInfoInterface = this.userInfo;
         const getAllCoachesForAdmin = this.profileService.getAllCoaches(this.userRoles.COACH).subscribe((coaches: UserCoachModel[]) => {
@@ -282,9 +284,9 @@ export class TaskListComponent implements OnInit, OnDestroy {
             });
             this.subscription.add(getCoursesByCoachId);
           }
-        })
+        });
         this.subscription.add(getAllCoachesForAdmin);
-      break;
+        break;
     }
   }
   private checkPayment() {
@@ -305,7 +307,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
       data: {task, userInfo: this.userInfo}
     });
     dialogRef.afterClosed().subscribe((param) => {
-      if(param) {
+      if (param) {
         const notification: NotifyInterface = {
           users: [{id: this.userInfo.coach.id}],
           author: {
@@ -325,7 +327,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
           }
         };
         this.mainService.setNotification(notification).subscribe((res: any) => {
-        window.location.reload();
+        // window.location.reload();
         });
       }
     });
@@ -399,7 +401,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   public changeCourse(courseId: string, coachId: string) {
     this.getAllTasks(courseId);
-    this.getTasksStatuses(courseId);
+    this.getTasksStatuses(coachId);
     this.changeCourseIdQuery(courseId, coachId);
     this.selectedCourse = this.coursesList.find((course: CourseInterface) => course.id === courseId);
     this.currentCourse = this.selectedCourse;
