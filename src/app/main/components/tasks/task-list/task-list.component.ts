@@ -103,7 +103,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
       userId: this.userInfo.id,
       reject: null
     };
-    const changeCurrentTask = this.taskService.changeTaskStatus(this.userInfo.id, TASK_STATUS).subscribe((taskStatus: any) => {
+    const changeCurrentTask = this.taskService.changeTaskStatus(TASK_STATUS).subscribe((taskStatus: any) => {
       // this.userInfo = updatedUserInfo;
       this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.START_PROCESSING_TASK'), '', {
         duration: 2000,
