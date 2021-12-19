@@ -14,6 +14,7 @@ import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {TitleService} from '../../../../shared/title.service';
 import {TaskService} from '../tasks.service';
 import {TaskStatusInterface} from '../../../../shared/interface/task-status.interface';
+import {TaskModel} from '../task.model';
 
 interface marksInterface {
   value: number;
@@ -62,38 +63,38 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
       this.titleService.setTitle(value);
     });
     this.subscription.add(translateServiceTitleSub);
-    const getUserInfoByCoach = this.taskService.getTaskStatusesByCoach(this.userInfo.id).subscribe((taskStatuses: TaskStatusInterface[]) => {
-      this.pendingTasksData = [];
-      taskStatuses.map((info: TaskStatusInterface) => {
-        if (info.status === TaskStatuses.PENDING) {
-          this.pendingTasksData.push(info);
-        }
+    const getAllTasksSubj = this.taskService.getAllTasks().subscribe((tasks: TaskModel[]) => {
+      const getUserInfoByCoach = this.taskService.getTaskStatusesByCoach(this.userInfo.id).subscribe((taskStatuses: TaskStatusInterface[]) => {
+        this.pendingTasksData = [];
+        taskStatuses.map((info: TaskStatusInterface) => {
+          if (info.status === TaskStatuses.PENDING) {
+            info.taskInfo = tasks.find((task: TaskModel) => info.taskId === task.id);
+            this.pendingTasksData.push(info);
+          }
+        });
+        console.log(this);
       });
+      this.subscription.add(getUserInfoByCoach);
     });
-    this.subscription.add(getUserInfoByCoach);
+    this.subscription.add(getAllTasksSubj);
   }
-  public changeMark(userInfo: StudentInfoInterface) {
-    this.resultMark = userInfo.currentTask.reward * (this.coachMark / 100);
+  public changeMark(data: TaskStatusInterface) {
+    this.resultMark = data.taskInfo.reward * (this.coachMark / 100);
   }
 
-  public acceptTask(studentInfo: StudentInfoInterface) {
-    const task = {
-      taskId: studentInfo.currentTask.id,
-      coachId: studentInfo.coach.id,
-      reward: studentInfo.currentTask.reward * (this.coachMark / 100),
-      courseId: studentInfo.course.id
-    };
+  public acceptTask(data: TaskStatusInterface) {
+    data.taskInfo.reward = data.taskInfo.reward * (this.coachMark / 100);
     // deprecated
-    const acceptStudentTask = this.profileService.acceptStudentTask(studentInfo.id, task).subscribe(res => {
+    const acceptStudentTask = this.profileService.acceptStudentTask(data.userId, data.taskInfo).subscribe(res => {
       this.ngOnInit();
-      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.ACCEPT_STUDENT_TASK', {student: studentInfo.userName}), '', {
+      this.snackBar.open(this.translateService.instant('COMMON.SNACK_BAR.ACCEPT_STUDENT_TASK', {student: ''}), '', {
         duration: 2000,
         panelClass: ['success'],
         verticalPosition: 'top',
         horizontalPosition: 'right'
       });
       const notification: NotifyInterface = {
-        users: [{id: studentInfo.id}],
+        users: [{id: data.userId}],
         author: {
           id: this.userInfo.id,
           name: this.userInfo.userName
@@ -102,12 +103,12 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
         type: this.notifyTypes.CONFIRM_PASS_TASK,
         userType: [this.userRoles.STUDENT],
         task: {
-          id: studentInfo.currentTask.id,
-          name: studentInfo.currentTask.title
+          id: data.taskInfo.id,
+          name: data.taskInfo.title
         },
         course: {
-          id: studentInfo.course.id,
-          name: studentInfo.course.name
+          id: data.taskInfo.course.id,
+          name: data.taskInfo.course.name
         }
       };
       this.mainService.setNotification(notification).subscribe((res: any) => {});
@@ -115,13 +116,13 @@ export class CheckTasksComponent implements OnInit, OnDestroy {
     this.subscription.add(acceptStudentTask);
   }
 
-  public reject(studentInfo: StudentInfoInterface) {
+  public reject(data: TaskStatusInterface) {
     const dialogRef = this.dialog.open(RejectTaskComponent, {
       width: '650px',
-      data: studentInfo
+      data
     });
     dialogRef.afterClosed().subscribe((flag) => {
-      if(flag) {
+      if (flag) {
         this.ngOnInit();
       }
     });
