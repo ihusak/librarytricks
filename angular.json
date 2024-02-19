@@ -146,6 +146,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "librarytricks"
+    }
+  },
+  "defaultProject": "librarytricks",
+  "cli": {
+    "analytics": false
+  }
 }
