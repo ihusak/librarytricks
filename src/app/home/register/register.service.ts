@@ -4,12 +4,16 @@ import {catchError, map} from 'rxjs/operators';
 import { UserRole } from '../interface/userRole.interface';
 import { AppService } from 'src/app/app.service';
 import { UserFormInterface } from './register.component';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
-export class RegisterService extends AppService {
-
+export class RegisterService {
+  constructor(
+    public http: HttpClient,
+    public appService: AppService
+  ) {}
   registerUser(userForm: UserFormInterface, registerToken?: string): Observable<any> {
-    return this.http.post(`${this.apiUrl()}/users/create`, {
+    return this.http.post(`${this.appService.apiUrl()}/users/create`, {
       email: userForm.email,
       userPassword: userForm.password,
       userName: userForm.name,
@@ -19,7 +23,7 @@ export class RegisterService extends AppService {
     });
   }
   public getRoles(): Observable<UserRole[]> {
-    return this.http.get(`${this.apiUrl()}/roles`).pipe(map((response: any) => {
+    return this.http.get(`${this.appService.apiUrl()}/roles`).pipe(map((response: any) => {
       return response.map(role => ({
           id: role.id,
           name: role.name,

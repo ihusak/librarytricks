@@ -3,12 +3,18 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { AppService } from './app.service';
+import {CookieService} from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService extends AppService {
-
+  constructor(
+    public http: HttpClient,
+    public cookieService: CookieService
+  ) {
+    super(http, cookieService);
+  }
   public updateAccessToken(refreshToken: string): Observable<object> {
     return this.http.put(`${this.apiUrl()}/users/token`, {refreshToken});
   }

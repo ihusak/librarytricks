@@ -2,6 +2,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { BehaviorSubject, Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
 
 interface Tokens {
   accessToken: string;
@@ -13,20 +14,18 @@ export interface ServerErrorMessage {
   errKey: string;
   errorMessage: string;
 }
-
+@Injectable()
 export class AppService {
   private domain: string;
   public userInfoSubject: BehaviorSubject<any> = new BehaviorSubject(null);
-
-
   constructor(
-    protected http: HttpClient,
-    protected cookieService: CookieService
+    public http: HttpClient,
+    public cookieService: CookieService
     ) {
-      if(environment.production) {
-        this.domain = 'lb.afreestylers.com'
+      if (environment.production) {
+        this.domain = 'lb.afreestylers.com';
       } else {
-        this.domain = 'localhost'
+        this.domain = 'localhost';
       }
     }
 
