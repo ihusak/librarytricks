@@ -7,7 +7,7 @@ import {CreateVideoComponent} from './create-video/create-video.component';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
 import { TranslateService } from '@ngx-translate/core';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { TitleService } from 'src/app/shared/title.service';
 

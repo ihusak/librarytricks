@@ -3,7 +3,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TaskModel } from '../../task.model';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {TaskService} from '../../tasks.service';

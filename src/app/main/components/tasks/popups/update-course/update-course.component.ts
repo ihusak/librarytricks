@@ -1,6 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MatSnackBar, MAT_DIALOG_DATA } from '@angular/material';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { MainService } from 'src/app/main/main.service';
@@ -8,6 +7,8 @@ import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
 import { ProfileService } from '../../../profile/profile.service';
 import { TaskService } from '../../tasks.service';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-update-course',
@@ -71,7 +72,7 @@ export class UpdateCourseComponent implements OnDestroy {
       });
       this.subscription.add(updateCourse);
     }
-  
+
     public forAllCoaches() {
       if(this.updateCourseFrom.value.forAll) {
         this.updateCourseFrom.removeControl('coachId');

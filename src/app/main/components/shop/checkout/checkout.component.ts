@@ -8,8 +8,9 @@ import {TitleService} from '../../../../shared/title.service';
 import {Subscription} from 'rxjs';
 import {MainService} from '../../../main.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
-import { MatRadioChange, MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
+import {MatRadioChange} from '@angular/material/radio';
 
 @Component({
   selector: 'app-checkout',

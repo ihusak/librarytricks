@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
 import { ActivatedRoute } from '@angular/router';
 import { MainService } from 'src/app/main/main.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
@@ -14,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 import {TitleService} from '../../../../shared/title.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 let STUDENTS_GOT_NOTIFY;
 interface StudentListSelect {
   id: string;
