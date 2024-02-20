@@ -21,6 +21,7 @@ import { AppService } from './app.service';
 import { ErrorHandlerInterceptor } from './main/interceptors/error.handler.intercaptor';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { PaginationTranslate } from './shared/translate/pagination-translate';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -48,7 +49,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         useFactory: HttpLoaderFactory,
         deps: [HttpClient]
     }
-  })
+  }),
+  FontAwesomeModule
   ],
   providers: [
     MainGuardService,
