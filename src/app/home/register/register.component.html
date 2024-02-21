@@ -37,7 +37,7 @@
                      <mat-option *ngFor="let role of userRoles" [value]="role">{{"COMMON.ROLES." + role.name | translate}}</mat-option>
                   </mat-select>
                  </mat-form-field>
-                 <mat-form-field appearance="outline" *ngIf="registerUserFrom.controls.invited">
+                 <mat-form-field appearance="outline" *ngIf="registerUserFrom.value.invited">
                   <mat-label>{{'COMMON.' + (registerUserFrom.value.type.id === userRolesEnum.STUDENT ? 'EMAIL_PARENT' : 'EMAIL_CHILD') | translate}}</mat-label>
                   <input formControlName="invited" type="email" matInput>
                  </mat-form-field>

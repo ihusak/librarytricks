@@ -37,8 +37,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     confirmPassword: new FormControl('', [Validators.required]),
-    type: new FormControl('', [Validators.required]),
-    consent: new FormControl('', [Validators.requiredTrue])
+    type: new FormControl({id: null, name: '', status: false}, [Validators.required]),
+    consent: new FormControl('', [Validators.requiredTrue]),
+    invited: new FormControl('')
   }, {validators: this.matchPassword});
   public env: any = environment;
   private subscription: Subscription = new Subscription();
@@ -61,6 +62,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.titleService.setTitle(value);
     });
     this.subscription.add(translateServiceTitleSub);
+    console.log(this.registerUserFrom);
   }
 
   ngOnInit() {
@@ -72,9 +74,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.userRoles = roles.filter(role => role.id !== this.userRolesEnum.ADMIN);
       }
       if (this.registerToken) {
+        let {id, name, status} = this.userRoles.filter(role => role.id === this.invitedRoleId)[0];
         this.registerUserFrom.controls.type.disable();
         this.registerUserFrom.controls.email.disable();
-        this.registerUserFrom.controls.type.setValue(this.userRoles.filter(role => role.id === this.invitedRoleId)[0]);
+        this.registerUserFrom.controls.type.setValue({id, name, status});
         this.registerUserFrom.controls.email.setValue(this.invitedEmail);
       }
     });
