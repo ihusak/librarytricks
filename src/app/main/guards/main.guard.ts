@@ -1,4 +1,4 @@
-import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Injectable, NgZone } from '@angular/core';
 import { MainService } from '../main.service';
@@ -7,7 +7,7 @@ import { AppService } from 'src/app/app.service';
 @Injectable({
     providedIn: 'root'
 })
-export class MainGuardService implements CanActivate {
+export class MainGuardService  {
     status: boolean;
     constructor(private mainService: MainService,
                 private appService: AppService,

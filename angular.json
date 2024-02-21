@@ -142,14 +142,14 @@
               "optimization": {
                 "scripts": false,
                 "styles": true
-              }
+              },
+              "buildOptimizer": true
             }
           }
         }
       }
     }
   },
-  "defaultProject": "librarytricks",
   "cli": {
     "analytics": false
   }
