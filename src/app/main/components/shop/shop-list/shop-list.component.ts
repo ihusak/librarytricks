@@ -4,7 +4,7 @@ import {ShopService} from '../shop.service';
 import {MainService} from '../../../main.service';
 import {ProductModel} from '../product.model';
 import {BasketService} from '../basket/basket.service';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {Subscription} from 'rxjs';
 import {TitleService} from '../../../../shared/title.service';

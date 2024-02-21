@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {LoginErrorMessage, LoginService} from './login.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Router } from '@angular/router';
 import {AppService, ServerErrorMessage} from 'src/app/app.service';
 import { User } from 'src/app/shared/interface/user.interface';

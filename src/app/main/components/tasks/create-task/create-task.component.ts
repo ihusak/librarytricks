@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Location } from '@angular/common';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { MainService } from 'src/app/main/main.service';

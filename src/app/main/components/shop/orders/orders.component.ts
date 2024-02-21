@@ -4,7 +4,7 @@ import {OrderModel} from '../../../../shared/models/order.model';
 import {MainService} from '../../../main.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {ProductModel} from '../product.model';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
 import {TranslateService} from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';

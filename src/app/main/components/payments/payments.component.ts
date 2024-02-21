@@ -5,7 +5,7 @@ import { MainService } from '../../main.service';
 import { TaskService } from '../tasks/tasks.service';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import { Checkout, PaymentsService } from './payments.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TitleService } from 'src/app/shared/title.service';

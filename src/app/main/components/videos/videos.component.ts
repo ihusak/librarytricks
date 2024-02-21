@@ -2,12 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {UserRolesEnum} from '../../../shared/enums/user-roles.enum';
 import {VideoInterface, VideosService} from './videos.service';
 import {NotifyInterface} from '../../../shared/interface/notify.interface';
-import {MatDialog} from '@angular/material/dialog';
+import {MatLegacyDialog as MatDialog} from '@angular/material/legacy-dialog';
 import {CreateVideoComponent} from './create-video/create-video.component';
 import {NotificationTypes} from '../../../shared/enums/notification-types.enum';
 import {MainService} from '../../main.service';
 import { TranslateService } from '@ngx-translate/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { Subscription } from 'rxjs';
 import { TitleService } from 'src/app/shared/title.service';
 

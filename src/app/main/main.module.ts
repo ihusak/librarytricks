@@ -5,7 +5,7 @@ import { MainComponent } from './main.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { HeaderComponent } from './layouts/header/header.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { SidenavComponent } from './layouts/sidenav/sidenav.component';
 import { VideosComponent } from './components/videos/videos.component';

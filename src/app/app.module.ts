@@ -4,10 +4,10 @@ import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MainModule } from './main/main.module';
 import { HomeModule } from './home/home.module';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { SharedModule } from './shared/shared.module';
 import { MainGuardService } from './main/guards/main.guard';
 import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -19,7 +19,7 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppService } from './app.service';
 import { ErrorHandlerInterceptor } from './main/interceptors/error.handler.intercaptor';
-import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatLegacyPaginatorIntl as MatPaginatorIntl } from '@angular/material/legacy-paginator';
 import { PaginationTranslate } from './shared/translate/pagination-translate';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 

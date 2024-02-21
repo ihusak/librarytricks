@@ -6,7 +6,7 @@ import { catchError, switchMap, filter, take, map, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()

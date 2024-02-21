@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { RegisterService } from './register.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UserRole } from '../interface/userRole.interface';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { FormControl, FormGroup, Validators } from '@angular/forms';

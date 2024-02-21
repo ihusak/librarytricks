@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from 'src/app/app.service';
 import { TranslateLocalService } from 'src/app/shared/translate/translate.service';

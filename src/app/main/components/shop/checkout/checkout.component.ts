@@ -8,9 +8,9 @@ import {TitleService} from '../../../../shared/title.service';
 import {Subscription} from 'rxjs';
 import {MainService} from '../../../main.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
-import {MatRadioChange} from '@angular/material/radio';
+import {MatLegacyRadioChange as MatRadioChange} from '@angular/material/legacy-radio';
 
 @Component({
   selector: 'app-checkout',

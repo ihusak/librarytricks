@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/cor
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { ProfileService } from './profile.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { UserStudentModel } from 'src/app/shared/models/user-student.model';
 import { UserParentModel } from 'src/app/shared/models/user-parent.model';
