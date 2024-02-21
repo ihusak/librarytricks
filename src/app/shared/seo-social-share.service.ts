@@ -15,7 +15,7 @@ import {Meta} from '@angular/platform-browser';
 import {Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 
-@Injectable(({providedIn: 'root'}))
+@Injectable({providedIn: 'root'})
 export class SeoSocialShareService {
   private subscriptions = new Subscription();
   constructor(
