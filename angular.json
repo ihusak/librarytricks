@@ -22,8 +22,13 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
-            "allowedCommonJsDependencies": ["ngx-quill"],
+            "allowedCommonJsDependencies": ["ngx-quill", "quill-delta"],
             "aot": true,
+            "optimization": {
+              "scripts": false,
+              "styles": false
+            },
+            "sourceMap": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",

@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { TaskModel } from '../../task.model';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {TaskService} from '../../tasks.service';
 import {TaskStatusInterface} from '../../../../../shared/interface/task-status.interface';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 const YOUTUBE_REGEXP = new RegExp('^(https?\:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$');
 

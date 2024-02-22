@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PipesModule } from 'src/app/shared/pipes/pipes.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { YouTubePlayerModule } from '@angular/youtube-player';
@@ -21,8 +19,6 @@ import { TranslateModule } from '@ngx-translate/core';
     UpdateHomeworkComponent
   ],
   imports: [
-    CommonModule,
-    PipesModule,
     SharedModule,
     HomeworksRoutingModule,
     ReactiveFormsModule,
@@ -30,7 +26,6 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule,
     QuillModule.forRoot()
   ],
-  entryComponents: [HomeworkListComponent],
   providers: [HomeworksService]
 })
 export class HomeworksModule {

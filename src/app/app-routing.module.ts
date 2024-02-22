@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
+import {RouterModule, Routes, PreloadAllModules, provideRouter} from '@angular/router';
 import { MainGuardService } from './main/guards/main.guard';
 import { ErrorPageComponent } from './main/layouts/error-page/error-page.component';
 

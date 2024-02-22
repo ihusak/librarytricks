@@ -1,15 +1,15 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import { ProfileService } from '../../../profile/profile.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../../shared/interface/notify.interface';
 import {MainService} from '../../../../main.service';
 import {NotificationTypes} from '../../../../../shared/enums/notification-types.enum';
 import {UserRolesEnum} from '../../../../../shared/enums/user-roles.enum';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-reject-task',

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { LoginServiceModule } from './login.service.module';
+// import { LoginServiceModule } from './login.service.module';
 import { AppService } from 'src/app/app.service';
 import {HttpClient} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
@@ -9,9 +9,7 @@ export enum LoginErrorMessage {
   WRONG_PASSWORD = 'Wrong user password'
 }
 
-@Injectable({
-  providedIn: LoginServiceModule
-})
+@Injectable()
 export class LoginService extends AppService {
   constructor(
     public http: HttpClient,

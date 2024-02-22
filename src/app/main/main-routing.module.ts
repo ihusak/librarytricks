@@ -4,13 +4,10 @@ import { RouterModule, Routes} from '@angular/router';
 import { MainComponent } from './main.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { VideosComponent } from './components/videos/videos.component';
-import { RatingsComponent } from './components/ratings/ratings.component';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { VersionsComponent } from './components/versions/versions.component';
 import { HowToUseComponent } from './components/how-to-use/how-to-use.component';
-import { ShopComponent } from './components/shop/shop.component';
-import {CreateProductComponent} from './components/shop/product/create-product/create-product.component';
 
 const routes: Routes = [
   {path: '', component: MainComponent, children: [
@@ -33,7 +30,9 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes)
   ],
-  exports: [RouterModule]
+  exports: [
+    RouterModule
+  ]
 })
 export class MainRoutingModule {
 

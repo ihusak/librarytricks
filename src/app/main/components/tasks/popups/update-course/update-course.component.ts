@@ -7,8 +7,8 @@ import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { CourseInterface } from 'src/app/shared/interface/course.interface';
 import { ProfileService } from '../../../profile/profile.service';
 import { TaskService } from '../../tasks.service';
-import {MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef} from '@angular/material/legacy-dialog';
-import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-update-course',

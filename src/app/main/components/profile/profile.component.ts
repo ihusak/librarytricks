@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ViewChild, ElementRef} from '@angular/cor
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { ProfileService } from './profile.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import { UserStudentModel } from 'src/app/shared/models/user-student.model';
 import { UserParentModel } from 'src/app/shared/models/user-parent.model';
@@ -16,6 +15,7 @@ import {MainService} from '../../main.service';
 import { TitleService } from 'src/app/shared/title.service';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
 import {DateAdapter} from '@angular/material/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 interface KidInterface {
   id: string;

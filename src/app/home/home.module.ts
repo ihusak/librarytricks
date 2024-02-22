@@ -8,10 +8,8 @@ import { RegisterService } from './register/register.service';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './login/login.service';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { ConfirmComponent } from './confirm/register/confirm.component';
 import { ConfirmService } from './confirm/confirm.service';
-import { LoginServiceModule } from './login/login.service.module';
 import { CoachComponent } from './confirm/coach/coach.component';
 import { MainHomeComponent } from './main-home/main-home.component';
 import { TranslateModule } from '@ngx-translate/core';
@@ -31,17 +29,20 @@ import { RecoverPasswordComponent } from './forgot-password/recover-password/rec
     RecoverPasswordComponent
   ],
   imports: [
-    CommonModule,
-    HomeRoutingModule,
     SharedModule,
-    HttpClientModule,
+    HomeRoutingModule,
+    // HttpClientModule,
     ReactiveFormsModule,
-    LoginServiceModule,
     TranslateModule
   ],
   exports: [
     HomeRoutingModule
   ],
-  providers: [RegisterService, LoginService, ConfirmService, ForgotPasswordService]
+  providers: [
+    RegisterService,
+    LoginService,
+    ConfirmService,
+    ForgotPasswordService
+  ]
 })
 export class HomeModule { }

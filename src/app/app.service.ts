@@ -14,9 +14,11 @@ export interface ServerErrorMessage {
   errKey: string;
   errorMessage: string;
 }
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppService {
-  private domain: string;
+  private readonly domain: string;
   public userInfoSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   constructor(
     public http: HttpClient,

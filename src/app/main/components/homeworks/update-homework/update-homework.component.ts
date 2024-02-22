@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 import {TitleService} from '../../../../shared/title.service';
-import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 let STUDENTS_GOT_NOTIFY;
 interface StudentListSelect {
   id: string;

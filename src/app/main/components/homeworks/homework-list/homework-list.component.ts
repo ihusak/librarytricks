@@ -3,14 +3,14 @@ import {HomeworkInterface, HomeworksService} from '../homeworks.service';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {MainService} from '../../../main.service';
 import { HomeworksModel } from '../homeworks.model';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { TitleService } from 'src/app/shared/title.service';
+import {MatPaginator} from '@angular/material/paginator';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 interface SortItemInterface {
   name: string;
@@ -85,7 +85,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
   }
   private prepareHomeworks(hm: HomeworkInterface[]) {
     switch(this.userInfo.role.id) {
-      case this.userRoles.STUDENT: 
+      case this.userRoles.STUDENT:
         this.homeworksList = hm.filter((h: HomeworkInterface) => h.students.find(s => s.id === this.userInfo.id));
       break;
       case this.userRoles.PARENT:
@@ -96,7 +96,7 @@ export class HomeworkListComponent implements OnInit, OnDestroy {
       case this.userRoles.COACH:
         this.homeworksList = hm.filter((h: HomeworkInterface) => h.createdBy.id === this.userInfo.id)
       break;
-      case this.userRoles.ADMIN: 
+      case this.userRoles.ADMIN:
         this.homeworksList = hm
       break;
     }

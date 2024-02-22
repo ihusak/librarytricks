@@ -4,10 +4,8 @@ import { TaskModel } from '../task.model';
 import { MainService } from 'src/app/main/main.service';
 import { AdminInfoInterface, CoachInfoInterface, ParentInfoInterface, StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { ProfileService } from '../../profile/profile.service';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PassTaskComponent } from '../popups/pass-task/pass-task.component';
 import { ProcessTasksComponent } from '../popups/process-tasks/process-tasks.component';
 import { CreateCourseComponent } from '../popups/create-course/create-course.component';
@@ -23,6 +21,8 @@ import { AppService } from 'src/app/app.service';
 import { UpdateCourseComponent } from '../popups/update-course/update-course.component';
 import { TitleService } from 'src/app/shared/title.service';
 import {TaskStatusInterface} from '../../../../shared/interface/task-status.interface';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-task-list',

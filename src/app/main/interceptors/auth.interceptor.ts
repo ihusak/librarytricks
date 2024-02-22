@@ -6,8 +6,8 @@ import { catchError, switchMap, filter, take, map, tap } from 'rxjs/operators';
 import { AuthService } from 'src/app/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
     private translateService: TranslateService
     ){}
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
+console.log('intercept');
       this.accessToken = this.cookieService.getAll().lb_config;
       this.refreshToken = this.cookieService.getAll().lb_refreshToken;
 

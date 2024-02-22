@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProfileService } from '../../profile/profile.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MainService } from 'src/app/main/main.service';
 import { StudentInfoInterface } from 'src/app/shared/interface/user-info.interface';
 import { TaskStatuses } from 'src/app/shared/enums/task-statuses.enum';
@@ -15,6 +13,8 @@ import {TitleService} from '../../../../shared/title.service';
 import {TaskService} from '../tasks.service';
 import {TaskStatusInterface} from '../../../../shared/interface/task-status.interface';
 import {TaskModel} from '../task.model';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {MatDialog} from '@angular/material/dialog';
 
 interface marksInterface {
   value: number;

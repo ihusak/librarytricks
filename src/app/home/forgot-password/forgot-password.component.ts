@@ -1,10 +1,10 @@
 import {Component, OnDestroy} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ForgotPasswordService } from './forgot-password.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 const REQUEST_INTERVAL = 15000;
 

@@ -1,22 +1,23 @@
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AppMaterialModule } from '../shared/material.module';
 import { LanguageComponent } from '../main/layouts/language/language.component';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {AppMaterialModule} from './material.module';
+import {PipesModule} from './pipes/pipes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    FontAwesomeModule,
-    AppMaterialModule
+    AppMaterialModule,
+    PipesModule
   ],
   declarations: [LanguageComponent],
   exports: [
+    CommonModule,
     FormsModule,
-    FontAwesomeModule,
     AppMaterialModule,
+    PipesModule,
     LanguageComponent
   ]
 })

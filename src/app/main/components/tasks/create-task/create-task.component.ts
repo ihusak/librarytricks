@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TaskService } from '../tasks.service';
 import { TaskModel } from '../task.model';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Location } from '@angular/common';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { MainService } from 'src/app/main/main.service';
@@ -13,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import {NotifyInterface} from '../../../../shared/interface/notify.interface';
 import {NotificationTypes} from '../../../../shared/enums/notification-types.enum';
 import { TitleService } from 'src/app/shared/title.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-task',

@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth.service';
 import { AppService } from 'src/app/app.service';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MainService } from '../../main.service';
 import { AdminRequestPermissionPopupComponent } from '../popups/admin-request-permission-popup/admin-request-permission-popup.component';
 import { Subscription } from 'rxjs';
 import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
 import {NotifyInterface} from '../../../shared/interface/notify.interface';
 import {UserRolePipe} from '../../../shared/pipes/user-role/user-role.pipe';
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-header',

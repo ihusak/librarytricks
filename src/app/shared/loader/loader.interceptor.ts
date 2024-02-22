@@ -3,9 +3,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse } fr
 import { Observable, pipe } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { LoaderService } from './loader.service';
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 /**
  * Intercept http request to preven user to doing some stuff
  */

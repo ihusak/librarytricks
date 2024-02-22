@@ -1,16 +1,18 @@
 import {BrowserModule, Meta} from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { AppComponent } from './app.component';
 import { environment } from 'src/environments/environment';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MainModule } from './main/main.module';
 import { HomeModule } from './home/home.module';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { SharedModule } from './shared/shared.module';
 import { MainGuardService } from './main/guards/main.guard';
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  HttpClient,
+  HTTP_INTERCEPTORS,
+  HttpClientModule
+} from '@angular/common/http';
 import { AuthInterceptor } from './main/interceptors/auth.interceptor';
 import { LoaderInterceptorService } from './shared/loader/loader.interceptor';
 import { LoaderComponent } from './shared/loader/loader.component';
@@ -21,7 +23,6 @@ import { AppService } from './app.service';
 import { ErrorHandlerInterceptor } from './main/interceptors/error.handler.intercaptor';
 import { MatLegacyPaginatorIntl as MatPaginatorIntl } from '@angular/material/legacy-paginator';
 import { PaginationTranslate } from './shared/translate/pagination-translate';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -35,8 +36,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   LoaderComponent
   ],
   imports: [
-  BrowserModule.withServerTransition({ appId: 'serverApp' }),
-  MatProgressSpinnerModule,
+  HttpClientModule,
+  BrowserModule,
   AppRoutingModule,
   BrowserAnimationsModule,
   SharedModule,
@@ -46,16 +47,15 @@ export function HttpLoaderFactory(http: HttpClient) {
   TranslateModule.forRoot({
     loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: (HttpLoaderFactory),
         deps: [HttpClient]
     }
   }),
-  FontAwesomeModule
   ],
   providers: [
     MainGuardService,
     AppService,
-  {
+    {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
@@ -71,11 +71,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     multi: true
   },
   {
-    provide: MatPaginatorIntl, deps: [TranslateService],
+    provide: MatPaginatorIntl,
+    deps: [TranslateService],
     useFactory: (translateService: TranslateService) => new PaginationTranslate(translateService).getPaginatorIntl()
   },
     Meta
 ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

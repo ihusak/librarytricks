@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
     });
     this.subscription.add(translateServiceTitleSub);
     const checkLoggedIn = this.appService.getTokens();
+    console.log('HOME!!!');
     if (checkLoggedIn.accessToken) {
       this.route.navigate(['main']);
     }

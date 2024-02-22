@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {UserRolesEnum} from '../../../../shared/enums/user-roles.enum';
 import {MainService} from '../../../main.service';
-import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {Location} from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';

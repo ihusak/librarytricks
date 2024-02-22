@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Subscription} from 'rxjs';
 import {CATEGORIES, ProductInterface, ShopService} from '../../shop.service';
-import {MatLegacySnackBar as MatSnackBar} from '@angular/material/legacy-snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import {TitleService} from '../../../../../shared/title.service';
@@ -11,7 +11,8 @@ import {ProductModel} from '../../product.model';
 @Component({
   selector: 'app-update-product',
   templateUrl: './update-product.component.html',
-  styleUrls: ['./update-product.component.scss']
+  standalone: false,
+  styleUrls: ['./update-product.component.scss'],
 })
 export class UpdateProductComponent implements OnInit, OnDestroy {
   public productForm: FormGroup;

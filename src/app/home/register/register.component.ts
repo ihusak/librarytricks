@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { RegisterService } from './register.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { UserRole } from '../interface/userRole.interface';
 import { UserRolesEnum } from 'src/app/shared/enums/user-roles.enum';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -9,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TitleService } from 'src/app/shared/title.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 export interface UserFormInterface {
   name: string;
@@ -47,14 +47,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public invitedRoleId: number;
   public invitedEmail: string
 
+  private snackBar: MatSnackBar;
+
   constructor(
     private registerService: RegisterService,
-    private snackBar: MatSnackBar,
+    snackBar: MatSnackBar,
     private translateService: TranslateService,
     private router: Router,
     private route: ActivatedRoute,
     private titleService: TitleService
     ) {
+    this.snackBar = snackBar;
     this.registerToken = this.route.snapshot.queryParamMap.get('token');
     this.invitedRoleId = parseInt(this.route.snapshot.queryParamMap.get('roleId'));
     this.invitedEmail = this.route.snapshot.queryParamMap.get('email');
