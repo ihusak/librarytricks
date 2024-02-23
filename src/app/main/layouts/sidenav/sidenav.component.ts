@@ -15,9 +15,7 @@ export class SidenavComponent implements OnInit {
   public userRoles = UserRolesEnum;
   public env: any = environment;
   private mobile: boolean = false;
-  
   constructor(private router: Router) { }
-
   ngOnInit() {
     if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
       // true for mobile device

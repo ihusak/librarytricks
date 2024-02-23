@@ -21,8 +21,8 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppService } from './app.service';
 import { ErrorHandlerInterceptor } from './main/interceptors/error.handler.intercaptor';
-import { MatLegacyPaginatorIntl as MatPaginatorIntl } from '@angular/material/legacy-paginator';
 import { PaginationTranslate } from './shared/translate/pagination-translate';
+import {MatPaginatorIntl} from '@angular/material/paginator';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {

@@ -5,11 +5,11 @@ import { MainService } from '../../main.service';
 import { TaskService } from '../tasks/tasks.service';
 import {DOCUMENT, isPlatformBrowser} from '@angular/common';
 import { Checkout, PaymentsService } from './payments.service';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { TitleService } from 'src/app/shared/title.service';
 import {WindowRef} from '../../../shared/services/window.ref.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 interface WindowPayment extends Window {
   LiqPayCheckout: any;

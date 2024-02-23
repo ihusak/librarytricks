@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import {ActivatedRoute, Router} from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
@@ -11,6 +10,7 @@ import {NotifyInterface} from '../../../../../shared/interface/notify.interface'
 import {MainService} from '../../../../main.service';
 import {NotificationTypes} from '../../../../../shared/enums/notification-types.enum';
 import {UserRolesEnum} from '../../../../../shared/enums/user-roles.enum';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-product',

@@ -1,8 +1,7 @@
-import { MatLegacyPaginatorIntl as MatPaginatorIntl } from "@angular/material/legacy-paginator";
-import { TranslateService } from "@ngx-translate/core";
+import { TranslateService } from '@ngx-translate/core';
+import {MatPaginatorIntl} from '@angular/material/paginator';
 
 export class PaginationTranslate {
-  
   constructor(private translateService: TranslateService) {}
 
   getPaginatorIntl(): MatPaginatorIntl {

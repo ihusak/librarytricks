@@ -8,8 +8,8 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyInterface } from 'src/app/shared/interface/notify.interface';
 import { NotificationTypes } from 'src/app/shared/enums/notification-types.enum';
-import {MatLegacyDialogRef as MatDialogRef} from '@angular/material/legacy-dialog';
 import {VideosService} from '../videos.service';
+import {MatDialogRef} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-homework',

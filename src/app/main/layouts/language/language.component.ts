@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 import { CookieService } from 'ngx-cookie-service';
 import { AppService } from 'src/app/app.service';
 import { TranslateLocalService } from 'src/app/shared/translate/translate.service';
+import {MatMenuTrigger} from '@angular/material/menu';
 
 @Component({
   selector: 'app-language',
@@ -14,7 +14,7 @@ export class LanguageComponent implements OnInit {
   public selectedLang: string = '';
   @ViewChild(MatMenuTrigger, {static: false}) trigger: MatMenuTrigger;
   constructor(
-    private cookieService: CookieService, 
+    private cookieService: CookieService,
     private translateService: TranslateLocalService,
     private appService: AppService
   ) {
